@@ -1,33 +1,59 @@
+#include"main.h"
+#include "Typedef.h"
 #include "DxLib.h"
 #include "touch.h"
 
-using namespace std;
-// プログラムは android_main から始まります
-
-//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){SetGraphMode(720,1080, 16); ChangeWindowMode(true);
-int android_main(void){
-	//hgio_uvfix(1);
-	SetGraphMode(1080, 1920, 16);
-	if (DxLib_Init() == -1)     // ＤＸライブラリ初期化処理
+// システム初期化
+int SystemInit(void)
+{
+	SetGraphMode(WINDOW_X, WINDOW_Y, 16);
+	if (DxLib_Init() == -1)
 	{
-		return -1;          // エラーが起きたら直ちに終了
+		return -1;
 	}
+	return 0;
+}
+
+// インスタンス
+void Create(void)
+{
+
+}
+
+// 破棄
+void Destroy(void)
+{
+	DxLib_End();
+}
+
+// 描画
+void Draw(void)
+{
+	ClearDrawScreen();
+
+	ScreenFlip();
+}
+
+// 処理
+void UpData(void)
+{
+	Draw();
+
+	touch::Get()->Update();
+}
+
+// メイン関数
+int android_main(void)
+{
+	SystemInit();
+	Create();
 
 	while (ProcessMessage() == 0)
 	{
-
-
-		ClearDrawScreen();
-
-		touch::Get()->Update();
-
-		ScreenFlip();
-	
+		UpData();
 	}
 
-	WaitKey();              // キー入力待ち
+	Destroy();
 
-	DxLib_End();                // ＤＸライブラリ使用の終了処理
-
-	return 0;                   // ソフトの終了 
+	return 0;
 }

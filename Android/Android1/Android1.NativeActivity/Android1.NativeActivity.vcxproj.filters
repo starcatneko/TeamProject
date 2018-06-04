@@ -22,6 +22,8 @@
     <ClInclude Include="VECTOR2.h">
       <Filter>H</Filter>
     </ClInclude>
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Typedef.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
