@@ -1,7 +1,6 @@
 #pragma once
 #include "DxLib.h"
-#include "VECTOR2.h"
-
+#include "Typedef.h"
 
 class Camera
 {
@@ -11,10 +10,10 @@ public:
 	void Update();
 	void Draw();
 
-	VECTOR2 &GetPos();
-	void SetPos(VECTOR2 _pos);
+	Pos &GetPos();
+	void SetPos(Pos _pos);
 
 private:
-	VECTOR2 pos;
+	Pos pos;
 };
 

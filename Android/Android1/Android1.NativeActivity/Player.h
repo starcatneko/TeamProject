@@ -1,6 +1,5 @@
 #include <memory>
 
-#include "VECTOR2.h"
 #include "Typedef.h"
 
 
@@ -14,13 +13,13 @@ public:
 	//デストラクタ
 	~Player();
 	//座標の取得
-	VECTOR2 GetPos();
+	Pos GetPos();
 	//座標を格納
-	void SetPos(VECTOR2 pos);
+	void SetPos(Pos pos);
 
 private:
 	//座標(int)
-	VECTOR2 pos;
+	Pos pos;
 	//現在向いている方向
 	DIR dir;
 	//キャラクターの状態

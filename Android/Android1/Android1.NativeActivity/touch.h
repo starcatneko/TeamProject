@@ -1,7 +1,7 @@
 #pragma once
 #define TOUCH_MAX 5
 #define TEMP_MAX 120
-#include "VECTOR2.h"
+#include "Typedef.h"
 
 class touch {
 public:
@@ -13,8 +13,8 @@ public:
 		return instance;
 	}
 
-	VECTOR2 Getpos(int touchNo);
-	void Setpos(int touchNo, VECTOR2 pos);
+	Pos Getpos(int touchNo);
+	void Setpos(int touchNo, Pos pos);
 	void Update();
 	void TouchProccess();
 private:
@@ -23,8 +23,8 @@ private:
 
 	//0:ñ≥ì¸óÕ 1:ì¸óÕÇµÇΩèuä‘ 2~:ì¸óÕíÜ -1:ó£ÇµÇΩèuä‘
 	int touch_buf;		
-	VECTOR2 pos[TOUCH_MAX];
-	VECTOR2 pos_buf[TOUCH_MAX][TEMP_MAX];
+	Pos pos[TOUCH_MAX];
+	Pos pos_buf[TOUCH_MAX][TEMP_MAX];
 	touch();
 	~touch();
 };

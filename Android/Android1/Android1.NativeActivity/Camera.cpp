@@ -34,13 +34,13 @@ void Camera::Draw()
 }
 
 // 座標取得(参照マン)
-VECTOR2 & Camera::GetPos()
+Pos & Camera::GetPos()
 {
 	return pos;
 }
 
 // 座標設置
-void Camera::SetPos(VECTOR2 _pos)
+void Camera::SetPos(Pos _pos)
 {
 	pos = _pos;
 }

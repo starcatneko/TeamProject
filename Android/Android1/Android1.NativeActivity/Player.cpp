@@ -15,12 +15,12 @@ Player::~Player()
 {
 }
 
-VECTOR2 Player::GetPos()
+Pos Player::GetPos()
 {
-	return VECTOR2();
+	return Pos();
 }
 
-void Player::SetPos(VECTOR2 pos)
+void Player::SetPos(Pos pos)
 {
 	this->pos.x = pos.x;
 	this->pos.y = pos.y;

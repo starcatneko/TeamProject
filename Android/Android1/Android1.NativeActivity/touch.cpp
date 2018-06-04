@@ -1,5 +1,4 @@
-#include "touch.h"
-#include "VECTOR2.h"
+#include "Touch.h"
 #include "DxLib.h"
 
 touch* touch::instance = NULL;
@@ -17,12 +16,12 @@ void touch::Remove()
 
 }
 
-VECTOR2 touch::Getpos(int touchNo)
+Pos touch::Getpos(int touchNo)
 {
 	return pos[touchNo];
 }
 
-void touch::Setpos(int touchNo, VECTOR2 pos)
+void touch::Setpos(int touchNo, Pos pos)
 {
 	this->pos[touchNo] = pos;
 }
@@ -42,10 +41,10 @@ void touch::TouchProccess()
 		for (int tN = 0; tN < touchNum; tN++)
 		{
 			int temp_x, temp_y;
-			VECTOR2 T;		
+			Pos T;		
 			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
 			GetMousePoint(&temp_x, &temp_y);
-			T = VECTOR2(temp_x, temp_y);
+			T = { temp_x, temp_y };
 			touch::Get()->Setpos(tN, T);
 		}
 
