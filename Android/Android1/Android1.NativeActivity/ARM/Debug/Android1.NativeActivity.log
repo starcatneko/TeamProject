@@ -15,4 +15,4 @@ main.cpp(4,17): warning : using directive refers to implicitly-defined namespace
   1 warning generated.
   touch.cpp
   VECTOR2.cpp
-  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Desktop\個人製作かもしれない\0004\Android1\ARM\Debug\libAndroid1.so
+  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
