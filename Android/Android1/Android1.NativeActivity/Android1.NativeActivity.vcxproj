@@ -205,12 +205,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dust.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fannings.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Touch.cpp" />
     <ClCompile Include="VECTOR2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dust.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fannings.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="Touch.h" />

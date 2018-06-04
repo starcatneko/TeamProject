@@ -11,6 +11,9 @@
     <ClCompile Include="Touch.cpp">
       <Filter>CPP</Filter>
     </ClCompile>
+    <ClCompile Include="Dust.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fannings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obj.h">
@@ -24,6 +27,9 @@
     <ClInclude Include="Touch.h">
       <Filter>H</Filter>
     </ClInclude>
+    <ClInclude Include="Dust.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fannings.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
