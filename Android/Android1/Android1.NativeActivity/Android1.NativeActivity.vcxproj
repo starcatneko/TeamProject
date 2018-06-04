@@ -205,15 +205,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Obj.cpp" />
-    <ClCompile Include="touch.cpp" />
+    <ClCompile Include="Touch.cpp" />
     <ClCompile Include="VECTOR2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Obj.h" />
-    <ClInclude Include="touch.h" />
+    <ClInclude Include="Touch.h" />
     <ClInclude Include="Typedef.h" />
     <ClInclude Include="VECTOR2.h" />
   </ItemGroup>

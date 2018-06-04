@@ -4,26 +4,26 @@
     <ClCompile Include="Obj.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="touch.cpp">
-      <Filter>CPP</Filter>
-    </ClCompile>
     <ClCompile Include="VECTOR2.cpp">
       <Filter>CPP</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Touch.cpp">
+      <Filter>CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obj.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="touch.h">
-      <Filter>H</Filter>
-    </ClInclude>
     <ClInclude Include="VECTOR2.h">
       <Filter>H</Filter>
     </ClInclude>
-    <ClInclude Include="main.h" />
     <ClInclude Include="Typedef.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="Touch.h">
+      <Filter>H</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
