@@ -20,3 +20,36 @@ enum STATES {
 	ST_DAMAGE,
 	ST_DIE
 };
+
+// À•W
+struct Pos
+{
+	int x;
+	int y;
+
+	void operator+(int i) {
+		this->x += i;
+		this->y += i;
+	}
+
+	void operator-(int i) {
+		this->x -= i;
+		this->y -= i;
+	}
+
+	Pos operator+(Pos pos) {
+		return { x + pos.x , y + pos.y };
+	}
+
+	Pos operator-(Pos pos) {
+		return { x - pos.x , y - pos.y };
+	}
+
+	Pos operator*(Pos pos) {
+		return { x * pos.x , y * pos.y };
+	}
+
+	Pos operator/(Pos pos) {
+		return { x / pos.x , y / pos.y };
+	}
+};

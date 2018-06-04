@@ -1,8 +1,9 @@
 #include "Dust.h"
 #include "Typedef.h"
 
-Dust::Dust():isTurn(false)
+Dust::Dust()
 {
+	isTurn = false;
 }
 
 

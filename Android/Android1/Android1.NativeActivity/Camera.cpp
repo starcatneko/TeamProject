@@ -40,7 +40,7 @@ VECTOR2 & Camera::GetPos()
 }
 
 // ç¿ïWê›íu
-int Camera::SetPos(VECTOR2 _pos)
+void Camera::SetPos(VECTOR2 _pos)
 {
 	pos = _pos;
 }

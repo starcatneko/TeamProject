@@ -13,10 +13,25 @@
     <ClCompile Include="Main.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Dust.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Fannings.cpp" />
     <ClCompile Include="Camera.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Dust.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Fannings.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Apple.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,10 +51,25 @@
     <ClInclude Include="Main.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="Dust.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Fannings.h" />
     <ClInclude Include="Camera.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Dust.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Fannings.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Apple.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,7 +12,7 @@ public:
 	void Draw();
 
 	VECTOR2 &GetPos();
-	int SetPos(VECTOR2 _pos);
+	void SetPos(VECTOR2 _pos);
 
 private:
 	VECTOR2 pos;

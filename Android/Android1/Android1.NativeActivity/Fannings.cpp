@@ -1,8 +1,9 @@
 #include "Fannings.h"
 #include "Typedef.h"
 
-Fannings::Fannings():isTurn (false)
+Fannings::Fannings()
 {
+	isTurn = false;
 }
 
 

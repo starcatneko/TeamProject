@@ -3,6 +3,7 @@
 #include <memory>
 
 
+//-----関数定義-----
 // システム初期化
 int SystemInit(void);
 
@@ -19,4 +20,6 @@ void Draw(void);
 void UpData(void);
 
 
+//-----変数定義-----
+// プレイヤー
 std::shared_ptr<Player> pl;
