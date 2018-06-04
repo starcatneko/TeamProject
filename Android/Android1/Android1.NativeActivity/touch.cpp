@@ -55,10 +55,10 @@ void touch::TouchProccess()
 			for (int x = TEMP_MAX - 1; x >= 0; x--)
 			{
 				pos_buf[y][x + 1] = pos_buf[y][x];
-				DrawFormatString(0, x * 16, 0xaaaaaa, "%d:%d",
+				/*DrawFormatString(0, x * 16, 0xaaaaaa, "%d:%d",
 					pos_buf[0][x].x, pos_buf[0][x].y);
-
-				DrawCircle(pos_buf[y][x].x, pos_buf[y][x].y, x,0x00DD00, false, true);
+					*/
+				//DrawCircle(pos_buf[y][x].x, pos_buf[y][x].y, x,0x00DD00, false, true);
 			}
 		}
 		touch_buf++;
