@@ -13,6 +13,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="Dust.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fannings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VECTOR2.h">
@@ -30,6 +33,9 @@
     <ClInclude Include="Main.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="Dust.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fannings.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">
