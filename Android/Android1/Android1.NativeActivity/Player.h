@@ -23,8 +23,10 @@ private:
 	VECTOR2 pos;
 	//現在向いている方向
 	DIR dir;
+	//キャラクターの状態
+	STATES st;
 	//ライフポイント
-	int HP;
+	int hp;
 
 	//std::weak_ptr<Camera> cam;
 };

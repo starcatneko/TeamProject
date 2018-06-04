@@ -12,3 +12,11 @@ enum DIR {
 	DIR_RIGHT	= 6,
 	DIR_UP		= 8
 };
+
+enum STATES {
+	ST_NUETRAL,
+	ST_WALK,
+	ST_ATTACK,
+	ST_DAMAGE,
+	ST_DIE
+};
