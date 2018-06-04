@@ -2,17 +2,16 @@
   ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Apps\apache-ant-1.9.3
   JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
   NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r13b
-  main.cpp
-main.cpp(4,17): warning : using directive refers to implicitly-defined namespace 'std'
-  using namespace std;
-                  ^
-  1 warning generated.
-  Obj.cpp
-  In file included from Obj.cpp:1:
-./Obj.h(4,1): warning : typedef requires a name [-Wmissing-declarations]
-  typedef struct XY {
-  ^~~~~~~
-  1 warning generated.
-  touch.cpp
+  Main.cpp
+  Player.cpp
+  In file included from Player.cpp:1:
+./Player.h(25,6): warning : private field 'dir' is not used [-Wunused-private-field]
+          DIR dir;
+              ^
+./Player.h(27,6): warning : private field 'HP' is not used [-Wunused-private-field]
+          int HP;
+              ^
+  2 warnings generated.
+  Touch.cpp
   VECTOR2.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

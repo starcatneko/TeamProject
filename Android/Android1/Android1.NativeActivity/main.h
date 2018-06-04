@@ -1,4 +1,7 @@
 #pragma once
+#include "Player.h"
+#include <memory>
+
 
 // ƒVƒXƒeƒ€‰Šú‰»
 int SystemInit(void);
@@ -14,3 +17,6 @@ void Draw(void);
 
 // ˆ—
 void UpData(void);
+
+
+std::shared_ptr<Player> pl;

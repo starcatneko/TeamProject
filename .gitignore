@@ -7,3 +7,23 @@ Android/.vs/Android1/Android1.Packaging/ARM
 
 
 ~$タスク管理.xlsx
+Android/Android1/Android1.NativeActivity/ARM/Debug/libAndroid1.so
+Android/Android1/Android1.NativeActivity/ARM/Debug/main.o
+Android/Android1/Android1.NativeActivity/ARM/Debug/Player.o
+Android/Android1/Android1.NativeActivity/ARM/Debug/touch.o
+Android/ARM/Debug/libAndroid1.so
+Android/Android1/Android1.Packaging/ARM/Debug/Package/project.properties
+Android/Android1/Android1.Packaging/ARM/Debug/Package/memo.txt
+Android/Android1/Android1.Packaging/ARM/Debug/Package/libs/armeabi-v7a/libAndroid1.so
+Android/Android1/Android1.Packaging/ARM/Debug/Package/build.xml
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/build.prop
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/AndroidManifest.xml.d
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/Android1.Packaging.ap_.d
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/Android1.Packaging.ap_
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/Android1.Packaging-debug-unaligned.apk.d
+Android/Android1/Android1.Packaging/ARM/Debug/Package/bin/Android1.Packaging-debug-unaligned.apk
+Android/Android1/Android1.Packaging/ARM/Debug/Package/AndroidManifest.xml
+Android/Android1/Android1.Packaging/ARM/Debug/Android1.Packaging.androidproj.FileListAbsolute.txt
+Android/Android1/Android1.Packaging/ARM/Debug/Android1.apk.recipe.merged
+Android/Android1/Android1.Packaging/ARM/Debug/Android1.apk.recipe
+Android/Android1/Android1.Packaging/ARM/Debug/Android1.apk

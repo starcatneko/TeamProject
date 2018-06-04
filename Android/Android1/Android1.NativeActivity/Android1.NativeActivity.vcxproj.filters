@@ -1,39 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Obj.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="VECTOR2.cpp">
-      <Filter>CPP</Filter>
+      <Filter>リソース</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Touch.cpp">
-      <Filter>CPP</Filter>
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>リソース</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Obj.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="VECTOR2.h">
-      <Filter>H</Filter>
+      <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Typedef.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Touch.h">
-      <Filter>H</Filter>
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Object">
-      <UniqueIdentifier>{6d4f6b07-e800-43cd-a759-fffb33f5c768}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="H">
-      <UniqueIdentifier>{06c8974a-f755-4a33-a4b3-1bc020313be3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CPP">
+    <Filter Include="リソース">
       <UniqueIdentifier>{2cd5812c-5b2d-4412-8f62-0c1a01f44244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー">
+      <UniqueIdentifier>{06c8974a-f755-4a33-a4b3-1bc020313be3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

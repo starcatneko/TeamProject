@@ -17,7 +17,7 @@ int SystemInit(void)
 // インスタンス
 void Create(void)
 {
-
+	pl = std::make_shared<Player>();
 }
 
 // 破棄
@@ -30,7 +30,7 @@ void Destroy(void)
 void Draw(void)
 {
 	ClearDrawScreen();
-
+	DrawBox(0, 0, 512, 512, 0xff0000, 1);
 	ScreenFlip();
 }
 

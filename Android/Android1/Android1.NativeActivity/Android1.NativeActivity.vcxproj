@@ -148,6 +148,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
       <AdditionalIncludeDirectories>C:\Dxlib_Android;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-std=c++11 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;stdc++;GLESv2;OpenSLES;m;DxLib;DxUseCLib;jpeg;png;zlib;tiff;theora_static;vorbis_static;vorbisfile_static;ogg_static;bullet;opus</LibraryDependencies>
@@ -206,13 +207,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Obj.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Touch.cpp" />
     <ClCompile Include="VECTOR2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
-    <ClInclude Include="Obj.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Touch.h" />
     <ClInclude Include="Typedef.h" />
     <ClInclude Include="VECTOR2.h" />

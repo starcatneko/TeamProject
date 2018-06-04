@@ -12,3 +12,9 @@ W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\build.xml
 W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\FileStringReplace.incremental
 W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk
 W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.lastsuccessfuldeploy
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe.merged
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\FileStringReplace.incremental
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk
+C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.lastsuccessfuldeploy
