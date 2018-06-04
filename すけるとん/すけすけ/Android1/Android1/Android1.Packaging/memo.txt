@@ -1,0 +1,4 @@
+1>------ 配置開始: プロジェクト:Android1.Packaging, 構成: Debug ARM ------
+1>デバイス 'asus ASUS_Z017DA (arm64v8a - G7AZCY005538SDE)' 上でパッケージ 'C:\Users\1601291\Desktop\個人製作かもしれない\0002\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk' をコピーしてインストールしています...
+1>Could not install application 'com.Android1' (C:\Users\1601291\Desktop\個人製作かもしれない\0002\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk) on the device 'G7AZCY005538SDE'. Installation succeeded but the applications was not found on the device.
+========== 配置: 0 正常終了、1 失敗、0 スキップ ==========

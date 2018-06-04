@@ -8,7 +8,7 @@ int android_main(void){
 	{
 		return -1;          // エラーが起きたら直ちに終了
 	}
-
+	//うに
 	while (ProcessMessage() == 0)
 	{
 
