@@ -147,7 +147,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
-      <AdditionalIncludeDirectories>C:\Dxlib_Android;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(DX_ANDROID)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;stdc++;GLESv2;OpenSLES;m;DxLib;DxUseCLib;jpeg;png;zlib;tiff;theora_static;vorbis_static;vorbisfile_static;ogg_static;bullet;opus</LibraryDependencies>
