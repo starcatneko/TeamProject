@@ -8,10 +8,13 @@
 ./Player.h(25,6): warning : private field 'dir' is not used [-Wunused-private-field]
           DIR dir;
               ^
-./Player.h(27,6): warning : private field 'HP' is not used [-Wunused-private-field]
-          int HP;
+./Player.h(27,9): warning : private field 'st' is not used [-Wunused-private-field]
+          STATES st;
+                 ^
+./Player.h(29,6): warning : private field 'hp' is not used [-Wunused-private-field]
+          int hp;
               ^
-  2 warnings generated.
+  3 warnings generated.
   Touch.cpp
   VECTOR2.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
