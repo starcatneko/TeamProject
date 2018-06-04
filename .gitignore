@@ -1,11 +1,8 @@
 
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/Solution.VC.db-wal
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/Solution.VC.db-shm
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/Solution.VC.db
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/ipch/AutoPCH/61562804cc8e1f1f/MAIN.ipch
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/Browse.VC.opendb
-AndroidStartUp/すけすけ/Android1/.vs/Android1/v15/Browse.VC.db
-Android/.vs/Android1/v15/.suo
-Android/.vs/Android1/v15/Browse.VC.db
-Android/.vs/Android1/v15/Solution.VC.db
-~$Book1.xlsx
+AndroidStartUp/すけすけ
+Android/.vs/Android1/v15
+Android/.vs/Android1/.vs
+Android/.vs/Android1/ARM
+Android/.vs/Android1/Android1.Packaging/ARM
+
+

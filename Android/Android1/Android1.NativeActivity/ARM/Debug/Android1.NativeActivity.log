@@ -1,0 +1,18 @@
+﻿  ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk
+  ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Apps\apache-ant-1.9.3
+  JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
+  NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r13b
+  main.cpp
+main.cpp(4,17): warning : using directive refers to implicitly-defined namespace 'std'
+  using namespace std;
+                  ^
+  1 warning generated.
+  Obj.cpp
+  In file included from Obj.cpp:1:
+./Obj.h(4,1): warning : typedef requires a name [-Wmissing-declarations]
+  typedef struct XY {
+  ^~~~~~~
+  1 warning generated.
+  touch.cpp
+  VECTOR2.cpp
+  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Desktop\個人製作かもしれない\0004\Android1\ARM\Debug\libAndroid1.so

@@ -1,0 +1,14 @@
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.Packaging.androidprojResolveAssemblyReference.cache
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe.merged
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\gdbserver
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libgnustl_static.a
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\res\values\strings.xml
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\memo.txt
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\AndroidManifest.xml
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\project.properties
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Package\build.xml
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\FileStringReplace.incremental
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.apk
+W:\Android\0004\Android1\Android1\Android1.Packaging\ARM\Debug\Android1.lastsuccessfuldeploy

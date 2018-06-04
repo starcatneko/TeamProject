@@ -147,7 +147,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
-      <AdditionalIncludeDirectories>$(DX_ANDROID)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dxlib_Android;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;stdc++;GLESv2;OpenSLES;m;DxLib;DxUseCLib;jpeg;png;zlib;tiff;theora_static;vorbis_static;vorbisfile_static;ogg_static;bullet;opus</LibraryDependencies>
@@ -206,6 +206,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Obj.cpp" />
+    <ClCompile Include="touch.cpp" />
+    <ClCompile Include="VECTOR2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Obj.h" />
+    <ClInclude Include="touch.h" />
+    <ClInclude Include="VECTOR2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
