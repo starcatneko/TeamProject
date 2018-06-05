@@ -25,9 +25,6 @@
     <ClCompile Include="Apple.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>リソース</Filter>
-    </ClCompile>
     <ClCompile Include="Score.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
@@ -40,7 +37,12 @@
     <ClCompile Include="GamePlay.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BackGround.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Touch.h">
@@ -67,9 +69,6 @@
     <ClInclude Include="Apple.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
@@ -82,7 +81,12 @@
     <ClInclude Include="GamePlay.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BackGround.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">
