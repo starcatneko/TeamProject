@@ -1,5 +1,8 @@
 #pragma once
 #include "Scene.h"
+#include <memory>
+
+class Player;
 
 class GamePlay :
 	public Scene
@@ -10,12 +13,17 @@ public:
 	// デストラクタ
 	~GamePlay();
 
+	// インスタンス化
+	void Create(void);
+
 	// 描画
 	void Draw(void);
 
 	// 処理
 	void UpData(void);
-private:
 
+
+private:
+	std::shared_ptr<Player> pl;
 };
 

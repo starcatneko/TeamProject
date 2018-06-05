@@ -37,6 +37,7 @@ void Game::Init(void)
 // インスタンス化
 void Game::Create(void)
 {
+
 }
 
 // シーンの移行

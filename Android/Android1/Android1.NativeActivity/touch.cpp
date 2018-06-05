@@ -1,39 +1,39 @@
 #include "Touch.h"
 #include "DxLib.h"
 
-touch* touch::instance = NULL;
+Touch* Touch::instance = nullptr;
 
-void touch::Create()
+void Touch::Create()
 {
 	if (!instance)
-		instance = new touch;
+		instance = new Touch;
 
 }
-void touch::Remove()
+void Touch::Remove()
 {
 	if (instance)
 		delete instance;
 
 }
 
-Pos touch::Getpos(int touchNo)
+Pos Touch::Getpos(int touchNo)
 {
 	return pos[touchNo];
 }
 
-void touch::Setpos(int touchNo, Pos pos)
+void Touch::Setpos(int touchNo, Pos pos)
 {
 	this->pos[touchNo] = pos;
 }
 
-void touch::Update()
+void Touch::Update()
 {
 	touchNum = GetTouchInputNum();
 
 	TouchProccess();
 }
 
-void touch::TouchProccess()
+void Touch::TouchProccess()
 {
 	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
 	if (GetTouchInputNum() > 0)
@@ -45,7 +45,7 @@ void touch::TouchProccess()
 			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
 			GetMousePoint(&temp_x, &temp_y);
 			T = { temp_x, temp_y };
-			touch::Get()->Setpos(tN, T);
+			Touch::Get()->Setpos(tN, T);
 		}
 
 		for (int y = 0; y < TOUCH_MAX; y++)
@@ -66,7 +66,7 @@ void touch::TouchProccess()
 	else touch_buf = 0;
 }
 
-touch::touch()
+Touch::Touch()
 {
 	touch_buf = 0;
 
@@ -82,7 +82,7 @@ touch::touch()
 	}
 
 }
-touch::~touch()
+Touch::~Touch()
 {
 
 }
