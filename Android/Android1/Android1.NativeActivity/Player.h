@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include "Typedef.h"
 #include "Camera.h"
@@ -7,32 +7,32 @@
 class Player
 {
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Player()
 	{}
 	Player(std::weak_ptr<Camera> cam);
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Player();
-	//À•W‚Ìæ“¾
+	//åº§æ¨™ã®å–å¾—
 	Pos GetPos();
-	//À•W‚ğŠi”[
+	//åº§æ¨™ã‚’æ ¼ç´
 	void SetPos(Pos pos);
-	//•`‰æ
+	//æç”»
 	void Draw();
-	//XVˆ—
+	//æ›´æ–°å‡¦ç†
 	void Update();
 
 private:
-	//À•W(int1)
+	//åº§æ¨™(int1)
 	Pos pos;
-	//ˆÚ“®–Ú“IÀ•W
+	//ç§»å‹•ç›®çš„åº§æ¨™
 	Pos tempPos;
 
-	//Œ»İŒü‚¢‚Ä‚¢‚é•ûŒü
+	//ç¾åœ¨å‘ã„ã¦ã„ã‚‹æ–¹å‘
 	DIR dir;
-	//ƒLƒƒƒ‰ƒNƒ^[‚Ìó‘Ô
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®çŠ¶æ…‹
 	STATES st;
-	//ƒ‰ƒCƒtƒ|ƒCƒ“ƒg
+	//ãƒ©ã‚¤ãƒ•ãƒã‚¤ãƒ³ãƒˆ
 	int hp;
 
 	std::weak_ptr<Camera> cam;

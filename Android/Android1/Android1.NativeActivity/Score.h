@@ -1,51 +1,51 @@
-#pragma once
+ï»¿#pragma once
 #include "Typedef.h"
 
 class Score
 {
 public:
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Score();
 
-	// ƒCƒ“ƒXƒ^ƒ“•Ï”‚Ìæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³å¤‰æ•°ã®å–å¾—
 	static Score* Get(void)
 	{
 		return instance;
 	}
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 	static void Create(void);
-	// ”jŠü
+	// ç ´æ£„
 	static void Destroy(void);
 
-	// •`‰æ
+	// æç”»
 	void Draw(void);
 
-	// ˆ—
+	// å‡¦ç†
 	void UpData(void);
 
-	// ƒŠƒZƒbƒg
+	// ãƒªã‚»ãƒƒãƒˆ
 	void ReSet(void);
 
-	// ƒXƒRƒA‚Ì‰ÁZ
+	// ã‚¹ã‚³ã‚¢ã®åŠ ç®—
 	void Up(int i);
-	// ƒXƒRƒA‚ÌŒ¸Z
+	// ã‚¹ã‚³ã‚¢ã®æ¸›ç®—
 	void Down(int i);
 
-	// ƒXƒRƒA‚Ìæ“¾
+	// ã‚¹ã‚³ã‚¢ã®å–å¾—
 	int GetScore(void);
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Score();
 
-	// ƒCƒ“ƒXƒ^ƒ“•Ï”
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³å¤‰æ•°
 	static Score* instance;
 
-	// ƒXƒRƒA
+	// ã‚¹ã‚³ã‚¢
 	int score;
 
-	// À•W
+	// åº§æ¨™
 	Pos pos;
 };
 

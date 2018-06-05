@@ -1,15 +1,15 @@
-#pragma once
+ï»¿#pragma once
 class Scene
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Scene();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~Scene();
 
-	// •`‰æ
+	// æç”»
 	virtual void Draw(void) = 0;
-	// ˆ—
+	// å‡¦ç†
 	virtual void UpData(void) = 0;
 
 private:

@@ -1,23 +1,23 @@
-#include "Game.h"
+О╩©#include "Game.h"
 #include "Touch.h"
 #include "GamePlay.h"
 #include "Typedef.h"
 #include "DxLib.h"
 
-// ┐R┐⌠┐X┐g┐┴┐N┐^
+// Ц┌ЁЦ┐ЁЦ┌╧Ц┐┬Ц┐╘Ц┌╞Ц┌©
 Game::Game()
 {
 }
 
-// ┐f┐X┐g┐┴┐N┐^
+// Ц┐┤Ц┌╧Ц┐┬Ц┐╘Ц┌╞Ц┌©
 Game::~Game()
 {
 }
 
-// ┐V┐X┐e┐─┌л▐┴┼З┴╩
+// Ц┌╥Ц┌╧Ц┐├Ц┐═Ц│╝Е┬²Ф°÷Е▄√
 void Game::Init(void)
 {
-	//┐V┐X┐e┐─▐┴┼З┴╩
+	//Ц┌╥Ц┌╧Ц┐├Ц┐═Е┬²Ф°÷Е▄√
 	{
 		SetGraphMode(WINDOW_X, WINDOW_Y, 32);
 		if (DxLib_Init() == -1)
@@ -25,43 +25,43 @@ void Game::Init(void)
 			return;
 		}
 
-		//┌п┌ф┌э┌╦йч╞╦йч╞л╖┌и∙`┴Ф
+		//Ц│╡Ц│╗Ц│╬Ц│ О╬┼О╬·О╫╞О╫╦О╬┼О╬·О╫╞О╬▄О╫╖Ц│╚Ф▐▐Г■╩
 		SetDrawScreen(DX_SCREEN_BACK);
 	}
 
 	Create();
 
-	//┐t┐H┐⌠┐g┐T┐C┐Y∙о█X
+	//Ц┐∙Ц┌╘Ц┐ЁЦ┐┬Ц┌╣Ц┌╓Ц┌╨Е╓┴Ф⌡╢
 	SetFontSize(24);
 
-	//▐┴┼З┐V│[┐⌠┌и┬з█s
+	//Е┬²Ф°÷Ц┌╥Ц┐╪Ц┐ЁЦ│╚Г╖╩Х║▄
 	ChangeScene(new GamePlay());
 }
 
-// ┐C┐⌠┐X┐^┐⌠┐X┴╩
+// Ц┌╓Ц┐ЁЦ┌╧Ц┌©Ц┐ЁЦ┌╧Е▄√
 void Game::Create(void)
 {
 	Touch::Create();
 }
 
-// ┐V│[┐⌠┌л┬з█s
+// Ц┌╥Ц┐╪Ц┐ЁЦ│╝Г╖╩Х║▄
 void Game::ChangeScene(Scene * s)
 {
 	scene.reset(s);
 }
 
-// ┌╩┌Й┌╪┌Й┌л┐N┐┴┐X┌л∙`┴Ф
+// Ц│²Ц┌▄Ц│·Ц┌▄Ц│╝Ц┌╞Ц┐╘Ц┌╧Ц│╝Ф▐▐Г■╩
 void Game::Draw(void)
 {
-	//┴Ф√й▐а▀▌
+	//Г■╩И²╒Ф╤┬Е▌╩
 	ClsDrawScreen();
 
 	scene->Draw();
-	//≈═┴Ф√й┌П∙\┴Ф√й┌и▐u┼т┐R┐s│[
+	//Хё▐Г■╩И²╒Ц┌▓Х║╗Г■╩И²╒Ц│╚Г·╛И√⌠Ц┌ЁЦ┐■Ц┐╪
 	ScreenFlip();
 }
 
-// ┌╩┌Й┌╪┌Й┌л┐N┐┴┐X┌л▐┬≈²
+// Ц│²Ц┌▄Ц│·Ц┌▄Ц│╝Ц┌╞Ц┐╘Ц┌╧Ц│╝Е┤╕Г░├
 void Game::UpData(void)
 {
 	Draw();
@@ -70,21 +70,21 @@ void Game::UpData(void)
 	scene->UpData();
 }
 
-// ┐│┐C┐⌠┐▀│[┐v
+// Ц┐║Ц┌╓Ц┐ЁЦ┐╚Ц┐╪Ц┐≈
 void Game::Run(void)
 {
-	//┐▀│[┐v▐┬≈²
+	//Ц┐╚Ц┐╪Ц┐≈Е┤╕Г░├
 	while (ProcessMessage() == 0)
 	{
 		UpData();
 	}
 }
 
-// ▐I≈╧▐┬≈²
+// Г╣┌Д╨├Е┤╕Г░├
 void Game::Destroy(void)
 {
 	Touch::Destroy();
 
-	//Dxlib┌л▐I≈╧
+	//DxlibЦ│╝Г╣┌Д╨├
 	DxLib_End();
 }

@@ -1,35 +1,35 @@
-#include "GamePlay.h"
+ï»¿#include "GamePlay.h"
 #include "Game.h"
 #include "Player.h"
 #include "Dust.h"
 #include "DxLib.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 GamePlay::GamePlay()
 {
 	Create();
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 GamePlay::~GamePlay()
 {
 }
 
-// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 void GamePlay::Create(void)
 {
 	pl.reset(new Player());
 	du.reset(new Dust(pl));
 }
 
-// •`‰æ
+// æç”»
 void GamePlay::Draw(void)
 {
 	pl->Draw();
 	du->Draw();
 }
 
-// ˆ—
+// å‡¦ç†
 void GamePlay::UpData(void)
 {
 	pl->Update();

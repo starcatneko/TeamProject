@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Enemy.h"
 #include "Typedef.h"
 
@@ -11,17 +11,17 @@ public:
 	void Update();
 	void Draw();
 private:
-	//ƒƒ“ƒoŠÖ”ƒ|ƒCƒ“ƒ^
+	//ãƒ¡ãƒ³ãƒé–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	void (Fannings::*updater)();
-	//’Êí
+	//é€šå¸¸
 	void NeutralUpdate();
-	//‘–‚è
+	//èµ°ã‚Š
 	void RunUpdate();
-	//UŒ‚
+	//æ”»æ’ƒ
 	void AtackUpdate();
-	//ƒ_ƒ[ƒW
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸
 	void DamageUpdate();
-	//€–S
+	//æ­»äº¡
 	void DieUpdate();
 
 	bool isTurn;

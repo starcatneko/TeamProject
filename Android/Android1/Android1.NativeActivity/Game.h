@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 
 class Scene;
@@ -6,43 +6,43 @@ class Scene;
 class Game
 {
 public:
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Game();
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
 	static Game& Get(void)
 	{
-		// ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°
 		static Game instance;
 		return instance;
 	}
 
-	// ƒVƒXƒeƒ€‚Ì‰Šú‰»
+	// ã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–
 	void Init(void);
 
-	// ƒV[ƒ“‚ÌˆÚs
+	// ã‚·ãƒ¼ãƒ³ã®ç§»è¡Œ
 	void ChangeScene(Scene* s);
 
-	// ƒƒCƒ“ƒ‹[ƒv
+	// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 	void Run(void);
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	void Destroy(void);
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Game();
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 	void Create(void);
 
-	// ‚»‚ê‚¼‚ê‚ÌƒNƒ‰ƒX‚Ì•`‰æ
+	// ãã‚Œãã‚Œã®ã‚¯ãƒ©ã‚¹ã®æç”»
 	void Draw(void);
 
-	// ‚»‚ê‚¼‚ê‚ÌƒNƒ‰ƒX‚Ìˆ—
+	// ãã‚Œãã‚Œã®ã‚¯ãƒ©ã‚¹ã®å‡¦ç†
 	void UpData(void);
 
-	// ƒV[ƒ“ƒNƒ‰ƒX
+	// ã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹
 	std::shared_ptr<Scene>scene;
 };
 

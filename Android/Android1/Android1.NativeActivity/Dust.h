@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Enemy.h"
 #include "Typedef.h"
 #include <memory>
@@ -14,18 +14,18 @@ public:
 	void Update();
 	void Draw();
 private:
-	//ƒƒ“ƒoŠÖ”ƒ|ƒCƒ“ƒ^
+	//ãƒ¡ãƒ³ãƒé–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	void (Dust::*updater)();
-	//’Êí
+	//é€šå¸¸
 	void NeutralUpdate();
-	//‘–‚è
+	//èµ°ã‚Š
 	void RunUpdate();
-	//UŒ‚
-	//Œ»óUŒ‚‚Ì”»’è“à‚É“ü‚Á‚½ê‡AuDustAttackv‚Æ•\¦‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚é
+	//æ”»æ’ƒ
+	//ç¾çŠ¶æ”»æ’ƒã®åˆ¤å®šå†…ã«å…¥ã£ãŸå ´åˆã€ã€ŒDustAttackã€ã¨è¡¨ç¤ºã™ã‚‹ã‚ˆã†ã«ã—ã¦ã„ã‚‹
 	void AtackUpdate();
-	//ƒ_ƒ[ƒW
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸
 	void DamageUpdate();
-	//€–S
+	//æ­»äº¡
 	void DieUpdate();
 
 	bool isTurn;

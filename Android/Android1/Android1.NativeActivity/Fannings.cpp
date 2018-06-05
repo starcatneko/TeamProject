@@ -1,4 +1,4 @@
-#include "Fannings.h"
+﻿#include "Fannings.h"
 #include "Typedef.h"
 
 Fannings::Fannings()
@@ -23,26 +23,26 @@ void Fannings::Draw()
 
 void Fannings::NeutralUpdate()
 {
-	//�v���C���[����������ɂ���đ��������]������B
-	//�܂��A�v���C���[�⑼�̓G���|�J�|�J�A�N�V������Ԃ̏ꍇ�A�ꎞ�ҋ@����B
+	//プレイヤーがいる方向によって走る向きを転換する。
+	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
 }
 
 void Fannings::RunUpdate()
 {
-	//�v���C���[�Ɍ������đ���
+	//プレイヤーに向かって走る
 }
 
 void Fannings::AtackUpdate()
 {
-	//�v���C���[���U���͈͓��ɑ������Ƃ��A�v���C���[�ɂނ����čU�����s���B
+	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
 }
 
 void Fannings::DamageUpdate()
 {
-	//�_���[�W�Ǘ��BHP��0�ɂȂ����ꍇ�ADieUpdate�ɑJ�ڂ���B
+	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
 }
 
 void Fannings::DieUpdate()
 {
-	//���S�B�����폜����B
+	//死亡。情報を削除する。
 }

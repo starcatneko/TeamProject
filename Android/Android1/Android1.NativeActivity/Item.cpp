@@ -1,13 +1,13 @@
-#include "Item.h"
+ï»¿#include "Item.h"
 #include "DxLib.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Item::Item()
 {
 	pos = { 0,0 };
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Item::~Item()
 {
 }

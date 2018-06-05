@@ -1,22 +1,22 @@
-#pragma once
+ï»¿#pragma once
 #include "Typedef.h"
 #include <memory>
 
 class Item
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Item();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~Item();
 
-	// •`‰æ
+	// æç”»
 	virtual void Draw(void) = 0;
-	// ˆ—
+	// å‡¦ç†
 	virtual void UpData(void) = 0;
 
 protected:
-	// À•W
+	// åº§æ¨™
 	Pos pos;
 };
 

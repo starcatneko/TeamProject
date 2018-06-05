@@ -1,6 +1,6 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Camera::Camera()
 {
 	pos = { 0, 0};
@@ -8,25 +8,25 @@ Camera::Camera()
 	shakeCnt = 0;
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Camera::~Camera()
 {
 }
 
 void Camera::Scroll()
 {
-	Pos tPos;	// touchƒNƒ‰ƒX‚ÌÀ•W‚ðŠi”[‚·‚éê—p‚Ì•Ï”
-	tPos = Touch::Get()->GetPos(0);	// tPos‚Étouch‚ÌÀ•W‚ðŠi”[
+	Pos tPos;	// touchã‚¯ãƒ©ã‚¹ã®åº§æ¨™ã‚’æ ¼ç´ã™ã‚‹å°‚ç”¨ã®å¤‰æ•°
+	tPos = Touch::Get()->GetPos(0);	// tPosã«touchã®åº§æ¨™ã‚’æ ¼ç´
 	if (tPos.x >= (WINDOW_X / 2)) {
-		scrPos.x += 20;	// ƒXƒNƒŠ[ƒ“À•W‚É20‚ð‰ÁŽZ
+		scrPos.x += 20;	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«20ã‚’åŠ ç®—
 	}
-	// ƒeƒXƒgF‰E‚ð‰Ÿ‚µ‚Ä‚¢‚È‚¯‚ê‚ÎÅ¶’[‚É–ß‚é
+	// ãƒ†ã‚¹ãƒˆï¼šå³ã‚’æŠ¼ã—ã¦ã„ãªã‘ã‚Œã°æœ€å·¦ç«¯ã«æˆ»ã‚‹
 	if (pos.x > 0) {
 		if (tPos.x <= (WINDOW_X / 2)) {
-			scrPos.x -= 20;	// ƒXƒNƒŠ[ƒ“À•W‚É20‚ðŒ¸ŽZ
+			scrPos.x -= 20;	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«20ã‚’æ¸›ç®—
 		}
 	}
-	SetPos(scrPos);	// SetPos‚ÉŠi”[
+	SetPos(scrPos);	// SetPosã«æ ¼ç´
 }
 
 void Camera::Update()
@@ -34,31 +34,31 @@ void Camera::Update()
 	Draw();
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void Camera::Draw()
 {
 	Scroll();
-	// ƒeƒXƒg—p‚Ì•`‰æ˜g
+	// ãƒ†ã‚¹ãƒˆç”¨ã®æç”»æž 
 	DrawBox( 0, 0, WINDOW_X, WINDOW_Y, 0xffff00, false);
-	// ƒeƒXƒg—p‚Ì•`‰æÀ•WˆÚ“®‚ÌŠî€ƒ‰ƒCƒ“
+	// ãƒ†ã‚¹ãƒˆç”¨ã®æç”»åº§æ¨™ç§»å‹•ã®åŸºæº–ãƒ©ã‚¤ãƒ³
 	DrawBox( 0, 0, ( WINDOW_X / 2), WINDOW_Y, 0xffff00, false);
-	// ƒeƒXƒg—p‚Ì•`‰æÀ•WˆÚ“®‚ÌŠî€ƒ‰ƒCƒ“
+	// ãƒ†ã‚¹ãƒˆç”¨ã®æç”»åº§æ¨™ç§»å‹•ã®åŸºæº–ãƒ©ã‚¤ãƒ³
 	DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
 	
-	// ƒeƒXƒg—p‚ÌƒJƒƒ‰À•W•\Ž¦
-	// XÀ•W
+	// ãƒ†ã‚¹ãƒˆç”¨ã®ã‚«ãƒ¡ãƒ©åº§æ¨™è¡¨ç¤º
+	// Xåº§æ¨™
 	DrawFormatString(0,pos.y,GetColor(0,255,255),"pos.x = %d",pos.x);
-	// YÀ•W
+	// Yåº§æ¨™
 	DrawFormatString(0, pos.y+16, GetColor(0, 255, 255), "pos.y = %d", pos.y);
 }
 
-// À•WŽæ“¾(ŽQÆƒ}ƒ“)
+// åº§æ¨™å–å¾—(å‚ç…§ãƒžãƒ³)
 Pos & Camera::GetPos()
 {
 	return pos;
 }
 
-// À•WÝ’u
+// åº§æ¨™è¨­ç½®
 void Camera::SetPos(Pos _pos)
 {
 	pos = _pos;

@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "Touch.h"
 #include "dxlib.h"
 //#include "NDKHelper.h"

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Scene.h"
 #include <memory>
 
@@ -9,18 +9,18 @@ class GamePlay :
 	public Scene
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	GamePlay();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~GamePlay();
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 	void Create(void);
 
-	// •`‰æ
+	// æç”»
 	void Draw(void);
 
-	// ˆ—
+	// å‡¦ç†
 	void UpData(void);
 
 

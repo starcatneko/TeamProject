@@ -1,21 +1,21 @@
-#include "Apple.h"
+ï»¿#include "Apple.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Apple::Apple()
 {
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Apple::~Apple()
 {
 }
 
-// •`‰æ
+// æç”»
 void Apple::Draw(void)
 {
 }
 
-// ˆ—
+// å‡¦ç†
 void Apple::UpData(void)
 {
 }

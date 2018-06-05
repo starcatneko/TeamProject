@@ -1,21 +1,21 @@
-#include "Score.h"
+ï»¿#include "Score.h"
 #include "DxLib.h"
 
 Score* Score::instance = nullptr;
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Score::Score()
 {
 	score = 0;
 	pos = { 0,0 };
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Score::~Score()
 {
 }
 
-// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 void Score::Create(void)
 {
 	if (instance == nullptr)
@@ -24,7 +24,7 @@ void Score::Create(void)
 	}
 }
 
-// ”jŠü
+// ç ´æ£„
 void Score::Destroy(void)
 {
 	if (instance != nullptr)
@@ -34,35 +34,35 @@ void Score::Destroy(void)
 	}
 }
 
-// •`‰æ
+// æç”»
 void Score::Draw(void)
 {
 }
 
-// ˆ—
+// å‡¦ç†
 void Score::UpData(void)
 {
 }
 
-// ƒŠƒZƒbƒg
+// ãƒªã‚»ãƒƒãƒˆ
 void Score::ReSet(void)
 {
 	score = 0;
 }
 
-// ƒXƒRƒA‚Ì‰ÁZ
+// ã‚¹ã‚³ã‚¢ã®åŠ ç®—
 void Score::Up(int i)
 {
 	score += i;
 }
 
-// ƒXƒRƒA‚ÌŒ¸Z
+// ã‚¹ã‚³ã‚¢ã®æ¸›ç®—
 void Score::Down(int i)
 {
 	score -= i;
 }
 
-// ƒXƒRƒA‚Ìæ“¾
+// ã‚¹ã‚³ã‚¢ã®å–å¾—
 int Score::GetScore(void)
 {
 	return score;

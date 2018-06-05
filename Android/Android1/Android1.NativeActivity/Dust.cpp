@@ -1,4 +1,4 @@
-#include "Dust.h"
+ï»¿#include "Dust.h"
 #include "Player.h"
 #include <DxLib.h>
 
@@ -26,8 +26,8 @@ void Dust::Draw()
 
 void Dust::NeutralUpdate()
 {
-	//ƒvƒŒƒCƒ„[‚ª‚¢‚é•ûŒü‚É‚æ‚Á‚Ä‘–‚éŒü‚«‚ğ“]Š·‚·‚éB
-	//‚Ü‚½AƒvƒŒƒCƒ„[‚â‘¼‚Ì“G‚ªƒ|ƒJƒ|ƒJƒAƒNƒVƒ‡ƒ“ó‘Ô‚Ìê‡Aˆê‘Ò‹@‚·‚éB
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã„ã‚‹æ–¹å‘ã«ã‚ˆã£ã¦èµ°ã‚‹å‘ãã‚’è»¢æ›ã™ã‚‹ã€‚
+	//ã¾ãŸã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚„ä»–ã®æ•µãŒãƒã‚«ãƒã‚«ã‚¢ã‚¯ã‚·ãƒ§ãƒ³çŠ¶æ…‹ã®å ´åˆã€ä¸€æ™‚å¾…æ©Ÿã™ã‚‹ã€‚
 	state = ST_NUETRAL;
 	if (pos.x < p.lock()->GetPos().x)
 	{
@@ -50,7 +50,7 @@ void Dust::NeutralUpdate()
 
 void Dust::RunUpdate()
 {
-	//ƒvƒŒƒCƒ„[‚ÉŒü‚©‚Á‚Ä‘–‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‹ã£ã¦èµ°ã‚‹
 	state = ST_WALK;
 	pos.x += isTurn ? -1 : 1;
 	if (pos.y < p.lock()->GetPos().y)
@@ -66,7 +66,7 @@ void Dust::RunUpdate()
 
 void Dust::AtackUpdate()
 {
-	//ƒvƒŒƒCƒ„[‚ğUŒ‚”ÍˆÍ“à‚É‘¨‚¦‚½‚Æ‚«AƒvƒŒƒCƒ„[‚É‚Ş‚©‚Á‚ÄUŒ‚‚ğs‚¤B
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ”»æ’ƒç¯„å›²å†…ã«æ‰ãˆãŸã¨ãã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚€ã‹ã£ã¦æ”»æ’ƒã‚’è¡Œã†ã€‚
 	state = ST_ATTACK;
 	DrawString(50, 50, "DustAttack", 0xff0000);
 	updater = &Dust::NeutralUpdate;
@@ -74,14 +74,14 @@ void Dust::AtackUpdate()
 
 void Dust::DamageUpdate()
 {
-	//ƒ_ƒ[ƒWŠÇ—BHP‚ª0‚É‚È‚Á‚½ê‡ADieUpdate‚É‘JˆÚ‚·‚éB
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸ç®¡ç†ã€‚HPãŒ0ã«ãªã£ãŸå ´åˆã€DieUpdateã«é·ç§»ã™ã‚‹ã€‚
 	state = ST_DAMAGE;
 	DrawString(0, 0, "DustDamage", 0xff0000);
 }
 
 void Dust::DieUpdate()
 {
-	//€–SBî•ñ‚ğíœ‚·‚éB
+	//æ­»äº¡ã€‚æƒ…å ±ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 	state = ST_DIE;
 }
 
