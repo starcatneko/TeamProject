@@ -9,7 +9,6 @@
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
-  Input.cpp
   Item.cpp
   Main.cpp
   Player.cpp

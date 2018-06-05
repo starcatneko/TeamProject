@@ -4,15 +4,13 @@
 #include "Camera.h"
 
 
-class Input;
-
 class Player
 {
 public:
 	//コンストラクタ
-	Player(std::weak_ptr<Input> in) : in(in)
+	Player()
 	{}
-	Player(std::weak_ptr<Camera> cam, std::weak_ptr<Input> in);
+	Player(std::weak_ptr<Camera> cam);
 	//デストラクタ
 	~Player();
 	//座標の取得
@@ -38,6 +36,5 @@ private:
 	int hp;
 
 	std::weak_ptr<Camera> cam;
-	std::weak_ptr<Input> in;
 };
 

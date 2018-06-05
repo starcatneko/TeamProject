@@ -1,11 +1,9 @@
 #include "Player.h"
 #include "Touch.h"
-#include "Input.h"
 #include "dxlib.h"
-
-Player::Player(std::weak_ptr<Camera> cam, std::weak_ptr<Input> in)
+//#include "NDKHelper.h"
+Player::Player(std::weak_ptr<Camera> cam)
 {
-	this->in = in;
 	this->cam = cam;
 	this->tempPos = { 0,0 };
 	this->pos = { 0,0 };
@@ -29,11 +27,12 @@ void Player::SetPos(Pos pos)
 	this->pos.y = pos.y;
 }
 int a = 0;
+bool b = 0;
 void Player::Draw()
 {
 	DrawFormatString(0, 0, 0xDDDDDD, "%d:%d", pos.x, pos.y);
 	DrawFormatString(0, 25, 0xDDDDDD, "%d:%d", tempPos.x, tempPos.y);
-	DrawFormatString(0, 50, 0xDDDDDD, "%d:%d", a);
+	DrawFormatString(0, 50, 0xDDDDDD, "%d,%d", a,b);
 	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
 }
 
@@ -46,10 +45,8 @@ void Player::Update()
 		DrawBox(0, 0, 32, 32, 0xFFFFFF, true);
 
 	}*/
-	if (in.lock()->Touch())
 	{
 		a++;
-		tempPos = in.lock()->GetPos(0);
 		if (tempPos.x >WINDOW_X) tempPos.x = -1;
 		if (tempPos.y >WINDOW_Y) tempPos.y = -1;
 	}

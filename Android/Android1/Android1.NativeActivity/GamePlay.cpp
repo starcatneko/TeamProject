@@ -1,6 +1,5 @@
 #include "GamePlay.h"
 #include "Game.h"
-#include "Input.h"
 #include "Player.h"
 #include "DxLib.h"
 
@@ -18,8 +17,7 @@ GamePlay::~GamePlay()
 // インスタンス化
 void GamePlay::Create(void)
 {
-	in.reset(new Input());
-	pl.reset(new Player(in));
+	pl.reset(new Player());
 }
 
 // 描画

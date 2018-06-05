@@ -56,7 +56,6 @@ void Game::Draw(void)
 	ClsDrawScreen();
 
 	scene->Draw();
-
 	//裏画面を表画面に瞬間コピー
 	ScreenFlip();
 }
