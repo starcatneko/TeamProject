@@ -1,12 +1,16 @@
 #pragma once
+#include "touch.h"
 #include "DxLib.h"
 #include "Typedef.h"
+
+#define GET_TAP_POS(X) touch::Get()->Getpos(X)
 
 class Camera
 {
 public:
 	Camera();
 	~Camera();
+	void Scroll();
 	void Update();
 	void Draw();
 
@@ -15,5 +19,6 @@ public:
 
 private:
 	Pos pos;
+	Pos scrPos;
 };
 
