@@ -9,8 +9,29 @@
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
+  Input.cpp
   Item.cpp
   Main.cpp
+  Player.cpp
+Player.cpp(2,10): warning : non-portable path to file '"touch.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+  #include "Touch.h"
+           ^~~~~~~~~
+           "touch.h"
+Player.cpp(3,10): warning : non-portable path to file '"DxLib.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+  #include "dxlib.h"
+           ^~~~~~~~~
+           "DxLib.h"
+  In file included from Player.cpp:1:
+./Player.h(33,6): warning : private field 'dir' is not used [-Wunused-private-field]
+          DIR dir;
+              ^
+./Player.h(35,9): warning : private field 'st' is not used [-Wunused-private-field]
+          STATES st;
+                 ^
+./Player.h(37,6): warning : private field 'hp' is not used [-Wunused-private-field]
+          int hp;
+              ^
+  5 warnings generated.
   Scene.cpp
   Score.cpp
   Touch.cpp
@@ -19,33 +40,4 @@ Touch.cpp(1,10): warning : non-portable path to file '"touch.h"'; specified path
            ^~~~~~~~~
            "touch.h"
   1 warning generated.
-C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r15c\toolchains\arm-linux-androideabi-4.9\prebuilt\windows-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/../../../../arm-linux-androideabi/bin\ld : warning : skipping incompatible C:\DxLib_Android/libDxLib.a while searching for DxLib
-C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r15c\toolchains\arm-linux-androideabi-4.9\prebuilt\windows-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/../../../../arm-linux-androideabi/bin\ld : error : cannot find -lDxLib
-Camera.cpp(27): error : undefined reference to 'DxLib::GetColor(int, int, int)'
-Camera.cpp(27): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
-Camera.cpp(31): error : undefined reference to 'DxLib::GetColor(int, int, int)'
-Camera.cpp(31): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
-Camera.cpp(33): error : undefined reference to 'DxLib::GetColor(int, int, int)'
-Camera.cpp(33): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
-Dust.cpp(24): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
-Dust.cpp(72): error : undefined reference to 'DxLib::DrawString(int, int, char const*, unsigned int, unsigned int)'
-Dust.cpp(79): error : undefined reference to 'DxLib::DrawString(int, int, char const*, unsigned int, unsigned int)'
-Game.cpp(21): error : undefined reference to 'DxLib::SetGraphMode(int, int, int, int)'
-Game.cpp(22): error : undefined reference to 'DxLib::DxLib_Init()'
-Game.cpp(28): error : undefined reference to 'DxLib::SetDrawScreen(int)'
-Game.cpp(53): error : undefined reference to 'DxLib::ClsDrawScreen()'
-Game.cpp(58): error : undefined reference to 'DxLib::ScreenFlip()'
-Game.cpp(73): error : undefined reference to 'DxLib::ProcessMessage()'
-Game.cpp(83): error : undefined reference to 'DxLib::DxLib_End()'
-Input.cpp(23): error : undefined reference to 'DxLib::GetTouchInputNum()'
-Input.cpp(28): error : undefined reference to 'DxLib::GetTouchInputNum()'
-Input.cpp(33): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
-Input.cpp(56): error : undefined reference to 'DxLib::GetTouchInputNum()'
-Input.cpp(61): error : undefined reference to 'DxLib::GetTouchInputNum()'
-Input.cpp(66): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
-Player.cpp(28): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
-Player.cpp(33): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
-Player.cpp(37): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
-Player.cpp(39): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
-Touch.cpp(46): error : undefined reference to 'DxLib::GetMousePoint(int*, int*)'
-clang.exe : error : linker command failed with exit code 1 (use -v to see invocation)
+  Android1.NativeActivity.vcxproj -> C:\Users\TEMP\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

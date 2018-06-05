@@ -23,3 +23,10 @@ C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\AndroidManifest.xml
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\project.properties
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\build.xml
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.Packaging.androidprojResolveAssemblyReference.cache
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk.recipe.merged
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\FileStringReplace.incremental
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk
+C:\Users\TEMP\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.lastsuccessfuldeploy

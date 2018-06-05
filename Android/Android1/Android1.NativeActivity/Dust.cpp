@@ -67,9 +67,8 @@ void Dust::RunUpdate()
 void Dust::AtackUpdate()
 {
 	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
-	//現状攻撃の判定内に入った場合、「Attack」と表示するようにしている
 	state = ST_ATTACK;
-	DrawString(0, 0, "Attack", 0xff0000);
+	DrawString(50, 50, "DustAttack", 0xff0000);
 	updater = &Dust::NeutralUpdate;
 }
 
@@ -77,7 +76,7 @@ void Dust::DamageUpdate()
 {
 	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
 	state = ST_DAMAGE;
-	DrawString(0, 0, "Damage", 0xff0000);
+	DrawString(0, 0, "DustDamage", 0xff0000);
 }
 
 void Dust::DieUpdate()

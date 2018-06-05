@@ -21,7 +21,7 @@ private:
 	//走り
 	void RunUpdate();
 	//攻撃
-	//現状攻撃の判定内に入った場合、「Attack」と表示するようにしている
+	//現状攻撃の判定内に入った場合、「DustAttack」と表示するようにしている
 	void AtackUpdate();
 	//ダメージ
 	void DamageUpdate();

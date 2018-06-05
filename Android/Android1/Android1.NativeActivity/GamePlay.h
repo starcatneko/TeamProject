@@ -3,6 +3,7 @@
 #include <memory>
 
 class Player;
+class Dust;
 
 class GamePlay :
 	public Scene
@@ -25,5 +26,6 @@ public:
 
 private:
 	std::shared_ptr<Player> pl;
+	std::shared_ptr<Dust> du;
 };
 
