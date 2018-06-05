@@ -1,0 +1,129 @@
+ーーーーー＜現在更新中の部分＞ーーーーー
+これはカメラの動作を見るために一時的に変更しています。GitHubの更新処理を行う際は、ここに記載している変更箇所を削除してください。
+※但し、カメラの実装部分は削除しないこと。
+
+
+●(Player.h)---------------------------------------------------------------------------------------------
+public:
+	void Draw();	// 描画処理
+	void Update();	// 更新処理
+
+●(Player.cpp)---------------------------------------------------------------------------------------------
+Player::Player()
+{
+	pos = { 200, 200};
+}
+
+void Player::Update() 
+{
+	Draw();
+	Move();
+}
+
+void Player::Draw() {
+	DrawBox(pos.x, pos.y, pos.x + 50, pos.y + 50, GetColor( 0, 0, 255), true);
+	DrawFormatString(pos.x, pos.y - 32, GetColor(0, 255, 100), "player.pos.x = %d", pos.x);
+	DrawFormatString(pos.x, pos.y - 16, GetColor(0, 255, 100), "player.pos.y = %d", pos.y);
+}
+
+
+
+●(Camera.h)---------------------------------------------------------------------------------------------
+
+#include "touch.h"
+
+#define GET_TAP_POS(X) touch::Get()->Getpos(X)
+
+public:
+	void Scroll();
+
+private:
+	Pos scrPos;	// 画面スクロール用private変数(のちのち画面を揺らす際にも使う......だろう)
+
+●(Camera.cpp)-------------------------------------------------------------------------------------------
+void Camera::Camera()
+{
+	pos = { 0, 0};
+	scrPos = { 0, 0};
+}
+
+void Camera::Scroll()
+{
+	Pos tPos;	// touchクラスの座標を格納する専用の変数
+	tPos = touch::Get()->Getpos(GetTouchInputNum());	// tPosにtouchの座標を格納
+	if (tPos.x >= (WINDOW_X / 2)) {
+		scrPos.x += 20;	// touchのX座標から中心点を引いてやれば
+	}
+	// テスト：右を押していなければ最左端に戻る
+	if (pos.x > 0) {
+		if (tPos.x <= (WINDOW_X / 2)) {
+			scrPos.x -= 20;	// スクリーン座標に20を減算
+		}
+	}
+	SetPos(scrPos);
+}
+
+void Camera::Update()
+{
+	// カメラのライン描画
+	Draw();
+}
+
+void Camera::Draw()
+{
+	Scroll();
+	// テスト用の描画枠
+	DrawBox( 0, 0, WINDOW_X, WINDOW_Y, 0xffff00, false);
+	// テスト用の描画座標移動の基準ライン
+	DrawBox(0, 0, ( WINDOW_X / 2), WINDOW_Y, 0xffff00, false);
+}
+
+
+●(Main.h)---------------------------------------------------------------------------------------------
+#include "Camera.h"
+
+#define GET_CAM_POS cam->GetPos()
+#define SET_CAM_POS(X) cam->SetPos(X);
+
+Camera *cam;
+
+
+●(Main.cpp)---------------------------------------------------------------------------------------------
+
+// クリエイト
+void Create()
+{
+	// カメラのインスタンス
+	cam = new Camera();
+}
+
+// 描画
+void Draw(void)
+{
+	ClearDrawScreen();
+	DrawBox( 0 + GET_CAM_POS.x, 0, 512 + GET_CAM_POS.x, 512, 0xff0000, 1);
+	DrawBox( 1000 + GET_CAM_POS.x, 200, 1512 + GET_CAM_POS.x, 512, 0xff0000, 1);
+	pl->Update();// 変更点
+	cam->Update();
+	ScreenFlip();
+}
+
+
+
+◆-----◆-----◆-----◆-----◆メモ欄◆-----◆-----◆-----◆-----◆
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
