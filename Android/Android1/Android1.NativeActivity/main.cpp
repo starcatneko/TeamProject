@@ -11,6 +11,7 @@ int SystemInit(void)
 	{
 		return -1;
 	}
+
 	return 0;
 }
 
@@ -18,6 +19,8 @@ int SystemInit(void)
 void Create(void)
 {
 	pl = std::make_shared<Player>();
+	// カメラのインスタンス
+	cam = new Camera();
 }
 
 // 破棄
@@ -30,7 +33,10 @@ void Destroy(void)
 void Draw(void)
 {
 	ClearDrawScreen();
-	DrawBox(0, 0, 512, 512, 0xff0000, 1);
+	DrawBox( 0 - GET_CAM_POS.x, 0, 512 - GET_CAM_POS.x, 512, 0xff0000, 1);
+	DrawBox( 1000 - GET_CAM_POS.x, 200, 1512 - GET_CAM_POS.x, 512, 0xff0000, 1);
+	pl->Update();
+	cam->Update();
 	ScreenFlip();
 }
 
@@ -38,6 +44,7 @@ void Draw(void)
 void UpData(void)
 {
 	Draw();
+
 
 	touch::Get()->Update();
 }

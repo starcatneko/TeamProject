@@ -1,5 +1,5 @@
 #include <memory>
-
+#include "DxLib.h"
 #include "Typedef.h"
 
 
@@ -16,6 +16,8 @@ public:
 	Pos GetPos();
 	//À•W‚ğŠi”[
 	void SetPos(Pos pos);
+	void Draw();
+	void Update();
 
 private:
 	//À•W(int)

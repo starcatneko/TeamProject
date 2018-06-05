@@ -11,13 +11,13 @@
   Main.cpp
   Player.cpp
   In file included from Player.cpp:1:
-./Player.h(24,6): warning : private field 'dir' is not used [-Wunused-private-field]
+./Player.h(26,6): warning : private field 'dir' is not used [-Wunused-private-field]
           DIR dir;
               ^
-./Player.h(26,9): warning : private field 'st' is not used [-Wunused-private-field]
+./Player.h(28,9): warning : private field 'st' is not used [-Wunused-private-field]
           STATES st;
                  ^
-./Player.h(28,6): warning : private field 'hp' is not used [-Wunused-private-field]
+./Player.h(30,6): warning : private field 'hp' is not used [-Wunused-private-field]
           int hp;
               ^
   3 warnings generated.
