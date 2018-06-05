@@ -4,23 +4,16 @@
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   Camera.cpp
+  In file included from Camera.cpp:1:
+./Camera.h(26,6): warning : private field 'rnd_Cnt' is not used [-Wunused-private-field]
+          int rnd_Cnt;    // <83><89><83><93><83>_<83><80><95><U+03D0><94>
+              ^
+  1 warning generated.
   Dust.cpp
   Enemy.cpp
   Fannings.cpp
   Item.cpp
   Main.cpp
-  Player.cpp
-  In file included from Player.cpp:1:
-./Player.h(26,6): warning : private field 'dir' is not used [-Wunused-private-field]
-          DIR dir;
-              ^
-./Player.h(28,9): warning : private field 'st' is not used [-Wunused-private-field]
-          STATES st;
-                 ^
-./Player.h(30,6): warning : private field 'hp' is not used [-Wunused-private-field]
-          int hp;
-              ^
-  3 warnings generated.
   Score.cpp
   Touch.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601270\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

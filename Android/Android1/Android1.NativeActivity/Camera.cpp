@@ -5,6 +5,7 @@ Camera::Camera()
 {
 	pos = { 0, 0};
 	scrPos = { 0, 0};
+	shakeCnt = 0;
 }
 
 // デストラクタ
@@ -40,7 +41,9 @@ void Camera::Draw()
 	// テスト用の描画枠
 	DrawBox( 0, 0, WINDOW_X, WINDOW_Y, 0xffff00, false);
 	// テスト用の描画座標移動の基準ライン
-	DrawBox(0, 0, ( WINDOW_X / 2), WINDOW_Y, 0xffff00, false);
+	DrawBox( 0, 0, ( WINDOW_X / 2), WINDOW_Y, 0xffff00, false);
+	// テスト用の描画座標移動の基準ライン
+	DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
 	
 	// テスト用のカメラ座標表示
 	// X座標
