@@ -16,7 +16,7 @@ Camera::~Camera()
 void Camera::Scroll()
 {
 	Pos tPos;	// touchクラスの座標を格納する専用の変数
-	tPos = touch::Get()->Getpos(0);	// tPosにtouchの座標を格納
+	tPos = Touch::Get()->GetPos(0);	// tPosにtouchの座標を格納
 	if (tPos.x >= (WINDOW_X / 2)) {
 		scrPos.x += 20;	// スクリーン座標に20を加算
 	}
