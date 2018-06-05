@@ -30,6 +30,9 @@ void Game::Init(void)
 
 	Create();
 
+	//フォントサイズ変更
+	SetFontSize(24);
+
 	//初期シーンに移行
 	ChangeScene(new GamePlay());
 }

@@ -1,8 +1,6 @@
 #pragma once
 #include "Typedef.h"
 
-#define TOUCH_MAX 3
-
 class Input
 {
 	// タッチデータ
@@ -14,6 +12,8 @@ class Input
 		int old_state[TOUCH_MAX];
 		//座標
 		Pos pos[TOUCH_MAX];
+		//過去の座標
+		Pos old_pos[TOUCH_MAX];
 	};
 
 public:

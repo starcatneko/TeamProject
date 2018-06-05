@@ -1,17 +1,18 @@
+#pragma once
 #include <memory>
-
 #include "Typedef.h"
 #include "Camera.h"
 
 
-#pragma once
+class Input;
+
 class Player
 {
 public:
 	//コンストラクタ
-	Player()
+	Player(std::weak_ptr<Input> in) : in(in)
 	{}
-	Player(std::weak_ptr<Camera> cam);
+	Player(std::weak_ptr<Camera> cam, std::weak_ptr<Input> in);
 	//デストラクタ
 	~Player();
 	//座標の取得
@@ -37,5 +38,6 @@ private:
 	int hp;
 
 	std::weak_ptr<Camera> cam;
+	std::weak_ptr<Input> in;
 };
 

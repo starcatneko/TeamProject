@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include <memory>
 
+class Input;
 class Player;
 
 class GamePlay :
@@ -24,6 +25,7 @@ public:
 
 
 private:
+	std::shared_ptr<Input>in;
 	std::shared_ptr<Player> pl;
 };
 

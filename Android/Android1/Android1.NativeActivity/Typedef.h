@@ -4,6 +4,10 @@
 #define WINDOW_X 1920
 #define WINDOW_Y 1080
 
+// タッチの最大数
+#define TOUCH_MAX 3
+
+
 //キャラクターの向いている方向
 //UPとDOWNは使わない可能性大
 enum DIR {

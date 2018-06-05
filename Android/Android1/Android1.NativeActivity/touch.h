@@ -1,5 +1,4 @@
 #pragma once
-#define TOUCH_MAX 5
 #define TEMP_MAX 120
 #include "Typedef.h"
 

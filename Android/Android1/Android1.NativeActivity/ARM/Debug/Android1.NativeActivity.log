@@ -13,17 +13,6 @@
   Item.cpp
   Main.cpp
   Player.cpp
-  In file included from Player.cpp:1:
-./Player.h(33,6): warning : private field 'dir' is not used [-Wunused-private-field]
-          DIR dir;
-              ^
-./Player.h(35,9): warning : private field 'st' is not used [-Wunused-private-field]
-          STATES st;
-                 ^
-./Player.h(37,6): warning : private field 'hp' is not used [-Wunused-private-field]
-          int hp;
-              ^
-  3 warnings generated.
   Scene.cpp
   Score.cpp
   Touch.cpp
