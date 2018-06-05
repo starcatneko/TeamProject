@@ -31,6 +31,15 @@
     <ClCompile Include="Score.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlay.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Touch.h">
@@ -40,9 +49,6 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Typedef.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="Main.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -64,6 +70,15 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Score.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlay.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
