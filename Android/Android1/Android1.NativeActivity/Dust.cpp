@@ -28,6 +28,7 @@ void Dust::NeutralUpdate()
 {
 	//プレイヤーがいる方向によって走る向きを転換する。
 	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
+	state = ST_NUETRAL;
 	if (pos.x < p.lock()->GetPos().x)
 	{
 		isTurn = false;
@@ -50,6 +51,7 @@ void Dust::NeutralUpdate()
 void Dust::RunUpdate()
 {
 	//プレイヤーに向かって走る
+	state = ST_WALK;
 	pos.x += isTurn ? -1 : 1;
 	if (pos.y < p.lock()->GetPos().y)
 	{
@@ -65,17 +67,22 @@ void Dust::RunUpdate()
 void Dust::AtackUpdate()
 {
 	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
+	//現状攻撃の判定内に入った場合、「Attack」と表示するようにしている
+	state = ST_ATTACK;
 	DrawString(0, 0, "Attack", 0xff0000);
+	updater = &Dust::NeutralUpdate;
 }
 
 void Dust::DamageUpdate()
 {
 	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
+	state = ST_DAMAGE;
 	DrawString(0, 0, "Damage", 0xff0000);
 }
 
 void Dust::DieUpdate()
 {
 	//死亡。情報を削除する。
+	state = ST_DIE;
 }
 

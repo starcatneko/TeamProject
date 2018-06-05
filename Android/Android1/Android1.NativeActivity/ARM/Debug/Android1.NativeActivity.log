@@ -9,29 +9,8 @@
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
-  Input.cpp
   Item.cpp
   Main.cpp
-  Player.cpp
-Player.cpp(2,10): warning : non-portable path to file '"touch.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
-  #include "Touch.h"
-           ^~~~~~~~~
-           "touch.h"
-Player.cpp(3,10): warning : non-portable path to file '"DxLib.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
-  #include "dxlib.h"
-           ^~~~~~~~~
-           "DxLib.h"
-  In file included from Player.cpp:1:
-./Player.h(33,6): warning : private field 'dir' is not used [-Wunused-private-field]
-          DIR dir;
-              ^
-./Player.h(35,9): warning : private field 'st' is not used [-Wunused-private-field]
-          STATES st;
-                 ^
-./Player.h(37,6): warning : private field 'hp' is not used [-Wunused-private-field]
-          int hp;
-              ^
-  5 warnings generated.
   Scene.cpp
   Score.cpp
   Touch.cpp
@@ -48,7 +27,9 @@ Camera.cpp(31): error : undefined reference to 'DxLib::GetColor(int, int, int)'
 Camera.cpp(31): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
 Camera.cpp(33): error : undefined reference to 'DxLib::GetColor(int, int, int)'
 Camera.cpp(33): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
-Dust.cpp(26): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Dust.cpp(24): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Dust.cpp(72): error : undefined reference to 'DxLib::DrawString(int, int, char const*, unsigned int, unsigned int)'
+Dust.cpp(79): error : undefined reference to 'DxLib::DrawString(int, int, char const*, unsigned int, unsigned int)'
 Game.cpp(21): error : undefined reference to 'DxLib::SetGraphMode(int, int, int, int)'
 Game.cpp(22): error : undefined reference to 'DxLib::DxLib_Init()'
 Game.cpp(28): error : undefined reference to 'DxLib::SetDrawScreen(int)'
