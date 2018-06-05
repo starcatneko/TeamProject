@@ -119,6 +119,7 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\sample.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">
       <SubType>Designer</SubType>
