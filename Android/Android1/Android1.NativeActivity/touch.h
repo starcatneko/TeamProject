@@ -14,7 +14,7 @@ public:
 
 	Pos GetPos(int touchNo);
 	void SetPos(int touchNo, Pos pos);
-	
+
 	int *GetBuf();
 	int GetBuf(int touchNo);
 
