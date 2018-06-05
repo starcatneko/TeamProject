@@ -7,8 +7,6 @@ Camera::Camera()
 	pos.y = 0;
 	//pos = {0,0};
 
-
-
 }
 
 // デストラクタ
