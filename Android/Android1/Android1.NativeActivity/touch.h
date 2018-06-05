@@ -3,11 +3,12 @@
 #define TEMP_MAX 120
 #include "Typedef.h"
 
-class touch {
+
+class Touch {
 public:
 	static void Create();
 	static void Remove();
-	static touch *Get()
+	static Touch *Get()
 	{
 		Create();
 		return instance;
@@ -19,12 +20,12 @@ public:
 	void TouchProccess();
 private:
 	int touchNum;
-	static touch *instance;
+	static Touch *instance;
 
 	//0:–³“ü—Í 1:“ü—Í‚µ‚½uŠÔ 2~:“ü—Í’† -1:—£‚µ‚½uŠÔ
 	int touch_buf;		
 	Pos pos[TOUCH_MAX];
 	Pos pos_buf[TOUCH_MAX][TEMP_MAX];
-	touch();
-	~touch();
+	Touch();
+	~Touch();
 };
