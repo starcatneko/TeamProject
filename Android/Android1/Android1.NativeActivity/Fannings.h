@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "Typedef.h"
 
 class Fannings :
 	public Enemy

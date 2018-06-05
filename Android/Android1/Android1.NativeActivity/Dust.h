@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Typedef.h"
 #include <memory>
+
 class Player;
 
 class Dust :
@@ -20,6 +21,7 @@ private:
 	//走り
 	void RunUpdate();
 	//攻撃
+	//現状攻撃の判定内に入った場合、「DustAttack」と表示するようにしている
 	void AtackUpdate();
 	//ダメージ
 	void DamageUpdate();
@@ -29,5 +31,6 @@ private:
 	bool isTurn;
 	std::weak_ptr<Player>p;
 	Pos pos;
+	STATES state;
 };
 
