@@ -1,19 +1,19 @@
-#pragma once
+ï»¿#pragma once
 #include "Item.h"
 
 class Apple :
 	public Item
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Apple();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Apple();
 
-	// •`‰æ
+	// æç”»
 	void Draw(void);
 
-	// ˆ—
+	// å‡¦ç†
 	void UpData(void);
 
 private:

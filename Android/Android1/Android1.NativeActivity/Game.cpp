@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Touch.h"
 #include "GamePlay.h"
 #include "Typedef.h"
 #include "DxLib.h"
@@ -40,7 +41,7 @@ void Game::Init(void)
 // インスタンス化
 void Game::Create(void)
 {
-
+	Touch::Create();
 }
 
 // シーンの移行
@@ -65,6 +66,7 @@ void Game::UpData(void)
 {
 	Draw();
 
+	Touch::Get()->Update();
 	scene->UpData();
 }
 
@@ -81,6 +83,8 @@ void Game::Run(void)
 // 終了処理
 void Game::Destroy(void)
 {
+	Touch::Destroy();
+
 	//Dxlibの終了
 	DxLib_End();
 }

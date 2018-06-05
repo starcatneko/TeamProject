@@ -1,7 +1,7 @@
-#include "Game.h"
+ï»¿#include "Game.h"
 #include "DxLib.h"
 
-// ƒƒCƒ“ŠÖ”
+// ãƒ¡ã‚¤ãƒ³é–¢æ•°
 int android_main(void)
 {
 	Game& game = Game::Get();

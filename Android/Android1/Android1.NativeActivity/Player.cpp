@@ -31,24 +31,21 @@ bool b = 0;
 void Player::Draw()
 {
 	DrawFormatString(0, 0, 0xDDDDDD, "%d:%d", pos.x, pos.y);
-	DrawFormatString(0, 25, 0xDDDDDD, "%d:%d", tempPos.x, tempPos.y);
-	DrawFormatString(0, 50, 0xDDDDDD, "%d,%d", a,b);
+	DrawFormatString(0, 25, 0xDDDDDD, "%d", GetTouchInputNum());
+	DrawFormatString(0, 50, 0xDDDDDD, "%d,%d", a, Touch::Get()->GetBuf(0));
 	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
 }
 
 void Player::Update()
 {
-	/*{
-		Pos T;
-		GetTouchInput(0,&T.x, &T.y);
-		this->tempPos = T;		
-		DrawBox(0, 0, 32, 32, 0xFFFFFF, true);
-
-	}*/
+	if(Touch::Get()->GetBuf(0)==1)
 	{
 		a++;
-		if (tempPos.x >WINDOW_X) tempPos.x = -1;
-		if (tempPos.y >WINDOW_Y) tempPos.y = -1;
+		Pos tmp = Touch::Get()->GetPos(0);
+		if (!(tmp.x > WINDOW_X &&tmp.y > WINDOW_Y))
+		{
+			tempPos = tmp;
+		}
 	}
 
 	if (tempPos.x > 0 && tempPos.y > 0)
