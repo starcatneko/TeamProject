@@ -1,13 +1,14 @@
 #pragma once
 #include "Enemy.h"
-
+#include "Typedef.h"
+#include <memory>
 class Player;
 
 class Dust :
 	public Enemy
 {
 public:
-	Dust();
+	Dust(std::weak_ptr<Player>p);
 	~Dust();
 	void Update();
 	void Draw();
@@ -26,7 +27,7 @@ private:
 	void DieUpdate();
 
 	bool isTurn;
-	Player p;
+	std::weak_ptr<Player>p;
 	Pos pos;
 };
 

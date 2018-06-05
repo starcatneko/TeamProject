@@ -9,6 +9,7 @@
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
+  Input.cpp
   Item.cpp
   Main.cpp
   Player.cpp
@@ -25,4 +26,5 @@
   3 warnings generated.
   Scene.cpp
   Score.cpp
+  Touch.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

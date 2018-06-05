@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Typedef.h"
 
-Dust::Dust()
+Dust::Dust(std::weak_ptr<Player>p) : p(p)
 {
 	isTurn = false;
 	updater = &Dust::NeutralUpdate;
@@ -28,13 +28,13 @@ void Dust::NeutralUpdate()
 {
 	//プレイヤーがいる方向によって走る向きを転換する。
 	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
-	if (/*画面内にいる敵に適用する*/)
+	//if (/*画面内にいる敵に適用する*/)
 	{
-		if (pos.x < p.GetPos().x)
+		if (pos.x < p.lock()->GetPos().x)
 		{
 			isTurn = false;
 		}
-		else if(pos.x > p.GetPos().x)
+		else if(pos.x > p.lock()->GetPos().x)
 		{
 			isTurn = true;
 		}

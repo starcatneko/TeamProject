@@ -40,7 +40,9 @@
     <ClCompile Include="GamePlay.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Input.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Touch.h">
@@ -82,7 +84,9 @@
     <ClInclude Include="GamePlay.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h" />
+    <ClInclude Include="Input.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">
