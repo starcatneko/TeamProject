@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemy.h"
 
+class Player;
+
 class Dust :
 	public Enemy
 {
@@ -24,5 +26,7 @@ private:
 	void DieUpdate();
 
 	bool isTurn;
+	Player p;
+	Pos pos;
 };
 
