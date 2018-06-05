@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Typedef.h"
 #include <memory>
+
 class Player;
 
 class Dust :

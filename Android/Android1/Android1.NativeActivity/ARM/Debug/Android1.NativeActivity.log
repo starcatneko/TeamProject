@@ -1,7 +1,7 @@
 ﻿  ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk
-  ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Apps\apache-ant-1.9.3
-  JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
-  NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r13b
+  ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Apps\apache-ant-1.9.3
+  JAVA_HOME=C:\Program Files (x86)\Java\jdk1.8.0_172
+  NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r15c
   Apple.cpp
   Camera.cpp
   Dust.cpp
@@ -13,6 +13,14 @@
   Item.cpp
   Main.cpp
   Player.cpp
+Player.cpp(2,10): warning : non-portable path to file '"touch.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+  #include "Touch.h"
+           ^~~~~~~~~
+           "touch.h"
+Player.cpp(3,10): warning : non-portable path to file '"DxLib.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+  #include "dxlib.h"
+           ^~~~~~~~~
+           "DxLib.h"
   In file included from Player.cpp:1:
 ./Player.h(33,6): warning : private field 'dir' is not used [-Wunused-private-field]
           DIR dir;
@@ -23,8 +31,40 @@
 ./Player.h(37,6): warning : private field 'hp' is not used [-Wunused-private-field]
           int hp;
               ^
-  3 warnings generated.
+  5 warnings generated.
   Scene.cpp
   Score.cpp
   Touch.cpp
-  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
+Touch.cpp(1,10): warning : non-portable path to file '"touch.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+  #include "Touch.h"
+           ^~~~~~~~~
+           "touch.h"
+  1 warning generated.
+C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r15c\toolchains\arm-linux-androideabi-4.9\prebuilt\windows-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/../../../../arm-linux-androideabi/bin\ld : warning : skipping incompatible C:\DxLib_Android/libDxLib.a while searching for DxLib
+C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r15c\toolchains\arm-linux-androideabi-4.9\prebuilt\windows-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/../../../../arm-linux-androideabi/bin\ld : error : cannot find -lDxLib
+Camera.cpp(27): error : undefined reference to 'DxLib::GetColor(int, int, int)'
+Camera.cpp(27): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Camera.cpp(31): error : undefined reference to 'DxLib::GetColor(int, int, int)'
+Camera.cpp(31): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
+Camera.cpp(33): error : undefined reference to 'DxLib::GetColor(int, int, int)'
+Camera.cpp(33): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
+Dust.cpp(26): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Game.cpp(21): error : undefined reference to 'DxLib::SetGraphMode(int, int, int, int)'
+Game.cpp(22): error : undefined reference to 'DxLib::DxLib_Init()'
+Game.cpp(28): error : undefined reference to 'DxLib::SetDrawScreen(int)'
+Game.cpp(53): error : undefined reference to 'DxLib::ClsDrawScreen()'
+Game.cpp(58): error : undefined reference to 'DxLib::ScreenFlip()'
+Game.cpp(73): error : undefined reference to 'DxLib::ProcessMessage()'
+Game.cpp(83): error : undefined reference to 'DxLib::DxLib_End()'
+Input.cpp(23): error : undefined reference to 'DxLib::GetTouchInputNum()'
+Input.cpp(28): error : undefined reference to 'DxLib::GetTouchInputNum()'
+Input.cpp(33): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
+Input.cpp(56): error : undefined reference to 'DxLib::GetTouchInputNum()'
+Input.cpp(61): error : undefined reference to 'DxLib::GetTouchInputNum()'
+Input.cpp(66): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
+Player.cpp(28): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Player.cpp(33): error : undefined reference to 'DxLib::DrawFormatString(int, int, unsigned int, char const*, ...)'
+Player.cpp(37): error : undefined reference to 'DxLib::GetTouchInput(int, int*, int*, int*, int*)'
+Player.cpp(39): error : undefined reference to 'DxLib::DrawBox(int, int, int, int, unsigned int, int)'
+Touch.cpp(46): error : undefined reference to 'DxLib::GetMousePoint(int*, int*)'
+clang.exe : error : linker command failed with exit code 1 (use -v to see invocation)
