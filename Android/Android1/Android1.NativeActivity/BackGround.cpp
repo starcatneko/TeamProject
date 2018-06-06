@@ -5,7 +5,7 @@
 // コンストラクタ
 BackGround::BackGround()
 {
-#ifdef WINDOWS
+#ifndef __ANDROID__
 	image = LoadGraph(_T("../../Android/Android1/Android1.Packaging/assets/sample.png"));
 #else
 	image = LoadGraph(_T("sample.png"));

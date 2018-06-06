@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 // メイン関数
-#ifdef WINDOWS
+#ifndef __ANDROID__
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #else
 int android_main(void)

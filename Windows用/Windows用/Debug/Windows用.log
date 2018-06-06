@@ -1,2 +1,21 @@
-﻿  Game.cpp
-  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  Apple.cpp
+  コードを生成中...
+  コンパイル中...
+  Touch.cpp
+  Score.cpp
+  Player.cpp
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(61): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(69): warning C4244: '-=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(70): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(71): warning C4244: '-=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(72): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  Main.cpp
+  Item.cpp
+  GamePlay.cpp
+  Game.cpp
+  Fannings.cpp
+  Dust.cpp
+  Camera.cpp
+  BackGround.cpp
+  コードを生成中...
+  Windows用.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

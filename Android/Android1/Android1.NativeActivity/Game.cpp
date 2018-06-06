@@ -18,7 +18,7 @@ Game::~Game()
 void Game::Init(void)
 {
 	SetGraphMode(WINDOW_X, WINDOW_Y, 32);
-#ifdef WINDOWS
+#ifndef __ANDROID__
 	//true:window　false:ﾌﾙｽｸﾘｰﾝ
 	ChangeWindowMode(true);
 	//windowテキストの設定
@@ -77,7 +77,7 @@ void Game::UpData(void)
 void Game::Run(void)
 {
 	//ループ処理
-#ifdef WINDOWS
+#ifndef __ANDROID__
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 #else
 	while (ProcessMessage() == 0)

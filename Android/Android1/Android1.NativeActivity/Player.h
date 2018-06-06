@@ -35,6 +35,13 @@ private:
 	//ライフポイント
 	int hp;
 
+	//移動速度
+	int speed;
+	//移動角度
+	int angle;
+	//サイン、コサインテーブル作成
+	float fsin[360], fcos[360];
+
 	std::weak_ptr<Camera> cam;
 };
 
