@@ -64,14 +64,25 @@ void Touch::Update()
 void Touch::TouchProccess()
 {
 	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
+
+#ifdef WINDOWS
+
+#else
 	if (GetTouchInputNum() > 0)
+#endif
 	{
 		//tN = 処理するタッチ番号
 		//touchNum = 現在タッチしている指の数
 		for (int tN = 0; tN < touchNum; tN++)
 		{
 			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
+			#ifdef WINDOWS
 			GetMousePoint(&pos[tN].x, &pos[tN].y);
+
+			#else
+			GetTouchInput(tN,&pos[tN].x, &pos[tN].y);
+
+			#endif
 		}
 
 		for (int tN = 0; tN < TOUCH_MAX; tN++)
@@ -84,7 +95,9 @@ void Touch::TouchProccess()
 			touch_buf[tN]++;
 		}
 	}
+#ifndef WINDOWS 
 	else
+#endif
 	{
 		for (int tN = 0; tN < TOUCH_MAX; tN++)
 		{
