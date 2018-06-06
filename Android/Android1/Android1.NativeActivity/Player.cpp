@@ -30,9 +30,9 @@ int a = 0;
 bool b = 0;
 void Player::Draw()
 {
-	DrawFormatString(0, 0, 0xDDDDDD, "%d:%d", pos.x, pos.y);
-	DrawFormatString(0, 25, 0xDDDDDD, "%d", GetTouchInputNum());
-	DrawFormatString(0, 50, 0xDDDDDD, "%d,%d", a, Touch::Get()->GetBuf(0));
+	DrawFormatString(0, 0, 0xDDDDDD, _T("%d:%d"), pos.x, pos.y);
+	DrawFormatString(0, 25, 0xDDDDDD, _T("%d"), GetTouchInputNum());
+	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
 	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
 }
 

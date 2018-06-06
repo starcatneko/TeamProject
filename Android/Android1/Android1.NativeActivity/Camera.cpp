@@ -47,9 +47,9 @@ void Camera::Draw()
 	
 	// テスト用のカメラ座標表示
 	// X座標
-	DrawFormatString(0,pos.y,GetColor(0,255,255),"pos.x = %d",pos.x);
+	DrawFormatString(0,pos.y,GetColor(0,255,255),_T("pos.x = %d"),pos.x);
 	// Y座標
-	DrawFormatString(0, pos.y+16, GetColor(0, 255, 255), "pos.y = %d", pos.y);
+	DrawFormatString(0, pos.y+16, GetColor(0, 255, 255), _T("pos.y = %d"), pos.y);
 }
 
 // 座標取得(参照マン)

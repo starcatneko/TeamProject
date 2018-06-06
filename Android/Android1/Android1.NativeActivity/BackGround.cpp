@@ -1,10 +1,11 @@
 ﻿#include "BackGround.h"
 #include "DxLib.h"
+#include <tchar.h>
 
 // コンストラクタ
 BackGround::BackGround()
 {
-	image = LoadGraph("sample.png");
+	image = LoadGraph(_T("../../Android/Android1/Android1.Packaging/assets/sample.png"));
 	pos = {};
 }
 

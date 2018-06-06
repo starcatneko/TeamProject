@@ -40,7 +40,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Touch.cpp" />
+    <ClCompile Include="Touch.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -82,7 +84,9 @@
     <ClInclude Include="Item.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="Touch.h" />
+    <ClInclude Include="Touch.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">
