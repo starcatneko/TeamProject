@@ -17,7 +17,7 @@ Game::~Game()
 // システムの初期化
 void Game::Init(void)
 {
-	SetGraphMode(640, 480, 32);
+	SetGraphMode(WINDOW_X, WINDOW_Y, 32);
 #ifdef WINDOWS
 	//true:window　false:ﾌﾙｽｸﾘｰﾝ
 	ChangeWindowMode(true);
@@ -77,7 +77,11 @@ void Game::UpData(void)
 void Game::Run(void)
 {
 	//ループ処理
+#ifdef WINDOWS
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+#else
 	while (ProcessMessage() == 0)
+#endif
 	{
 		UpData();
 	}
