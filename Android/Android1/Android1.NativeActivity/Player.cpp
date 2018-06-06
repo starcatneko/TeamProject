@@ -73,9 +73,9 @@ void Player::Update()
 		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y))
 	{
 
-		if (pos.x > tempPos.x) pos.x += fcos[angle] * speed;
+		if (pos.x > tempPos.x) pos.x -= fcos[angle] * speed;
 		if (pos.x < tempPos.x) pos.x += fcos[angle] * speed;
-		if (pos.y > tempPos.y) pos.y -= fcos[angle] * speed;
-		if (pos.y < tempPos.y) pos.y -= fcos[angle] * speed;
+		if (pos.y > tempPos.y) pos.y -= fsin[angle] * speed;
+		if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
 	}
 }
