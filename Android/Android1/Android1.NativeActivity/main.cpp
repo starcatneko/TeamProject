@@ -1,7 +1,6 @@
 ﻿#include "Game.h"
 #include "DxLib.h"
-
-#define WINDOWS
+#include "typedef.h"
 
 // メイン関数
 #ifdef WINDOWS
