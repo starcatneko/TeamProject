@@ -1,6 +1,6 @@
 ﻿#include "Game.h"
 #include "Touch.h"
-#include "GamePlay.h"
+#include "Title.h"
 #include "Typedef.h"
 #include "DxLib.h"
 
@@ -38,7 +38,7 @@ void Game::Init(void)
 	SetFontSize(24);
 
 	//初期シーンに移行
-	ChangeScene(new GamePlay());
+	ChangeScene(new Title());
 }
 
 // インスタンス化
