@@ -119,6 +119,10 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\back1.png" />
+    <Content Include="assets\back2.png" />
+    <Content Include="assets\back3.png" />
+    <Content Include="assets\back4.png" />
     <Content Include="assets\sample.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">
