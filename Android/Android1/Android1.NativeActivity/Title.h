@@ -18,10 +18,25 @@ public:
 	void UpData(void);
 
 private:
+	// スタート前
+	void NotStart(void);
+
+	// スタート
+	void Start(void);
+
+
 	// 座標
 	Pos pos;
 
+	// ボックス
+	Box box;
+
+	// 移動速度
+	int speed;
+
 	// 画像データ
 	int image;
-};
 
+	// 関数ポインタ
+	void (Title::*func)(void);
+};

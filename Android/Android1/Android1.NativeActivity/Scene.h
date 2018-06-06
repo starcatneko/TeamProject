@@ -5,7 +5,7 @@ public:
 	// コンストラクタ
 	Scene();
 	// デストラクタ
-	virtual ~Scene();
+	~Scene();
 
 	// 描画
 	virtual void Draw(void) = 0;

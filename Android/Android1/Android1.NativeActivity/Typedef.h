@@ -57,3 +57,12 @@ struct Pos
 		return { x / pos.x , y / pos.y };
 	}
 };
+
+// ボックス情報
+struct Box
+{
+	// 座標
+	Pos pos;
+	// サイズ
+	Pos size;
+};

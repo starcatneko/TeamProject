@@ -1,5 +1,6 @@
 ﻿#include "GamePlay.h"
 #include "Game.h"
+#include "Over.h"
 #include "Camera.h"
 #include "BackGround.h"
 #include "Player.h"
@@ -7,9 +8,11 @@
 #include "DxLib.h"
 
 // コンストラクタ
-GamePlay::GamePlay()
+GamePlay::GamePlay() : speed(60)
 {
 	Create();
+	box = { 0, 0, WINDOW_X, WINDOW_Y };
+	func = &GamePlay::NotStart;
 }
 
 // デストラクタ
@@ -26,17 +29,50 @@ void GamePlay::Create(void)
 	du.reset(new Dust(pl));
 }
 
+// ボックス描画
+void GamePlay::DrawBoxx(void)
+{
+	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
+}
+
 // 描画
 void GamePlay::Draw(void)
 {
 	back->Draw();
 	pl->Draw();
 	du->Draw();
+
+	DrawBoxx();
 }
 
 // 処理
 void GamePlay::UpData(void)
 {
+	(this->*func)();
+}
+
+// 各クラスの処理前
+void GamePlay::NotStart(void)
+{
+	box.pos.x += speed;
+	if (box.pos.x >= WINDOW_X)
+	{
+		func = &GamePlay::Start;
+	}
+}
+
+// 各クラスの処理
+void GamePlay::Start(void)
+{
 	pl->Update();
 	du->Update();
+
+
+#ifndef __ANDROID__
+	if (CheckHitKey(KEY_INPUT_RETURN))
+	{
+		Game::Get().ChangeScene(new Over());
+	}
+#else
+#endif
 }

@@ -1,6 +1,5 @@
 ﻿#include "BackGround.h"
 #include "DxLib.h"
-#include <tchar.h>
 
 // コンストラクタ
 BackGround::BackGround()
