@@ -17,17 +17,20 @@ Game::~Game()
 // システムの初期化
 void Game::Init(void)
 {
-	//システム初期化
+	SetGraphMode(640, 480, 32);
+#ifdef WINDOWS
+	//true:window　false:ﾌﾙｽｸﾘｰﾝ
+	ChangeWindowMode(true);
+	//windowテキストの設定
+	SetWindowText(_T("ハッピーアップル"));
+#endif
+	if (DxLib_Init() == -1)
 	{
-		SetGraphMode(WINDOW_X, WINDOW_Y, 32);
-		if (DxLib_Init() == -1)
-		{
-			return;
-		}
-
-		//ひとまずﾊﾞｯｸﾊﾞｯﾌｧに描画
-		SetDrawScreen(DX_SCREEN_BACK);
+		return;
 	}
+
+	//ひとまずﾊﾞｯｸﾊﾞｯﾌｧに描画
+	SetDrawScreen(DX_SCREEN_BACK);
 
 	Create();
 
