@@ -6,6 +6,8 @@ Dust::Dust(std::weak_ptr<Player>p) : p(p)
 {
 	isTurn = false;
 	updater = &Dust::NeutralUpdate;
+	pos = { 1000, 500 };
+	angleNum = pos.x + 20;
 }
 
 
@@ -21,7 +23,7 @@ void Dust::Update()
 
 void Dust::Draw()
 {
-	DrawBox(pos.x, pos.y, pos.x + 6, pos.y + 6, 0x00ffff, true);
+	DrawTriangle(pos.x, pos.y, angleNum, pos.y + 20, angleNum, pos.y - 20, 0x00ffff, true);
 }
 
 void Dust::NeutralUpdate()
@@ -32,7 +34,7 @@ void Dust::NeutralUpdate()
 	if (pos.x < p.lock()->GetPos().x)
 	{
 		isTurn = false;
-		if (p.lock()->GetPos().x - pos.x < 6)
+		if (p.lock()->GetPos().x - pos.x < 10)
 		{
 			updater = &Dust::AtackUpdate;
 		}
@@ -40,10 +42,18 @@ void Dust::NeutralUpdate()
 	else if(pos.x > p.lock()->GetPos().x)
 	{
 		isTurn = true;
-		if (pos.x - p.lock()->GetPos().x < 6)
+		if (pos.x - p.lock()->GetPos().x < 10)
 		{
 			updater = &Dust::AtackUpdate;
 		}
+	}
+	if(isTurn)
+	{
+		angleNum = pos.x + 20;
+	}
+	else if(isTurn == false)
+	{
+		angleNum = pos.x - 20;
 	}
 	updater = &Dust::RunUpdate;
 }
