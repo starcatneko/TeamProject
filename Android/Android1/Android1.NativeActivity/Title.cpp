@@ -9,7 +9,7 @@ Title::Title() : speed(60)
 {
 	image = 0;
 	pos = {};
-	box = { -WINDOW_X, 0, WINDOW_X, WINDOW_Y };
+	box = { {-WINDOW_X, 0}, {WINDOW_X, WINDOW_Y} };
 	func = &Title::NotStart;
 }
 

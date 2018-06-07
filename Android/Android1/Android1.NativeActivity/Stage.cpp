@@ -2,8 +2,7 @@
 #include "LoadMane.h"
 #include <algorithm>
 
-const char* ene = "stage.fmf";
-const char* ite = "item.fmf";
+std::string path = "stage.csv";
 
 #define CHIP_ENEM 256
 #define CHIP_ITEM 128
@@ -11,12 +10,20 @@ const char* ite = "item.fmf";
 // コンストラクタ
 Stage::Stage()
 {
+	Load(path);
+	data.clear();
 }
 
 // デストラクタ
 Stage::~Stage()
 {
 	Clear();
+}
+
+// 読み込み
+void Stage::Load(std::string fileName)
+{
+	data = LoadMane::Get()->LoadCsv(fileName);
 }
 
 // 敵チップサイズの取得
@@ -34,4 +41,5 @@ int Stage::GetChipItemSize(void)
 // クリア
 void Stage::Clear(void)
 {
+	data.clear();
 }
