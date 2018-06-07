@@ -7,6 +7,10 @@
 // タッチの最大数
 #define TOUCH_MAX 3
 
+#define PI 3.141592f
+#define ANGLE(X) (X)*(180.0f/PI)
+#define RAD(X) (X)*(PI/180.0f)
+
 
 //キャラクターの向いている方向
 //UPとDOWNは使わない可能性大

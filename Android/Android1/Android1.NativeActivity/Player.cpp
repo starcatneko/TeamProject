@@ -58,24 +58,27 @@ void Player::Update()
 		tempPos = Touch::Get()->GetPos(0);
 
 		//dis = hypot(tempPos.x - tempPos.x, tempPos.y - tempPos.y);
-		angle = ANGLE(atan2(tempPos.x - pos.x, tempPos.y - pos.y));
-		if (angle > 360)
+		angle = ANGLE(atan2(tempPos.x-pos.x, tempPos.y- pos.y));
+		if (angle >= 360)
 		{
-			angle - 360;
+			angle -= 360;
 		}
-		if (angle < 0)
+		if (angle <= 0)
 		{
-			360 + angle;
+			angle += 360;
 		}
+
+
 	}
+	DrawBox(pos.x, pos.y, pos.x + fcos[angle] * 1000, pos.y - fsin[angle] * 1000, 0x00FF00, true);
 
 	if (tempPos.x > 0 && tempPos.y > 0
 		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y))
 	{
-
-		if (pos.x > tempPos.x) pos.x -= fcos[angle] * speed;
-		if (pos.x < tempPos.x) pos.x += fcos[angle] * speed;
-		if (pos.y > tempPos.y) pos.y -= fsin[angle] * speed;
-		if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
+		//if (pos.x > tempPos.x) pos.x -= fcos[angle] * speed;
+		//pos.x += fcos[angle] * speed;
+		//pos.y -= fsin[angle] * speed;
+		//if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
+		
 	}
 }
