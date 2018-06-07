@@ -32,7 +32,6 @@ void Dust::SetPos(Pos pos)
 void Dust::Update()
 {
 	(this->*updater)();
-	Draw();
 }
 
 void Dust::Draw()
