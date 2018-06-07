@@ -37,3 +37,13 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.apk
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.lastsuccessfuldeploy
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back1.png
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back2.png
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back3.png
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back4.png
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sample.png
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\res\values\strings.xml
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\memo.txt
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\AndroidManifest.xml
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\project.properties
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\build.xml

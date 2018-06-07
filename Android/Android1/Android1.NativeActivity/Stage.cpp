@@ -37,6 +37,10 @@ void Stage::LoadEnemy(std::string fileName)
 {
 	std::vector<int>dummy;
 	dummy = LoadMane::Get()->LoadCsv(fileName);
+	if (dummy.size() <= 0)
+	{
+		return;
+	}
 	data["enemy"].resize(dummy.size());
 	for (int i = 0; i < ENE_CHIP_CNT_Y; ++i)
 	{
@@ -53,6 +57,10 @@ void Stage::LoadItem(std::string fileName)
 {
 	std::vector<int>dummy;
 	dummy = LoadMane::Get()->LoadCsv(fileName);
+	if (dummy.size() <= 0)
+	{
+		return;
+	}
 	data["item"].resize(dummy.size());
 	for (int i = 0; i < ITE_CHIP_CNT_Y; ++i)
 	{

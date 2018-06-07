@@ -54,6 +54,9 @@ void GamePlay::Draw(void)
 	cam->Draw();					// ミキオが追加
 	cam->SetPos(cam->GetPos());		// ミキオが追加
 
+	int x = abs(cam->GetPos().x);
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "%d", st->GetEnemy(x, x + WINDOW_X).size());
+
 	DrawBoxx();
 }
 
@@ -70,9 +73,11 @@ void GamePlay::Load(void)
 
 	int y = 0;
 	//敵
-	for (auto& e : st->GetEnemy(x, (x + WINDOW_X)))
+	std::vector<int>enemy;
+	enemy = st->GetEnemy(x, (x + WINDOW_X));
+	for(int i = 0; i < enemy.size(); ++i)
 	{
-		if (e == 0)
+		if (enemy[i] == 0)
 		{
 			Pos p = { read[0] * st->GetChipEneSize(), y * st->GetChipEneSize() };
 			pos.push_back(p);
@@ -87,7 +92,9 @@ void GamePlay::Load(void)
 
 	y = 0;
 	//アイテム
-	for (auto& i : st->GetItem(x, (x + WINDOW_X)))
+	std::vector<int>item;
+	item = st->GetItem(x, (x + WINDOW_X));
+	for (int i = 0; i < item.size(); ++i)
 	{
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipItemSize())

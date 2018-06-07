@@ -1,2 +1,4 @@
 ﻿  GamePlay.cpp
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\gameplay.cpp(78): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\gameplay.cpp(97): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
