@@ -11,6 +11,7 @@ public:
 	void Update();
 	void Draw();
 	void Scroll();
+	void Scroll(Pos _pos);	// 画面スクロール機能関数その2
 
 	Pos &GetPos();
 	void SetPos(Pos _pos);
@@ -18,6 +19,8 @@ public:
 private:
 	Pos pos;
 	Pos scrPos;	// 画面スクロール用private変数(のちのち画面を揺らす際にも使う......だろう)
+	Pos strPos[5];
+	int scrSpeed;	// スクロール速度
 	int shakeCnt;
 };
 

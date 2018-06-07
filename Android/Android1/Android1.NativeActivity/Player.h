@@ -22,6 +22,10 @@ public:
 	//更新処理
 	void Update();
 
+	// テスト用
+	void TestUpdate();
+	void TestDraw(Pos _pos);
+
 private:
 	//座標(int1)
 	Pos pos;
@@ -41,6 +45,9 @@ private:
 	int angle;
 	//サイン、コサインテーブル作成
 	float fsin[360], fcos[360];
+
+	// スクロールする際に使用します
+	int scrFlag;
 
 	std::weak_ptr<Camera> cam;
 };
