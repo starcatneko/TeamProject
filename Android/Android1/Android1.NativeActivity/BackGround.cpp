@@ -7,7 +7,6 @@
 BackGround::BackGround()
 {
 	image = LoadMane::Get()->Load("sample.png");
-	t = LoadMane::Get()->Load("sample.png");
 	pos = {};
 }
 
@@ -22,7 +21,6 @@ void BackGround::Draw(void)
 	for (int cnt = 0; cnt < BG_LOOP_CNT; cnt++) {
 		DrawGraph(pos.x + (WINDOW_X*cnt), pos.y, image, true);
 	}
-	DrawGraph(WINDOW_X / 2, 0, t, false);
 }
 
 // 処理
