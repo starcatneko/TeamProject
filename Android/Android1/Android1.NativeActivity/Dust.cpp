@@ -4,15 +4,29 @@
 
 Dust::Dust(std::weak_ptr<Player>p) : p(p)
 {
-	isTurn = false;
+	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
 	pos = { 1000, 500 };
-	angleNum = pos.x + 20;
+	angleNum = pos.x - 20;
+	hp = 0;
+	speed = 4;
+	AttackFlag = false;
 }
 
 
 Dust::~Dust()
 {
+}
+
+Pos Dust::GetPos()
+{
+	return Pos();
+}
+
+void Dust::SetPos(Pos pos)
+{
+	this->pos.x = pos.x;
+	this->pos.y = pos.y;
 }
 
 void Dust::Update()
@@ -28,85 +42,79 @@ void Dust::Draw()
 
 void Dust::NeutralUpdate()
 {
-	//プレイヤーがいる方向によって走る向きを転換する。
-	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
-	state = ST_NUETRAL;
+	st = ST_NUETRAL;
 	if (pos.x < p.lock()->GetPos().x)
 	{
-		isTurn = false;
-		//恥ずかしみ
-		if (p.lock()->GetPos().x - pos.x < 10
-			&& p.lock()->GetPos().y - pos.y < 10
-			|| p.lock()->GetPos().x - pos.x < 10
-			&& pos.y - p.lock()->GetPos().y < 10
-			|| pos.x - p.lock()->GetPos().x < 10
-			&& p.lock()->GetPos().y - pos.y < 10
-			|| pos.x - p.lock()->GetPos().x < 10
-			&& pos.y - p.lock()->GetPos().y < 10)
-		{
-			updater = &Dust::AtackUpdate;
-		}
+		dir = DIR_RIGHT;
+		angleNum = pos.x - 20;
 	}
 	else if(pos.x > p.lock()->GetPos().x)
 	{
-		isTurn = true;
-		if (p.lock()->GetPos().x - pos.x < 10
-			&& p.lock()->GetPos().y - pos.y < 10
-			|| p.lock()->GetPos().x - pos.x < 10
-			&& pos.y - p.lock()->GetPos().y < 10
-			|| pos.x - p.lock()->GetPos().x < 10
-			&& p.lock()->GetPos().y - pos.y < 10
-			|| pos.x - p.lock()->GetPos().x < 10
-			&& pos.y - p.lock()->GetPos().y < 10)
-		{
-			updater = &Dust::AtackUpdate;
-		}
-	}
-	if(isTurn)
-	{
+		dir = DIR_LEFT;
 		angleNum = pos.x + 20;
 	}
-	else if(isTurn == false)
+	//恥ずかしみ(攻撃範囲の設定、後でリファクタリングします)
+	if (GetPos().x - p.lock()->GetPos().x < 10 || p.lock()->GetPos().x - GetPos().x < 10)
 	{
-		angleNum = pos.x - 20;
+		if (GetPos().y - p.lock()->GetPos().y < 10 || p.lock()->GetPos().y - GetPos().y < 10)
+		{
+			if (GetPos().x - p.lock()->GetPos().x > 0 || p.lock()->GetPos().x - GetPos().x > 0)
+			{
+				if (GetPos().y - p.lock()->GetPos().y > 0 || p.lock()->GetPos().y - GetPos().y > 0)
+				{
+					AttackFlag = true;
+				}
+			}
+		}
 	}
-	updater = &Dust::RunUpdate;
+
+	if (AttackFlag)
+	{
+		updater = &Dust::AttackUpdate;
+	}
+	else
+	{
+		updater = &Dust::RunUpdate;
+	}
 }
 
 void Dust::RunUpdate()
 {
-	//プレイヤーに向かって走る
-	state = ST_WALK;
-	pos.x += isTurn ? -1 : 1;
-	if (pos.y < p.lock()->GetPos().y)
+	st = ST_WALK;
+	if (dir == DIR_LEFT)
 	{
-		pos.y++;
+		pos.x -= speed;
 	}
-	else if (pos.y > p.lock()->GetPos().y)
+	else if (dir == DIR_RIGHT)
 	{
-		pos.y--;
+		pos.x += speed;
+	}
+	if (dir == DIR_UP)
+	{
+		pos.y -= speed;
+	}
+	else if (dir == DIR_DOWN)
+	{
+		pos.y -= speed;
 	}
 	updater = &Dust::NeutralUpdate;
 }
 
-void Dust::AtackUpdate()
+void Dust::AttackUpdate()
 {
-	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
-	state = ST_ATTACK;
+	st = ST_ATTACK;
 	DrawString(50, 50, _T("DustAttack"), 0xff0000);
 	updater = &Dust::NeutralUpdate;
 }
 
 void Dust::DamageUpdate()
 {
-	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
-	state = ST_DAMAGE;
+	st = ST_DAMAGE;
 	DrawString(0, 0, _T("DustDamage"), 0xff0000);
 }
 
 void Dust::DieUpdate()
 {
-	//死亡。情報を削除する。
-	state = ST_DIE;
+	st = ST_DIE;
 }
 
