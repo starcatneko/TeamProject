@@ -7,10 +7,7 @@ Dust::Dust(std::weak_ptr<Player>p) : p(p)
 	isTurn = false;
 	updater = &Dust::NeutralUpdate;
 	pos = { 1000, 500 };
-<<<<<<< HEAD
-=======
 	angleNum = pos.x + 20;
->>>>>>> sueyoshi
 }
 
 
@@ -26,11 +23,7 @@ void Dust::Update()
 
 void Dust::Draw()
 {
-<<<<<<< HEAD
-	DrawBox(pos.x, pos.y, pos.x + 20, pos.y + 20, 0x00ffff, true);
-=======
 	DrawTriangle(pos.x, pos.y, angleNum, pos.y + 20, angleNum, pos.y - 20, 0x00ffff, true);
->>>>>>> sueyoshi
 }
 
 void Dust::NeutralUpdate()
@@ -41,7 +34,6 @@ void Dust::NeutralUpdate()
 	if (pos.x < p.lock()->GetPos().x)
 	{
 		isTurn = false;
-<<<<<<< HEAD
 		//恥ずかしみ
 		if (p.lock()->GetPos().x - pos.x < 10
 			&& p.lock()->GetPos().y - pos.y < 10
@@ -51,9 +43,6 @@ void Dust::NeutralUpdate()
 			&& p.lock()->GetPos().y - pos.y < 10
 			|| pos.x - p.lock()->GetPos().x < 10
 			&& pos.y - p.lock()->GetPos().y < 10)
-=======
-		if (p.lock()->GetPos().x - pos.x < 10)
->>>>>>> sueyoshi
 		{
 			updater = &Dust::AtackUpdate;
 		}
@@ -61,7 +50,6 @@ void Dust::NeutralUpdate()
 	else if(pos.x > p.lock()->GetPos().x)
 	{
 		isTurn = true;
-<<<<<<< HEAD
 		if (p.lock()->GetPos().x - pos.x < 10
 			&& p.lock()->GetPos().y - pos.y < 10
 			|| p.lock()->GetPos().x - pos.x < 10
@@ -70,9 +58,6 @@ void Dust::NeutralUpdate()
 			&& p.lock()->GetPos().y - pos.y < 10
 			|| pos.x - p.lock()->GetPos().x < 10
 			&& pos.y - p.lock()->GetPos().y < 10)
-=======
-		if (pos.x - p.lock()->GetPos().x < 10)
->>>>>>> sueyoshi
 		{
 			updater = &Dust::AtackUpdate;
 		}
