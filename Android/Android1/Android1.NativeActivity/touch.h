@@ -33,5 +33,6 @@ private:
 	Touch();
 	~Touch();
 
+	void MouseProccess();
 	void TouchProccess();
 };

@@ -58,35 +58,29 @@ void Touch::Update()
 {
 	touchNum = GetTouchInputNum();
 
+#ifndef __ANDROID__
+	MouseProccess();
+#else
 	TouchProccess();
-}
 
-void Touch::TouchProccess()
+#endif
+}
+//Win
+void Touch::MouseProccess()
 {
 	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
-
-#ifndef __ANDROID__
 
 	if ((GetMouseInput() && MOUSE_INPUT_LEFT) != 0)
 	{
 		touchNum = 3;
-#else
-	if (GetTouchInputNum() > 0)
-	{
-#endif
 
 		//tN = 処理するタッチ番号
 		//touchNum = 現在タッチしている指の数
 		for (int tN = 0; tN < touchNum; tN++)
 		{
 			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
-#ifndef __ANDROID__
+
 			GetMousePoint(&pos[tN].x, &pos[tN].y);
-
-#else
-			GetTouchInput(tN, &pos[tN].x, &pos[tN].y);
-
-#endif
 		}
 
 		for (int tN = 0; tN < TOUCH_MAX; tN++)
@@ -117,6 +111,49 @@ void Touch::TouchProccess()
 	}
 
 
+}
+//Android
+void Touch::TouchProccess()
+{
+	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
+
+
+	if (GetTouchInputNum() > 0)
+	{
+
+		//tN = 処理するタッチ番号
+		//touchNum = 現在タッチしている指の数
+		for (int tN = 0; tN < touchNum; tN++)
+		{
+			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
+
+			GetTouchInput(tN, &pos[tN].x, &pos[tN].y);
+		}
+
+		for (int tN = 0; tN < TOUCH_MAX; tN++)
+		{
+			pos_buf[tN] = pos[tN];
+			for (int x = TEMP_MAX - 1; x >= 0; x--)
+			{
+				pos_buf[tN] = pos_buf[tN];
+			}
+			touch_buf[tN]++;
+		}
 	}
-
-
+	else
+	{
+		for (int tN = 0; tN < TOUCH_MAX; tN++)
+		{
+			//画面がタッチされておらず、前フレームがタッチされていた場合
+			if (touch_buf[tN] != 0)
+			{
+				touch_buf[tN] = -1;
+			}
+			//前のフレームからタッチされていない状態
+			else
+			{
+				touch_buf[tN] = 0;
+			}
+		}
+	}
+}
