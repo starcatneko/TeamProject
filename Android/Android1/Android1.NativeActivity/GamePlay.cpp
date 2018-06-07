@@ -43,8 +43,9 @@ void GamePlay::Draw(void)
 	//pl->Draw();
 	pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
+	//cam->Scroll();				// ミキオが追加
 	cam->Scroll(pl->GetPos());		// ミキオが追加
-	//cam->Scroll();		// ミキオが追加
+	//cam->Scroll(pl->GetPos(), { WINDOW_X / 2, 0});		// ミキオが追加
 	cam->Draw();					// ミキオが追加
 	cam->SetPos(cam->GetPos());		// ミキオが追加
 
@@ -71,7 +72,12 @@ void GamePlay::NotStart(void)
 void GamePlay::Start(void)
 {
 	//pl->Update();
-	pl->TestUpdate();
+
+	// 以下の説明は、プレイヤーに影響を与えるスクロールのモード設定である。TestUpdate()の中に引数を入力することで機能します。
+	// 0:ただのスクロール
+	// 1:画面サイズごとにスクロール
+	// 2:画面サイズ2倍をスクロールさせた後、次のスクロールに切り替える
+	pl->TestUpdate(1);
 	du->Update();
 
 #ifndef __ANDROID__

@@ -82,43 +82,82 @@ void Player::Update()
 	}
 }
 
-void Player::TestUpdate()
+void Player::TestUpdate(int scrMode)
 {
-	Pos listPos[5];
+	int mode;
+	mode = scrMode;
+
+	Pos listPos[6];
 	// リストに座標設定
-	listPos[0] = { WINDOW_X * 1, 0 };//1920
-	listPos[1] = { WINDOW_X * 2, 0 };//3840
-	listPos[2] = { WINDOW_X * 3, 0 };//5760
-	listPos[3] = { WINDOW_X * 4, 0 };//7680
-	listPos[4] = { WINDOW_X * 5, 0 };//9600
-
-	// 静止フラグ
-	if (scrFlag == 0) {
-		pos.x += 5;
+	for (int i = 1; i <= 6; i++) {
+		listPos[i-1] = { WINDOW_X * i, 0 };
 	}
-	if (scrFlag == 1) {
-		pos.x += 1;
+	//// これはめんどいので上に変えましょう！
+	//listPos[0] = { WINDOW_X * 1, 0 };//1920
+	//listPos[1] = { WINDOW_X * 2, 0 };//3840
+	//listPos[2] = { WINDOW_X * 3, 0 };//5760
+	//listPos[3] = { WINDOW_X * 4, 0 };//7680
+	//listPos[4] = { WINDOW_X * 5, 0 };//9600
+	//listPos[5] = { WINDOW_X * 6, 0 };//11520
+
+	if (mode == 0) {
+	}
+	else if (mode == 1) {
+		// 静止フラグ
+		if (scrFlag == 0) {
+			pos.x += 5;
+		}
+		if (scrFlag == 1) {
+			pos.x += 1;
+		}
+	}
+	else if (mode == 2) {
+		// 静止フラグ
+		if (scrFlag == 0) {
+			pos.x += 5;
+		}
+		if (scrFlag == 1) {
+			pos.x += 1;
+		}
 	}
 
-	// 1850 ～ 1920■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[0].x - 70)) && (pos.x <= listPos[0].x)) scrFlag = 1;
-	else if ((pos.x >= 0) && (pos.x <= (listPos[0].x - 70))) scrFlag = 0;
+	// modeによってスクロールした際の補正が決まる
+	if (mode == 0) {
+	}
+	else if (mode == 1) {
+		// 0 ～ 1920■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[0].x - 70)) && (pos.x <= listPos[0].x)) scrFlag = 1;
+		else if ((pos.x >= 0) && (pos.x <= (listPos[0].x - 70))) scrFlag = 0;
 
-	// 1920 ～ 3840■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) scrFlag = 1;
-	else if ((pos.x >= listPos[0].x) && (pos.x <= (listPos[1].x - 70))) scrFlag = 0;
+		// 1920 ～ 3840■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) scrFlag = 1;
+		else if ((pos.x >= listPos[0].x) && (pos.x <= (listPos[1].x - 70))) scrFlag = 0;
 
-	// 3840 ～ 5760■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[2].x - 70)) && (pos.x <= listPos[2].x)) scrFlag = 1;
-	else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[2].x - 70))) scrFlag = 0;
+		// 3840 ～ 5760■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[2].x - 70)) && (pos.x <= listPos[2].x)) scrFlag = 1;
+		else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[2].x - 70))) scrFlag = 0;
 
-	// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[3].x - 70)) && (pos.x <= listPos[3].x)) scrFlag = 1;
-	else if ((pos.x >= listPos[2].x) && (pos.x <= (listPos[3].x - 70))) scrFlag = 0;
+		// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[3].x - 70)) && (pos.x <= listPos[3].x)) scrFlag = 1;
+		else if ((pos.x >= listPos[2].x) && (pos.x <= (listPos[3].x - 70))) scrFlag = 0;
 
-	// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[4].x - 70)) && (pos.x <= listPos[4].x)) scrFlag = 1;
-	else if ((pos.x >= listPos[3].x) && (pos.x <= (listPos[4].x - 70))) scrFlag = 0;
+		// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[4].x - 70)) && (pos.x <= listPos[4].x)) scrFlag = 1;
+		else if ((pos.x >= listPos[3].x) && (pos.x <= (listPos[4].x - 70))) scrFlag = 0;
+	}
+	else if (mode == 2) {
+		// 0 ～ 3770■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) scrFlag = 1;
+		else if ((pos.x >= 0) && (pos.x <= ((listPos[1].x) - 70))) scrFlag = 0;
+
+		// 3840 ～ 7610■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[3].x)) && (pos.x <= (listPos[3].x - 70))) scrFlag = 1;
+		else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[3].x - 70))) scrFlag = 0;
+		
+		// 7680 ～ 11520■■■■■■■■■■■■■■■■■■■■
+		if ((pos.x >= (listPos[5].x)) && (pos.x <= (listPos[5].x - 70))) scrFlag = 1;
+		else if ((pos.x >= listPos[3].x) && (pos.x <= (listPos[5].x - 70))) scrFlag = 0;
+	}
 }
 
 void Player::TestDraw(Pos _pos)

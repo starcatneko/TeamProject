@@ -22,7 +22,7 @@ Camera::~Camera()
 {
 }
 
-// スクロール
+// スクロールその1
 void Camera::Scroll()
 {
 	Pos tPos;	// touchクラスの座標を格納する専用の変数
@@ -53,7 +53,7 @@ void Camera::Scroll(Pos _pos)
 	// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
 	// 多少ずれが生じるので、ここで微調整します
 	// 画面2へ移行した際の修正
-	if (GetPos().x == ((-WINDOW_X) + 3)) scrPos.x = -WINDOW_X;
+	if (GetPos().x == ((-WINDOW_X * 1) + 3)) scrPos.x = -WINDOW_X * 1;
 	// 画面3へ移行した際の修正
 	if (GetPos().x == ((-WINDOW_X * 2) + 3)) scrPos.x = -WINDOW_X * 2;
 	// 画面4へ移行した際の修正
@@ -62,6 +62,44 @@ void Camera::Scroll(Pos _pos)
 	if (GetPos().x == ((-WINDOW_X * 4) + 3)) scrPos.x = -WINDOW_X * 4;
 	// 画面6へ移行した際の修正
 	if (GetPos().x == ((-WINDOW_X * 5) + 3)) scrPos.x = -WINDOW_X * 5;
+
+	SetPos(scrPos);	// SetPosに格納
+}
+
+// スクロールその3
+void Camera::Scroll(Pos _pos2, Pos line)
+{
+	Pos pPos;	// Playerクラスの座標を格納する専用の変数
+	pPos = _pos2;
+
+	Pos scrLine;// スクロール3使用の際に、スクロールを実行する際の実行ライン
+	scrLine = line;
+
+	if (pPos.x >= scrLine.x) {
+		scrPos.x -= scrSpeed;	// スクリーン座標に20を加算
+	}
+
+	// スクロール開始線
+	DrawLine( scrLine.x, scrLine.y, scrLine.x, (scrLine.y + WINDOW_Y), 0x00ff00);
+
+	/*for (int x = 0; x <= 5; x++) {
+		if ((pPos.x >= strPos[x].x) && (pPos.x <= strPos[x].x + 70)) {
+			scrPos.x -= scrSpeed;
+		}
+	}*/
+
+	//// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
+	//// 多少ずれが生じるので、ここで微調整します
+	//// 画面2へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 1) + 3)) scrPos.x = -WINDOW_X * 1;
+	//// 画面3へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 2) + 3)) scrPos.x = -WINDOW_X * 2;
+	//// 画面4へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 3) + 3)) scrPos.x = -WINDOW_X * 3;
+	//// 画面5へ移行した際の修正	※但し、画面5以降は予備の画面なので使わない可能性がある
+	//if (GetPos().x == ((-WINDOW_X * 4) + 3)) scrPos.x = -WINDOW_X * 4;
+	//// 画面6へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 5) + 3)) scrPos.x = -WINDOW_X * 5;
 
 	SetPos(scrPos);	// SetPosに格納
 }

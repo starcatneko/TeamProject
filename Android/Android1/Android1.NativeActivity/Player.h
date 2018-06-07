@@ -23,7 +23,7 @@ public:
 	void Update();
 
 	// テスト用
-	void TestUpdate();
+	void TestUpdate(int scrMode);
 	void TestDraw(Pos _pos);
 
 private:
