@@ -7,12 +7,6 @@
 // タッチの最大数
 #define TOUCH_MAX 3
 
-// 円周率
-#define PI 3.141592f
-// ラジアン変換
-#define RAD(x) (x)* (PI / 180.0f)
-// 角度変換
-#define ANGLE(x) (x)* (180.0f / PI)
 
 //キャラクターの向いている方向
 //UPとDOWNは使わない可能性大
