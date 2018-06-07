@@ -221,6 +221,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Touch.cpp" />
   </ItemGroup>
@@ -239,6 +240,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Touch.h" />
     <ClInclude Include="Typedef.h" />

@@ -6,13 +6,13 @@
 
 // タッチの最大数
 #define TOUCH_MAX 3
-#define PI 3.141592f
-#define ANGLE(X) (X)*(180.0f/PI)
-#define RAD(X) (X)*(PI/180.0f)
 
+// 円周率
 #define PI 3.141592f
-#define ANGLE(X) (X)*(180.0f/PI)
+// ラジアン変換
 #define RAD(X) (X)*(PI/180.0f)
+// 弧度法変換
+#define ANGLE(X) (X)*(180.0f/PI)
 
 
 //キャラクターの向いている方向
@@ -72,4 +72,25 @@ struct Box
 	Pos pos;
 	// サイズ
 	Pos size;
+};
+
+//ステージデータ
+struct StageHeader
+{
+	//ID
+	unsigned char id[4];
+	//データサイズ
+	unsigned int size;
+	//マップの横幅
+	unsigned int mapW;
+	//マップの縦幅
+	unsigned int mapH;
+	//パーツの横幅
+	unsigned char chipW;
+	//パーツの縦幅
+	unsigned char chipH;
+	//レイヤーサイズ
+	unsigned char layerCnt;
+	//レイヤーデータのビット数
+	unsigned char bitCnt;
 };
