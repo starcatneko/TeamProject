@@ -10,8 +10,8 @@ public:
 	~Camera();
 	void Update(void);
 	void Draw(void);
-	void Scroll(void);		// 画面スクロール機能関数その1
-	void Scroll(Pos _pos);	// 画面スクロール機能関数その2
+	void Scroll(void);		// 画面スクロール機能関数その1(画面右半分をタップしている間だけスクロール)
+	void Scroll(Pos _pos);	// 画面スクロール機能関数その2(プレイヤーが画面右端の緑の枠に完全に入ったらスクロール開始)
 	void Shake();			// カメラを揺らす
 
 	Pos &GetPos();

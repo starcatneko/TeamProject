@@ -44,6 +44,7 @@ void GamePlay::Draw(void)
 	pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
 	cam->Scroll(pl->GetPos());		// ミキオが追加
+	//cam->Scroll();		// ミキオが追加
 	cam->Draw();					// ミキオが追加
 	cam->SetPos(cam->GetPos());		// ミキオが追加
 

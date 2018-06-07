@@ -77,9 +77,9 @@ void Camera::Draw()
 	//Scroll();
 	for (int x = 0; x < 5; x++) {
 		// テスト用の描画枠
-		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + WINDOW_X) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + WINDOW_X) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
-		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + (WINDOW_X / 2)) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + (WINDOW_X / 2)) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
 		//DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
 		// 次のエリアへ！っていうスクロール用推移範囲
