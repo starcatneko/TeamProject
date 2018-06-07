@@ -18,7 +18,7 @@ private:
 	//走り
 	void RunUpdate();
 	//攻撃
-	void AtackUpdate();
+	void AttackUpdate();
 	//ダメージ
 	void DamageUpdate();
 	//死亡

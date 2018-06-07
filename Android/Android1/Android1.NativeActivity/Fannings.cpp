@@ -32,7 +32,7 @@ void Fannings::RunUpdate()
 	//プレイヤーに向かって走る
 }
 
-void Fannings::AtackUpdate()
+void Fannings::AttackUpdate()
 {
 	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
 }
