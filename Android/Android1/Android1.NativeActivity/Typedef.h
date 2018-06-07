@@ -33,37 +33,40 @@ enum STATES {
 };
 
 // 座標
-struct Pos
+template <typename T>
+struct Position
 {
-	int x;
-	int y;
+	T x;
+	T y;
 
-	void operator+(int i) {
+	void operator+(T i) {
 		this->x += i;
 		this->y += i;
 	}
 
-	void operator-(int i) {
+	void operator-(T i) {
 		this->x -= i;
 		this->y -= i;
 	}
 
-	Pos operator+(Pos pos) {
+	Position operator+(Position pos) {
 		return { x + pos.x , y + pos.y };
 	}
 
-	Pos operator-(Pos pos) {
+	Position operator-(Position pos) {
 		return { x - pos.x , y - pos.y };
 	}
 
-	Pos operator*(Pos pos) {
+	Position operator*(Position pos) {
 		return { x * pos.x , y * pos.y };
 	}
 
-	Pos operator/(Pos pos) {
+	Position operator/(Position pos) {
 		return { x / pos.x , y / pos.y };
 	}
 };
+
+typedef Position<int>Pos;
 
 // ボックス情報
 struct Box

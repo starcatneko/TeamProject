@@ -28,18 +28,22 @@ public:
 
 private:
 	//座標(int1)
-	Pos pos;
+	Position<float> pos;
+	//Position<float> fpos;
 	//移動目的座標
 	Pos tempPos;
 	//移動目標との距離
 	int tempdis;
 
+	//関数ポインタ
 	//現在向いている方向
 	DIR dir;
 	//キャラクターの状態
 	STATES st;
 	//ライフポイント
 	int hp;
+
+
 
 	//移動速度
 	int speed;
