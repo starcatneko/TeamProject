@@ -6,6 +6,7 @@ Dust::Dust(std::weak_ptr<Player>p) : p(p)
 {
 	isTurn = false;
 	updater = &Dust::NeutralUpdate;
+	pos = { 1000, 500 };
 }
 
 
@@ -21,7 +22,7 @@ void Dust::Update()
 
 void Dust::Draw()
 {
-	DrawBox(pos.x, pos.y, pos.x + 6, pos.y + 6, 0x00ffff, true);
+	DrawBox(pos.x, pos.y, pos.x + 20, pos.y + 20, 0x00ffff, true);
 }
 
 void Dust::NeutralUpdate()
@@ -32,7 +33,15 @@ void Dust::NeutralUpdate()
 	if (pos.x < p.lock()->GetPos().x)
 	{
 		isTurn = false;
-		if (p.lock()->GetPos().x - pos.x < 6)
+		//恥ずかしみ
+		if (p.lock()->GetPos().x - pos.x < 10
+			&& p.lock()->GetPos().y - pos.y < 10
+			|| p.lock()->GetPos().x - pos.x < 10
+			&& pos.y - p.lock()->GetPos().y < 10
+			|| pos.x - p.lock()->GetPos().x < 10
+			&& p.lock()->GetPos().y - pos.y < 10
+			|| pos.x - p.lock()->GetPos().x < 10
+			&& pos.y - p.lock()->GetPos().y < 10)
 		{
 			updater = &Dust::AtackUpdate;
 		}
@@ -40,7 +49,14 @@ void Dust::NeutralUpdate()
 	else if(pos.x > p.lock()->GetPos().x)
 	{
 		isTurn = true;
-		if (pos.x - p.lock()->GetPos().x < 6)
+		if (p.lock()->GetPos().x - pos.x < 10
+			&& p.lock()->GetPos().y - pos.y < 10
+			|| p.lock()->GetPos().x - pos.x < 10
+			&& pos.y - p.lock()->GetPos().y < 10
+			|| pos.x - p.lock()->GetPos().x < 10
+			&& p.lock()->GetPos().y - pos.y < 10
+			|| pos.x - p.lock()->GetPos().x < 10
+			&& pos.y - p.lock()->GetPos().y < 10)
 		{
 			updater = &Dust::AtackUpdate;
 		}
