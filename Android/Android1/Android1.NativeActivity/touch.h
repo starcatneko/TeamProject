@@ -19,13 +19,28 @@ public:
 	int GetBuf(int touchNo);
 
 	void Update();
+
+	//スワイプの表示(デバッグ用)
+	void DrawSwipe();
+
+	//スワイプ情報の取得
+	DIR GetSwipe();
+
+
+	float GetSwipeF();
 private:
-	int touchNum;
 	static Touch *instance;
 
-	//-1:離した瞬間 0:無入力 1:入力した瞬間 2~:入力中 
+	// 現在タッチしている指の本数
+	int touchNum;
+
+	//　-1:離した瞬間 0:無入力 1:入力した瞬間 2~:入力中 
 	int touch_buf[TOUCH_MAX];
 	Pos pos[TOUCH_MAX];
+
+	//スワイプ用の目標
+	Pos swipe_pos_start[TOUCH_MAX];
+	Pos swipe_pos_goal[TOUCH_MAX];
 
 	//1f前のpos
 	Pos pos_buf[TOUCH_MAX];

@@ -10,10 +10,11 @@ Player::Player(std::weak_ptr<Camera> cam)
 	this->cam = cam;
 	this->tempPos = { 0,0 };
 	this->pos = { 780,480 };
-	st = ST_ATTACK;
+	st = ST_NUETRAL;
 	hp = 0;
-	speed = 6;
-	dir = DIR_DOWN;
+	speed = 5;
+	applepower = 0;
+	dir = DIR_LEFT;
 
 	int i;
 	for (i = 0; i<360; i++) {
@@ -38,40 +39,116 @@ void Player::SetPos(Pos pos)
 	this->pos.x = pos.x;
 	this->pos.y = pos.y;
 }
+STATES Player::GetSt()
+{
+	return st;
+}
 int a = 0;
 bool b = 0;
 
 
 void Player::Draw()
 {
+	unsigned int color;
 	//int x, y;
+	switch (st)
+	{
+	case ST_NUETRAL:
+		color = 0xEE0000;
+		break;
+	case ST_WALK:
+		color = 0x00EE00;
+
+		break;
+	case ST_ATTACK:
+		color = 0xFFAA00;
+
+		break;
+	case ST_DAMAGE:
+		color = 0x0000FF;
+		break;
+	case ST_DIE:
+		color = 0xEE00EE;
+		break;
+	default:
+		color = 0xFFFFFF;
+		break;
+	}
+	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
 	DrawFormatString(0, 25, 0xDDDDDD, _T("%d:%d"), tempdis, angle);
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
-	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
+	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
 }
 
 void Player::Update()
 {
+	StatesUpDate();
+}
 
-	if (Touch::Get()->GetBuf(0) == 1)
+
+void Player::StatesUpDate()
+{
+	switch (st)
+	{ 
+		case ST_NUETRAL:
+			Touch();
+			AngleCtr();
+			break;
+		case ST_WALK:
+			Move();
+			break;
+		case ST_ATTACK:
+			st = ST_NUETRAL;
+
+			break;
+		case ST_DAMAGE:
+			st = ST_NUETRAL;
+
+			break;
+		case ST_DIE:
+			st = ST_NUETRAL;
+
+			break;
+	}
+}
+void Player::Move()
+{
+	if (tempPos.x > 0 && tempPos.y > 0
+		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y)
+		&& tempdis > speed)
+	{
+		pos.x += fcos[angle] * (float)speed;
+		pos.y += fsin[angle] * (float)speed;
+	}
+	else
+	{
+		st = ST_NUETRAL;
+	}
+}
+void Player::Touch()
+{
+	if (Touch::Get()->GetBuf(0) == -1)
 	{
 		a++;
 		tempPos = Touch::Get()->GetPos(0);
 		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
-
+		st = ST_WALK;
 
 	}
 	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
-	if (tempdis % 100 == 0)
+	if (tempdis % 50 == 0)
 	{
 		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
 	}
-	
-	//角度が0~360の範囲に収まるようにする
+
+
+}
+void Player::AngleCtr()
+{
 	if (angle > 360)
 	{
 		angle -= 360;
@@ -80,18 +157,30 @@ void Player::Update()
 	{
 		angle += 360;
 	}
+}
+void Player::HpControl(int point)
+{
+	hp += point;
+}
 
+int Player::GetPower()
+{
+	return applepower;
+}
 
-	if (tempPos.x > 0 && tempPos.y > 0
-		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y))
-	{
-		if (tempdis > speed) pos.x += fcos[angle] * (float)speed;
-		if (tempdis > speed) pos.y += fsin[angle] * (float)speed;
-	}
+void Player::SetPower(int power)
+{
+	applepower = power;
+}
 
+void Player::UpPower(int power)
+{
+	applepower += power;
 }
 
 
+
+/*
 void Player::TestUpdate()
 {
 	Pos listPos[4];
@@ -154,5 +243,5 @@ void Player::TestDraw(Pos _pos)
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%d:%d"), pos.x, pos.y);
 	DrawFormatString(0, 25, 0xDDDDDD, _T("%d"), GetTouchInputNum());
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
-	DrawBox(pos.x + cPos.x, pos.y, (pos.x + 50) + cPos.x, pos.y + 50, 0xAA0000, true);
-}
+	DrawBox((int)pos.x + cPos.x, pos.y, (pos.x + 50) + cPos.x, pos.y + 50, 0xAA0000, true);
+}*/
