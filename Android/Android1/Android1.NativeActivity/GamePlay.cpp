@@ -39,8 +39,8 @@ void GamePlay::DrawBoxx(void)
 void GamePlay::Draw(void)
 {
 	back->Draw();
-	//pl->Draw();
-	pl->TestDraw(cam->GetPos());	// ミキオが追加
+	pl->Draw();
+	//pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
 	cam->Scroll(pl->GetPos());		// ミキオが追加
 	cam->Draw();					// ミキオが追加
@@ -68,8 +68,8 @@ void GamePlay::NotStart(void)
 // 各クラスの処理
 void GamePlay::Start(void)
 {
-	//pl->Update();
-	pl->TestUpdate();
+	pl->Update();
+	//pl->TestUpdate();
 	du->Update();
 
 
