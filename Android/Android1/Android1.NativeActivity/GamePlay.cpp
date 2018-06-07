@@ -13,7 +13,7 @@
 GamePlay::GamePlay() : speed(60)
 {
 	Create();
-	box = { 0, 0, WINDOW_X, WINDOW_Y };
+	box = { {0, 0}, {WINDOW_X, WINDOW_Y} };
 	memset(read, 0, sizeof(read));
 	func = &GamePlay::NotStart;
 }

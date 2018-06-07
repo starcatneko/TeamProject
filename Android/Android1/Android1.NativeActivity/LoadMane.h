@@ -24,6 +24,9 @@ public:
 	// 読み込み
 	int Load(std::string fileName);
 
+	// CSV読み込み
+	std::vector<int>LoadCsv(std::string fileName);
+
 private:
 	// コンストラクタ
 	LoadMane();

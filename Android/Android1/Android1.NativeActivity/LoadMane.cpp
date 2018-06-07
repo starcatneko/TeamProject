@@ -1,7 +1,8 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include "LoadMane.h"
 #include "DxLib.h"
-#include <stdio.h>
+#include <fstream>
+#include <sstream>
 
 LoadMane* LoadMane::instance = nullptr;
 
@@ -60,6 +61,49 @@ int LoadMane::Load(std::string fileName)
 	}
 
 	return data[fileName];
+}
+
+// CSV読み込み
+std::vector<int> LoadMane::LoadCsv(std::string fileName)
+{
+	//ダミー宣言
+	std::string file;
+
+#ifndef __ANDROID__
+	file = "../../Android/Android1/Android1.Packaging/assets/" + fileName;
+#else
+	file = fileName;
+#endif
+
+	std::vector<int>tmp;
+
+	//CSVファイルのオープン
+	std::ifstream path(file.c_str());
+
+	//読み取った1行ずつの結果
+	std::string line;
+
+	//CSVファイルの最後の行までループ
+	while (std::getline(path, line))
+	{
+		std::istringstream stream(line);
+		std::string s_line;
+		std::vector<std::string>result;
+		while (std::getline(stream, s_line, ','))
+		{
+			result.push_back(s_line);
+		}
+
+		for (unsigned int i = 0; i < result.size(); ++i)
+		{
+			std::istringstream sub(result.at(i));
+			int num = 0;
+			sub >> num;
+			tmp.push_back(num);
+		}
+	}
+
+	return tmp;
 }
 
 // クリア
