@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Typedef.h"
 
+
 class BackGround
 {
 public:
@@ -14,6 +15,10 @@ public:
 
 	// 処理
 	void UpData(void);
+
+	// 座標の取得・格納
+	Pos GetPos(void);
+	void SetPos(Pos _pos);
 
 private:
 	// 座標

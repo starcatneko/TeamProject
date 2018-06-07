@@ -1,5 +1,6 @@
 ﻿#include "BackGround.h"
 #include "DxLib.h"
+#define BG_LOOP_CNT 5
 
 // コンストラクタ
 BackGround::BackGround()
@@ -20,10 +21,25 @@ BackGround::~BackGround()
 // 描画
 void BackGround::Draw(void)
 {
-	DrawGraph(pos.x, pos.y, image, true);
+	for (int cnt = 0; cnt < BG_LOOP_CNT; cnt++) {
+		DrawGraph(pos.x + (WINDOW_X*cnt), pos.y, image, true);
+	}
+	//DrawGraph(pos.x, pos.y, image, true);
 }
 
 // 処理
 void BackGround::UpData(void)
 {
+}
+
+// 座標の取得
+Pos BackGround::GetPos()
+{
+	return pos;
+}
+
+// 座標の格納
+void BackGround::SetPos(Pos _pos)
+{
+	pos = _pos;
 }
