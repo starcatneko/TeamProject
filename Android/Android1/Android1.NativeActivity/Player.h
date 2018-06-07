@@ -36,7 +36,6 @@ private:
 	int tempdis;
 
 	//関数ポインタ
-	void(*po)();
 	//現在向いている方向
 	DIR dir;
 	//キャラクターの状態

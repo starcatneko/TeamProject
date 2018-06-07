@@ -46,7 +46,7 @@ void Player::Draw()
 {
 	//int x, y;
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
-	DrawFormatString(0, 25, 0xDDDDDD, _T("%d"), tempdis);
+	DrawFormatString(0, 25, 0xDDDDDD, _T("%d:%d"), tempdis, angle);
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
 	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
@@ -55,7 +55,6 @@ void Player::Draw()
 
 void Player::Update()
 {
-	po() = GetPos;
 
 	if (Touch::Get()->GetBuf(0) == 1)
 	{
@@ -63,33 +62,36 @@ void Player::Update()
 		tempPos = Touch::Get()->GetPos(0);
 		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
 
-		if (angle > 360)
-		{
-			angle -= 360;
-		}
-		if (angle < 0)
-		{
-			angle += 360;
-		}
-
 
 	}
 	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
+	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
+	if (tempdis % 100 == 0)
+	{
+		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
+	}
+	
+	//角度が0~360の範囲に収まるようにする
+	if (angle > 360)
+	{
+		angle -= 360;
+	}
+	if (angle < 0)
+	{
+		angle += 360;
+	}
+
+
 	if (tempPos.x > 0 && tempPos.y > 0
 		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y))
 	{
-		//if (pos.x > tempPos.x) pos.x -= fcos[angle] * speed;
-		if (tempdis > 8) pos.x += fcos[angle] * (float)speed;
-		if (tempdis > 8)pos.y += fsin[angle] * (float)speed;
-		//if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
-
-		/*ST_NUETRAL,
-			ST_WALK,
-			ST_ATTACK,
-			ST_DAMAGE,
-			ST_DIE*/
+		if (tempdis > speed) pos.x += fcos[angle] * (float)speed;
+		if (tempdis > speed) pos.y += fsin[angle] * (float)speed;
 	}
+
 }
+
+
 void Player::TestUpdate()
 {
 	Pos listPos[4];

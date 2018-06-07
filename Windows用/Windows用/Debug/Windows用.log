@@ -2,16 +2,8 @@
 c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(38): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
 c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(39): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
 c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(51): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(58): error C3867: 'Player::GetPos': 非標準の構文です。メンバーにポインタを作成するには '&' を使用してください
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(58): error C2120: void 型が他の型と同時に使われました。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(58): error C2106: '=': 左のオペランドが、左辺値になっていません。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(64): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(77): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(152): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  コードを生成中...
-  コンパイル中...
-  Dust.cpp
-  コードを生成中...
-  コンパイル中...
-  GamePlay.cpp
-  コードを生成中...
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(63): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(67): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(71): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(157): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  Windows用.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
