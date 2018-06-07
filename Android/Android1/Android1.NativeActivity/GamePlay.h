@@ -2,8 +2,10 @@
 #include "Scene.h"
 #include "Typedef.h"
 #include <memory>
+#include <vector>
 
 class Camera;
+class Stage;
 class BackGround;
 class Player;
 class Dust;
@@ -29,8 +31,12 @@ public:
 	// 処理
 	void UpData(void);
 
+	// 読み込み
+	void Load(void);
+
 private:
 	std::shared_ptr<Camera>cam;
+	std::shared_ptr<Stage>st;
 	std::shared_ptr<BackGround>back;
 	std::shared_ptr<Player> pl;
 	std::shared_ptr<Dust> du;
@@ -48,6 +54,11 @@ private:
 
 	// 移動速度
 	int speed;
+
+	// 読み込み位置
+	int read[2];
+
+	std::vector<Pos>pos;
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
