@@ -39,6 +39,9 @@ private:
 	std::shared_ptr<Dust> du;
 
 
+	// 読み込み
+	void Load(void);
+
 	// 各クラスの処理前
 	void NotStart(void);
 

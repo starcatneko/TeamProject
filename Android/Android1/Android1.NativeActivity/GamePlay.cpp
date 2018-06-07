@@ -63,6 +63,41 @@ void GamePlay::UpData(void)
 	(this->*func)();
 }
 
+// 読み込み
+void GamePlay::Load(void)
+{
+	int x = abs(cam->GetPos().x);
+
+	int y = 0;
+	//敵
+	for (auto& e : st->GetEnemy(x, (x + WINDOW_X)))
+	{
+		if (e == 0)
+		{
+			Pos p = { read[0] * st->GetChipEneSize(), y * st->GetChipEneSize() };
+			pos.push_back(p);
+		}
+		++y;
+		if (y >= st->GetStageSize().y / st->GetChipEneSize())
+		{
+			++read[0];
+			y = 0;
+		}
+	}
+
+	y = 0;
+	//アイテム
+	for (auto& i : st->GetItem(x, (x + WINDOW_X)))
+	{
+		++y;
+		if (y >= st->GetStageSize().y / st->GetChipItemSize())
+		{
+			++read[1];
+			y = 0;
+		}
+	}
+}
+
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
@@ -76,6 +111,8 @@ void GamePlay::NotStart(void)
 // 各クラスの処理
 void GamePlay::Start(void)
 {
+	Load();
+
 	pl->Update();
 	//pl->TestUpdate();
 	du->Update();

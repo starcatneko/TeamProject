@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Typedef.h"
+#include <map>
 #include <vector>
 #include <string>
 
@@ -11,19 +12,40 @@ public:
 	// デストラクタ
 	~Stage();
 
-	// 読み込み
-	void Load(std::string fileName);
+	// 敵の読み込み
+	void LoadEnemy(std::string fileName);
+	// アイテムの読み込み
+	void LoadItem(std::string fileName);
+
+	// 敵の情報の取得
+	std::vector<int> GetEnemy(int minx, int maxx);
+	// アイテムの情報の取得
+	std::vector<int> GetItem(int minx, int maxx);
+
+	// ステージのサイズの取得
+	Pos GetStageSize(void);
 
 	// 敵チップサイズの取得
 	int GetChipEneSize(void);
 	// アイテムチップサイズの取得
 	int GetChipItemSize(void);
 
+	// 敵のチップ数の取得
+	Pos GetChipEneCnt(void);
+	// アイテムのチップ数の取得
+	Pos GetChipItemCnt(void);
+
 private:
 	// クリア
 	void Clear(void);
 
 	// CSVデータ
-	std::vector<int>data;
+	std::map<std::string, std::vector<int>>data;
+
+	// サイズ
+	std::map<std::string, Pos>size;
+
+	// 読み込み位置
+	int read[2];
 };
 
