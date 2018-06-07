@@ -38,7 +38,8 @@ void GamePlay::DrawBoxx(void)
 // 描画
 void GamePlay::Draw(void)
 {
-	back->Draw();
+	//back->Draw();
+	back->TestDraw(cam->GetPos());	// ミキオが追加
 	//pl->Draw();
 	pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();

@@ -44,11 +44,24 @@ void Camera::Scroll(Pos _pos)
 {
 	Pos pPos;	// touchクラスの座標を格納する専用の変数
 	pPos = _pos;
-	for (int x = 0; x <= 4; x++) {
+	for (int x = 0; x <= 5; x++) {
 		if ((pPos.x >= strPos[x].x) && (pPos.x <= strPos[x].x + 70)) {
 			scrPos.x -= scrSpeed;
 		}
 	}
+
+	// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
+	// 多少ずれが生じるので、ここで微調整します
+	// 画面2へ移行した際の修正
+	if (GetPos().x == -1917) scrPos.x = -1920;
+	// 画面3へ移行した際の修正
+	if (GetPos().x == -3837) scrPos.x = -3840;
+	// 画面4へ移行した際の修正
+	if (GetPos().x == -5757) scrPos.x = -5760;
+	// 画面5へ移行した際の修正	※但し、画面5以降は予備の画面なので使わない可能性がある
+	if (GetPos().x == -7677) scrPos.x = -7680;
+	// 画面6へ移行した際の修正
+	if (GetPos().x == -9597) scrPos.x = -9600;
 
 	SetPos(scrPos);	// SetPosに格納
 }
@@ -64,9 +77,9 @@ void Camera::Draw()
 	//Scroll();
 	for (int x = 0; x < 5; x++) {
 		// テスト用の描画枠
-		DrawBox(pos.x + (1920 * x), pos.y, (pos.x + WINDOW_X) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + WINDOW_X) + (1920 * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
-		DrawBox(pos.x + (1920 * x), pos.y, (pos.x + (WINDOW_X / 2)) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + (WINDOW_X / 2)) + (1920 * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
 		//DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
 		// 次のエリアへ！っていうスクロール用推移範囲

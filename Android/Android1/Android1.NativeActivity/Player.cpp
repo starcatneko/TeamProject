@@ -30,7 +30,7 @@ Player::~Player()
 
 Pos Player::GetPos()
 {
-	return Pos();
+	return pos;
 }
 
 void Player::SetPos(Pos pos)
@@ -88,15 +88,15 @@ void Player::Update()
 
 void Player::TestUpdate()
 {
-	Pos listPos[4];
+	Pos listPos[5];
 	// リストに座標設定
 	listPos[0] = { WINDOW_X * 1, 0 };//1920
 	listPos[1] = { WINDOW_X * 2, 0 };//3840
 	listPos[2] = { WINDOW_X * 3, 0 };//5760
 	listPos[3] = { WINDOW_X * 4, 0 };//7680
-	 //listPos[4] = { WINDOW_X*5, 0};//9600
+	listPos[4] = { WINDOW_X * 5, 0 };//9600
 
-									 // 静止フラグ
+	// 静止フラグ
 	if (scrFlag == 0) {
 		pos.x += 5;
 	}
@@ -105,39 +105,24 @@ void Player::TestUpdate()
 	}
 
 	// 1850 ～ 1920■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[0].x - 70)) && (pos.x <= listPos[0].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= 0) && (pos.x <= (listPos[0].x - 70))) {
-		scrFlag = 0;
-	}
+	if ((pos.x >= (listPos[0].x - 70)) && (pos.x <= listPos[0].x)) scrFlag = 1;
+	else if ((pos.x >= 0) && (pos.x <= (listPos[0].x - 70))) scrFlag = 0;
 
 	// 1920 ～ 3840■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= listPos[0].x) && (pos.x <= (listPos[1].x - 70))) {
-		scrFlag = 0;
-	}
+	if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) scrFlag = 1;
+	else if ((pos.x >= listPos[0].x) && (pos.x <= (listPos[1].x - 70))) scrFlag = 0;
 
 	// 3840 ～ 5760■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[2].x - 70)) && (pos.x <= listPos[2].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[2].x - 70))) {
-		scrFlag = 0;
-	}
+	if ((pos.x >= (listPos[2].x - 70)) && (pos.x <= listPos[2].x)) scrFlag = 1;
+	else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[2].x - 70))) scrFlag = 0;
+
 	// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[3].x - 70)) && (pos.x <= listPos[3].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= listPos[2].x) && (pos.x <= (listPos[3].x - 70))) {
-		scrFlag = 0;
-	}
+	if ((pos.x >= (listPos[3].x - 70)) && (pos.x <= listPos[3].x)) scrFlag = 1;
+	else if ((pos.x >= listPos[2].x) && (pos.x <= (listPos[3].x - 70))) scrFlag = 0;
+
+	// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
+	if ((pos.x >= (listPos[4].x - 70)) && (pos.x <= listPos[4].x)) scrFlag = 1;
+	else if ((pos.x >= listPos[3].x) && (pos.x <= (listPos[4].x - 70))) scrFlag = 0;
 }
 
 void Player::TestDraw(Pos _pos)
