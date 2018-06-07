@@ -31,9 +31,6 @@ public:
 	// 処理
 	void UpData(void);
 
-	// 読み込み
-	void Load(void);
-
 private:
 	std::shared_ptr<Camera>cam;
 	std::shared_ptr<Stage>st;

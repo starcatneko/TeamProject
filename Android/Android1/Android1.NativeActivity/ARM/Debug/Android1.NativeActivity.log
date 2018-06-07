@@ -59,11 +59,11 @@ Dust.cpp(60,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
-GamePlay.cpp(14,10): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+GamePlay.cpp(16,10): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           box = { 0, 0, WINDOW_X, WINDOW_Y };
                   ^~~~
                   {   }
-GamePlay.cpp(14,16): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+GamePlay.cpp(16,16): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           box = { 0, 0, WINDOW_X, WINDOW_Y };
                         ^~~~~~~~~~~~~~~~~~
                         {                 }
@@ -72,18 +72,13 @@ GamePlay.cpp(14,16): warning : suggest braces around initialization of subobject
                    ^
   2 warnings generated.
   Item.cpp
+  LoadMane.cpp
   Main.cpp
   Over.cpp
   Player.cpp
-Player.cpp(47,6): warning : unused variable 'x' [-Wunused-variable]
-          int x, y;
-              ^
-Player.cpp(47,9): warning : unused variable 'y' [-Wunused-variable]
-          int x, y;
-                 ^
-  2 warnings generated.
   Scene.cpp
   Score.cpp
+  Stage.cpp
   Title.cpp
 Title.cpp(12,10): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           box = { -WINDOW_X, 0, WINDOW_X, WINDOW_Y };

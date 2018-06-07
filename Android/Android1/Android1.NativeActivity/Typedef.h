@@ -76,24 +76,3 @@ struct Box
 	// サイズ
 	Pos size;
 };
-
-//ステージデータ
-struct StageHeader
-{
-	//ID
-	unsigned char id[4];
-	//データサイズ
-	unsigned int size;
-	//マップの横幅
-	unsigned int mapW;
-	//マップの縦幅
-	unsigned int mapH;
-	//パーツの横幅
-	unsigned char chipW;
-	//パーツの縦幅
-	unsigned char chipH;
-	//レイヤーサイズ
-	unsigned char layerCnt;
-	//レイヤーデータのビット数
-	unsigned char bitCnt;
-};
