@@ -1,8 +1,11 @@
 ﻿#include "Apple.h"
+#include "Player.h"
+#include "DxLib.h"
 
 // コンストラクタ
-Apple::Apple()
+Apple::Apple(std::weak_ptr<Player>pl)
 {
+	this->pl = pl;
 }
 
 // デストラクタ

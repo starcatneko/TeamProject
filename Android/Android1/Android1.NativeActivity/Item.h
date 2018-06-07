@@ -2,6 +2,8 @@
 #include "Typedef.h"
 #include <memory>
 
+class Player;
+
 class Item
 {
 public:
@@ -16,6 +18,9 @@ public:
 	virtual void UpData(void) = 0;
 
 protected:
+	// プレイヤー
+	std::weak_ptr<Player>pl;
+	
 	// 座標
 	Pos pos;
 };

@@ -1,26 +1,4 @@
-﻿  Apple.cpp
-  BackGround.cpp
-  Camera.cpp
-  Dust.cpp
-  Fannings.cpp
-  Game.cpp
-  GamePlay.cpp
-  Item.cpp
-  LoadMane.cpp
-  Main.cpp
-  Over.cpp
-  Player.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(52): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(47): warning C4101: 'y': ローカル変数は 1 度も使われていません。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(47): warning C4101: 'x': ローカル変数は 1 度も使われていません。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(64): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(76): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(81): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(82): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Score.cpp
+﻿  GamePlay.cpp
   Stage.cpp
-  Title.cpp
-  Touch.cpp
   コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

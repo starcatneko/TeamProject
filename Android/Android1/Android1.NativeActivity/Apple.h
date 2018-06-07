@@ -6,7 +6,7 @@ class Apple :
 {
 public:
 	// コンストラクタ
-	Apple();
+	Apple(std::weak_ptr<Player>pl);
 	// デストラクタ
 	~Apple();
 
