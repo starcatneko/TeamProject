@@ -26,5 +26,6 @@ private:
 
 	// 画像データ
 	int image;
+	int t;
 };
 

@@ -3,8 +3,58 @@
   JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
+  BackGround.cpp
   Camera.cpp
   Dust.cpp
+Dust.cpp(39,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(39,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^
+Dust.cpp(41,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && pos.y - p.lock()->GetPos().y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(41,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && pos.y - p.lock()->GetPos().y < 10
+                          ^
+Dust.cpp(43,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(43,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^
+Dust.cpp(45,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && pos.y - p.lock()->GetPos().y < 10)
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(45,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && pos.y - p.lock()->GetPos().y < 10)
+                          ^
+Dust.cpp(54,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(54,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^
+Dust.cpp(56,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && pos.y - p.lock()->GetPos().y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(56,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && pos.y - p.lock()->GetPos().y < 10
+                          ^
+Dust.cpp(58,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(58,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && p.lock()->GetPos().y - pos.y < 10
+                          ^
+Dust.cpp(60,4): warning : '&&' within '||' [-Wlogical-op-parentheses]
+                          && pos.y - p.lock()->GetPos().y < 10)
+                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Dust.cpp(60,4) :  note: place parentheses around the '&&' expression to silence this warning
+                          && pos.y - p.lock()->GetPos().y < 10)
+                          ^
+  8 warnings generated.
   Enemy.cpp
   Fannings.cpp
   Game.cpp
@@ -25,6 +75,13 @@ GamePlay.cpp(14,16): warning : suggest braces around initialization of subobject
   Main.cpp
   Over.cpp
   Player.cpp
+Player.cpp(47,6): warning : unused variable 'x' [-Wunused-variable]
+          int x, y;
+              ^
+Player.cpp(47,9): warning : unused variable 'y' [-Wunused-variable]
+          int x, y;
+                 ^
+  2 warnings generated.
   Scene.cpp
   Score.cpp
   Title.cpp

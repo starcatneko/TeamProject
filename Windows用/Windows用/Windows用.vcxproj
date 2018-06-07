@@ -29,27 +29,27 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -132,6 +132,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Game.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Item.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\LoadMane.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Main.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Over.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Player.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Game.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Item.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\LoadMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Over.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Player.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Scene.h" />

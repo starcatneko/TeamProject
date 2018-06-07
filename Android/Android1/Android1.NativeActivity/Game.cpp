@@ -1,4 +1,5 @@
 ﻿#include "Game.h"
+#include "LoadMane.h"
 #include "Touch.h"
 #include "Title.h"
 #include "Typedef.h"
@@ -44,6 +45,7 @@ void Game::Init(void)
 // インスタンス化
 void Game::Create(void)
 {
+	LoadMane::Create();
 	Touch::Create();
 }
 
@@ -90,6 +92,7 @@ void Game::Run(void)
 // 終了処理
 void Game::Destroy(void)
 {
+	LoadMane::Destroy();
 	Touch::Destroy();
 
 	//Dxlibの終了

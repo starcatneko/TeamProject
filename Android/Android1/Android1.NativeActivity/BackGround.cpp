@@ -1,15 +1,13 @@
 ﻿#include "BackGround.h"
+#include "LoadMane.h"
 #include "DxLib.h"
 #define BG_LOOP_CNT 5
 
 // コンストラクタ
 BackGround::BackGround()
 {
-#ifndef __ANDROID__
-	image = LoadGraph(_T("../../Android/Android1/Android1.Packaging/assets/sample.png"));
-#else
-	image = LoadGraph(_T("sample.png"));
-#endif
+	image = LoadMane::Get()->Load("sample.png");
+	t = LoadMane::Get()->Load("sample.png");
 	pos = {};
 }
 
@@ -24,7 +22,7 @@ void BackGround::Draw(void)
 	for (int cnt = 0; cnt < BG_LOOP_CNT; cnt++) {
 		DrawGraph(pos.x + (WINDOW_X*cnt), pos.y, image, true);
 	}
-	//DrawGraph(pos.x, pos.y, image, true);
+	DrawGraph(WINDOW_X / 2, 0, t, false);
 }
 
 // 処理
