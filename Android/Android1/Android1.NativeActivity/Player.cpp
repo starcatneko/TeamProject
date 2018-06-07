@@ -44,12 +44,12 @@ bool b = 0;
 
 void Player::Draw()
 {
-	int x, y;
+	//int x, y;
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%d:%d"), pos.x, pos.y);
 	DrawFormatString(0, 25, 0xDDDDDD, _T("%d"), tempdis);
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
 	DrawBox(pos.x, pos.y, pos.x + 8, pos.y + 8, 0xAA0000, true);
-	DrawLine(pos.x, pos.y, pos.x + fcos[angle] * 1000, pos.y + fsin[angle] * 1000, 0x00FF00, true);
+	DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
 }
 
@@ -73,13 +73,13 @@ void Player::Update()
 
 
 	}
-	tempdis = hypot( tempPos.y - tempPos.y, tempPos.x - tempPos.x);
+	tempdis = hypot( tempPos.y -pos.y, tempPos.x - pos.x);
 	if (tempPos.x > 0 && tempPos.y > 0
 		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y))
 	{
 		//if (pos.x > tempPos.x) pos.x -= fcos[angle] * speed;
-		if(tempdis <8)pos.x += fcos[angle] * speed;
-		if (tempdis <8)pos.y += fsin[angle] * speed;
+		if(tempdis >8) pos.x += fcos[angle] * (float)speed;
+		if (tempdis >8)pos.y += fsin[angle] * (float)speed;
 		//if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
 		
 	}

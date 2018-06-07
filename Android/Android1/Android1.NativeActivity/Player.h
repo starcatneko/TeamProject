@@ -28,7 +28,8 @@ public:
 
 private:
 	//座標(int1)
-	Pos pos;
+	Position<float> pos;
+	//Position<float> fpos;
 	//移動目的座標
 	Pos tempPos;
 	//移動目標との距離
