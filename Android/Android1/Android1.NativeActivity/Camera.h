@@ -8,10 +8,11 @@ class Camera
 public:
 	Camera();
 	~Camera();
-	void Update();
-	void Draw();
-	void Scroll();
+	void Update(void);
+	void Draw(void);
+	void Scroll(void);		// 画面スクロール機能関数その1
 	void Scroll(Pos _pos);	// 画面スクロール機能関数その2
+	void Shake();			// カメラを揺らす
 
 	Pos &GetPos();
 	void SetPos(Pos _pos);

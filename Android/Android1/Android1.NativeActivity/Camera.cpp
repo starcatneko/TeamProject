@@ -9,11 +9,11 @@ Camera::Camera()
 	scrPos = { 0, 0};
 	shakeCnt = 0;
 
-	strPos[0] = { 1850, 0 };
-	strPos[1] = { 1850 + (1 * WINDOW_X), 0 };
-	strPos[2] = { 1850 + (2 * WINDOW_X), 0 };
-	strPos[3] = { 1850 + (3 * WINDOW_X), 0 };
-	strPos[4] = { 1850 + (4 * WINDOW_X), 0 };
+	strPos[0] = { (WINDOW_X - 70), 0 };
+	strPos[1] = { (WINDOW_X - 70) + (1 * WINDOW_X), 0 };
+	strPos[2] = { (WINDOW_X - 70) + (2 * WINDOW_X), 0 };
+	strPos[3] = { (WINDOW_X - 70) + (3 * WINDOW_X), 0 };
+	strPos[4] = { (WINDOW_X - 70) + (4 * WINDOW_X), 0 };
 	scrSpeed = 27;
 }
 
@@ -53,15 +53,15 @@ void Camera::Scroll(Pos _pos)
 	// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
 	// 多少ずれが生じるので、ここで微調整します
 	// 画面2へ移行した際の修正
-	if (GetPos().x == -1917) scrPos.x = -1920;
+	if (GetPos().x == ((-WINDOW_X) + 3)) scrPos.x = -WINDOW_X;
 	// 画面3へ移行した際の修正
-	if (GetPos().x == -3837) scrPos.x = -3840;
+	if (GetPos().x == ((-WINDOW_X * 2) + 3)) scrPos.x = -WINDOW_X * 2;
 	// 画面4へ移行した際の修正
-	if (GetPos().x == -5757) scrPos.x = -5760;
+	if (GetPos().x == ((-WINDOW_X * 3) + 3)) scrPos.x = -WINDOW_X * 3;
 	// 画面5へ移行した際の修正	※但し、画面5以降は予備の画面なので使わない可能性がある
-	if (GetPos().x == -7677) scrPos.x = -7680;
+	if (GetPos().x == ((-WINDOW_X * 4) + 3)) scrPos.x = -WINDOW_X * 4;
 	// 画面6へ移行した際の修正
-	if (GetPos().x == -9597) scrPos.x = -9600;
+	if (GetPos().x == ((-WINDOW_X * 5) + 3)) scrPos.x = -WINDOW_X * 5;
 
 	SetPos(scrPos);	// SetPosに格納
 }

@@ -69,8 +69,6 @@ void Player::Update()
 		{
 			angle += 360;
 		}
-
-
 	}
 	DrawBox(pos.x, pos.y, pos.x + fcos[angle] * 1000, pos.y - fsin[angle] * 1000, 0x00FF00, true);
 
@@ -81,10 +79,8 @@ void Player::Update()
 		//pos.x += fcos[angle] * speed;
 		//pos.y -= fsin[angle] * speed;
 		//if (pos.y < tempPos.y) pos.y += fsin[angle] * speed;
-		
 	}
 }
-
 
 void Player::TestUpdate()
 {

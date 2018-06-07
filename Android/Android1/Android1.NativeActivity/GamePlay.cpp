@@ -73,7 +73,6 @@ void GamePlay::Start(void)
 	pl->TestUpdate();
 	du->Update();
 
-
 #ifndef __ANDROID__
 	if (CheckHitKey(KEY_INPUT_RETURN))
 	{
