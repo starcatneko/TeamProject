@@ -32,5 +32,6 @@ private:
 	std::weak_ptr<Player>p;
 	Pos pos;
 	STATES state;
+	int angleNum;
 };
 
