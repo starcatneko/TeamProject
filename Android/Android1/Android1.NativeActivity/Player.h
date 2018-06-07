@@ -31,6 +31,8 @@ private:
 	Pos pos;
 	//移動目的座標
 	Pos tempPos;
+	//移動目標との距離
+	int tempdis;
 
 	//現在向いている方向
 	DIR dir;
