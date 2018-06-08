@@ -1,8 +1,13 @@
 ﻿#include "Enemy.h"
+#include "Stage.h"
 
 
 
 Enemy::Enemy()
+{
+}
+
+Enemy::Enemy(std::weak_ptr<Stage> s)
 {
 }
 

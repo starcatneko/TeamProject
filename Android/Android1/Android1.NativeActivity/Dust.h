@@ -33,7 +33,6 @@ private:
 
 	std::weak_ptr<Player>p;
 	Pos pos;
-	int angleNum;
 	//現在向いている方向
 	DIR dir;
 	//キャラクターの状態
@@ -50,5 +49,8 @@ private:
 	int color;
 	//判定のための待ち時間
 	int wait;
+
+	//x座標
+	int angleNumX;
 };
 
