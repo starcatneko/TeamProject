@@ -2,8 +2,10 @@
 #include "DxLib.h"
 #include <string.h>
 #include <math.h>
+#include <memory>
 
 Touch* Touch::instance = nullptr;
+
 
 Touch::Touch()
 {
@@ -12,7 +14,7 @@ Touch::Touch()
 	memset(pos, 0, sizeof(pos));
 	memset(swipe_pos_start, 0, sizeof(swipe_pos_start));
 	memset(swipe_pos_goal, 0, sizeof(swipe_pos_goal));
-
+	ZeroMemory(&p_con, sizeof(p_con));
 }
 
 Touch::~Touch()
@@ -77,6 +79,8 @@ void Touch::Update()
 	TouchProccess();
 
 #endif
+
+	Punicon();
 }
 //Win
 void Touch::MouseProccess()
@@ -196,7 +200,10 @@ void Touch::DrawSwipe()
 	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 160, 0xffff00, 1, 1);
 	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 40, 0xff0000, 1, 1);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+	DrawFormatString(0, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
 
+	DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,
+		GetSwipeStart(0).x, GetSwipeStart(0).y);
 }
 
 DIR Touch::GetSwipe()
@@ -209,3 +216,75 @@ float Touch::GetSwipeF()
 {
 	return 0.0f;
 }
+
+void Touch::Punicon()
+{
+	//2018.06.08
+	//プニコンの円枠の表示処理をTouch.cppで行っているが、最終的にはPlayer.cppに移動させたい
+
+
+	if (GetBuf(0) > 0)
+	{
+
+	}
+
+	//画面タップ中操作
+	if (GetBuf(0) >0)
+	{
+
+		p_con.time++;
+
+		p_con.pos = { GetSwipeStart(0).x,GetSwipeStart(0).y };
+
+		//プニコンの向いている方向と長さを取得する
+		p_con.angle = ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
+			GetPos(0).x - GetSwipeStart(0).x));
+
+		p_con.length = hypot(p_con.pos.y-pos[0].y,
+			p_con.pos.x-pos[0].x );
+
+		AngleCtr();
+
+		//プニコンが円枠の範囲外に出た場合の操作
+		if (p_con.length > p_con.length_MAX)
+		{
+			p_con.length = p_con.length_MAX;
+		}
+
+		p_con.verocity = (p_con.length / 40);
+
+		/*
+		tempPos.x += (fcos[angle]);
+		tempPos.y += (fsin[angle]);
+		*/
+
+	}
+	else if (GetBuf(0) == -1)
+	{
+
+		p_con.length = 0;
+	}
+
+
+
+}
+
+void Touch::AngleCtr()
+{
+	/*
+	if (tempdis % 25 == 0)
+	{
+		p_con.angle = ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
+			GetPos(0).x - GetSwipeStart(0).x));
+	}
+	*/
+	if (p_con.angle > 360)
+	{
+		p_con.angle -= 360;
+	}
+	if (p_con.angle < 0)
+	{
+		p_con.angle += 360;
+	}
+}
+

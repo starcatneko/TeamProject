@@ -4,26 +4,8 @@
 #include "Camera.h"
 
 
-enum COMMAND
-{
-	CMD_TAP,
-	CMD_SWIPE,
 
 
-};
-
-//プニコン構造体
-typedef struct
-{
-	//カーソル位置
-	Pos pos;
-	//カーソルの角度
-	int angle;
-	//カーソルを引っ張っている長さ
-	int length;
-	//カーソルを動かす速さ（強さ・勢い）
-	int verocity;
-} punicon;
 
 class Player
 {
@@ -71,9 +53,6 @@ private:
 	//移動目標との距離
 	int tempdis;
 
-	//プニコンの構造体
-	punicon p_con;
-
 	//特殊ゲージ リンゴを拾って回復、各種技能や時間経過で消費
 	int applepower;
 
@@ -99,12 +78,6 @@ private:
 
 	// 画面をタッチした時のプレイヤーの処理
 	void Touch();
-
-	// プニコン風インターフェース
-	void Punicon();
-
-	// 角度が0~360の範囲に収まるようにする
-	void AngleCtr();
 
 	// 移動処理
 	void Move();
