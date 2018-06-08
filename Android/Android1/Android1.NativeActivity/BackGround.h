@@ -12,6 +12,8 @@ public:
 
 	// 描画
 	void Draw(void);
+	// テスト用のスクロール描画
+	void TestDraw(Pos _pos);
 
 	// 処理
 	void UpData(void);

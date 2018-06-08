@@ -34,7 +34,7 @@ public:
 	// パワーを数値分動かす
 	void UpPower(int power);
 	// テスト用
-	void TestUpdate();
+	void TestUpdate(int scrMode);
 	void TestDraw(Pos _pos);
 
 private:

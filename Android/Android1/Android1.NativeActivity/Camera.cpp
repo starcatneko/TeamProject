@@ -9,11 +9,11 @@ Camera::Camera()
 	scrPos = { 0, 0};
 	shakeCnt = 0;
 
-	strPos[0] = { 1850, 0 };
-	strPos[1] = { 1850 + (1 * WINDOW_X), 0 };
-	strPos[2] = { 1850 + (2 * WINDOW_X), 0 };
-	strPos[3] = { 1850 + (3 * WINDOW_X), 0 };
-	strPos[4] = { 1850 + (4 * WINDOW_X), 0 };
+	strPos[0] = { (WINDOW_X - 70), 0 };
+	strPos[1] = { (WINDOW_X - 70) + (1 * WINDOW_X), 0 };
+	strPos[2] = { (WINDOW_X - 70) + (2 * WINDOW_X), 0 };
+	strPos[3] = { (WINDOW_X - 70) + (3 * WINDOW_X), 0 };
+	strPos[4] = { (WINDOW_X - 70) + (4 * WINDOW_X), 0 };
 	scrSpeed = 27;
 }
 
@@ -22,7 +22,7 @@ Camera::~Camera()
 {
 }
 
-// スクロール
+// スクロールその1
 void Camera::Scroll()
 {
 	Pos tPos;	// touchクラスの座標を格納する専用の変数
@@ -44,11 +44,62 @@ void Camera::Scroll(Pos _pos)
 {
 	Pos pPos;	// touchクラスの座標を格納する専用の変数
 	pPos = _pos;
-	for (int x = 0; x <= 4; x++) {
+	for (int x = 0; x <= 5; x++) {
 		if ((pPos.x >= strPos[x].x) && (pPos.x <= strPos[x].x + 70)) {
 			scrPos.x -= scrSpeed;
 		}
 	}
+
+	// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
+	// 多少ずれが生じるので、ここで微調整します
+	// 画面2へ移行した際の修正
+	if (GetPos().x == ((-WINDOW_X * 1) + 3)) scrPos.x = -WINDOW_X * 1;
+	// 画面3へ移行した際の修正
+	if (GetPos().x == ((-WINDOW_X * 2) + 3)) scrPos.x = -WINDOW_X * 2;
+	// 画面4へ移行した際の修正
+	if (GetPos().x == ((-WINDOW_X * 3) + 3)) scrPos.x = -WINDOW_X * 3;
+	// 画面5へ移行した際の修正	※但し、画面5以降は予備の画面なので使わない可能性がある
+	if (GetPos().x == ((-WINDOW_X * 4) + 3)) scrPos.x = -WINDOW_X * 4;
+	// 画面6へ移行した際の修正
+	if (GetPos().x == ((-WINDOW_X * 5) + 3)) scrPos.x = -WINDOW_X * 5;
+
+	SetPos(scrPos);	// SetPosに格納
+}
+
+// スクロールその3
+void Camera::Scroll(Pos _pos2, Pos line)
+{
+	Pos pPos;	// Playerクラスの座標を格納する専用の変数
+	pPos = _pos2;
+
+	Pos scrLine;// スクロール3使用の際に、スクロールを実行する際の実行ライン
+	scrLine = line;
+
+	if (pPos.x >= scrLine.x) {
+		scrPos.x -= scrSpeed;	// スクリーン座標に20を加算
+	}
+
+	// スクロール開始線
+	DrawLine( scrLine.x, scrLine.y, scrLine.x, (scrLine.y + WINDOW_Y), 0x00ff00);
+
+	/*for (int x = 0; x <= 5; x++) {
+		if ((pPos.x >= strPos[x].x) && (pPos.x <= strPos[x].x + 70)) {
+			scrPos.x -= scrSpeed;
+		}
+	}*/
+
+	//// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
+	//// 多少ずれが生じるので、ここで微調整します
+	//// 画面2へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 1) + 3)) scrPos.x = -WINDOW_X * 1;
+	//// 画面3へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 2) + 3)) scrPos.x = -WINDOW_X * 2;
+	//// 画面4へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 3) + 3)) scrPos.x = -WINDOW_X * 3;
+	//// 画面5へ移行した際の修正	※但し、画面5以降は予備の画面なので使わない可能性がある
+	//if (GetPos().x == ((-WINDOW_X * 4) + 3)) scrPos.x = -WINDOW_X * 4;
+	//// 画面6へ移行した際の修正
+	//if (GetPos().x == ((-WINDOW_X * 5) + 3)) scrPos.x = -WINDOW_X * 5;
 
 	SetPos(scrPos);	// SetPosに格納
 }
@@ -64,9 +115,9 @@ void Camera::Draw()
 	//Scroll();
 	for (int x = 0; x < 5; x++) {
 		// テスト用の描画枠
-		DrawBox(pos.x + (1920 * x), pos.y, (pos.x + WINDOW_X) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + WINDOW_X) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
-		DrawBox(pos.x + (1920 * x), pos.y, (pos.x + (WINDOW_X / 2)) + (1920 * x), WINDOW_Y, 0xffff00, false);
+		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + (WINDOW_X / 2)) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
 		// テスト用の描画座標移動の基準ライン
 		//DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
 		// 次のエリアへ！っていうスクロール用推移範囲
