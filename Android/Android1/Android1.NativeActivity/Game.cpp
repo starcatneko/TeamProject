@@ -75,6 +75,7 @@ void Game::UpData(void)
 {
 	Draw();
 
+	PuniPuni::Get()->UpData();
 	Touch::Get()->Update();
 	scene->UpData();
 }

@@ -18,6 +18,7 @@
 //キャラクターの向いている方向
 //UPとDOWNは使わない可能性大
 enum DIR {
+	DIR_NON  	= 0,
 	DIR_DOWN	= 2,
 	DIR_LEFT	= 4, 
 	DIR_RIGHT	= 6,
