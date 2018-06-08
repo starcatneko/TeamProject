@@ -13,6 +13,8 @@ public:
 	}
 
 	Pos GetPos(int touchNo);
+	Pos GetSwipeStart(int touchNo);
+	Pos GetSwipeGoal(int touchNo);
 	void SetPos(int touchNo, Pos pos);
 
 	int *GetBuf();
