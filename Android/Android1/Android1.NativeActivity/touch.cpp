@@ -1,6 +1,7 @@
 ﻿#include "Touch.h"
 #include "DxLib.h"
 #include <string.h>
+#include <math.h>
 
 Touch* Touch::instance = nullptr;
 
@@ -149,6 +150,12 @@ void Touch::TouchProccess()
 			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
 
 			GetTouchInput(tN, &pos[tN].x, &pos[tN].y);
+			// タッチ時の処理
+			if (touch_buf[tN] == 1)
+			{
+				swipe_pos_start[tN] = pos[tN];
+			}
+
 		}
 
 		for (int tN = 0; tN < TOUCH_MAX; tN++)
@@ -168,8 +175,9 @@ void Touch::TouchProccess()
 			//画面がタッチされておらず、前フレームがタッチされていた場合
 			if (touch_buf[tN] >0)
 			{
-				touch_buf[tN] = -1;
+				touch_buf[tN] = -1;				
 				swipe_pos_goal[tN] = pos[tN];
+
 
 			}
 			//前のフレームからタッチされていない状態
@@ -183,14 +191,6 @@ void Touch::TouchProccess()
 
 void Touch::DrawSwipe()
 {
-	/*
-	DrawTriangle(swipe_pos_goal[0].x, swipe_pos_goal[0].y,
-		swipe_pos_start[0].x - 40, swipe_pos_start[0].y - 40,
-		swipe_pos_start[0].x + 40, swipe_pos_start[0].y + 40, 0xBB00BB, true);
-
-	DrawBox(swipe_pos_goal[0].x, swipe_pos_goal[0].y,
-			swipe_pos_goal[0].x + 8, swipe_pos_goal[0].y + 8, 0xDDDDDD, true);
-	*/
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
 	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 160, 0xffff00, 1, 1);

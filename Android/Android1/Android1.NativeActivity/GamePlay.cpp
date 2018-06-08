@@ -32,7 +32,7 @@ void GamePlay::Create(void)
 	cam.reset(new Camera());
 	st.reset(new Stage());
 	back.reset(new BackGround());
-	pl.reset(new Player(cam));
+	pl.reset(new Player(780,480, cam));
 	du.reset(new Dust(pl));
 }
 

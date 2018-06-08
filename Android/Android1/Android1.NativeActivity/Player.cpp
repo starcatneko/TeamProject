@@ -5,16 +5,18 @@
 #include "Typedef.h"
 
 //#include "NDKHelper.h"
-Player::Player(std::weak_ptr<Camera> cam)
+Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 	this->cam = cam;
-	this->tempPos = { 0,0 };
-	this->pos = { 780,480 };
+	tempPos = { 0,0 };
+	this->pos = {x, y};
 	st = ST_NUETRAL;
 	hp = 0;
 	speed = 5;
 	applepower = 0;
 	dir = DIR_LEFT;
+	ZeroMemory(&p_con, sizeof(p_con));
+	
 
 	int i;
 	for (i = 0; i<360; i++) {
@@ -83,6 +85,11 @@ void Player::Draw()
 	
 	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
 
+
+	DrawTriangle(Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y,
+		Touch::Get()->GetSwipeStart(0).x + fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y + fsin[angle] * 18,
+		Touch::Get()->GetSwipeStart(0).x - fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y - fsin[angle] * 18,
+		0xFF2222, true);
 	
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
@@ -129,7 +136,8 @@ void Player::Move()
 	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
 	if (tempdis % 25== 0)
 	{
-		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
+		p_con.angle = ANGLE(atan2(Touch::Get()->GetPos(0).y - Touch::Get()->GetSwipeStart(0).y,
+			Touch::Get()->GetPos(0).x - Touch::Get()->GetSwipeStart(0).x));
 	}
 	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
@@ -166,24 +174,25 @@ void Player::Punicon()
 	{
 		a++;
 
-		angle = ANGLE(atan2(Touch::Get()->GetPos(0).y-Touch::Get()->GetSwipeStart(0).y ,
+		p_con.angle = ANGLE(atan2(Touch::Get()->GetPos(0).y-Touch::Get()->GetSwipeStart(0).y ,
 			Touch::Get()->GetPos(0).x-Touch::Get()->GetSwipeStart(0).x ));
 
-		tempdis = hypot(Touch::Get()->GetSwipeStart(0).y - Touch::Get()->GetPos(0).y,
+		p_con.length = hypot(Touch::Get()->GetSwipeStart(0).y - Touch::Get()->GetPos(0).y,
 			Touch::Get()->GetSwipeStart(0).x - Touch::Get()->GetPos(0).x);
 
 		AngleCtr();
 
-		if (tempdis > 200)
+		if (p_con.length > 200)
 		{
-			tempdis = 200;
+			p_con.length = 200;
 		}
 
-		speed = (tempdis / 40);
+		speed = (p_con.length / 40);
 
+		/*
 		tempPos.x += (fcos[angle]);
 		tempPos.y += (fsin[angle]);
-
+		*/
 		st = ST_WALK;
 
 
@@ -193,7 +202,8 @@ void Player::Punicon()
 	{
 		tempPos.x = pos.x;
 		tempPos.y = pos.y;
-		//st = ST_NUETRAL;
+		p_con.length = 0;
+		st = ST_NUETRAL;
 	}
 
 }

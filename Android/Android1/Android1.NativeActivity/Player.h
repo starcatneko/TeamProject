@@ -4,13 +4,34 @@
 #include "Camera.h"
 
 
+enum COMMAND
+{
+	CMD_TAP,
+	CMD_SWIPE,
+
+
+};
+
+//プニコン構造体
+typedef struct
+{
+	//カーソル位置
+	Pos pos;
+	//カーソルの角度
+	int angle;
+	//カーソルを引っ張っている長さ
+	int length;
+	//カーソルを動かす速さ（強さ・勢い）
+	int verocity;
+} punicon;
+
 class Player
 {
 public:
 	//コンストラクタ
 	Player()
 	{}
-	Player(std::weak_ptr<Camera> cam);
+	Player(float x, float y, std::weak_ptr<Camera> cam);
 	//デストラクタ
 	~Player();
 	//座標の取得
@@ -33,6 +54,10 @@ public:
 	void SetPower(int power);
 	// パワーを数値分動かす
 	void UpPower(int power);
+
+
+
+
 	// テスト用
 	void TestUpdate(int scrMode);
 	void TestDraw(Pos _pos);
@@ -45,6 +70,9 @@ private:
 	Pos tempPos;
 	//移動目標との距離
 	int tempdis;
+
+	//プニコンの構造体
+	punicon p_con;
 
 	//特殊ゲージ リンゴを拾って回復、各種技能や時間経過で消費
 	int applepower;

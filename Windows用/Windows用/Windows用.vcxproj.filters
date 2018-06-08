@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\西岡">
+      <UniqueIdentifier>{51870332-773e-4410-a01b-6985cb1fb84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\西岡">
+      <UniqueIdentifier>{66aa3ec8-36e2-41bb-b5ad-d1734bfc934d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Apple.cpp">
@@ -48,13 +54,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Score.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Touch.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Title.cpp">
@@ -71,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\ItemMane.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Player.cpp">
+      <Filter>ソース ファイル\西岡</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Touch.cpp">
+      <Filter>ソース ファイル\西岡</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +107,6 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Item.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Scene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -111,9 +114,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Typedef.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Touch.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Title.h">
@@ -133,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\ItemMane.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Player.h">
+      <Filter>ヘッダー ファイル\西岡</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Touch.h">
+      <Filter>ヘッダー ファイル\西岡</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
