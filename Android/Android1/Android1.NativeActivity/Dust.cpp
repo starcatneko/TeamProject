@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
@@ -31,7 +31,7 @@ void Dust::Update()
 
 void Dust::Draw()
 {
-	DrawTriangle(pos.x, pos.y, angleNum, pos.y + 20, angleNum, pos.y - 20, 0x00ffff, true);
+	DrawTriangle(pos.x, pos.y, angleNum, pos.y + 20, angleNum, pos.y - 20, color, true);
 }
 
 void Dust::NeutralUpdate()
@@ -48,11 +48,11 @@ void Dust::NeutralUpdate()
 		angleNum = pos.x + 40;
 	}
 
-	if ((pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
-		|| (pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < attackRange))
+	if ((pos.x <= p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
+		|| (pos.x >= p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < attackRange))
 	{
-		if ((pos.y < p.lock()->GetPos().y && p.lock()->GetPos().y - pos.y < attackRange)
-			|| (pos.y > p.lock()->GetPos().y && pos.y - p.lock()->GetPos().y < attackRange))
+		if ((pos.y <= p.lock()->GetPos().y && p.lock()->GetPos().y - pos.y < attackRange)
+			|| (pos.y >= p.lock()->GetPos().y && pos.y - p.lock()->GetPos().y < attackRange))
 		{
 			attackFlag = true;
 		}
@@ -71,6 +71,7 @@ void Dust::NeutralUpdate()
 void Dust::RunUpdate()
 {
 	st = ST_WALK;
+	color = 0x00ffff;
 	if (dir == DIR_LEFT)
 	{
 		pos.x -= speed;
@@ -101,7 +102,7 @@ void Dust::RunUpdate()
 void Dust::AttackUpdate()
 {
 	st = ST_ATTACK;
-	DrawString(50, 50, _T("DustAttack"), 0xff0000);
+	color = 0xffff00;
 	attackFlag = false;
 	updater = &Dust::NeutralUpdate;
 }
