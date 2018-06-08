@@ -48,7 +48,5 @@ private:
 	int attackRange;
 	//配色(Debugのとき状態で色分けする)
 	int color;
-	//行動制限のための待ち時間
-	int wait;
 };
 
