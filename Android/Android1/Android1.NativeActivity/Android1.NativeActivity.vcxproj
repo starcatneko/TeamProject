@@ -241,6 +241,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StageData.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Touch.h" />
     <ClInclude Include="Typedef.h" />

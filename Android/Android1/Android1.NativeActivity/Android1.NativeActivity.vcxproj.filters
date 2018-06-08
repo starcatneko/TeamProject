@@ -111,6 +111,9 @@
     <ClInclude Include="Stage.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="StageData.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">

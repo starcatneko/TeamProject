@@ -158,6 +158,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Scene.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Score.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Stage.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\StageData.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Title.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Touch.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Typedef.h" />

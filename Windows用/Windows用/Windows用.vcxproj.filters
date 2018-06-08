@@ -125,5 +125,8 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Stage.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\StageData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
