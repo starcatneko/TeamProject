@@ -2,15 +2,10 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
-	pos = { 1000, 500 };
-	angleNum = pos.x - 20;
-	hp = 0;
-	speed = 4;
-	AttackFlag = false;
 }
 
 
@@ -20,7 +15,7 @@ Dust::~Dust()
 
 Pos Dust::GetPos()
 {
-	return Pos();
+	return pos;
 }
 
 void Dust::SetPos(Pos pos)
@@ -45,29 +40,25 @@ void Dust::NeutralUpdate()
 	if (pos.x < p.lock()->GetPos().x)
 	{
 		dir = DIR_RIGHT;
-		angleNum = pos.x - 20;
+		angleNum = pos.x - 40;
 	}
 	else if(pos.x > p.lock()->GetPos().x)
 	{
 		dir = DIR_LEFT;
-		angleNum = pos.x + 20;
+		angleNum = pos.x + 40;
 	}
-	//恥ずかしみ(攻撃範囲の設定、後でリファクタリングします)
-	if (GetPos().x - p.lock()->GetPos().x < 10 || p.lock()->GetPos().x - GetPos().x < 10)
+
+	if ((pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
+		|| (pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < attackRange))
 	{
-		if (GetPos().y - p.lock()->GetPos().y < 10 || p.lock()->GetPos().y - GetPos().y < 10)
+		if ((pos.y < p.lock()->GetPos().y && p.lock()->GetPos().y - pos.y < attackRange)
+			|| (pos.y > p.lock()->GetPos().y && pos.y - p.lock()->GetPos().y < attackRange))
 		{
-			if (GetPos().x - p.lock()->GetPos().x > 0 || p.lock()->GetPos().x - GetPos().x > 0)
-			{
-				if (GetPos().y - p.lock()->GetPos().y > 0 || p.lock()->GetPos().y - GetPos().y > 0)
-				{
-					AttackFlag = true;
-				}
-			}
+			attackFlag = true;
 		}
 	}
 
-	if (AttackFlag)
+	if (attackFlag)
 	{
 		updater = &Dust::AttackUpdate;
 	}
@@ -83,18 +74,26 @@ void Dust::RunUpdate()
 	if (dir == DIR_LEFT)
 	{
 		pos.x -= speed;
+		if (pos.y > p.lock()->GetPos().y)
+		{
+			pos.y -= speed;
+		}
+		else if (pos.y < p.lock()->GetPos().y)
+		{
+			pos.y += speed;
+		}
 	}
 	else if (dir == DIR_RIGHT)
 	{
 		pos.x += speed;
-	}
-	if (dir == DIR_UP)
-	{
-		pos.y -= speed;
-	}
-	else if (dir == DIR_DOWN)
-	{
-		pos.y -= speed;
+		if (pos.y > p.lock()->GetPos().y)
+		{
+			pos.y -= speed;
+		}
+		else if (pos.y < p.lock()->GetPos().y)
+		{
+			pos.y += speed;
+		}
 	}
 	updater = &Dust::NeutralUpdate;
 }
@@ -103,6 +102,7 @@ void Dust::AttackUpdate()
 {
 	st = ST_ATTACK;
 	DrawString(50, 50, _T("DustAttack"), 0xff0000);
+	attackFlag = false;
 	updater = &Dust::NeutralUpdate;
 }
 
