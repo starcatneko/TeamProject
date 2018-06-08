@@ -14,8 +14,10 @@ public:
 
 	// 敵の読み込み
 	void LoadEnemy(std::string fileName);
+	void LoadEnemy(void);
 	// アイテムの読み込み
 	void LoadItem(std::string fileName);
+	void LoadItem(void);
 
 	// 敵の情報の取得
 	std::vector<int> GetEnemy(int minx, int maxx);
@@ -26,9 +28,9 @@ public:
 	Pos GetStageSize(void);
 
 	// 敵チップサイズの取得
-	int GetChipEneSize(void);
+	Pos GetChipEneSize(void);
 	// アイテムチップサイズの取得
-	int GetChipItemSize(void);
+	Pos GetChipItemSize(void);
 
 	// 敵のチップ数の取得
 	Pos GetChipEneCnt(void);

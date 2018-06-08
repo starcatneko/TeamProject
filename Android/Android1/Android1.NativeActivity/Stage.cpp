@@ -1,18 +1,22 @@
 ﻿#include "Stage.h"
 #include "LoadMane.h"
+#include "StageData.h"
 #include <algorithm>
 
 std::string ene = "stage.csv";
 std::string ite = "item.csv";
 
-#define CHIP_ENEM 256
-#define CHIP_ITEM 128
+// 敵のサイズ
+const Pos eneSize = { 240, 270 };
 
-#define ENE_CHIP_CNT_X 30
-#define ENE_CHIP_CNT_Y 4
+// 敵のチップ数
+const Pos eneCnt = { 32, 4 };
 
-#define ITE_CHIP_CNT_X 60
-#define ITE_CHIP_CNT_Y 8
+// アイテムのサイズ
+const Pos iteSize = { 128, 128 };
+
+// アイテムのチップ数
+const Pos iteCnt = { 60, 8 };
 
 // コンストラクタ
 Stage::Stage()
@@ -22,7 +26,7 @@ Stage::Stage()
 	memset(read, 0, sizeof(read));
 
 
-	LoadEnemy(ene);
+	LoadEnemy();
 	//LoadItem(ite);
 }
 
@@ -42,14 +46,34 @@ void Stage::LoadEnemy(std::string fileName)
 		return;
 	}
 	data["enemy"].resize(dummy.size());
-	for (int i = 0; i < ENE_CHIP_CNT_Y; ++i)
+	for (int i = 0; i < eneCnt.y; ++i)
 	{
-		for (int j = 0; j < ENE_CHIP_CNT_X; ++j)
+		for (int j = 0; j < eneCnt.x; ++j)
 		{
-			data["enemy"][j * (ENE_CHIP_CNT_Y) + i] = dummy[i * (ENE_CHIP_CNT_X) + j];
+			data["enemy"][j * (eneCnt.y) + i] = dummy[i * (eneCnt.x) + j];
 		}
 	}
-	size["enemy"] = { (int)(data["enemy"].size() / ENE_CHIP_CNT_Y) * CHIP_ENEM, (int)(data["enemy"].size() / ENE_CHIP_CNT_X) * CHIP_ENEM };
+	size["enemy"] = { (int)(data["enemy"].size() / eneCnt.y) * eneSize.x, (int)(data["enemy"].size() / eneCnt.x) * eneSize.y };
+}
+
+// 敵の読み込み
+void Stage::LoadEnemy(void)
+{
+	std::vector<int>dummy;
+	dummy = e_data;
+	if (dummy.size() <= 0)
+	{
+		return;
+	}
+	data["enemy"].resize(dummy.size());
+	for (int i = 0; i < eneCnt.y; ++i)
+	{
+		for (int j = 0; j < eneCnt.x; ++j)
+		{
+			data["enemy"][j * (eneCnt.y) + i] = dummy[i * (eneCnt.x) + j];
+		}
+	}
+	size["enemy"] = { (int)(data["enemy"].size() / eneCnt.y) * eneSize.x, (int)(data["enemy"].size() / eneCnt.x) * eneSize.y };
 }
 
 // アイテムの読み込み
@@ -62,34 +86,54 @@ void Stage::LoadItem(std::string fileName)
 		return;
 	}
 	data["item"].resize(dummy.size());
-	for (int i = 0; i < ITE_CHIP_CNT_Y; ++i)
+	for (int i = 0; i < iteCnt.y; ++i)
 	{
-		for (int j = 0; j < ITE_CHIP_CNT_X; ++j)
+		for (int j = 0; j < iteCnt.x; ++j)
 		{
-			data["item"][j * (ITE_CHIP_CNT_Y) + i] = dummy[i * (ITE_CHIP_CNT_X) + j];
+			data["item"][j * (iteCnt.y) + i] = dummy[i * (iteCnt.x) + j];
 		}
 	}
-	size["item"] = { (int)(data["item"].size() / ITE_CHIP_CNT_Y) * CHIP_ITEM, (int)(data["item"].size() / ITE_CHIP_CNT_X) * CHIP_ITEM };
+	size["item"] = { (int)(data["item"].size() / iteCnt.y) * iteSize.x, (int)(data["item"].size() / iteCnt.x) * iteSize.y };
+}
+
+// アイテムの読み込み
+void Stage::LoadItem(void)
+{
+	std::vector<int>dummy;
+	dummy = i_data;
+	if (dummy.size() <= 0)
+	{
+		return;
+	}
+	data["item"].resize(dummy.size());
+	for (int i = 0; i < iteCnt.y; ++i)
+	{
+		for (int j = 0; j < iteCnt.x; ++j)
+		{
+			data["item"][j * (iteCnt.y) + i] = dummy[i * (iteCnt.x) + j];
+		}
+	}
+	size["item"] = { (int)(data["item"].size() / iteCnt.y) * iteSize.x, (int)(data["item"].size() / iteCnt.x) * iteSize.y };
 }
 
 // 敵の情報の取得
 std::vector<int> Stage::GetEnemy(int minx, int maxx)
 {
-	int left = std::max(minx / CHIP_ENEM, read[0]);
-	int right = maxx / CHIP_ENEM;
+	int left = std::max(minx / eneSize.x, read[0]);
+	int right = maxx / eneSize.x;
 	if (right <= read[0])
 	{
 		return std::vector<int>();
 	}
 
-	auto index = left * ENE_CHIP_CNT_Y;
-	auto indey = right * ENE_CHIP_CNT_Y;
+	auto index = left * eneCnt.y;
+	auto indey = right * eneCnt.y;
 
 	auto begin = data["enemy"].begin() + index;
 	auto itr = data["enemy"].end();
 	auto end = itr;
 
-	if (indey < data["enemy"].size())
+	if (indey < (int)data["enemy"].size())
 	{
 		end = data["enemy"].begin() + indey;
 		read[0] = right;
@@ -105,31 +149,7 @@ std::vector<int> Stage::GetEnemy(int minx, int maxx)
 // アイテムの情報の取得
 std::vector<int> Stage::GetItem(int minx, int maxx)
 {
-	int left = std::max(minx / CHIP_ENEM, read[1]);
-	int right = maxx / CHIP_ENEM;
-	if (right <= read[1])
-	{
-		return std::vector<int>();
-	}
-
-	auto index = left * ENE_CHIP_CNT_Y;
-	auto indey = right * ENE_CHIP_CNT_Y;
-
-	auto begin = data["item"].begin() + index;
-	auto itr = data["item"].end();
-	auto end = itr;
-
-	if (indey < data["item"].size())
-	{
-		end = data["item"].begin() + indey;
-		read[1] = right;
-	}
-	else
-	{
-		return std::vector<int>();
-	}
-
-	return std::vector<int>(begin, end);
+	return std::vector<int>();
 }
 
 // ステージのサイズの取得
@@ -139,27 +159,27 @@ Pos Stage::GetStageSize(void)
 }
 
 // 敵チップサイズの取得
-int Stage::GetChipEneSize(void)
+Pos Stage::GetChipEneSize(void)
 {
-	return CHIP_ENEM;
+	return eneSize;
 }
 
 // アイテムチップサイズの取得
-int Stage::GetChipItemSize(void)
+Pos Stage::GetChipItemSize(void)
 {
-	return CHIP_ITEM;
+	return iteSize;
 }
 
 // 敵のチップ数の取得
 Pos Stage::GetChipEneCnt(void)
 {
-	return { ENE_CHIP_CNT_X, ENE_CHIP_CNT_Y };
+	return eneCnt;
 }
 
 // アイテムのチップ数の取得
 Pos Stage::GetChipItemCnt(void)
 {
-	return { ITE_CHIP_CNT_X, ITE_CHIP_CNT_Y };
+	return iteCnt;
 }
 
 // クリア

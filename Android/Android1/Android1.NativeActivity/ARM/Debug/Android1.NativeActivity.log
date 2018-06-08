@@ -11,9 +11,10 @@
   Game.cpp
   GamePlay.cpp
   Item.cpp
+  Over.cpp
   Player.cpp
-  Scene.cpp
   Score.cpp
   Stage.cpp
+  Title.cpp
   Touch.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
