@@ -3,7 +3,6 @@
 #include "dxlib.h"
 #include <math.h>
 #include "Typedef.h"
-#include <Windows.h>
 
 //#include "NDKHelper.h"
 Player::Player(std::weak_ptr<Camera> cam)
