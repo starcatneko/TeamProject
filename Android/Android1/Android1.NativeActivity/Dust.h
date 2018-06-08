@@ -46,5 +46,7 @@ private:
 	bool attackFlag;
 	//敵が攻撃に移る範囲
 	int attackRange;
+	//配色(Debugのとき状態で色分けする)
+	int color;
 };
 
