@@ -3,6 +3,7 @@
 #include "dxlib.h"
 #include <math.h>
 #include "Typedef.h"
+#include <Windows.h>
 
 //#include "NDKHelper.h"
 Player::Player(std::weak_ptr<Camera> cam)
@@ -31,7 +32,7 @@ Player::~Player()
 
 Pos Player::GetPos()
 {
-	return Pos();
+	return {(int)pos.x, (int)pos.y};
 }
 
 void Player::SetPos(Pos pos)
@@ -76,8 +77,9 @@ void Player::Draw()
 	}
 	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
+	DrawFormatString(100, 25, 0xDDDDDD, _T("%d"), st);
 	DrawFormatString(0, 25, 0xDDDDDD, _T("%d:%d"), tempdis, angle);
-	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
+	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d,%d"), Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y, Touch::Get()->GetBuf(0));
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
@@ -95,10 +97,10 @@ void Player::StatesUpDate()
 	{ 
 		case ST_NUETRAL:
 			Touch();
-			AngleCtr();
 			break;
 		case ST_WALK:
 			Move();
+			AngleCtr();
 			break;
 		case ST_ATTACK:
 			st = ST_NUETRAL;
@@ -116,9 +118,14 @@ void Player::StatesUpDate()
 }
 void Player::Move()
 {
-	if (tempPos.x > 0 && tempPos.y > 0
-		&& !(tempPos.x > WINDOW_X &&tempPos.y > WINDOW_Y)
-		&& tempdis > speed)
+	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
+	if (tempdis % 25== 0)
+	{
+		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
+	}
+	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
+
+	if (tempdis > speed)
 	{
 		pos.x += fcos[angle] * (float)speed;
 		pos.y += fsin[angle] * (float)speed;
@@ -135,14 +142,14 @@ void Player::Touch()
 		a++;
 		tempPos = Touch::Get()->GetPos(0);
 		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
+
+		if(tempPos.x >10000 || tempPos.y >10000 ||
+			tempPos.x >-10000 || tempPos.y >-10000)
+			
+
+
 		st = ST_WALK;
 
-	}
-	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
-	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
-	if (tempdis % 50 == 0)
-	{
-		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
 	}
 
 
