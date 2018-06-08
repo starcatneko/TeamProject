@@ -12,6 +12,7 @@
               ^
   1 warning generated.
   Enemy.cpp
+  Fannings.cpp
   Game.cpp
   GamePlay.cpp
   Item.cpp
@@ -20,6 +21,7 @@
   Main.cpp
   Over.cpp
   Player.cpp
+  PuniPuni.cpp
   Score.cpp
   Stage.cpp
   Title.cpp

@@ -137,6 +137,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Main.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Over.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Player.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\PuniPuni.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Scene.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Score.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Stage.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\LoadMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Over.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Player.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\PuniPuni.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Scene.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Score.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Stage.h" />

@@ -1,5 +1,6 @@
 ﻿#include "Game.h"
 #include "LoadMane.h"
+#include "PuniPuni.h"
 #include "Touch.h"
 #include "ItemMane.h"
 #include "Title.h"
@@ -47,6 +48,7 @@ void Game::Init(void)
 void Game::Create(void)
 {
 	LoadMane::Create();
+	PuniPuni::Create();
 	Touch::Create();
 	ItemMane::Create();
 }
@@ -95,6 +97,7 @@ void Game::Run(void)
 void Game::Destroy(void)
 {
 	LoadMane::Destroy();
+	PuniPuni::Destroy();
 	Touch::Destroy();
 	ItemMane::Destroy();
 

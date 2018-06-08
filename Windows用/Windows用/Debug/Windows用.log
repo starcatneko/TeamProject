@@ -1,2 +1,34 @@
-﻿  Dust.cpp
-  Windows用.vcxproj -> C:\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  Apple.cpp
+  BackGround.cpp
+  Camera.cpp
+  Dust.cpp
+  Enemy.cpp
+  Fannings.cpp
+  Game.cpp
+  GamePlay.cpp
+  Item.cpp
+  ItemMane.cpp
+  LoadMane.cpp
+  Main.cpp
+  Over.cpp
+  Player.cpp
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(39): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(40): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(87): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(132): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(134): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(154): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(169): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(172): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(184): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(185): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(194): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(195): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  PuniPuni.cpp
+  Scene.cpp
+  Score.cpp
+  Stage.cpp
+  Title.cpp
+  Touch.cpp
+  コードを生成中...
+  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
