@@ -132,6 +132,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Game.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Item.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\ItemMane.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\LoadMane.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Main.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Over.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Game.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Item.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\ItemMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\LoadMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Over.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Player.h" />

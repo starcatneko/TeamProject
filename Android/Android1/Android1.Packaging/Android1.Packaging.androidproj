@@ -119,6 +119,7 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\apple.png" />
     <Content Include="assets\back1.png" />
     <Content Include="assets\back2.png" />
     <Content Include="assets\back3.png" />

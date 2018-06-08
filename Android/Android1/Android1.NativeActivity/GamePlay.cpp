@@ -1,4 +1,5 @@
 ﻿#include "GamePlay.h"
+#include "ItemMane.h"
 #include "Game.h"
 #include "Over.h"
 #include "Camera.h"
@@ -6,6 +7,7 @@
 #include "BackGround.h"
 #include "Player.h"
 #include "Dust.h"
+#include "Item.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -13,6 +15,7 @@
 GamePlay::GamePlay() : speed(60)
 {
 	Create();
+	item.clear();
 	box = { {0, 0}, {WINDOW_X, WINDOW_Y} };
 	memset(read, 0, sizeof(read));
 	func = &GamePlay::NotStart;
@@ -41,12 +44,15 @@ void GamePlay::DrawBoxx(void)
 	{
 		DrawString(pos[i].x, pos[i].y, "0", GetColor(255, 0, 0), false);
 	}
+
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "%d", pos.size());
 }
 
 // 描画
 void GamePlay::Draw(void)
 {
 	back->Draw();
+	ItemDraw();
 	pl->Draw();
 	//pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
@@ -70,10 +76,11 @@ void GamePlay::Load(void)
 
 	int y = 0;
 	//敵
-	auto enemy = st->GetEnemy(x, (x + WINDOW_X));
-	for (unsigned int i = 0; i < enemy.size(); ++i)
+	auto s_enemy = st->GetEnemy(x, (x + WINDOW_X));
+	
+	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
-		if (enemy[i] == 0)
+		if (s_enemy[i] == 0)
 		{
 			Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
 			pos.push_back(p);
@@ -88,14 +95,48 @@ void GamePlay::Load(void)
 	
 	y = 0;
 	//アイテム
-	auto item = st->GetItem(x, (x + WINDOW_X));
-	for (unsigned int i = 0; i < item.size(); ++i)
+	auto s_item = st->GetItem(x, (x + WINDOW_X));
+	for (unsigned int i = 0; i < s_item.size(); ++i)
 	{
+		if (s_item[i] == 1)
+		{
+			Pos tmp = { x* st->GetChipItemSize().x, y * st->GetChipItemSize().y };
+			item.push_back(ItemMane::Get()->CreateApple(tmp, st, pl));
+		}
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipItemSize().y)
 		{
 			++read[1];
 			y = 0;
+		}
+	}
+
+	int n = item.size();
+}
+
+// アイテムの描画
+void GamePlay::ItemDraw(void)
+{
+	for (auto itr = item.begin(); itr != item.end(); ++itr)
+	{
+		(*itr)->Draw();
+	}
+}
+
+// アイテムの処理
+void GamePlay::ItemUpData(void)
+{
+	for (auto itr = item.begin(); itr != item.end();)
+	{
+		(*itr)->UpData();
+		
+		if((*itr)->GetHit() == true)
+		{
+			itr = item.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }
@@ -118,6 +159,7 @@ void GamePlay::Start(void)
 	pl->Update();
 	//pl->TestUpdate();
 	du->Update();
+	ItemUpData();
 
 
 #ifndef __ANDROID__

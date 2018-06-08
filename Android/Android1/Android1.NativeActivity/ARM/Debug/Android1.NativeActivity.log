@@ -9,10 +9,8 @@
   Enemy.cpp
   Fannings.cpp
   Game.cpp
-  GamePlay.cpp
   Item.cpp
   Over.cpp
-  Player.cpp
   Score.cpp
   Stage.cpp
   Title.cpp

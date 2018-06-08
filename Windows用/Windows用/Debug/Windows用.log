@@ -1,8 +1,2 @@
-﻿  Player.cpp
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(39): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(40): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(82): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(123): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(125): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(143): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Windows用.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  GamePlay.cpp
+  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

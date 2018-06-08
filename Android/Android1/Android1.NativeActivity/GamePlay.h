@@ -3,12 +3,14 @@
 #include "Typedef.h"
 #include <memory>
 #include <vector>
+#include <list>
 
 class Camera;
 class Stage;
 class BackGround;
 class Player;
 class Dust;
+class Item;
 
 class GamePlay :
 	public Scene
@@ -42,12 +44,20 @@ private:
 	// 読み込み
 	void Load(void);
 
+	// アイテムの描画
+	void ItemDraw(void);
+	// アイテムの処理
+	void ItemUpData(void);
+
 	// 各クラスの処理前
 	void NotStart(void);
 
 	// 各クラスの処理
 	void Start(void);
 
+
+	// アイテムのリスト
+	std::list<std::shared_ptr<Item>>item;
 
 	// ボックス
 	Box box;

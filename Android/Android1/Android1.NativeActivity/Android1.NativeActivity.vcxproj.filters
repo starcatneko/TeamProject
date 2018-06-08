@@ -55,6 +55,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="ItemMane.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -112,6 +115,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="StageData.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMane.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>

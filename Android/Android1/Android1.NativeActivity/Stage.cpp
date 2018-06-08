@@ -27,7 +27,7 @@ Stage::Stage()
 
 
 	LoadEnemy();
-	//LoadItem(ite);
+	LoadItem();
 }
 
 // デストラクタ
@@ -149,7 +149,31 @@ std::vector<int> Stage::GetEnemy(int minx, int maxx)
 // アイテムの情報の取得
 std::vector<int> Stage::GetItem(int minx, int maxx)
 {
-	return std::vector<int>();
+	int left = std::max(minx / iteSize.x, read[1]);
+	int right = maxx / iteSize.x;
+	if (right <= read[1])
+	{
+		return std::vector<int>();
+	}
+
+	auto index = left * iteCnt.y;
+	auto indey = right * iteCnt.y;
+
+	auto begin = data["item"].begin() + index;
+	auto itr = data["item"].end();
+	auto end = itr;
+
+	if (indey < (int)data["item"].size())
+	{
+		end = data["item"].begin() + indey;
+		read[1] = right;
+	}
+	else
+	{
+		return std::vector<int>();
+	}
+
+	return std::vector<int>(begin, end);
 }
 
 // ステージのサイズの取得

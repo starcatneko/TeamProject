@@ -1,6 +1,7 @@
 ﻿#include "Game.h"
 #include "LoadMane.h"
 #include "Touch.h"
+#include "ItemMane.h"
 #include "Title.h"
 #include "Typedef.h"
 #include "DxLib.h"
@@ -47,6 +48,7 @@ void Game::Create(void)
 {
 	LoadMane::Create();
 	Touch::Create();
+	ItemMane::Create();
 }
 
 // シーンの移行
@@ -94,6 +96,7 @@ void Game::Destroy(void)
 {
 	LoadMane::Destroy();
 	Touch::Destroy();
+	ItemMane::Destroy();
 
 	//Dxlibの終了
 	DxLib_End();
