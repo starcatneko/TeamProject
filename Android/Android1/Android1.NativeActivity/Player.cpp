@@ -77,9 +77,14 @@ void Player::Draw()
 	}
 	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
-	DrawFormatString(100, 25, 0xDDDDDD, _T("%d"), st);
+	DrawFormatString(400, 25, 0xDDDDDD, _T("%d"), a);
 	DrawFormatString(0, 25, 0xDDDDDD, _T("%d:%d"), tempdis, angle);
+	DrawFormatString(200, 25, 0xDDDDDD, _T("%d:%d"), tempPos.x,tempPos.y);
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d,%d"), Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y, Touch::Get()->GetBuf(0));
+	
+	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
+
+	
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
@@ -87,20 +92,24 @@ void Player::Draw()
 
 void Player::Update()
 {
+	Punicon();
 	StatesUpDate();
 }
 
 
 void Player::StatesUpDate()
 {
+
 	switch (st)
 	{ 
 		case ST_NUETRAL:
-			Touch();
+			//Touch();	
+
 			break;
 		case ST_WALK:
 			Move();
-			AngleCtr();
+
+
 			break;
 		case ST_ATTACK:
 			st = ST_NUETRAL;
@@ -125,7 +134,8 @@ void Player::Move()
 	}
 	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
-	if (tempdis > speed)
+	AngleCtr();
+	if (tempdis > 0)
 	{
 		pos.x += fcos[angle] * (float)speed;
 		pos.y += fsin[angle] * (float)speed;
@@ -141,17 +151,51 @@ void Player::Touch()
 	{
 		a++;
 		tempPos = Touch::Get()->GetPos(0);
-		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
 
-		if(tempPos.x >10000 || tempPos.y >10000 ||
-			tempPos.x >-10000 || tempPos.y >-10000)
-			
+		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
 
 
 		st = ST_WALK;
 
 	}
 
+
+}
+void Player::Punicon()
+{
+	if (Touch::Get()->GetBuf(0) >0)
+	{
+		a++;
+
+		angle = ANGLE(atan2(Touch::Get()->GetPos(0).y-Touch::Get()->GetSwipeStart(0).y ,
+			Touch::Get()->GetPos(0).x-Touch::Get()->GetSwipeStart(0).x ));
+
+		tempdis = hypot(Touch::Get()->GetSwipeStart(0).y - Touch::Get()->GetPos(0).y,
+			Touch::Get()->GetSwipeStart(0).x - Touch::Get()->GetPos(0).x);
+
+		AngleCtr();
+
+		if (tempdis > 200)
+		{
+			tempdis = 200;
+		}
+
+		speed = (tempdis / 40);
+
+		tempPos.x += (fcos[angle]);
+		tempPos.y += (fsin[angle]);
+
+		st = ST_WALK;
+
+
+
+	}
+	else if (Touch::Get()->GetBuf(0) ==-1)
+	{
+		tempPos.x = pos.x;
+		tempPos.y = pos.y;
+		//st = ST_NUETRAL;
+	}
 
 }
 void Player::AngleCtr()

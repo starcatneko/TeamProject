@@ -41,6 +41,16 @@ Pos Touch::GetPos(int touchNo)
 	return pos[touchNo];
 }
 
+Pos Touch::GetSwipeStart(int touchNo)
+{
+	return swipe_pos_start[touchNo];
+}
+
+Pos Touch::GetSwipeGoal(int touchNo)
+{
+	return swipe_pos_goal[touchNo];
+}
+
 void Touch::SetPos(int touchNo, Pos pos)
 {
 	this->pos[touchNo] = pos;
@@ -173,12 +183,20 @@ void Touch::TouchProccess()
 
 void Touch::DrawSwipe()
 {
+	/*
 	DrawTriangle(swipe_pos_goal[0].x, swipe_pos_goal[0].y,
 		swipe_pos_start[0].x - 40, swipe_pos_start[0].y - 40,
 		swipe_pos_start[0].x + 40, swipe_pos_start[0].y + 40, 0xBB00BB, true);
 
 	DrawBox(swipe_pos_goal[0].x, swipe_pos_goal[0].y,
 			swipe_pos_goal[0].x + 8, swipe_pos_goal[0].y + 8, 0xDDDDDD, true);
+	*/
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
+	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 160, 0xffff00, 1, 1);
+	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 40, 0xff0000, 1, 1);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
 }
 
 DIR Touch::GetSwipe()

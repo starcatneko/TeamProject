@@ -72,6 +72,9 @@ private:
 	// 画面をタッチした時のプレイヤーの処理
 	void Touch();
 
+	// プニコン風インターフェース
+	void Punicon();
+
 	// 角度が0~360の範囲に収まるようにする
 	void AngleCtr();
 
