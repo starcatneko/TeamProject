@@ -6,8 +6,9 @@
 PuniPuni* PuniPuni::instance = nullptr;
 
 const unsigned int tapTime = 10;
+const float scrcle = 360.0f;
 
-PuniPuni::PuniPuni() : flam(0)
+PuniPuni::PuniPuni() : flam(0), d(DIR_NON)
 {
 	st = ST_NON;
 	memset(pos, -1, sizeof(pos));
@@ -49,10 +50,16 @@ void PuniPuni::Draw(void)
 	DrawFormatString(0, 50, GetColor(255, 0, 0), "前の座標%d:%d", old_pos);
 	DrawFormatString(0, 100, GetColor(255, 0, 0), "今の座標%d:%d", pos[ST_TOUCH]);
 	DrawFormatString(0, 150, GetColor(255, 0, 0), "押下時間:%d", flam);
-	float i = GetAngle();
+	float i = GetAngle(true);
 	DrawFormatString(0, 200, GetColor(255, 0, 0), "角度:%d", (int)i);
+	DrawFormatString(0, 250, GetColor(255, 0, 0), "移動向き:%d", (int)d);
 
-	DrawLine(pos[ST_NON].x, pos[ST_NON].y, pos[ST_TOUCH].x, pos[ST_TOUCH].y, GetColor(255, 0, 0));
+	if (pos[ST_TOUCH] != -1 && pos[ST_NON] != -1)
+	{
+		DrawTriangle(pos[ST_NON].x - 25, pos[ST_NON].y, pos[ST_NON].x + 25, pos[ST_NON].y, pos[ST_TOUCH].x, pos[ST_TOUCH].y, GetColor(255, 255, 255), true);
+		DrawCircle(pos[ST_TOUCH].x, pos[ST_TOUCH].y, 10, GetColor(255, 255, 255), true);
+		DrawCircle(pos[ST_NON].x, pos[ST_NON].y, 50, GetColor(255, 255, 255), true);
+	}
 
 	if (Tap() == true)
 	{
@@ -64,12 +71,12 @@ void PuniPuni::Draw(void)
 		DrawString(500, 100, "プレス", GetColor(255, 0, 0), false);
 	}
 
-	if (Flick() == true)
+	if (Flick(d) == true)
 	{
 		DrawString(500, 150, "フリック", GetColor(255, 0, 0), false);
 	}
 
-	if (Swipe() == true)
+	if (Swipe(d) == true)
 	{
 		DrawString(500, 200, "スワイプ", GetColor(255, 0, 0), false);
 	}
@@ -164,13 +171,33 @@ bool PuniPuni::Press(void)
 	return false;
 }
 
-bool PuniPuni::Flick(void)
+bool PuniPuni::Flick(DIR& dir)
 {
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
 		&& pos[ST_NON] != old_pos)
 	{
+		if (pos[ST_NON].x < old_pos.x
+			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+		{
+			dir = DIR_RIGHT;
+		}
+		if(pos[ST_NON].x > old_pos.x
+			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+		{
+			dir = DIR_LEFT;
+		}
+		if (pos[ST_NON].y < old_pos.y
+			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		{
+			dir = DIR_DOWN;
+		}
+		if (pos[ST_NON].y > old_pos.y
+			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		{
+			dir = DIR_UP;
+		}
 		SetState(ST_NON);
 		return true;
 	}
@@ -187,13 +214,33 @@ bool PuniPuni::Flick(void)
 	return false;
 }
 
-bool PuniPuni::Swipe(void)
+bool PuniPuni::Swipe(DIR& dir)
 {
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
 		&& pos[ST_NON] != pos[ST_TOUCH])
 	{
+		if (pos[ST_NON].x < old_pos.x
+			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+		{
+			dir = DIR_RIGHT;
+		}
+		if(pos[ST_NON].x > old_pos.x
+			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+		{
+			dir = DIR_LEFT;
+		}
+		if (pos[ST_NON].y < old_pos.y
+			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		{
+			dir = DIR_DOWN;
+		}
+		if (pos[ST_NON].y > old_pos.y
+			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		{
+			dir = DIR_UP;
+		}
 		return true;
 	}
 #else
@@ -213,28 +260,41 @@ bool PuniPuni::Swipe(void)
 	return false;
 }
 
-float PuniPuni::GetAngle(void)
+float PuniPuni::GetAngle(bool flag)
 {
 	if (pos[ST_NON] == -1 || pos[ST_TOUCH] == -1)
 	{
 		return 0.0f;
 	}
 
-	float angle = atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y)) * (180.0f / 3.141592f);
+	float angle = (flag == false ? atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))));
 
 	return angle;
 }
 
-float PuniPuni::GetUnsignedAngle(void)
+float PuniPuni::GetUnsignedAngle(bool flag)
 {
 	if (pos[ST_NON] == -1 || pos[ST_TOUCH] == -1)
 	{
 		return 0.0f;
 	}
 
-	float angle = atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y)) * (180.0f / 3.141592f);
+	float angle = (flag == false ? atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))));
 
-	float tmp = tmp = (angle < 0 ? 360.0f + angle : angle);
+	float tmp = 0.0f;
+	if (angle < 0)
+	{
+		if (flag == false)
+		{
+			tmp = ANGLE(scrcle) + angle;
+		}
+		else
+		{
+			tmp = scrcle + angle;
+		}
+	}
 
 	return tmp;
 }
