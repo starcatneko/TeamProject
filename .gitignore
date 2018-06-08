@@ -327,7 +327,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-Windows用/.vs/Windows用/v15/.suo
+/Windows用/.vs/Windows用/v15/
 Windows用/.vs/Windows用/v15/Browse.VC.db
 Windows用/.vs/Windows用/v15/ipch/AutoPCH/1e02ac84ef914d02/PLAYER.ipch
 Windows用/.vs/Windows用/v15/ipch/AutoPCH/3a530efe98e39a0f/BACKGROUND.ipch
