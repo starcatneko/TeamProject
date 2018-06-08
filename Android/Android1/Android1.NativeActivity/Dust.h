@@ -43,6 +43,8 @@ private:
 	//移動速度
 	int speed;
 	//攻撃判定
-	bool AttackFlag;
+	bool attackFlag;
+	//敵が攻撃に移る範囲
+	int attackRange;
 };
 
