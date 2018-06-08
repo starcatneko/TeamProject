@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
@@ -37,15 +37,22 @@ void Dust::Draw()
 void Dust::NeutralUpdate()
 {
 	st = ST_NUETRAL;
-	if (pos.x < p.lock()->GetPos().x)
+	if (wait > 0)
 	{
-		dir = DIR_RIGHT;
-		angleNum = pos.x - 40;
+		wait--;
 	}
-	else if(pos.x > p.lock()->GetPos().x)
+	else if (wait == 0)
 	{
-		dir = DIR_LEFT;
-		angleNum = pos.x + 40;
+		if (pos.x < p.lock()->GetPos().x)
+		{
+			dir = DIR_RIGHT;
+			wait = 60;
+		}
+		else if (pos.x > p.lock()->GetPos().x)
+		{
+			dir = DIR_LEFT;
+			wait = 60;
+		}
 	}
 
 	if ((pos.x <= p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
@@ -75,6 +82,7 @@ void Dust::RunUpdate()
 	if (dir == DIR_LEFT)
 	{
 		pos.x -= speed;
+		angleNum = pos.x + 40;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
@@ -87,6 +95,7 @@ void Dust::RunUpdate()
 	else if (dir == DIR_RIGHT)
 	{
 		pos.x += speed;
+		angleNum = pos.x - 40;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
