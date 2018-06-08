@@ -6,11 +6,18 @@
   BackGround.cpp
   Camera.cpp
   Dust.cpp
+  In file included from Dust.cpp:1:
+./Dust.h(42,6): warning : private field 'hp' is not used [-Wunused-private-field]
+          int hp;
+              ^
+  1 warning generated.
   Enemy.cpp
-  Fannings.cpp
   Game.cpp
   GamePlay.cpp
   Item.cpp
+  ItemMane.cpp
+  LoadMane.cpp
+  Main.cpp
   Over.cpp
   Player.cpp
   Score.cpp

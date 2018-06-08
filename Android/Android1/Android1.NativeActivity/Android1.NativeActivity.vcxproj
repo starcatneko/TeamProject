@@ -215,6 +215,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemMane.cpp" />
     <ClCompile Include="LoadMane.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Over.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemMane.h" />
     <ClInclude Include="LoadMane.h" />
     <ClInclude Include="Over.h" />
     <ClInclude Include="Player.h" />

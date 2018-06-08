@@ -16,7 +16,7 @@ GamePlay::GamePlay() : speed(60)
 {
 	Create();
 	item.clear();
-	box = { {0, 0}, {WINDOW_X, WINDOW_Y} };
+	box = { { 0, 0 },{ WINDOW_X, WINDOW_Y } };
 	memset(read, 0, sizeof(read));
 	func = &GamePlay::NotStart;
 }
@@ -59,7 +59,7 @@ void GamePlay::Draw(void)
 	cam->Scroll(pl->GetPos());		// ミキオが追加
 	cam->Draw();					// ミキオが追加
 	cam->SetPos(cam->GetPos());		// ミキオが追加
-	
+
 	DrawBoxx();
 }
 
@@ -77,7 +77,7 @@ void GamePlay::Load(void)
 	int y = 0;
 	//敵
 	auto s_enemy = st->GetEnemy(x, (x + WINDOW_X));
-	
+
 	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
 		if (s_enemy[i] == 0)
@@ -92,7 +92,7 @@ void GamePlay::Load(void)
 			y = 0;
 		}
 	}
-	
+
 	y = 0;
 	//アイテム
 	auto s_item = st->GetItem(x, (x + WINDOW_X));
@@ -110,8 +110,6 @@ void GamePlay::Load(void)
 			y = 0;
 		}
 	}
-
-	int n = item.size();
 }
 
 // アイテムの描画
@@ -129,8 +127,8 @@ void GamePlay::ItemUpData(void)
 	for (auto itr = item.begin(); itr != item.end();)
 	{
 		(*itr)->UpData();
-		
-		if((*itr)->GetHit() == true)
+
+		if ((*itr)->GetHit() == true)
 		{
 			itr = item.erase(itr);
 		}
