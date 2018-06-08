@@ -2,10 +2,11 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNum(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff), wait(0)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
+
 }
 
 
@@ -31,7 +32,7 @@ void Dust::Update()
 
 void Dust::Draw()
 {
-	DrawTriangle(pos.x, pos.y, angleNum, pos.y + 20, angleNum, pos.y - 20, color, true);
+	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 20, angleNumX, pos.y - 20, color, true);
 }
 
 void Dust::NeutralUpdate()
@@ -82,7 +83,7 @@ void Dust::RunUpdate()
 	if (dir == DIR_LEFT)
 	{
 		pos.x -= speed;
-		angleNum = pos.x + 40;
+		angleNumX = pos.x + 40;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
@@ -95,7 +96,7 @@ void Dust::RunUpdate()
 	else if (dir == DIR_RIGHT)
 	{
 		pos.x += speed;
-		angleNum = pos.x - 40;
+		angleNumX = pos.x - 40;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
@@ -111,6 +112,7 @@ void Dust::RunUpdate()
 void Dust::AttackUpdate()
 {
 	st = ST_ATTACK;
+	DrawString(0, 1000, _T("DustAttack"), 0xfff000);
 	color = 0xffff00;
 	attackFlag = false;
 	updater = &Dust::NeutralUpdate;
@@ -119,7 +121,7 @@ void Dust::AttackUpdate()
 void Dust::DamageUpdate()
 {
 	st = ST_DAMAGE;
-	DrawString(0, 0, _T("DustDamage"), 0xff0000);
+	DrawString(0, 1000, _T("DustDamage"), 0xfff000);
 }
 
 void Dust::DieUpdate()
