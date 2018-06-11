@@ -55,6 +55,12 @@ public:
 	// 角度確認
 	float GetUnsignedAngle(bool flag = false);
 
+	// 支点座標の取得
+	Pos GetPos(void);
+	// 現在座標の取得
+	Pos GetNowPos(void);
+	// 前座標の取得
+	Pos GetOldPos(void);
 
 private:
 	PuniPuni();

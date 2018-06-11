@@ -213,6 +213,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fannings.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameMane.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemMane.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fannings.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameMane.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemMane.h" />

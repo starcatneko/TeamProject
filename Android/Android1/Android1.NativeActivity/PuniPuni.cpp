@@ -59,11 +59,11 @@ void PuniPuni::Draw(void)
 	{
 		float a = GetUnsignedAngle(true);
 		DrawTriangle(
-			((pos[ST_NON].x - radius) - pos[ST_NON].x) * cosf(a) - (pos[ST_NON].y - pos[ST_NON].y) * sinf(a) + pos[ST_NON].x,
-			((pos[ST_NON].x - radius) - pos[ST_NON].x) * sinf(a) + (pos[ST_NON].y - pos[ST_NON].y) * cosf(a) + pos[ST_NON].y,
+			(int)((float)((pos[ST_NON].x - radius) - pos[ST_NON].x) * cosf(a) - (float)(pos[ST_NON].y - pos[ST_NON].y) * sinf(a)) + pos[ST_NON].x,
+			(int)((float)((pos[ST_NON].x - radius) - pos[ST_NON].x) * sinf(a) + (float)(pos[ST_NON].y - pos[ST_NON].y) * cosf(a)) + pos[ST_NON].y,
 
-			((pos[ST_NON].x + radius) - pos[ST_NON].x) * cosf(a) - (pos[ST_NON].y - pos[ST_NON].y) * sinf(a) + pos[ST_NON].x,
-			((pos[ST_NON].x + radius) - pos[ST_NON].x) * sinf(a) + (pos[ST_NON].y - pos[ST_NON].y) * cosf(a) + pos[ST_NON].y,
+			(int)((float)((pos[ST_NON].x + radius) - pos[ST_NON].x) * cosf(a) - (float)(pos[ST_NON].y - pos[ST_NON].y) * sinf(a)) + pos[ST_NON].x,
+			(int)((float)((pos[ST_NON].x + radius) - pos[ST_NON].x) * sinf(a) + (float)(pos[ST_NON].y - pos[ST_NON].y) * cosf(a)) + pos[ST_NON].y,
 
 			pos[ST_TOUCH].x, pos[ST_TOUCH].y,
 
@@ -375,4 +375,22 @@ float PuniPuni::GetUnsignedAngle(bool flag)
 	}
 
 	return tmp;
+}
+
+// 支点座標の取得
+Pos PuniPuni::GetPos(void)
+{
+	return pos[ST_NON];
+}
+
+// 現在座標の取得
+Pos PuniPuni::GetNowPos(void)
+{
+	return pos[ST_TOUCH];
+}
+
+// 前座標の取得
+Pos PuniPuni::GetOldPos(void)
+{
+	return old_pos;
 }

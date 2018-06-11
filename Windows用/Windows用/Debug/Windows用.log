@@ -1,9 +1,6 @@
 ﻿  Game.cpp
+  GameMane.cpp
   PuniPuni.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\punipuni.cpp(70): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\punipuni.cpp(69): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\punipuni.cpp(67): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\punipuni.cpp(66): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
   Title.cpp
   コードを生成中...
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
