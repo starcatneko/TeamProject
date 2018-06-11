@@ -288,14 +288,11 @@ DIR Touch::GetSwipe()
 
 		}
 	}
-<<<<<<< HEAD
 	else
 	{
 		return DIR_NON;
 	}
 
-=======
->>>>>>> NSOK
 	return DIR_NON;
 }
 
@@ -329,17 +326,13 @@ DIR Touch::GetFlick()
 
 		}
 	}
-<<<<<<< HEAD
 	else
 	{
 		return DIR_NON;
 	}
 
 	return DIR_NON;
-=======
-	return DIR_NON;
 
->>>>>>> NSOK
 }
 
 int Touch::GetAngle()

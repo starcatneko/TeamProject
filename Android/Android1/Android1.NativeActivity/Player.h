@@ -3,6 +3,16 @@
 #include "Typedef.h"
 #include "Camera.h"
 
+#define TAP_LECT_SIZE_X 40
+#define TAP_LECT_POS_X	0
+#define TAP_LECT_SIZE_Y 270
+#define TAP_LECT_POS_Y	0
+
+#define FLICK_LECT_SIZE_X	240
+#define FLICK_LECT_POS_X	0
+#define FLICK_LECT_SIZE_Y	120
+#define FLICK_LECT_POS_Y	80
+
 
 
 typedef struct {

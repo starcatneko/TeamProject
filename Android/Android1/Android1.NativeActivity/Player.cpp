@@ -16,8 +16,7 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	speed = 5;
 	applepower = 0;
 	dir = DIR_LEFT;
-<<<<<<< HEAD
-=======
+
 	
 	testdriver.pos = { 200,400 };
 	testdriver.size = { 100,100 };
@@ -28,7 +27,6 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 
 	int i;
 	
->>>>>>> NSOK
 	scrFlag = 0;
 }
 
@@ -97,16 +95,14 @@ void Player::Draw()
 	{
 		if (dir == DIR_LEFT)
 		{
-			DrawBox(pos.x - 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+			DrawBox(pos.x - TAP_LECT_SIZE_X, pos.y, pos.x, pos.y + TAP_LECT_SIZE_Y, 0x00FF00, true);
 		}
 		else
 		{
-			DrawBox(pos.x + 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+			DrawBox(pos.x + TAP_LECT_SIZE_X, pos.y, pos.x, pos.y + TAP_LECT_SIZE_Y, 0x00FF00, true);
 		}
 	}
-<<<<<<< HEAD
 	DrawBox(pos.x,pos.y,pos.x + 240, pos.y + 270, color, true);
-=======
 
 	if (cmd == CMD_FLICK)
 	{
@@ -123,7 +119,7 @@ void Player::Draw()
 	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.size.x, testdriver.size.y, 0xffaaaa, false);
 
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
->>>>>>> NSOK
+
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
 }
@@ -255,9 +251,7 @@ bool Player::CheckHitAtack(Box target)
 				while (0);
 			}
 
-<<<<<<< HEAD
 		break;
-=======
 		}
 
 		break;
@@ -279,7 +273,7 @@ bool Player::CheckHitAtack(Box target)
 
 		break;
 
->>>>>>> NSOK
+
 	}
 	return false;
 }
