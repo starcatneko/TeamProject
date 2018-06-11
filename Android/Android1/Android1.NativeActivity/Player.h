@@ -4,13 +4,16 @@
 #include "Camera.h"
 
 
+
+
+
 class Player
 {
 public:
 	//コンストラクタ
 	Player()
 	{}
-	Player(std::weak_ptr<Camera> cam);
+	Player(float x, float y, std::weak_ptr<Camera> cam);
 	//デストラクタ
 	~Player();
 	//座標の取得
@@ -33,6 +36,10 @@ public:
 	void SetPower(int power);
 	// パワーを数値分動かす
 	void UpPower(int power);
+
+
+
+
 	// テスト用
 	void TestUpdate(int scrMode);
 	void TestDraw(Pos _pos);
@@ -71,12 +78,6 @@ private:
 
 	// 画面をタッチした時のプレイヤーの処理
 	void Touch();
-
-	// プニコン風インターフェース
-	void Punicon();
-
-	// 角度が0~360の範囲に収まるようにする
-	void AngleCtr();
 
 	// 移動処理
 	void Move();

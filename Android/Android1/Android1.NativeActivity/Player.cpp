@@ -5,16 +5,17 @@
 #include "Typedef.h"
 
 //#include "NDKHelper.h"
-Player::Player(std::weak_ptr<Camera> cam)
+Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 	this->cam = cam;
-	this->tempPos = { 0,0 };
-	this->pos = { 780,480 };
+	tempPos = { 0,0 };
+	this->pos = {x, y};
 	st = ST_NUETRAL;
 	hp = 0;
 	speed = 5;
 	applepower = 0;
 	dir = DIR_LEFT;
+	
 
 	int i;
 	for (i = 0; i<360; i++) {
@@ -76,13 +77,17 @@ void Player::Draw()
 	}
 	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
-	DrawFormatString(400, 25, 0xDDDDDD, _T("%d"), a);
-	DrawFormatString(0, 25, 0xDDDDDD, _T("%d:%d"), tempdis, angle);
-	DrawFormatString(200, 25, 0xDDDDDD, _T("%d:%d"), tempPos.x,tempPos.y);
+	DrawFormatString(400, 0, 0xDDDDDD, _T("%d"), a);
+		DrawFormatString(200, 0, 0xDDDDDD, _T("%d:%d"), tempPos.x,tempPos.y);
 	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d,%d"), Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y, Touch::Get()->GetBuf(0));
 	
 	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
 
+
+	DrawTriangle(Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y,
+		Touch::Get()->GetSwipeStart(0).x + fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y + fsin[angle] * 18,
+		Touch::Get()->GetSwipeStart(0).x - fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y - fsin[angle] * 18,
+		0xFF2222, true);
 	
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
@@ -91,7 +96,6 @@ void Player::Draw()
 
 void Player::Update()
 {
-	Punicon();
 	StatesUpDate();
 }
 
@@ -126,15 +130,9 @@ void Player::StatesUpDate()
 }
 void Player::Move()
 {
-	//目標との距離が離れると角度に誤差が生まれるので、距離を詰める度に角度を再計算する
-	if (tempdis % 25== 0)
-	{
-		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
-	}
 	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
-	AngleCtr();
-	if (tempdis > 0)
+	if (tempdis > 0 && Touch::Get()->GetBuf(0) > 0)
 	{
 		pos.x += fcos[angle] * (float)speed;
 		pos.y += fsin[angle] * (float)speed;
@@ -159,54 +157,6 @@ void Player::Touch()
 	}
 
 
-}
-void Player::Punicon()
-{
-	if (Touch::Get()->GetBuf(0) >0)
-	{
-		a++;
-
-		angle = ANGLE(atan2(Touch::Get()->GetPos(0).y-Touch::Get()->GetSwipeStart(0).y ,
-			Touch::Get()->GetPos(0).x-Touch::Get()->GetSwipeStart(0).x ));
-
-		tempdis = hypot(Touch::Get()->GetSwipeStart(0).y - Touch::Get()->GetPos(0).y,
-			Touch::Get()->GetSwipeStart(0).x - Touch::Get()->GetPos(0).x);
-
-		AngleCtr();
-
-		if (tempdis > 200)
-		{
-			tempdis = 200;
-		}
-
-		speed = (tempdis / 40);
-
-		tempPos.x += (fcos[angle]);
-		tempPos.y += (fsin[angle]);
-
-		st = ST_WALK;
-
-
-
-	}
-	else if (Touch::Get()->GetBuf(0) ==-1)
-	{
-		tempPos.x = pos.x;
-		tempPos.y = pos.y;
-		//st = ST_NUETRAL;
-	}
-
-}
-void Player::AngleCtr()
-{
-	if (angle > 360)
-	{
-		angle -= 360;
-	}
-	if (angle < 0)
-	{
-		angle += 360;
-	}
 }
 void Player::HpControl(int point)
 {
