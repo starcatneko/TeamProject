@@ -1,4 +1,5 @@
 ﻿#include "Game.h"
+#include "GameMane.h"
 #include "LoadMane.h"
 #include "PuniPuni.h"
 #include "Touch.h"
@@ -47,6 +48,7 @@ void Game::Init(void)
 // インスタンス化
 void Game::Create(void)
 {
+	GameMane::Create();
 	LoadMane::Create();
 	PuniPuni::Create();
 	Touch::Create();
@@ -97,6 +99,7 @@ void Game::Run(void)
 // 終了処理
 void Game::Destroy(void)
 {
+	GameMane::Destroy();
 	LoadMane::Destroy();
 	PuniPuni::Destroy();
 	Touch::Destroy();
