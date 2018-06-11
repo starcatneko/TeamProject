@@ -1,8 +1,9 @@
 ﻿#include "Dust.h"
 #include "Player.h"
+#include "Touch.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(40), color(0x00ffff), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
@@ -73,6 +74,19 @@ void Dust::NeutralUpdate()
 	{
 		updater = &Dust::RunUpdate;
 	}
+
+	if (Touch::Get()->GetCommand() == CMD_TAP)
+	{
+		if (pos.y < p.lock()->GetPos().y + 40
+			&& p.lock()->GetPos().y - 40 < pos.y)
+		{
+			if ((pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
+				|| (pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+			{
+				updater = &Dust::DieUpdate;
+			}
+		}
+	}
 }
 
 void Dust::RunUpdate()
@@ -126,6 +140,7 @@ void Dust::DamageUpdate()
 void Dust::DieUpdate()
 {
 	st = ST_DIE;
-	&GameMane::Kill;
+	color = 0xffffff;
+	GameMane::Get()->Kill();
 }
 
