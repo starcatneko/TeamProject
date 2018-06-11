@@ -5,7 +5,7 @@
 // コンストラクタ
 BackGround::BackGround()
 {
-	image = LoadMane::Get()->Load("sample.png");
+	image = LoadMane::Get()->Load("back1.png");
 	pos = {};
 }
 

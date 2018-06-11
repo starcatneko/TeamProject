@@ -8,6 +8,7 @@
 class Camera;
 class Stage;
 class BackGround;
+class Ground;
 class Player;
 class Dust;
 class Fannings;
@@ -38,6 +39,7 @@ private:
 	std::shared_ptr<Camera>cam;
 	std::shared_ptr<Stage>st;
 	std::shared_ptr<BackGround>back;
+	std::shared_ptr<Ground>ground;
 	std::shared_ptr<Player> pl;
 	std::shared_ptr<Dust> du;
 	std::shared_ptr<Fannings> fa;
@@ -52,7 +54,7 @@ private:
 	void ItemUpData(void);
 
 	// 画面エフェクト
-	void Pinch(int i);
+	void Pinch(int i, int alpha = 0);
 
 	// 各クラスの処理前
 	void NotStart(void);

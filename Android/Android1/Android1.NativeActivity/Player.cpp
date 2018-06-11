@@ -89,7 +89,7 @@ void Player::Draw()
 			DrawBox(pos.x + 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
 		}
 	}
-	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
+	DrawBox(pos.x,pos.y,pos.x + 240, pos.y + 270, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
 }

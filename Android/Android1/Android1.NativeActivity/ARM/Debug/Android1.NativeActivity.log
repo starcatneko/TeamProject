@@ -42,5 +42,6 @@ Player.cpp(187,10): warning : 5 enumeration values not handled in switch: 'CMD_D
   1 warning generated.
   Score.cpp
   Stage.cpp
+  Title.cpp
   Touch.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

@@ -61,7 +61,12 @@
     <ClCompile Include="GameMane.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyMane.cpp" />
+    <ClCompile Include="EnemyMane.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -127,7 +132,12 @@
     <ClInclude Include="GameMane.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyMane.h" />
+    <ClInclude Include="EnemyMane.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">

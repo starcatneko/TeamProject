@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "BackGround.h"
+#include "Ground.h"
 #include "Player.h"
 #include "Dust.h"
 #include "Fannings.h"
@@ -33,7 +34,8 @@ void GamePlay::Create(void)
 	cam.reset(new Camera());
 	st.reset(new Stage());
 	back.reset(new BackGround());
-	pl.reset(new Player(780,480, cam));
+	ground.reset(new Ground());
+	pl.reset(new Player(0.0f,(float)(ground->GetPos(0).y - 270), cam));
 	du.reset(new Dust(pl));
 	fa.reset(new Fannings(pl));
 }
@@ -58,6 +60,7 @@ void GamePlay::DrawBoxx(void)
 void GamePlay::Draw(void)
 {
 	back->Draw();
+	ground->Draw();
 	ItemDraw();
 	pl->Draw();
 	//pl->TestDraw(cam->GetPos());	// ミキオが追加
@@ -107,7 +110,7 @@ void GamePlay::Load(void)
 	{
 		if (s_item[i] == 1)
 		{
-			Pos tmp = { x* st->GetChipItemSize().x, y * st->GetChipItemSize().y };
+			Pos tmp = { read[1] * st->GetChipItemSize().x, (y * st->GetChipItemSize().y) };
 			item.push_back(ItemMane::Get()->CreateApple(tmp, st, pl));
 		}
 		++y;
@@ -147,8 +150,9 @@ void GamePlay::ItemUpData(void)
 }
 
 // 画面エフェクト
-void GamePlay::Pinch(int i)
+void GamePlay::Pinch(int i, int alpha)
 {
+	this->alpha = alpha;
 	if (tmp == false)
 	{
 		alpha += i;
@@ -188,7 +192,14 @@ void GamePlay::Start(void)
 	fa->Update();
 	ItemUpData();
 
-	Pinch(5);
+	if (pl->GetPower() <= 0)
+	{
+		Pinch(5, 128);
+	}
+	else
+	{
+		Pinch(0);
+	}
 
 
 #ifndef __ANDROID__
