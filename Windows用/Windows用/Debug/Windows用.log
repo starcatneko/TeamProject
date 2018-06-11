@@ -1,2 +1,33 @@
-﻿  EnemyMane.cpp
-  Windows用.vcxproj -> C:\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  Apple.cpp
+  BackGround.cpp
+  Camera.cpp
+  Dust.cpp
+  Enemy.cpp
+  EnemyMane.cpp
+  Fannings.cpp
+  Game.cpp
+  GamePlay.cpp
+  Item.cpp
+  ItemMane.cpp
+  LoadMane.cpp
+  Main.cpp
+  Over.cpp
+  Player.cpp
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(39): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(40): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(86): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\player.cpp(148): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
+  PuniPuni.cpp
+  Score.cpp
+  Stage.cpp
+  Title.cpp
+  Touch.cpp
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(220): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(219): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(331): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(334): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(345): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+  コードを生成中...
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(264): warning C4715: 'Touch::GetSwipe': 値を返さないコントロール パスがあります。
+c:\users\1601270\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(300): warning C4715: 'Touch::GetFlick': 値を返さないコントロール パスがあります。
+  Windows用.vcxproj -> C:\Users\1601270\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
