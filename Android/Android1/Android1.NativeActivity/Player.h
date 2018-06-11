@@ -46,6 +46,10 @@ public:
 	void UpPower(int power);
 
 	bool CheckHitAtack(Box target);
+	//コントローラーのコマンドの内容に合わせてプレイヤーを処理する
+	void CommandCtr();
+
+	void Attack();
 
 
 
@@ -94,5 +98,12 @@ private:
 	
 	// 生存しているフレーム
 	int frame;
+
+	// 攻撃のウェイト用のフレーム(硬直時間)
+	int attack_wait;
+	// 現在処理中のコマンド
+	PUNI_COMMAND cmd;
+
+	Box testdriver;
 };
 

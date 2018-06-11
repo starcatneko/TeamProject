@@ -17,6 +17,12 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	applepower = 0;
 	dir = DIR_LEFT;
 	
+	testdriver.pos = { 200,400 };
+	testdriver.size = { 100,100 };
+
+
+	frame = 0;
+	attack_wait = 0;
 
 	int i;
 	
@@ -82,7 +88,8 @@ void Player::Draw()
 	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
 
 	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
-
+	DrawFormatString(0, 72, 0xDDDDDD, _T("attack_wait::%d"), attack_wait);
+	
 	if (Touch::Get()->GetCommand() == CMD_TAP)
 	{
 		if (dir == DIR_LEFT)
@@ -94,6 +101,21 @@ void Player::Draw()
 			DrawBox(pos.x + 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
 		}
 	}
+
+	if (cmd == CMD_FLICK)
+	{
+		if (dir == DIR_LEFT)
+		{
+			DrawBox(pos.x - 120, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+		}
+		else
+		{
+			DrawBox(pos.x + 120, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+		}
+	}
+
+	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.size.x, testdriver.size.y, 0xffaaaa, false);
+
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
@@ -101,15 +123,20 @@ void Player::Draw()
 
 void Player::Update()
 {
+	frame++;
 	StatesUpDate();
 
-	applepower--;
+	if (frame % 60 == 0)
+	{
+		applepower--;
+	}
+
+	CheckHitAtack(testdriver);
+	
 }
-
-
 void Player::StatesUpDate()
 {
-
+	CommandCtr();
 	switch (st)
 	{ 
 		case ST_NUETRAL:
@@ -121,7 +148,7 @@ void Player::StatesUpDate()
 
 			break;
 		case ST_ATTACK:
-			st = ST_NUETRAL;
+			Attack();
 
 			break;
 		case ST_DAMAGE:
@@ -187,20 +214,121 @@ void Player::UpPower(int power)
 	applepower += power;
 }
 
+//外部呼び出し専用
 bool Player::CheckHitAtack(Box target)
 {
-	//プレイヤーの行動を元に、引数のオブジェクトと当たり判定の処理を行う
-	//当たっていたらtrue、外れていたらfalse
+	// プレイヤーの行動を元に、引数のnd())
+	// オブジェクトと当たり判定の処理を行う
+	// 当たっていたらtrue、外れていたらfalse
 
-	switch (Touch::Get()->GetCommand())
+	switch (cmd)
 	{
+	case CMD_DEF:		// 無入力
 
+		break;
+	case CMD_TAP:		// 短押し
+
+		if (dir == DIR_RIGHT)
+		{
+			if (pos.x > target.pos.x &&
+				pos.x + 10 < target.pos.x + target.size.x &&
+				pos.y + 40 > target.pos.y &&
+				pos.y - 40 < target.pos.y + target.size.y)
+			{
+				while (0);
+			}
+		}
+		else
+		{
+			if (pos.x > target.pos.x + target.size.x&&
+				pos.x - 10 < target.pos.x  &&
+				pos.y + 40 > target.pos.y &&
+				pos.y - 40 < target.pos.y + target.size.y)
+			{
+				while (0);
+			}
+
+		}
+
+		break;
+	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
+
+		break;
+	case CMD_FLICK:		// すばやくスライド
+		if (dir == DIR_RIGHT)
+		{
+
+		}
+		else
+		{
+
+		}
+		//return true;
+		break;
+	case CMD_L_PRESS:		// 長押し
+
+		break;
 
 	}
 	return false;
 }
+void Player::CommandCtr()
+{
+	switch (Touch::Get()->GetCommand())
+	{
+	case CMD_DEF:		// 無入力
 
+		break;
+	case CMD_TAP:		// 短押し
+		attack_wait = 4;
+		st = ST_ATTACK;
+		break;
+	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
 
+		break;
+	case CMD_FLICK:		// すばやくスライド
+		cmd = CMD_FLICK;
+		attack_wait = 16;
+
+		st = ST_ATTACK;
+		break;
+	case CMD_L_PRESS:		// 長押し
+
+		//attack_wait = 60;
+		break;
+
+	}
+
+}
+
+void Player::Attack()
+{
+	//攻撃状態
+	if(attack_wait >=0)
+	{
+		attack_wait--;
+
+		if (cmd == CMD_FLICK)
+		{
+			if (dir == DIR_RIGHT)
+			{
+				pos.x += attack_wait;
+			}
+			else
+			{
+
+				pos.x -= attack_wait;
+			}
+		}
+
+		if (attack_wait <= 0)
+		{
+			attack_wait = 0;
+			st = ST_NUETRAL;
+			cmd = CMD_DEF;
+		}
+	}
+}
 
 /*
 void Player::TestUpdate()
