@@ -1,7 +1,7 @@
 ﻿#include "EnemyMane.h"
 
 
-
+EnemyMane* EnemyMane::instance = nullptr;
 
 EnemyMane::EnemyMane()
 {
@@ -29,8 +29,8 @@ void EnemyMane::Destroy(void)
 	}
 }
 
-std::shared_ptr<Enemy> EnemyMane::CreateEnemy(Pos pos, std::shared_ptr<Stage> st)
+std::shared_ptr<Enemy> EnemyMane::CreateEnemy(std::shared_ptr<Stage> st)
 {
-	std::shared_ptr<Enemy>ene = std::make_shared<Enemy>(pos, st);
+	std::shared_ptr<Enemy>ene = std::make_shared<Enemy>(st);
 	return ene;
 }
