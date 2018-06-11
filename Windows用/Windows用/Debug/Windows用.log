@@ -1,5 +1,9 @@
-﻿  Game.cpp
-  PuniPuni.cpp
-  Title.cpp
-  コードを生成中...
-  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  Touch.cpp
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(220): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(219): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(331): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(334): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(345): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(264): warning C4715: 'Touch::GetSwipe': 値を返さないコントロール パスがあります。
+c:\users\1601291\documents\github\teamproject\android\android1\android1.nativeactivity\touch.cpp(300): warning C4715: 'Touch::GetFlick': 値を返さないコントロール パスがあります。
+  Windows用.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

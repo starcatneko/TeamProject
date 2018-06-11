@@ -211,9 +211,10 @@ void Touch::DrawSwipe()
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_LONG, 0xffff00, 1, 1);
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_MIDDLE, 0xff00ff, 1, 1);
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, 0xff0000, 1, 1);
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, 0xff0000, 1, 1);
+
 		DrawTriangle(pos[0].x, pos[0].y,
 			swipe_pos_start[0].x + (fcos[p_con.angle] * 18), swipe_pos_start[0].y - (fsin[p_con.angle] * 18),
 			swipe_pos_start[0].x - (fcos[p_con.angle] * 18), swipe_pos_start[0].y + (fsin[p_con.angle] * 18),
@@ -296,6 +297,16 @@ DIR Touch::GetFlick()
 	{
 		return DIR_NON;
 	}
+}
+
+int Touch::GetAngle()
+{
+	return p_con.angle;
+}
+
+int Touch::GetLength()
+{
+	return p_con.length;
 }
 
 float Touch::GetSwipeF()

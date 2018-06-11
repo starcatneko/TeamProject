@@ -101,10 +101,10 @@ void Player::StatesUpDate()
 	{ 
 		case ST_NUETRAL:
 			//Touch();	
+			Move();
 
 			break;
 		case ST_WALK:
-			Move();
 
 
 			break;
@@ -124,12 +124,14 @@ void Player::StatesUpDate()
 }
 void Player::Move()
 {
-	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
+	//tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
-	if (tempdis > 0 && Touch::Get()->GetBuf(0) > 0)
+	if (Touch::Get()->GetLength() > 0 && Touch::Get()->GetBuf(0) > 0)
 	{
-		pos.x += fcos[angle] * (float)speed;
-		pos.y += fsin[angle] * (float)speed;
+		speed = (Touch::Get()->GetLength()/20);
+
+		pos.x += fcos[Touch::Get()->GetAngle()] * (float)speed;
+		pos.y += fsin[Touch::Get()->GetAngle()] * (float)speed;
 	}
 	else
 	{
