@@ -13,7 +13,7 @@
 #include <algorithm>
 
 // コンストラクタ
-GamePlay::GamePlay() : speed(60)
+GamePlay::GamePlay() : speed(60), alpha(0), tmp(false)
 {
 	Create();
 	item.clear();
@@ -46,6 +46,10 @@ void GamePlay::DrawBoxx(void)
 	{
 		DrawString(pos[i].x, pos[i].y, "0", GetColor(255, 0, 0), false);
 	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(250, 250, GetColor(255, 0, 0), "%d", pos.size());
 }
@@ -142,6 +146,27 @@ void GamePlay::ItemUpData(void)
 	}
 }
 
+// 画面エフェクト
+void GamePlay::Pinch(int i)
+{
+	if (tmp == false)
+	{
+		alpha += i;
+		if (alpha >= 255)
+		{
+			tmp = true;
+		}
+	}
+	else
+	{
+		alpha -= i;
+		if (alpha <= 0)
+		{
+			tmp = false;
+		}
+	}
+}
+
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
@@ -162,6 +187,8 @@ void GamePlay::Start(void)
 	du->Update();
 	fa->Update();
 	ItemUpData();
+
+	Pinch(5);
 
 
 #ifndef __ANDROID__
