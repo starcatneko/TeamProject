@@ -219,6 +219,8 @@ void Touch::DrawSwipe()
 			swipe_pos_start[0].x + (fcos[p_con.angle] * 18), swipe_pos_start[0].y - (fsin[p_con.angle] * 18),
 			swipe_pos_start[0].x - (fcos[p_con.angle] * 18), swipe_pos_start[0].y + (fsin[p_con.angle] * 18),
 			0xFF2222, true);
+
+
 	}
 	DrawFormatString(0, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
 
@@ -227,11 +229,16 @@ void Touch::DrawSwipe()
 
 }
 
+PUNI_COMMAND Touch::GetCommand()
+{
+	return p_con.command;
+}
+
 DIR Touch::GetSwipe()
 {
 	if (p_con.command == CMD_SWIPE)
 	{
-		switch ((p_con.angle -45) / 90)
+		switch ((p_con.angle +45) / 90)
 		{
 		case 0:
 			return DIR_RIGHT;
@@ -267,7 +274,7 @@ DIR Touch::GetFlick()
 {
 	if (p_con.command == CMD_FLICK)
 	{
-		switch ((p_con.angle - 45) / 90)
+		switch ((p_con.angle +45) / 90)
 		{
 		case 0:
 			return DIR_RIGHT;

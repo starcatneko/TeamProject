@@ -82,7 +82,17 @@ void Player::Draw()
 	
 	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
 
-	
+	if (Touch::Get()->GetCommand() == CMD_TAP)
+	{
+		if (dir == DIR_LEFT)
+		{
+			DrawBox(pos.x - 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+		}
+		else
+		{
+			DrawBox(pos.x + 40, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+		}
+	}
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 
@@ -100,12 +110,11 @@ void Player::StatesUpDate()
 	switch (st)
 	{ 
 		case ST_NUETRAL:
-			//Touch();	
-			Move();
+			Touch();	
 
 			break;
 		case ST_WALK:
-
+			Move();
 
 			break;
 		case ST_ATTACK:
@@ -132,6 +141,15 @@ void Player::Move()
 
 		pos.x += fcos[Touch::Get()->GetAngle()] * (float)speed;
 		pos.y += fsin[Touch::Get()->GetAngle()] * (float)speed;
+
+		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_RIGHT;
+		}
 	}
 	else
 	{
@@ -140,19 +158,10 @@ void Player::Move()
 }
 void Player::Touch()
 {
-	if (Touch::Get()->GetBuf(0) == -1)
+	if (Touch::Get()->GetLength() > LENGTH_SHORT)
 	{
-		a++;
-		tempPos = Touch::Get()->GetPos(0);
-
-		angle = ANGLE(atan2(tempPos.y - pos.y, tempPos.x - pos.x));
-
-
 		st = ST_WALK;
-
 	}
-
-
 }
 void Player::HpControl(int point)
 {
