@@ -205,7 +205,7 @@ void Touch::TouchProccess()
 void Touch::DrawSwipe()
 {
 	//プニコンのLength取得種類の幅表示
-	if (p_con.time > 0)
+	if (p_con.time > 1)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
@@ -224,8 +224,32 @@ void Touch::DrawSwipe()
 	}
 	DrawFormatString(600, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
 
-	DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,
-		GetSwipeStart(0).x, GetSwipeStart(0).y);
+	//DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,GetSwipeStart(0).x, GetSwipeStart(0).y);
+
+	//p_conのコマンドに合わせて色を変える君
+	switch (p_con.command)
+	{
+	case CMD_DEF:
+		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFFFFFF, true);
+		break;
+	case CMD_FLICK:
+		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFF0000, true);
+		break;
+	case CMD_L_PRESS:
+		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFF00FF, true);
+
+		break;
+	case CMD_SWIPE:
+		DrawBox(600, 128, 600 + 24, 128 + 24, 0x00FF00, true);
+
+		break;
+	case CMD_TAP:
+		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFFFF00, true);
+		break;
+
+	}
+	DrawFormatString(600, 128, 0x000000, "%d", p_con.command);
+
 
 }
 
@@ -308,6 +332,7 @@ DIR Touch::GetFlick()
 	}
 
 	return DIR_NON;
+
 }
 
 int Touch::GetAngle()
@@ -399,17 +424,19 @@ void Touch::PuniCmdCtr()
 	{
 		p_con.command = CMD_FLICK;
 	}
-	//スワイプ入力受付
-	if (touch_buf[0] >1&& p_con.time > TAP_TIME)
+	//長押し受付
+	if (touch_buf[0] > 1 && p_con.time > TAP_TIME
+		&& p_con.length < LENGTH_SHORT && p_con.command != CMD_SWIPE)
+	{
+		p_con.command = CMD_L_PRESS;
+	}//スワイプ入力受付
+	else if(touch_buf[0] >1 && p_con.time > TAP_TIME)
 	{
 		p_con.command = CMD_SWIPE;
 	}
+	
+	
 
-	if (touch_buf[0] > 1 && p_con.time > TAP_TIME
-		&& p_con.length < LENGTH_SHORT)
-	{
-		p_con.command = CMD_L_PRESS;
-	}
 }
 
 void Touch::AngleCtr()
