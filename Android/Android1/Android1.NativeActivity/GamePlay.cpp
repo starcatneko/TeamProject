@@ -152,7 +152,7 @@ void GamePlay::Pinch(int i)
 	if (tmp == false)
 	{
 		alpha += i;
-		if (alpha >= 255)
+		if (alpha >= 128)
 		{
 			tmp = true;
 		}
