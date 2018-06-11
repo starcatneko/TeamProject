@@ -7,6 +7,9 @@
 // タッチの最大数
 #define TOUCH_MAX 3
 
+// 画面スクロールの総数
+#define GAME_SCROLL_CNT 6
+
 // 円周率
 #define PI 3.141592f
 // ラジアン変換
