@@ -2,10 +2,32 @@
 #define TEMP_MAX 120
 #include "Typedef.h"
 
-//プニコン構造体
-typedef struct
+// プニコンの長さ区別
+#define LENGTH_SHORT 40
+#define LENGTH_MIDDLE 100
+#define LENGTH_LONG 160
+#define LENGTH_MAX 200
+
+// タップ処理判定の猶予フレーム
+#define TAP_TIME 8
+
+// フリック処理判定の猶予フレーム
+#define FLICK_TIME 16
+
+enum PUNI_COMMAND
 {
-	const int length_MAX = 200;
+	CMD_DEF,		// 無入力
+	CMD_TAP,		// 短押し
+	CMD_SWIPE,		// スワイプ（ゆっくりスライド）
+	CMD_FLICK,		// すばやくスライド
+	CMD_L_PRESS		// 長押し
+};
+
+// プニコン構造体
+
+typedef struct
+
+{
 	//カーソル位置
 	Pos pos;
 	//カーソルの角度
@@ -16,18 +38,16 @@ typedef struct
 	int verocity;
 	//操作時間
 	int time;
+	//プニコンの行っているコマンド
+	PUNI_COMMAND command;
 } punicon;
 
-enum PUNI_COMAND 
-{
-	CMD_TAP,		//短押し
-	CMD_SWIPE,		//スワイプ（ゆっくりスライド）
-	CMD_FLICK,		//すばやくスライド
-	CMD_L_PRESS		//長押し
 
-};
+
+
 
 class Touch {
+
 public:
 	static void Create();
 	static void Destroy();
@@ -40,7 +60,6 @@ public:
 	Pos GetSwipeStart(int touchNo);
 	Pos GetSwipeGoal(int touchNo);
 	void SetPos(int touchNo, Pos pos);
-
 	int *GetBuf();
 	int GetBuf(int touchNo);
 
@@ -51,9 +70,11 @@ public:
 
 	//スワイプ情報の取得
 	DIR GetSwipe();
-
-
+	DIR GetFlick();
+	int GetAngle();
+	int GetLength();
 	float GetSwipeF();
+
 private:
 
 	//プニコンの構造体
@@ -61,11 +82,10 @@ private:
 
 	// プニコン風インターフェース
 	void Punicon();
+	void PuniCmdCtr();
 
 	// 角度が0~360の範囲に収まるようにする
 	void AngleCtr();
-
-
 
 	static Touch *instance;
 
@@ -88,4 +108,7 @@ private:
 
 	void MouseProccess();
 	void TouchProccess();
+
+	//サイン、コサインテーブル作成
+	float fsin[360], fcos[360];
 };

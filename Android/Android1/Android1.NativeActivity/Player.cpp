@@ -128,7 +128,7 @@ void Player::Move()
 
 	if (Touch::Get()->GetLength() > 0 && Touch::Get()->GetBuf(0) > 0)
 	{
-		speed = (Touch::Get()->GetLength()/20);
+		//speed = (Touch::Get()->GetLength()/20);
 
 		pos.x += fcos[Touch::Get()->GetAngle()] * (float)speed;
 		pos.y += fsin[Touch::Get()->GetAngle()] * (float)speed;
