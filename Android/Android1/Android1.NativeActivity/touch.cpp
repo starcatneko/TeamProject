@@ -14,7 +14,7 @@ Touch::Touch()
 	memset(pos, 0, sizeof(pos));
 	memset(swipe_pos_start, 0, sizeof(swipe_pos_start));
 	memset(swipe_pos_goal, 0, sizeof(swipe_pos_goal));
-	ZeroMemory(&p_con, sizeof(p_con));
+	//ZeroMemory(&p_con, sizeof(p_con));
 
 	int i;
 	for (i = 0; i<360; i++) {

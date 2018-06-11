@@ -1,18 +1,29 @@
-﻿  ANDROID_HOME=C:\ProgramData\Microsoft\AndroidSDK\25
+﻿  ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk
   ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Apps\apache-ant-1.9.3
   JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
-  NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
+  NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   BackGround.cpp
   Camera.cpp
   Dust.cpp
+Dust.cpp(5,60): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
+  Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
+                                                             ^
   In file included from Dust.cpp:1:
-./Dust.h(42,6): warning : private field 'hp' is not used [-Wunused-private-field]
+./Dust.h(40,6): warning : private field 'hp' is not used [-Wunused-private-field]
           int hp;
               ^
-  1 warning generated.
+  2 warnings generated.
   Enemy.cpp
   Fannings.cpp
+Fannings.cpp(5,70): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
+  Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(0), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
+                                                                       ^
+  In file included from Fannings.cpp:1:
+./Fannings.h(40,6): warning : private field 'hp' is not used [-Wunused-private-field]
+          int hp;
+              ^
+  2 warnings generated.
   Game.cpp
   GamePlay.cpp
   Item.cpp
@@ -21,9 +32,13 @@
   Main.cpp
   Over.cpp
   Player.cpp
-  PuniPuni.cpp
+  Scene.cpp
   Score.cpp
   Stage.cpp
   Title.cpp
-  Touch.cpp
-  Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
+  In file included from Title.cpp:1:
+./Title.h(41,6): warning : private field 'dir' is not used [-Wunused-private-field]
+          DIR dir;
+              ^
+  1 warning generated.
+  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
