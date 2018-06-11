@@ -8,6 +8,7 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 	this->cam = cam;
 	tempPos = { 0,0 };
+	size = { 240,270 };
 	this->pos = {x, y};
 	st = ST_NUETRAL;
 	hp = 0;
@@ -17,11 +18,7 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	
 
 	int i;
-	for (i = 0; i<360; i++) {
-		fsin[i] = sinf(i*PI / 180.0f);
-		fcos[i] = cosf(i*PI / 180.0f);
-	}
-
+	
 	scrFlag = 0;
 }
 
@@ -46,6 +43,11 @@ STATES Player::GetSt()
 int a = 0;
 bool b = 0;
 
+
+DIR Player::GetDir()
+{
+	return dir;
+}
 
 void Player::Draw()
 {
@@ -76,11 +78,9 @@ void Player::Draw()
 	}
 	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
-	DrawFormatString(400, 0, 0xDDDDDD, _T("%d"), a);
-		DrawFormatString(200, 0, 0xDDDDDD, _T("%d:%d"), tempPos.x,tempPos.y);
-	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d,%d"), Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y, Touch::Get()->GetBuf(0));
-	
-	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
+	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
+
+	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
 
 	if (Touch::Get()->GetCommand() == CMD_TAP)
 	{
@@ -139,8 +139,8 @@ void Player::Move()
 	{
 		//speed = (Touch::Get()->GetLength()/20);
 
-		pos.x += fcos[Touch::Get()->GetAngle()] * (float)speed;
-		pos.y += fsin[Touch::Get()->GetAngle()] * (float)speed;
+		pos.x += Touch::Get()->GetCos() * (float)speed;
+		pos.y += Touch::Get()->GetSin() * (float)speed;
 
 		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
 		{
@@ -181,6 +181,19 @@ void Player::SetPower(int power)
 void Player::UpPower(int power)
 {
 	applepower += power;
+}
+
+bool Player::CheckHitAtack(Box target)
+{
+	//プレイヤーの行動を元に、引数のオブジェクトと当たり判定の処理を行う
+	//当たっていたらtrue、外れていたらfalse
+
+	switch (Touch::Get()->GetCommand())
+	{
+
+
+	}
+	return false;
 }
 
 

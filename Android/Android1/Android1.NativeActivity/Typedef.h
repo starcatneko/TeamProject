@@ -18,6 +18,8 @@
 #define ANGLE(X) (X)*(180.0f/PI)
 
 
+
+
 //キャラクターの向いている方向
 //UPとDOWNは使わない可能性大
 enum DIR {

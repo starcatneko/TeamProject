@@ -222,7 +222,7 @@ void Touch::DrawSwipe()
 
 
 	}
-	DrawFormatString(0, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
+	DrawFormatString(600, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
 
 	DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,
 		GetSwipeStart(0).x, GetSwipeStart(0).y);
@@ -319,6 +319,16 @@ int Touch::GetLength()
 float Touch::GetSwipeF()
 {
 	return 0.0f;
+}
+
+float Touch::GetCos()
+{
+	return fcos[p_con.angle];
+}
+
+float Touch::GetSin()
+{
+	return fsin[p_con.angle];
 }
 
 void Touch::Punicon()
