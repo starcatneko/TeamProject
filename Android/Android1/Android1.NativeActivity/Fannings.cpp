@@ -112,7 +112,7 @@ void Fannings::AttackUpdate()
 {
 	st = ST_ATTACK;
 	DrawString(500, 1200, _T("FanningsAttack"), 0xfff000);
-	color = 0xff0000;
+	color = 0xffff00;
 	attackFlag = false;
 	updater = &Fannings::NeutralUpdate;
 }
