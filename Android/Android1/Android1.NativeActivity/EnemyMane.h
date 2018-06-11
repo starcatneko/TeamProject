@@ -2,6 +2,9 @@
 #include "Enemy.h"
 #include <memory>
 
+class Stage;
+class Player;
+
 class EnemyMane
 {
 public:
@@ -16,7 +19,7 @@ public:
 	//破棄
 	static void Destroy(void);
 	//敵の生成
-	std::shared_ptr<Enemy> CreateEnemy(std::shared_ptr<Stage> st);
+	std::shared_ptr<Enemy> CreateEnemy(Pos pos, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
 private:
 	EnemyMane();
 	//インスタンス変数

@@ -10,6 +10,7 @@ class Stage;
 class BackGround;
 class Ground;
 class Player;
+class Enemy;
 class Dust;
 class Fannings;
 class Item;
@@ -65,6 +66,9 @@ private:
 
 	// アイテムのリスト
 	std::list<std::shared_ptr<Item>>item;
+
+	//敵のリスト
+	std::list<std::shared_ptr<Enemy>>enemy;
 
 	// ボックス
 	Box box;

@@ -23,3 +23,8 @@ void Enemy::Draw()
 void Enemy::Update()
 {
 }
+
+Box Enemy::EnemyBox()
+{
+	return Box();
+}
