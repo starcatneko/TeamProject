@@ -80,8 +80,8 @@ void Dust::NeutralUpdate()
 		if (pos.y < p.lock()->GetPos().y + 40
 			&& p.lock()->GetPos().y - 40 < pos.y)
 		{
-			if ((pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
-				|| (pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+			if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
+				|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
 			{
 				updater = &Dust::DieUpdate;
 			}

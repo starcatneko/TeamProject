@@ -1,5 +1,6 @@
 ﻿#include "GamePlay.h"
 #include "ItemMane.h"
+#include "EnemyMane.h"
 #include "Game.h"
 #include "Over.h"
 #include "Camera.h"
@@ -93,7 +94,7 @@ void GamePlay::Load(void)
 		if (s_enemy[i] == 0)
 		{
 			Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
-			pos.push_back(p);
+			enemy.push_back(EnemyMane::Get()->CreateEnemy(p, st, pl));
 		}
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipEneSize().y)

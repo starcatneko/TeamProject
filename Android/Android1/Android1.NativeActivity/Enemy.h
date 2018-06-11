@@ -13,5 +13,6 @@ public:
 	~Enemy();
 	void Draw();
 	void Update();
+	Box EnemyBox();
 };
 

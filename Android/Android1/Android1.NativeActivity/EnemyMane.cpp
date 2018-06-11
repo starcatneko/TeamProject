@@ -1,4 +1,6 @@
 ﻿#include "EnemyMane.h"
+#include "Dust.h"
+#include "Fannings.h"
 
 
 EnemyMane* EnemyMane::instance = nullptr;
@@ -29,7 +31,7 @@ void EnemyMane::Destroy(void)
 	}
 }
 
-std::shared_ptr<Enemy> EnemyMane::CreateEnemy(std::shared_ptr<Stage> st)
+std::shared_ptr<Enemy> EnemyMane::CreateEnemy(Pos pos, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
 	std::shared_ptr<Enemy>ene = std::make_shared<Enemy>(st);
 	return ene;
