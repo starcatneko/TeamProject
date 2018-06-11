@@ -36,8 +36,10 @@ void Title::UpData(void)
 // スタート前
 void Title::NotStart(void)
 {
+	/*
 	if (PuniPuni::Get()->Flick(dir) == true
-		&& dir == DIR_RIGHT)
+		&& dir == DIR_RIGHT)*/
+	if(Touch::Get()->GetFlick() == DIR_RIGHT)
 	{
 		func = &Title::Start;
 	}
