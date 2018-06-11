@@ -77,6 +77,11 @@ public:
 	int GetLength();
 	float GetSwipeF();
 
+	//コサイン取得
+	float GetCos();
+	//サイン取得
+	float GetSin();
+
 private:
 
 	//プニコンの構造体

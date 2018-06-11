@@ -5,7 +5,12 @@
 
 
 
+typedef struct {
 
+	Box PUNCH;
+
+
+}HitBoxIndex;
 
 class Player
 {
@@ -22,6 +27,9 @@ public:
 	void SetPos(Pos pos);
 	//状態の取得
 	STATES GetSt();
+
+	//方向の取得（左右）
+	DIR GetDir();
 	//描画
 	void Draw();
 	//更新処理
@@ -37,6 +45,8 @@ public:
 	// パワーを数値分動かす
 	void UpPower(int power);
 
+	bool CheckHitAtack(Box target);
+
 
 
 
@@ -47,6 +57,8 @@ public:
 private:
 	//座標(int1)
 	Position<float> pos;
+	//大きさ
+	Pos size;
 	//Position<float> fpos;
 	//移動目的座標
 	Pos tempPos;
@@ -65,10 +77,6 @@ private:
 
 	//移動速度
 	int speed;
-	//移動角度
-	int angle;
-	//サイン、コサインテーブル作成
-	float fsin[360], fcos[360];
 
 	void StatesUpDate();
 
