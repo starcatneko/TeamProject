@@ -6,9 +6,10 @@
 PuniPuni* PuniPuni::instance = nullptr;
 
 const unsigned int tapTime = 10;
-const float scrcle = 360.0f;
+const float circle = 360.0f;
+const int offset = 5;
 
-PuniPuni::PuniPuni() : flam(0), d(DIR_NON)
+PuniPuni::PuniPuni() : flam(0), d(DIR_NON), radius(25)
 {
 	st = ST_NON;
 	memset(pos, -1, sizeof(pos));
@@ -50,15 +51,25 @@ void PuniPuni::Draw(void)
 	DrawFormatString(0, 50, GetColor(255, 0, 0), "前の座標%d:%d", old_pos);
 	DrawFormatString(0, 100, GetColor(255, 0, 0), "今の座標%d:%d", pos[ST_TOUCH]);
 	DrawFormatString(0, 150, GetColor(255, 0, 0), "押下時間:%d", flam);
-	float i = GetAngle(true);
+	float i = GetUnsignedAngle();
 	DrawFormatString(0, 200, GetColor(255, 0, 0), "角度:%d", (int)i);
 	DrawFormatString(0, 250, GetColor(255, 0, 0), "移動向き:%d", (int)d);
 
 	if (pos[ST_TOUCH] != -1 && pos[ST_NON] != -1)
 	{
-		DrawTriangle(pos[ST_NON].x - 25, pos[ST_NON].y, pos[ST_NON].x + 25, pos[ST_NON].y, pos[ST_TOUCH].x, pos[ST_TOUCH].y, GetColor(255, 255, 255), true);
+		float a = GetUnsignedAngle(true);
+		DrawTriangle(
+			((pos[ST_NON].x - radius) - pos[ST_NON].x) * cosf(a) - (pos[ST_NON].y - pos[ST_NON].y) * sinf(a) + pos[ST_NON].x,
+			((pos[ST_NON].x - radius) - pos[ST_NON].x) * sinf(a) + (pos[ST_NON].y - pos[ST_NON].y) * cosf(a) + pos[ST_NON].y,
+
+			((pos[ST_NON].x + radius) - pos[ST_NON].x) * cosf(a) - (pos[ST_NON].y - pos[ST_NON].y) * sinf(a) + pos[ST_NON].x,
+			((pos[ST_NON].x + radius) - pos[ST_NON].x) * sinf(a) + (pos[ST_NON].y - pos[ST_NON].y) * cosf(a) + pos[ST_NON].y,
+
+			pos[ST_TOUCH].x, pos[ST_TOUCH].y,
+
+			GetColor(255, 255, 255), true);
 		DrawCircle(pos[ST_TOUCH].x, pos[ST_TOUCH].y, 10, GetColor(255, 255, 255), true);
-		DrawCircle(pos[ST_NON].x, pos[ST_NON].y, 50, GetColor(255, 255, 255), true);
+		DrawCircle(pos[ST_NON].x, pos[ST_NON].y, radius * 2, GetColor(255, 255, 255), true);
 	}
 
 	if (Tap() == true)
@@ -123,10 +134,13 @@ void PuniPuni::UpData(void)
 
 bool PuniPuni::Tap(void)
 {
+	int x = abs(pos[ST_NON].x - old_pos.x);
+	int y = abs(pos[ST_NON].y - old_pos.y);
+
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
-		&& pos[ST_NON] == old_pos)
+		&& (x <= offset && y <= offset))
 	{
 		SetState(ST_NON);
 		return true;
@@ -134,7 +148,7 @@ bool PuniPuni::Tap(void)
 #else
 	if (GetTouchInputNum() <= 0
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
-		&& pos[ST_NON] == old_pos)
+		&& x <= offset && y <= offset)
 	{
 		SetState(ST_NON);
 		return true;
@@ -146,18 +160,20 @@ bool PuniPuni::Tap(void)
 
 bool PuniPuni::Press(void)
 {
+	int x = abs(pos[ST_NON].x - pos[ST_TOUCH].x);
+	int y = abs(pos[ST_NON].y - pos[ST_TOUCH].y);
+
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
-		&& pos[ST_NON] == pos[ST_TOUCH])
+		&& (x <= offset && y <= offset))
 	{
 		return true;
 	}
-
 #else
 	if (GetTouchInputNum() > 0
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
-		&& pos[ST_NON] == pos[ST_TOUCH])
+		&& x <= offset && y <= offset)
 	{
 		return true;
 	}
@@ -173,39 +189,66 @@ bool PuniPuni::Press(void)
 
 bool PuniPuni::Flick(DIR& dir)
 {
+	int x = abs(pos[ST_NON].x - pos[ST_TOUCH].x);
+	int y = abs(pos[ST_NON].y - pos[ST_TOUCH].y);
+
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
-		&& pos[ST_NON] != old_pos)
+		&& (x > offset || y > offset))
 	{
+		float tmp = GetUnsignedAngle();
+
 		if (pos[ST_NON].x < old_pos.x
-			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+			&& 45.0f <= tmp && tmp < 135.0f)
 		{
 			dir = DIR_RIGHT;
 		}
-		if(pos[ST_NON].x > old_pos.x
-			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
-		{
-			dir = DIR_LEFT;
-		}
-		if (pos[ST_NON].y < old_pos.y
-			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
-		{
-			dir = DIR_DOWN;
-		}
-		if (pos[ST_NON].y > old_pos.y
-			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
 		{
 			dir = DIR_UP;
 		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
 		SetState(ST_NON);
 		return true;
 	}
 #else
 	if (GetTouchInputNum() <= 0
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
-		&& pos[ST_NON] != old_pos)
+		&& (x > offset || y > offset))
 	{
+		float tmp = GetUnsignedAngle(true);
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
+		{
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
 		SetState(ST_NON);
 		return true;
 	}
@@ -216,38 +259,65 @@ bool PuniPuni::Flick(DIR& dir)
 
 bool PuniPuni::Swipe(DIR& dir)
 {
+	int x = abs(pos[ST_NON].x - pos[ST_TOUCH].x);
+	int y = abs(pos[ST_NON].y - pos[ST_TOUCH].y);
+
 #ifndef __ANDROID__
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
-		&& pos[ST_NON] != pos[ST_TOUCH])
+		&& (x > offset || y > offset))
 	{
+		float tmp = GetUnsignedAngle();
+
 		if (pos[ST_NON].x < old_pos.x
-			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
+			&& 45.0f <= tmp && tmp < 135.0f)
 		{
 			dir = DIR_RIGHT;
 		}
-		if(pos[ST_NON].x > old_pos.x
-			&& pos[ST_NON].y + 10 > old_pos.y && pos[ST_NON].y - 10 < old_pos.y)
-		{
-			dir = DIR_LEFT;
-		}
-		if (pos[ST_NON].y < old_pos.y
-			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
-		{
-			dir = DIR_DOWN;
-		}
-		if (pos[ST_NON].y > old_pos.y
-			&& pos[ST_NON].x + 10 > old_pos.x && pos[ST_NON].x - 10 < old_pos.x)
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
 		{
 			dir = DIR_UP;
 		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
 		return true;
 	}
 #else
 	if (GetTouchInputNum() > 0
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
-		&& pos[ST_NON] != pos[ST_TOUCH])
+		&& (x > offset || y > offset))
 	{
+		float tmp = GetUnsignedAngle(true);
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
+		{
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
 		return true;
 	}
 #endif
@@ -262,38 +332,46 @@ bool PuniPuni::Swipe(DIR& dir)
 
 float PuniPuni::GetAngle(bool flag)
 {
-	if (pos[ST_NON] == -1 || pos[ST_TOUCH] == -1)
+	if (pos[ST_NON] == -1 || old_pos == -1)
 	{
 		return 0.0f;
 	}
 
-	float angle = (flag == false ? atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))
-		: ANGLE(atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))));
+	float angle = (flag == true ? atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))));
 
 	return angle;
 }
 
 float PuniPuni::GetUnsignedAngle(bool flag)
 {
-	if (pos[ST_NON] == -1 || pos[ST_TOUCH] == -1)
+	if (pos[ST_NON] == -1 || old_pos == -1)
 	{
 		return 0.0f;
 	}
 
-	float angle = (flag == false ? atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))
-		: ANGLE(atan2f((float)(pos[ST_TOUCH].x - pos[ST_NON].x), (float)(pos[ST_TOUCH].y - pos[ST_NON].y))));
+	float angle = (flag == true ? atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))));
 
 	float tmp = 0.0f;
-	if (angle < 0)
+	if (ANGLE(angle) < 0)
 	{
-		if (flag == false)
+		if (flag == true)
 		{
-			tmp = ANGLE(scrcle) + angle;
+			tmp = RAD(circle) + angle;
 		}
 		else
 		{
-			tmp = scrcle + angle;
+			tmp = circle + angle;
+			if (tmp >= circle)
+			{
+				tmp = 0;
+			}
 		}
+	}
+	else
+	{
+		tmp = angle;
 	}
 
 	return tmp;
