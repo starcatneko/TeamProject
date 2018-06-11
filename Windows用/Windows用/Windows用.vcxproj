@@ -128,6 +128,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Camera.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Dust.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\EnemyMane.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Game.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Camera.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Dust.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\EnemyMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Game.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\GamePlay.h" />

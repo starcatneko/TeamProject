@@ -61,6 +61,7 @@
     <ClCompile Include="PuniPuni.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyMane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -126,6 +127,7 @@
     <ClInclude Include="PuniPuni.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyMane.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="リソース">
