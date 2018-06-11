@@ -4,6 +4,7 @@
 #include "PuniPuni.h"
 #include "Touch.h"
 #include "ItemMane.h"
+#include "EnemyMane.h"
 #include "Title.h"
 #include "Typedef.h"
 #include "DxLib.h"
@@ -53,6 +54,7 @@ void Game::Create(void)
 	PuniPuni::Create();
 	Touch::Create();
 	ItemMane::Create();
+	EnemyMane::Create();
 }
 
 // シーンの移行
@@ -104,6 +106,7 @@ void Game::Destroy(void)
 	PuniPuni::Destroy();
 	Touch::Destroy();
 	ItemMane::Destroy();
+	EnemyMane::Destroy();
 
 	//Dxlibの終了
 	DxLib_End();

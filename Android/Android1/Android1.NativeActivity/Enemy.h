@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Typedef.h"
+#include "GameMane.h"
 #include <memory>
 
 class Stage;
