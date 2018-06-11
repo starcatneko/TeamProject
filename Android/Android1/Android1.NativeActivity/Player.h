@@ -91,5 +91,8 @@ private:
 	void Move();
 
 	std::weak_ptr<Camera> cam;
+	
+	// 生存しているフレーム
+	int frame;
 };
 

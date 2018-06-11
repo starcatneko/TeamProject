@@ -6,6 +6,7 @@
 
 Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
+
 	this->cam = cam;
 	tempPos = { 0,0 };
 	size = { 240,270 };
@@ -101,6 +102,8 @@ void Player::Draw()
 void Player::Update()
 {
 	StatesUpDate();
+
+	applepower--;
 }
 
 
@@ -130,6 +133,7 @@ void Player::StatesUpDate()
 
 			break;
 	}
+
 }
 void Player::Move()
 {
