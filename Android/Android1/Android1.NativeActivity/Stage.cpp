@@ -18,6 +18,9 @@ const Pos iteSize = { 128, 128 };
 // アイテムのチップ数
 const Pos iteCnt = { 60, 8 };
 
+// プレイヤーのサイズ
+const Pos plSize = { 240, 270 };
+
 // コンストラクタ
 Stage::Stage()
 {
@@ -204,6 +207,12 @@ Pos Stage::GetChipEneCnt(void)
 Pos Stage::GetChipItemCnt(void)
 {
 	return iteCnt;
+}
+
+// プレイヤーのサイズの取得
+Pos Stage::GetChipPlSize(void)
+{
+	return plSize;
 }
 
 // クリア

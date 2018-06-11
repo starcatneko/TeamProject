@@ -11,6 +11,8 @@ class PuniPuni
 		ST_MAX
 	};
 
+	// 
+
 public:
 	// デストラクタ
 	~PuniPuni();
@@ -65,5 +67,6 @@ private:
 	Pos old_pos;
 	unsigned int flam;
 	DIR d;
+	int radius;
 };
 

@@ -37,6 +37,9 @@ public:
 	// アイテムのチップ数の取得
 	Pos GetChipItemCnt(void);
 
+	// プレイヤーのサイズの取得
+	Pos GetChipPlSize(void);
+
 private:
 	// クリア
 	void Clear(void);

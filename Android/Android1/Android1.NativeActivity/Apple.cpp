@@ -31,11 +31,10 @@ void Apple::UpData(void)
 {
 	if (CheckHit(pos, size, pl.lock()->GetPos(), { 240,270 }) == true)
 	{
-		int pw = pl.lock()->GetPower();
-		if (pw < 100)
+		pl.lock()->UpPower(10);
+		if (pl.lock()->GetPower() >= 100)
 		{
-			int power = std::abs((pw - 100));
-			pl.lock()->SetPower(power);
+			pl.lock()->SetPower(100);
 		}
 	}
 }
