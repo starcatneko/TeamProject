@@ -7,6 +7,7 @@
 #include "BackGround.h"
 #include "Player.h"
 #include "Dust.h"
+#include "Fannings.h"
 #include "Item.h"
 #include "DxLib.h"
 #include <algorithm>
@@ -34,6 +35,7 @@ void GamePlay::Create(void)
 	back.reset(new BackGround());
 	pl.reset(new Player(780,480, cam));
 	du.reset(new Dust(pl));
+	fa.reset(new Fannings(pl));
 }
 
 // ボックス描画
@@ -56,6 +58,7 @@ void GamePlay::Draw(void)
 	pl->Draw();
 	//pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
+	fa->Draw();
 	cam->Scroll(pl->GetPos());		// ミキオが追加
 	cam->Draw();					// ミキオが追加
 	cam->SetPos(cam->GetPos());		// ミキオが追加
@@ -157,6 +160,7 @@ void GamePlay::Start(void)
 	pl->Update();
 	//pl->TestUpdate();
 	du->Update();
+	fa->Update();
 	ItemUpData();
 
 

@@ -2,11 +2,10 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0xffffff), wait(0)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
-
 }
 
 
