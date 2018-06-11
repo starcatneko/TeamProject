@@ -73,6 +73,18 @@ void Fannings::NeutralUpdate()
 	{
 		updater = &Fannings::RunUpdate;
 	}
+	if (Touch::Get()->GetCommand() == CMD_TAP)
+	{
+		if (pos.y < p.lock()->GetPos().y + 40
+			&& p.lock()->GetPos().y - 40 < pos.y)
+		{
+			if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
+				|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+			{
+				updater = &Fannings::DieUpdate;
+			}
+		}
+	}
 }
 
 void Fannings::RunUpdate()
@@ -126,4 +138,6 @@ void Fannings::DamageUpdate()
 void Fannings::DieUpdate()
 {
 	st = ST_DIE;
+	color = 0xffffff;
+	GameMane::Get()->Kill();
 }
