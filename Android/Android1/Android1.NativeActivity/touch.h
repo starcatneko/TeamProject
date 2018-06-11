@@ -68,6 +68,8 @@ public:
 	//スワイプの表示(デバッグ用)
 	void DrawSwipe();
 
+	PUNI_COMMAND GetCommand();
+
 	//スワイプ情報の取得
 	DIR GetSwipe();
 	DIR GetFlick();
