@@ -1,7 +1,6 @@
 ﻿#include "Game.h"
 #include "GameMane.h"
 #include "LoadMane.h"
-#include "PuniPuni.h"
 #include "Touch.h"
 #include "ItemMane.h"
 #include "EnemyMane.h"
@@ -51,7 +50,6 @@ void Game::Create(void)
 {
 	GameMane::Create();
 	LoadMane::Create();
-	PuniPuni::Create();
 	Touch::Create();
 	ItemMane::Create();
 	EnemyMane::Create();
@@ -79,7 +77,6 @@ void Game::UpData(void)
 {
 	Draw();
 
-	//PuniPuni::Get()->UpData();
 	Touch::Get()->Update();
 	scene->UpData();
 }
@@ -103,7 +100,6 @@ void Game::Destroy(void)
 {
 	GameMane::Destroy();
 	LoadMane::Destroy();
-	PuniPuni::Destroy();
 	Touch::Destroy();
 	ItemMane::Destroy();
 	EnemyMane::Destroy();

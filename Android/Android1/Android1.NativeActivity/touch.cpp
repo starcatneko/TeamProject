@@ -268,6 +268,8 @@ DIR Touch::GetSwipe()
 	{
 		return DIR_NON;
 	}
+
+	return DIR_NON;
 }
 
 DIR Touch::GetFlick()
@@ -304,6 +306,8 @@ DIR Touch::GetFlick()
 	{
 		return DIR_NON;
 	}
+
+	return DIR_NON;
 }
 
 int Touch::GetAngle()

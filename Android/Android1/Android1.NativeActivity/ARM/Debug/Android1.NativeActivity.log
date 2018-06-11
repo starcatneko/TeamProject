@@ -4,17 +4,20 @@
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   BackGround.cpp
-  Camera.cpp
   Dust.cpp
 Dust.cpp(5,60): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
   Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
                                                              ^
+Dust.cpp(129,2): warning : expression result unused [-Wunused-value]
+          &GameMane::Kill;
+          ^~~~~~~~~~~~~~~
   In file included from Dust.cpp:1:
 ./Dust.h(40,6): warning : private field 'hp' is not used [-Wunused-private-field]
           int hp;
               ^
-  2 warnings generated.
+  3 warnings generated.
   Enemy.cpp
+  EnemyMane.cpp
   Fannings.cpp
 Fannings.cpp(5,70): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
   Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(0), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
@@ -33,21 +36,11 @@ Fannings.cpp(5,70): warning : field 'angleNumX' will be initialized after field 
   Main.cpp
   Over.cpp
   Player.cpp
-  PuniPuni.cpp
+Player.cpp(187,10): warning : 5 enumeration values not handled in switch: 'CMD_DEF', 'CMD_TAP', 'CMD_SWIPE'... [-Wswitch]
+          switch (Touch::Get()->GetCommand())
+                  ^
+  1 warning generated.
   Score.cpp
   Stage.cpp
-  Title.cpp
-  In file included from Title.cpp:1:
-./Title.h(41,6): warning : private field 'dir' is not used [-Wunused-private-field]
-          DIR dir;
-              ^
-  1 warning generated.
   Touch.cpp
-Touch.cpp(264,1): warning : control may reach end of non-void function [-Wreturn-type]
-  }
-  ^
-Touch.cpp(300,1): warning : control may reach end of non-void function [-Wreturn-type]
-  }
-  ^
-  2 warnings generated.
   Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

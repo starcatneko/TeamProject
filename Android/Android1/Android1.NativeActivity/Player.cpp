@@ -15,10 +15,6 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	speed = 5;
 	applepower = 0;
 	dir = DIR_LEFT;
-	
-
-	int i;
-	
 	scrFlag = 0;
 }
 
@@ -191,7 +187,7 @@ bool Player::CheckHitAtack(Box target)
 	switch (Touch::Get()->GetCommand())
 	{
 
-
+		break;
 	}
 	return false;
 }

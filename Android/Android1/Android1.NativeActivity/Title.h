@@ -37,9 +37,6 @@ private:
 	// 画像データ
 	int image;
 
-	// 向き
-	DIR dir;
-
 	// 関数ポインタ
 	void (Title::*func)(void);
 };
