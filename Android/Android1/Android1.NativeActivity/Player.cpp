@@ -4,7 +4,6 @@
 #include <math.h>
 #include "Typedef.h"
 
-//#include "NDKHelper.h"
 Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 	this->cam = cam;
@@ -19,8 +18,8 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 
 	int i;
 	for (i = 0; i<360; i++) {
-		fsin[i] = (float)sin(i*3.1415926535 / 180);
-		fcos[i] = (float)cos(i*3.1415926535 / 180);
+		fsin[i] = sinf(i*PI / 180.0f);
+		fcos[i] = cosf(i*PI / 180.0f);
 	}
 
 	scrFlag = 0;
@@ -83,11 +82,6 @@ void Player::Draw()
 	
 	DrawFormatString(0, 75, 0xDDDDDD, _T("%d:%d"), Touch::Get()->GetSwipeStart(0).x, Touch::Get()->GetSwipeStart(0).y);
 
-
-	DrawTriangle(Touch::Get()->GetPos(0).x, Touch::Get()->GetPos(0).y,
-		Touch::Get()->GetSwipeStart(0).x + fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y + fsin[angle] * 18,
-		Touch::Get()->GetSwipeStart(0).x - fcos[angle] * 18, Touch::Get()->GetSwipeStart(0).y - fsin[angle] * 18,
-		0xFF2222, true);
 	
 	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
@@ -107,10 +101,10 @@ void Player::StatesUpDate()
 	{ 
 		case ST_NUETRAL:
 			//Touch();	
+			Move();
 
 			break;
 		case ST_WALK:
-			Move();
 
 
 			break;
@@ -130,12 +124,14 @@ void Player::StatesUpDate()
 }
 void Player::Move()
 {
-	tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
+	//tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
-	if (tempdis > 0 && Touch::Get()->GetBuf(0) > 0)
+	if (Touch::Get()->GetLength() > 0 && Touch::Get()->GetBuf(0) > 0)
 	{
-		pos.x += fcos[angle] * (float)speed;
-		pos.y += fsin[angle] * (float)speed;
+		speed = (Touch::Get()->GetLength()/20);
+
+		pos.x += fcos[Touch::Get()->GetAngle()] * (float)speed;
+		pos.y += fsin[Touch::Get()->GetAngle()] * (float)speed;
 	}
 	else
 	{

@@ -15,6 +15,14 @@ Touch::Touch()
 	memset(swipe_pos_start, 0, sizeof(swipe_pos_start));
 	memset(swipe_pos_goal, 0, sizeof(swipe_pos_goal));
 	ZeroMemory(&p_con, sizeof(p_con));
+
+	int i;
+	for (i = 0; i<360; i++) {
+		fsin[i] = sinf(i*PI / 180.0f);
+		fcos[i] = cosf(i*PI / 180.0f);
+	}
+
+
 }
 
 Touch::~Touch()
@@ -80,6 +88,7 @@ void Touch::Update()
 
 #endif
 
+	PuniCmdCtr();
 	Punicon();
 }
 //Win
@@ -195,21 +204,109 @@ void Touch::TouchProccess()
 
 void Touch::DrawSwipe()
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
-	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 160, 0xffff00, 1, 1);
-	DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 40, 0xff0000, 1, 1);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+	//プニコンのLength取得種類の幅表示
+	if (p_con.time > 0)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_LONG, 0xffff00, 1, 1);
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_MIDDLE, 0xff00ff, 1, 1);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, 0xff0000, 1, 1);
+
+		DrawTriangle(pos[0].x, pos[0].y,
+			swipe_pos_start[0].x + (fcos[p_con.angle] * 18), swipe_pos_start[0].y - (fsin[p_con.angle] * 18),
+			swipe_pos_start[0].x - (fcos[p_con.angle] * 18), swipe_pos_start[0].y + (fsin[p_con.angle] * 18),
+			0xFF2222, true);
+	}
 	DrawFormatString(0, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
 
 	DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,
 		GetSwipeStart(0).x, GetSwipeStart(0).y);
+
 }
 
 DIR Touch::GetSwipe()
 {
+	if (p_con.command == CMD_SWIPE)
+	{
+		switch ((p_con.angle -45) / 90)
+		{
+		case 0:
+			return DIR_RIGHT;
+			break;
 
-	return DIR();
+		case 1:
+			return DIR_DOWN;
+			break;
+
+		case 2:
+			return DIR_LEFT;
+			break;
+
+		case 3:
+			return DIR_UP;
+			break;
+		}
+
+		//右側だけ拗らせてる
+		if (p_con.angle >= 315)
+		{
+			return DIR_RIGHT;
+
+		}
+	}
+	else
+	{
+		return DIR_NON;
+	}
+}
+
+DIR Touch::GetFlick()
+{
+	if (p_con.command == CMD_FLICK)
+	{
+		switch ((p_con.angle - 45) / 90)
+		{
+		case 0:
+			return DIR_RIGHT;
+			break;
+
+		case 1:
+			return DIR_DOWN;
+			break;
+
+		case 2:
+			return DIR_LEFT;
+			break;
+
+		case 3:
+			return DIR_UP;
+			break;
+		}
+
+		//右側だけ拗らせてる
+		if (p_con.angle >= 315)
+		{
+			return DIR_RIGHT;
+
+		}
+	}
+	else
+	{
+		return DIR_NON;
+	}
+}
+
+int Touch::GetAngle()
+{
+	return p_con.angle;
+}
+
+int Touch::GetLength()
+{
+	return p_con.length;
 }
 
 float Touch::GetSwipeF()
@@ -221,12 +318,6 @@ void Touch::Punicon()
 {
 	//2018.06.08
 	//プニコンの円枠の表示処理をTouch.cppで行っているが、最終的にはPlayer.cppに移動させたい
-
-
-	if (GetBuf(0) > 0)
-	{
-
-	}
 
 	//画面タップ中操作
 	if (GetBuf(0) >0)
@@ -246,12 +337,13 @@ void Touch::Punicon()
 		AngleCtr();
 
 		//プニコンが円枠の範囲外に出た場合の操作
-		if (p_con.length > p_con.length_MAX)
+		if (p_con.length > LENGTH_MAX)
 		{
-			p_con.length = p_con.length_MAX;
+			p_con.length = LENGTH_MAX;
 		}
 
-		p_con.verocity = (p_con.length / 40);
+		p_con.verocity = (hypot(pos_buf[0].y - pos[0].y,
+			pos_buf[0].x - pos[0].x));
 
 		/*
 		tempPos.x += (fcos[angle]);
@@ -259,14 +351,44 @@ void Touch::Punicon()
 		*/
 
 	}
-	else if (GetBuf(0) == -1)
+	else if (GetBuf(0) == 0)
 	{
-
+		p_con.command = CMD_DEF;
 		p_con.length = 0;
+		p_con.time = 0;
+		p_con.verocity = 0;
 	}
 
 
 
+}
+
+void Touch::PuniCmdCtr()
+{
+
+	//タップ入力受付 プニコンの長さが短距離で入力時間が短時間の場合
+	if (p_con.time <= TAP_TIME && p_con.length<LENGTH_SHORT
+		&& touch_buf[0] == -1)
+	{
+		p_con.command = CMD_TAP;
+	}
+	//フリック入力受付 
+	if (p_con.time <= FLICK_TIME && p_con.length>= LENGTH_SHORT &&
+		touch_buf[0] == -1)
+	{
+		p_con.command = CMD_FLICK;
+	}
+	//スワイプ入力受付
+	if (touch_buf[0] >1&& p_con.time > TAP_TIME)
+	{
+		p_con.command = CMD_SWIPE;
+	}
+
+	if (touch_buf[0] > 1 && p_con.time > TAP_TIME
+		&& p_con.length < LENGTH_SHORT)
+	{
+		p_con.command = CMD_L_PRESS;
+	}
 }
 
 void Touch::AngleCtr()
