@@ -49,6 +49,9 @@ private:
 	// アイテムの処理
 	void ItemUpData(void);
 
+	// 画面エフェクト
+	void Pinch(int i);
+
 	// 各クラスの処理前
 	void NotStart(void);
 
@@ -69,6 +72,9 @@ private:
 	int read[2];
 
 	std::vector<Pos>pos;
+
+	int alpha;
+	bool tmp;
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
