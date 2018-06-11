@@ -46,12 +46,12 @@ void Fannings::NeutralUpdate()
 		if (pos.x < p.lock()->GetPos().x)
 		{
 			dir = DIR_RIGHT;
-			wait = 60;
+			wait = 30;
 		}
 		else if (pos.x > p.lock()->GetPos().x)
 		{
 			dir = DIR_LEFT;
-			wait = 60;
+			wait = 30;
 		}
 	}
 

@@ -126,5 +126,6 @@ void Dust::DamageUpdate()
 void Dust::DieUpdate()
 {
 	st = ST_DIE;
+	&GameMane::Kill;
 }
 
