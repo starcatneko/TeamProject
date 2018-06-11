@@ -1,9 +1,11 @@
 ﻿#include "Fannings.h"
-#include "Typedef.h"
+#include "Player.h"
+#include <DxLib.h>
 
-Fannings::Fannings()
+Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(0), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
 {
-	isTurn = false;
+	dir = DIR_LEFT;
+	updater = &Fannings::NeutralUpdate;
 }
 
 
@@ -11,38 +13,117 @@ Fannings::~Fannings()
 {
 }
 
+Pos Fannings::GetPos()
+{
+	return pos;
+}
+
+void Fannings::SetPos(Pos pos)
+{
+	this->pos.x = pos.x;
+	this->pos.y = pos.y;
+}
+
 void Fannings::Update()
 {
 	(this->*updater)();
-	Draw();
 }
 
 void Fannings::Draw()
 {
+	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 30, angleNumX, pos.y - 30, color, true);
 }
 
 void Fannings::NeutralUpdate()
 {
-	//プレイヤーがいる方向によって走る向きを転換する。
-	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
+	st = ST_NUETRAL;
+	if (wait > 0)
+	{
+		wait--;
+	}
+	else if (wait == 0)
+	{
+		if (pos.x < p.lock()->GetPos().x)
+		{
+			dir = DIR_RIGHT;
+			wait = 60;
+		}
+		else if (pos.x > p.lock()->GetPos().x)
+		{
+			dir = DIR_LEFT;
+			wait = 60;
+		}
+	}
+
+	if ((pos.x <= p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
+		|| (pos.x >= p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < attackRange))
+	{
+		if ((pos.y <= p.lock()->GetPos().y && p.lock()->GetPos().y - pos.y < attackRange)
+			|| (pos.y >= p.lock()->GetPos().y && pos.y - p.lock()->GetPos().y < attackRange))
+		{
+			attackFlag = true;
+		}
+	}
+
+	if (attackFlag)
+	{
+		updater = &Fannings::AttackUpdate;
+	}
+	else
+	{
+		updater = &Fannings::RunUpdate;
+	}
 }
 
 void Fannings::RunUpdate()
 {
-	//プレイヤーに向かって走る
+	st = ST_WALK;
+	color = 0x00ff00;
+	if (dir == DIR_LEFT)
+	{
+		pos.x -= speed;
+		angleNumX = pos.x + 60;
+		if (pos.y > p.lock()->GetPos().y)
+		{
+			pos.y -= speed;
+		}
+		else if (pos.y < p.lock()->GetPos().y)
+		{
+			pos.y += speed;
+		}
+	}
+	else if (dir == DIR_RIGHT)
+	{
+		pos.x += speed;
+		angleNumX = pos.x - 60;
+		if (pos.y > p.lock()->GetPos().y)
+		{
+			pos.y -= speed;
+		}
+		else if (pos.y < p.lock()->GetPos().y)
+		{
+			pos.y += speed;
+		}
+	}
+	updater = &Fannings::NeutralUpdate;
 }
 
 void Fannings::AttackUpdate()
 {
-	//プレイヤーを攻撃範囲内に捉えたとき、プレイヤーにむかって攻撃を行う。
+	st = ST_ATTACK;
+	DrawString(500, 1200, _T("FanningsAttack"), 0xfff000);
+	color = 0xff0000;
+	attackFlag = false;
+	updater = &Fannings::NeutralUpdate;
 }
 
 void Fannings::DamageUpdate()
 {
-	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
+	st = ST_DAMAGE;
+	DrawString(0, 1000, _T("FanningsDamage"), 0xfff000);
 }
 
 void Fannings::DieUpdate()
 {
-	//死亡。情報を削除する。
+	st = ST_DIE;
 }

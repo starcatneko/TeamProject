@@ -10,6 +10,7 @@ class Stage;
 class BackGround;
 class Player;
 class Dust;
+class Fannings;
 class Item;
 
 class GamePlay :
@@ -39,6 +40,7 @@ private:
 	std::shared_ptr<BackGround>back;
 	std::shared_ptr<Player> pl;
 	std::shared_ptr<Dust> du;
+	std::shared_ptr<Fannings> fa;
 
 
 	// 読み込み

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Typedef.h"
 #include <memory>
 
 class Stage;
