@@ -16,10 +16,8 @@
 
 
 typedef struct {
-
-	Box PUNCH;
-
-
+	Box TAP;
+	Box FLICK;
 }HitBoxIndex;
 
 class Player
@@ -114,6 +112,15 @@ private:
 	// 現在処理中のコマンド
 	PUNI_COMMAND cmd;
 
+	// 攻撃のオフセットとサイズを格納する
+	// コンストラクタで設定
+	HitBoxIndex attackBox;
+
 	Box testdriver;
+
+	//Box型とプレイヤーの任意の攻撃矩形の衝突を判定する。true＝衝突
+	//P_BOX プレイヤーのattack_Box
+
+	bool Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir);
 };
 

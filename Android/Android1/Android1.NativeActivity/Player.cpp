@@ -19,13 +19,14 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 
 	
 	testdriver.pos = { 200,400 };
-	testdriver.size = { 100,100 };
+	testdriver.size = { 240,270 };
 
+	attackBox.TAP = { { 0,70 },{ 300,80 } };
+	attackBox.FLICK = { { 0,30 },{ 360,120 } };
 
 	frame = 0;
 	attack_wait = 0;
 
-	int i;
 	
 	scrFlag = 0;
 }
@@ -41,15 +42,13 @@ Pos Player::GetPos()
 
 void Player::SetPos(Pos pos)
 {
-	this->pos.x = pos.x;
-	this->pos.y = pos.y;
-}
+	this->pos.x = (float)pos.x;
+	this->pos.y = (float)pos.y;
+}			  
 STATES Player::GetSt()
 {
 	return st;
 }
-int a = 0;
-bool b = 0;
 
 
 DIR Player::GetDir()
@@ -90,37 +89,44 @@ void Player::Draw()
 
 	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
 	DrawFormatString(0, 72, 0xDDDDDD, _T("attack_wait::%d"), attack_wait);
+	DrawFormatString(128, 0, 0xDDDDDD, _T("dir::%d"), dir);
 	
 	if (Touch::Get()->GetCommand() == CMD_TAP)
 	{
 		if (dir == DIR_LEFT)
 		{
-			DrawBox(pos.x - TAP_LECT_SIZE_X, pos.y, pos.x, pos.y + TAP_LECT_SIZE_Y, 0x00FF00, true);
+			DrawBox((int)pos.x  - attackBox.TAP.size.x, (int)pos.y, (int)pos.x, (int)pos.y + attackBox.TAP.size.y, 0x00FF00, true);
 		}
 		else
 		{
-			DrawBox(pos.x + TAP_LECT_SIZE_X, pos.y, pos.x, pos.y + TAP_LECT_SIZE_Y, 0x00FF00, true);
+			DrawBox((int)pos.x + attackBox.TAP.size.x, (int)pos.y, (int)pos.x, (int)pos.y + attackBox.TAP.size.y, 0x00FF00, true);
 		}
 	}
-	DrawBox(pos.x,pos.y,pos.x + 240, pos.y + 270, color, true);
+	DrawBox((int)pos.x, (int)pos.y, (int)pos.x + size.x, (int)pos.y + size.y, color, true);
 
 	if (cmd == CMD_FLICK)
 	{
 		if (dir == DIR_LEFT)
 		{
-			DrawBox(pos.x - 120, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+			DrawBox((int)pos.x +attackBox.FLICK.pos.x, (int)pos.y + attackBox.FLICK.pos.y, (int)pos.x, (int)pos.y + 40, 0x00FF00, true);
 		}
 		else
 		{
-			DrawBox(pos.x + 120, pos.y - 40, pos.x, pos.y + 40, 0x00FF00, true);
+			DrawBox((int)pos.x + 120, (int)pos.y - 40, (int)pos.x, (int)pos.y + 40, 0x00FF00, true);
 		}
 	}
 
-	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.size.x, testdriver.size.y, 0xffaaaa, false);
+	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.pos.x+ testdriver.size.x, testdriver.pos.y+ testdriver.size.y, 0xffaaaa, false);
 
-	DrawBox(pos.x,pos.y,pos.x + 8, pos.y + 8, color, true);
+	DrawBox((int)pos.x,(int)pos.y,(int)pos.x + 8, (int)pos.y + 8, color, true);
 
 	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
+	if (CheckHitAtack(testdriver))
+	{
+		DrawBox(1720, 800, 1920, 1080, 0xFFFFFF, true);
+
+	}
+
 
 }
 
@@ -134,8 +140,6 @@ void Player::Update()
 		applepower--;
 	}
 
-	CheckHitAtack(testdriver);
-	
 }
 void Player::StatesUpDate()
 {
@@ -167,11 +171,9 @@ void Player::StatesUpDate()
 }
 void Player::Move()
 {
-	//tempdis = hypot(tempPos.y - pos.y, tempPos.x - pos.x);
 
 	if (Touch::Get()->GetLength() > 0 && Touch::Get()->GetBuf(0) > 0)
 	{
-		//speed = (Touch::Get()->GetLength()/20);
 
 		pos.x += Touch::Get()->GetCos() * (float)speed;
 		pos.y += Touch::Get()->GetSin() * (float)speed;
@@ -190,6 +192,30 @@ void Player::Move()
 		st = ST_NUETRAL;
 	}
 }
+bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
+{
+	if (dir == DIR_RIGHT)
+	{
+		if (A.pos.x < (P_BOX.pos.x + P_BOX.size.x + this->pos.x)
+			&& P_BOX.pos.x + this->pos.x < (A.pos.x + A.size.x)
+			&& A.pos.y < (P_BOX.pos.y + P_BOX.size.y + this->pos.y)
+			&& P_BOX.pos.y + this->pos.y < (A.pos.y + A.size.y))
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (A.pos.x < (P_BOX.pos.x + P_BOX.size.x - this->pos.x + this->size.x)
+			&& P_BOX.pos.x - this->pos.x + this->size.x< (A.pos.x + A.size.x)
+			&& A.pos.y < (P_BOX.pos.y + P_BOX.size.y + this->pos.y)
+			&& P_BOX.pos.y + this->pos.y < (A.pos.y + A.size.y))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 void Player::Touch()
 {
 	if (Touch::Get()->GetLength() > LENGTH_SHORT)
@@ -201,22 +227,18 @@ void Player::HpControl(int point)
 {
 	hp += point;
 }
-
 int Player::GetPower()
 {
 	return applepower;
 }
-
 void Player::SetPower(int power)
 {
 	applepower = power;
 }
-
 void Player::UpPower(int power)
 {
 	applepower += power;
 }
-
 //外部呼び出し専用
 bool Player::CheckHitAtack(Box target)
 {
@@ -231,43 +253,19 @@ bool Player::CheckHitAtack(Box target)
 		break;
 	case CMD_TAP:		// 短押し
 
-		if (dir == DIR_RIGHT)
+		if (Hit_BoxtoPlayer(target,attackBox.TAP,dir))
 		{
-			if (pos.x > target.pos.x &&
-				pos.x + 10 < target.pos.x + target.size.x &&
-				pos.y + 40 > target.pos.y &&
-				pos.y - 40 < target.pos.y + target.size.y)
-			{
-				while (0);
-			}
+			return true;
 		}
-		else
-		{
-			if (pos.x > target.pos.x + target.size.x&&
-				pos.x - 10 < target.pos.x  &&
-				pos.y + 40 > target.pos.y &&
-				pos.y - 40 < target.pos.y + target.size.y)
-			{
-				while (0);
-			}
-
-		break;
-		}
-
 		break;
 	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
 
 		break;
 	case CMD_FLICK:		// すばやくスライド
-		if (dir == DIR_RIGHT)
+		if (Hit_BoxtoPlayer(target, attackBox.FLICK, dir))
 		{
-
+			return true;
 		}
-		else
-		{
-
-		}
-		//return true;
 		break;
 	case CMD_L_PRESS:		// 長押し
 
@@ -285,6 +283,7 @@ void Player::CommandCtr()
 
 		break;
 	case CMD_TAP:		// 短押し
+		cmd = CMD_TAP;
 		attack_wait = 4;
 		st = ST_ATTACK;
 		break;
@@ -294,7 +293,6 @@ void Player::CommandCtr()
 	case CMD_FLICK:		// すばやくスライド
 		cmd = CMD_FLICK;
 		attack_wait = 16;
-
 		st = ST_ATTACK;
 		break;
 	case CMD_L_PRESS:		// 長押し
