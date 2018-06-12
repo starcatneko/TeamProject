@@ -92,6 +92,8 @@ private:
 
 	void StatesUpDate();
 
+	bool MoveLimit();
+
 
 	// スクロールする際に使用します
 	int scrFlag;
@@ -118,7 +120,7 @@ private:
 
 	Box testdriver;
 
-
+	//ローカル座標
 	Pos c;
 	//Box型とプレイヤーの任意の攻撃矩形の衝突を判定する。true＝衝突
 	//P_BOX プレイヤーのattack_Box
