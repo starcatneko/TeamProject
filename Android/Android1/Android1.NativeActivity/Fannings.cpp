@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(10), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0), dwait(0)
+Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, size{ 60, 30 }, hp(10), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0), dwait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Fannings::NeutralUpdate;
@@ -31,7 +31,7 @@ void Fannings::Update()
 
 void Fannings::Draw()
 {
-	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 30, angleNumX, pos.y - 30, color, true);
+	DrawTriangle(pos.x, pos.y, pos.x + size.x, pos.y + size.y, pos.x + size.x, pos.y - size.y, color, true);
 }
 
 void Fannings::NeutralUpdate()
@@ -109,7 +109,7 @@ void Fannings::RunUpdate()
 	if (dir == DIR_LEFT)
 	{
 		pos.x -= speed;
-		angleNumX = pos.x + 60;
+		size.x = 60;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
@@ -122,7 +122,7 @@ void Fannings::RunUpdate()
 	else if (dir == DIR_RIGHT)
 	{
 		pos.x += speed;
-		angleNumX = pos.x - 60;
+		size.x = -60;
 		if (pos.y > p.lock()->GetPos().y)
 		{
 			pos.y -= speed;
