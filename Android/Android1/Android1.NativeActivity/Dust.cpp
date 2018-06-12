@@ -3,7 +3,7 @@
 #include "Touch.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(5), speed(4), attackFlag(false), attackRange(40), color(0x00ffff), wait(0)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(5), speed(4), attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dwait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
@@ -84,6 +84,7 @@ void Dust::NeutralUpdate()
 				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
 					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
 				{
+					dwait = 60;
 					updater = &Dust::DamageUpdate;
 				}
 			}
@@ -95,6 +96,7 @@ void Dust::NeutralUpdate()
 				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 120)
 					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 120))
 				{
+					dwait = 60;
 					updater = &Dust::DamageUpdate;
 				}
 			}
@@ -147,15 +149,23 @@ void Dust::AttackUpdate()
 void Dust::DamageUpdate()
 {
 	st = ST_DAMAGE;
-	DrawString(0, 1000, _T("DustDamage"), 0xfff000);
-	hp--;
-	if (hp <  0)
+	if (dwait > 0)
 	{
-		updater = &Dust::DieUpdate;
+		color = 0xff0000;
+		DrawString(0, 1000, _T("DustDamage"), 0xfff000);
+		dwait--;
 	}
 	else
 	{
-		updater = &Dust::NeutralUpdate;
+		hp--;
+		if (hp <= 0)
+		{
+			updater = &Dust::DieUpdate;
+		}
+		else
+		{
+			updater = &Dust::NeutralUpdate;
+		}
 	}
 }
 
