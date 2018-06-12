@@ -1,46 +1,34 @@
 ﻿#pragma once
 #include "Enemy.h"
-#include <memory>
-
-class Player;
 
 class Fannings :
 	public Enemy
 {
 public:
-	Fannings(std::weak_ptr<Player>p);
+	// コンストラクタ
+	Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl);
+	// デストラクタ
 	~Fannings();
-	Pos GetPos();
-	void SetPos(Pos pos);
-	void UpData();
-	void Draw();
-private:
-	//メンバ関数ポインタ
-	void (Fannings::*updater)();
-	//プレイヤーがいる方向によって走る向きを転換する。
-	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
-	void NeutralUpdate();
-	//プレイヤーに向かって走る
-	void RunUpdate();
-	//攻撃
-	//現状攻撃の判定内に入った場合、「DustAttack」と表示するようにしている
-	void AttackUpdate();
-	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
-	void DamageUpdate();
-	//死亡。情報を削除する。
-	void DieUpdate();
 
-	std::weak_ptr<Player>p;
-	Pos pos;
-	Pos size;
-	//現在向いている方向
-	DIR dir;
-	//キャラクターの状態
-	STATES st;
-	//ライフポイント
-	int hp;
-	//移動速度
-	int speed;
+	// 描画
+	void Draw(void);
+
+	// 処理
+	void UpData(void);
+
+private:
+	// 待機時の処理
+	void Neutral(void);
+	// 移動時の処理
+	void Walk(void);
+	// 攻撃時の処理
+	void Attack(void);
+	// ダメージ時の処理
+	void Damage(void);
+	//死亡時の処理
+	void Die(void);
+
+
 	//攻撃判定
 	bool attackFlag;
 	//敵が攻撃に移る範囲
@@ -49,6 +37,11 @@ private:
 	int color;
 	//判定のための待ち時間
 	int wait;
-	int dwait;
+
+	//x座標
+	int angleNumX;
+
+	// 関数ポインタ
+	void (Fannings::*func)(void);
 };
 

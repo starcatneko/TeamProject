@@ -38,7 +38,7 @@ void GamePlay::Create(void)
 	ground.reset(new Ground());
 	pl.reset(new Player(0.0f,(float)(ground->GetPos(0).y - 270), cam));
 	du.reset(new Dust({0,0}, cam, st, pl));
-	//fa.reset(new Fannings(pl));
+	fa.reset(new Fannings({ 0,0 }, cam, st, pl));
 }
 
 // ボックス描画
@@ -59,7 +59,7 @@ void GamePlay::Draw(void)
 	ItemDraw();
 	pl->Draw();
 	du->Draw();
-	//fa->Draw();
+	fa->Draw();
 	cam->Draw();
 	DrawBoxx();
 }

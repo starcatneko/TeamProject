@@ -1,176 +1,196 @@
 ﻿#include "Fannings.h"
+#include "Camera.h"
+#include "Stage.h"
 #include "Player.h"
 #include "GameMane.h"
+#include "Touch.h"
 #include "DxLib.h"
 
-Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, size{ 60, 30 }, hp(10), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0), dwait(0)
+//コンストラクタ
+Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
+	angleNumX(this->pos.x - 60), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
 {
-	dir = DIR_LEFT;
-	updater = &Fannings::NeutralUpdate;
+	this->cam = cam;
+	this->st = st;
+	this->pl = pl;
+	this->pos = pos;
+	lpos = this->cam.lock()->Correction(this->pos);
+	size = this->st.lock()->GetChipEneSize();
+	speed = 6;
+	hp = 10;
+	func = &Fannings::Neutral;
 }
 
-
+//デストラクタ
 Fannings::~Fannings()
 {
 }
 
-Pos Fannings::GetPos()
+//描画
+void Fannings::Draw(void)
 {
-	return pos;
-}
+	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 30, angleNumX, pos.y - 30, color, true);
 
-void Fannings::SetPos(Pos pos)
-{
-	this->pos.x = pos.x;
-	this->pos.y = pos.y;
-}
-
-void Fannings::UpData()
-{
-	(this->*updater)();
-}
-
-void Fannings::Draw()
-{
-	DrawTriangle(pos.x, pos.y, pos.x + size.x, pos.y + size.y, pos.x + size.x, pos.y - size.y, color, true);
-}
-
-void Fannings::NeutralUpdate()
-{
-	st = ST_NUETRAL;
-	if (wait > 0)
+	switch (state)
 	{
-		wait--;
-	}
-	else if (wait == 0)
-	{
-		if (pos.x < p.lock()->GetPos().x)
-		{
-			dir = DIR_RIGHT;
-			wait = 30;
-		}
-		else if (pos.x > p.lock()->GetPos().x)
-		{
-			dir = DIR_LEFT;
-			wait = 30;
-		}
+	case ST_NUETRAL:
+		DrawString(0, 1200, _T("待機中"), GetColor(255, 0, 0), false);
+		break;
+	case ST_WALK:
+		DrawString(0, 1200, _T("移動中"), GetColor(255, 0, 0), false);
+		break;
+	case ST_ATTACK:
+		DrawString(0, 1200, _T("攻撃中"), GetColor(255, 0, 0), false);
+		break;
+	case ST_DAMAGE:
+		DrawString(0, 1200, _T("ダメージ中"), GetColor(255, 0, 0), false);
+		break;
+	case ST_DIE:
+		DrawString(0, 1200, _T("死亡中"), GetColor(255, 0, 0), false);
+		break;
+	default:
+		break;
 	}
 
-	if ((pos.x <= p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < attackRange)
-		|| (pos.x >= p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < attackRange))
+	DrawFormatString(200, 1200, GetColor(255, 0, 0), _T("ファニングスの座標：%d, %d"), pos);
+}
+
+// 待機時の処理
+void Fannings::Neutral(void)
+{
+	if (state != ST_NUETRAL)
 	{
-		if ((pos.y <= p.lock()->GetPos().y && p.lock()->GetPos().y - pos.y < attackRange)
-			|| (pos.y >= p.lock()->GetPos().y && pos.y - p.lock()->GetPos().y < attackRange))
-		{
-			attackFlag = true;
-		}
+		return;
 	}
 
-	if (attackFlag)
+	//プレイヤーとの距離を求める
+	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
-		updater = &Fannings::AttackUpdate;
+		SetState(ST_ATTACK);
+		func = &Fannings::Attack;
 	}
 	else
 	{
-		updater = &Fannings::RunUpdate;
-	}
-	if (p.lock()->GetSt() == ST_ATTACK)
-	{
-		if (Touch::Get()->GetCommand() == CMD_TAP)
+		--wait;
+		if (wait <= 0)
 		{
-			if (pos.y < p.lock()->GetPos().y + 270 && pos.y > p.lock()->GetPos().y)
-			{
-				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
-					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
-				{
-					dwait = 60;
-					updater = &Fannings::DamageUpdate;
-				}
-			}
-		}
-		else if (Touch::Get()->GetCommand() == CMD_FLICK)
-		{
-			if (pos.y < p.lock()->GetPos().y + 40 && pos.y > p.lock()->GetPos().y - 40)
-			{
-				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 120)
-					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 120))
-				{
-					dwait = 120;
-					updater = &Fannings::DamageUpdate;
-				}
-			}
+			SetState(ST_WALK);
+			target = pl.lock()->GetPos();
+			func = &Fannings::Walk;
 		}
 	}
 }
 
-void Fannings::RunUpdate()
+// 移動時の処理
+void Fannings::Walk(void)
 {
-	st = ST_WALK;
-	color = 0x00ff00;
-	if (dir == DIR_LEFT)
+	if (state != ST_WALK)
 	{
-		pos.x -= speed;
-		size.x = 60;
-		if (pos.y > p.lock()->GetPos().y)
-		{
-			pos.y -= speed;
-		}
-		else if (pos.y < p.lock()->GetPos().y)
-		{
-			pos.y += speed;
-		}
+		return;
 	}
-	else if (dir == DIR_RIGHT)
-	{
-		pos.x += speed;
-		size.x = -60;
-		if (pos.y > p.lock()->GetPos().y)
-		{
-			pos.y -= speed;
-		}
-		else if (pos.y < p.lock()->GetPos().y)
-		{
-			pos.y += speed;
-		}
-	}
-	updater = &Fannings::NeutralUpdate;
-}
+	color = 0x00ffff;
 
-void Fannings::AttackUpdate()
-{
-	st = ST_ATTACK;
-	DrawString(500, 1200, _T("FanningsAttack"), 0xfff000);
-	color = 0xffff00;
-	attackFlag = false;
-	updater = &Fannings::NeutralUpdate;
-}
-
-void Fannings::DamageUpdate()
-{
-	st = ST_DAMAGE;
-	if (dwait > 0)
+	//プレイヤーとの距離を求める
+	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
-		color = 0xff0000;
-		DrawString(0, 1000, _T("FanningsDamage"), 0xfff000);
-		dwait--;
+		SetState(ST_ATTACK);
+		func = &Fannings::Attack;
 	}
 	else
 	{
-		hp--;
-		if (hp <= 0)
+		// 目標座標の更新
+		target = pl.lock()->GetPos();
+		if (pos.x == target.x)
 		{
-			updater = &Fannings::DieUpdate;
+			dir = DIR_NON;
 		}
 		else
 		{
-			updater = &Fannings::NeutralUpdate;
+			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+		}
+
+		if (dir == DIR_LEFT)
+		{
+			pos.x -= speed;
+			angleNumX = pos.x + 40;
+			if (pos.y != target.y)
+			{
+				pos.y += (pos.y > target.y ? -speed : speed);
+			}
+		}
+		else if (dir == DIR_RIGHT)
+		{
+			pos.x += speed;
+			angleNumX = pos.x - 40;
+			if (pos.y != target.y)
+			{
+				pos.y += (pos.y > target.y ? -speed : speed);
+			}
+		}
+		else
+		{
+			angleNumX = pos.x;
+			if (pos.y != target.y)
+			{
+				pos.y += (pos.y > target.y ? -speed : speed);
+			}
 		}
 	}
 }
 
-void Fannings::DieUpdate()
+// 攻撃時の処理
+void Fannings::Attack(void)
 {
-	st = ST_DIE;
+	if (state != ST_ATTACK)
+	{
+		return;
+	}
+	color = 0xffff00;
+
+	//攻撃アニメーションが終わったら
+	SetState(ST_NUETRAL);
+	wait = 60;
+	func = &Fannings::Neutral;
+}
+
+//　ダメージ時の処理
+void Fannings::Damage(void)
+{
+	if (state != ST_DAMAGE)
+	{
+		return;
+	}
+
+	if (hp <= 0)
+	{
+		state = ST_DIE;
+		func = &Fannings::Die;
+	}
+	else
+	{
+		state = ST_NUETRAL;
+		func = &Fannings::Neutral;
+	}
+}
+
+// 死亡時の処理
+void Fannings::Die(void)
+{
+	if (state != ST_DIE)
+	{
+		return;
+	}
 	color = 0xffffff;
+
+	//死亡アニメーションが終わったら
 	GameMane::Get()->Kill();
+	die = true;
+}
+
+// 処理
+void Fannings::UpData(void)
+{
+	(this->*func)();
 }
