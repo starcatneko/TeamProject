@@ -14,5 +14,6 @@ public:
 	void Draw();
 	void Update();
 	Box EnemyBox();
+	Box box;
 };
 
