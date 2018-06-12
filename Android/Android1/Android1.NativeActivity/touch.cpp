@@ -216,8 +216,8 @@ void Touch::DrawSwipe()
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, 0xff0000, 1, 1);
 
 		DrawTriangle(pos[0].x, pos[0].y,
-			swipe_pos_start[0].x + (fcos[p_con.angle] * 18), swipe_pos_start[0].y - (fsin[p_con.angle] * 18),
-			swipe_pos_start[0].x - (fcos[p_con.angle] * 18), swipe_pos_start[0].y + (fsin[p_con.angle] * 18),
+			swipe_pos_start[0].x + ((int)fcos[p_con.angle] * 18), swipe_pos_start[0].y - ((int)fsin[p_con.angle] * 18),
+			swipe_pos_start[0].x - ((int)fcos[p_con.angle] * 18), swipe_pos_start[0].y + ((int)fsin[p_con.angle] * 18),
 			0xFF2222, true);
 
 
@@ -377,7 +377,7 @@ void Touch::Punicon()
 		p_con.angle = ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
 			GetPos(0).x - GetSwipeStart(0).x));
 
-		p_con.length = hypot(p_con.pos.y-pos[0].y,
+		p_con.length = (int)hypot(p_con.pos.y-pos[0].y,
 			p_con.pos.x-pos[0].x );
 
 		AngleCtr();
@@ -388,7 +388,7 @@ void Touch::Punicon()
 			p_con.length = LENGTH_MAX;
 		}
 
-		p_con.verocity = (hypot(pos_buf[0].y - pos[0].y,
+		p_con.verocity = (int)(hypot(pos_buf[0].y - pos[0].y,
 			pos_buf[0].x - pos[0].x));
 
 		/*
@@ -419,7 +419,7 @@ void Touch::PuniCmdCtr()
 		p_con.command = CMD_TAP;
 	}
 	//フリック入力受付 
-	if (p_con.time <= FLICK_TIME && p_con.length>= LENGTH_SHORT &&
+	if (p_con.time <= FLICK_TIME && p_con.length>= LENGTH_LONG &&
 		touch_buf[0] == -1)
 	{
 		p_con.command = CMD_FLICK;

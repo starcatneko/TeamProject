@@ -5,8 +5,8 @@
 // プニコンの長さ区別
 #define LENGTH_SHORT 40
 #define LENGTH_MIDDLE 100
-#define LENGTH_LONG 160
-#define LENGTH_MAX 200
+#define LENGTH_LONG 240
+#define LENGTH_MAX 300
 
 // タップ処理判定の猶予フレーム
 #define TAP_TIME 8

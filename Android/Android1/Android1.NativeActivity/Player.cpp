@@ -15,15 +15,15 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	st = ST_NUETRAL;
 	hp = 0;
 	speed = 5;
-	applepower = 0;
+	applepower = 80;
 	dir = DIR_LEFT;
 
 	
 	testdriver.pos = { 200,400 };
 	testdriver.size = { 240,270 };
 
-	attackBox.TAP = { { 0,70 },{ 300,80 } };
-	attackBox.FLICK = { { 0,30 },{ 360,120 } };
+	attackBox.TAP = { { 160,70 },{ 160,80 } };
+	attackBox.FLICK = { { 120,30 },{ 240,120 } };
 
 	frame = 0;
 	attack_wait = 0;
@@ -34,27 +34,6 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 
 Player::~Player()
 {
-}
-
-Pos Player::GetPos()
-{
-	return {(int)c.x, (int)c.y};
-}
-
-void Player::SetPos(Pos pos)
-{
-	this->pos.x = (float)pos.x;
-	this->pos.y = (float)pos.y;
-}			  
-STATES Player::GetSt()
-{
-	return st;
-}
-
-
-DIR Player::GetDir()
-{
-	return dir;
 }
 
 void Player::Draw()
@@ -69,11 +48,9 @@ void Player::Draw()
 		break;
 	case ST_WALK:
 		color = 0x00EE00;
-
 		break;
 	case ST_ATTACK:
 		color = 0xFFAA00;
-
 		break;
 	case ST_DAMAGE:
 		color = 0x0000FF;
@@ -88,41 +65,18 @@ void Player::Draw()
 	Touch::Get()->DrawSwipe();
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%d, %d"), c.x, c.y);
 	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
-
 	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
 	DrawFormatString(0, 72, 0xDDDDDD, _T("attack_wait::%d"), attack_wait);
 	DrawFormatString(128, 0, 0xDDDDDD, _T("dir::%d"), dir);
 	
-	if (Touch::Get()->GetCommand() == CMD_TAP)
-	{
-		if (dir == DIR_LEFT)
-		{
-			DrawBox((int)pos.x  - attackBox.TAP.size.x, (int)pos.y, (int)pos.x, (int)pos.y + attackBox.TAP.size.y, 0x00FF00, true);
-		}
-		else
-		{
-			DrawBox((int)pos.x + attackBox.TAP.size.x, (int)pos.y, (int)pos.x, (int)pos.y + attackBox.TAP.size.y, 0x00FF00, true);
-		}
-	}
-	DrawBox(c.x,c.y,c.x + 240, c.y + 270, color, true);
 
-	if (cmd == CMD_FLICK)
-	{
-		if (dir == DIR_LEFT)
-		{
-			DrawBox((int)pos.x +attackBox.FLICK.pos.x, (int)pos.y + attackBox.FLICK.pos.y, (int)pos.x, (int)pos.y + 40, 0x00FF00, true);
-		}
-		else
-		{
-			DrawBox((int)pos.x + 120, (int)pos.y - 40, (int)pos.x, (int)pos.y + 40, 0x00FF00, true);
-		}
-	}
+	DrawBox(c.x,c.y,c.x + size.x, c.y + size.y, color, true);
+
+	DrawHitBox();
 
 	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.pos.x+ testdriver.size.x, testdriver.pos.y+ testdriver.size.y, 0xffaaaa, false);
 
-	DrawBox((int)pos.x,(int)pos.y,(int)pos.x + 8, (int)pos.y + 8, color, true);
 
-	//DrawLine(pos.x- fcos[angle] * 4000, pos.y - fsin[angle] * 4000, pos.x + fcos[angle] * 4000, pos.y + fsin[angle] * 4000, 0x00FF00, true);
 	if (CheckHitAtack(testdriver))
 	{
 		DrawBox(1720, 800, 1920, 1080, 0xFFFFFF, true);
@@ -148,11 +102,24 @@ void Player::Update()
 	}
 
 }
+
 void Player::StatesUpDate()
 {
 	CommandCtr();
+	if (Touch::Get()->GetLength() > LENGTH_SHORT / 2)
+	{
+		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_RIGHT;
+		}
+	}
+
 	switch (st)
-	{ 
+	{
 		case ST_NUETRAL:
 			Touch();	
 
@@ -179,20 +146,12 @@ void Player::StatesUpDate()
 void Player::Move()
 {
 
-	if (Touch::Get()->GetLength() > 0 && Touch::Get()->GetBuf(0) > 0)
+	if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
 	{
 
 		pos.x += Touch::Get()->GetCos() * (float)speed;
 		pos.y += Touch::Get()->GetSin() * (float)speed;
 
-		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
-		{
-			dir = DIR_LEFT;
-		}
-		else
-		{
-			dir = DIR_RIGHT;
-		}
 	}
 	else
 	{
@@ -213,8 +172,8 @@ bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
 	}
 	else
 	{
-		if (A.pos.x < (P_BOX.pos.x + P_BOX.size.x - this->pos.x + this->size.x)
-			&& P_BOX.pos.x - this->pos.x + this->size.x< (A.pos.x + A.size.x)
+		if (A.pos.x < (-P_BOX.pos.x  + this->pos.x + this->size.x)
+			&& -P_BOX.pos.x - P_BOX.size.x + this->pos.x + this->size.x< (A.pos.x + A.size.x)
 			&& A.pos.y < (P_BOX.pos.y + P_BOX.size.y + this->pos.y)
 			&& P_BOX.pos.y + this->pos.y < (A.pos.y + A.size.y))
 		{
@@ -223,6 +182,49 @@ bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
 	}
 	return false;
 }
+void Player::DrawHitBox()
+{
+	switch (cmd)
+	{
+	case CMD_TAP:
+		if (dir == DIR_RIGHT)
+		{
+			DrawBox(pos.x + attackBox.TAP.pos.x,
+				pos.y + attackBox.TAP.pos.y,
+				pos.x + attackBox.TAP.pos.x + attackBox.TAP.size.x,
+				pos.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
+				0xFFFF00, true);
+		}
+		else
+		{
+			DrawBox(pos.x - attackBox.TAP.pos.x + this->size.x,
+				pos.y + attackBox.TAP.pos.y,
+				pos.x - attackBox.TAP.pos.x - attackBox.TAP.size.x + this->size.x,
+				pos.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
+				0xFFFF00, true);
+		}
+		break;
+	case CMD_FLICK:
+		if (dir == DIR_RIGHT)
+		{
+			DrawBox(pos.x + attackBox.FLICK.pos.x,
+				pos.y + attackBox.FLICK.pos.y,
+				pos.x + attackBox.FLICK.pos.x + attackBox.FLICK.size.x,
+				pos.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
+				0xFFFF00, true);
+		}
+		else
+		{
+			DrawBox(pos.x - attackBox.FLICK.pos.x + this->size.x,
+				pos.y + attackBox.FLICK.pos.y,
+				pos.x - attackBox.FLICK.pos.x - attackBox.FLICK.size.x + this->size.x,
+				pos.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
+				0xFFFF00, true);
+		}
+
+		break;
+	}
+}
 void Player::Touch()
 {
 	if (Touch::Get()->GetLength() > LENGTH_SHORT)
@@ -230,58 +232,7 @@ void Player::Touch()
 		st = ST_WALK;
 	}
 }
-void Player::HpControl(int point)
-{
-	hp += point;
-}
-int Player::GetPower()
-{
-	return applepower;
-}
-void Player::SetPower(int power)
-{
-	applepower = power;
-}
-void Player::UpPower(int power)
-{
-	applepower += power;
-}
-//外部呼び出し専用
-bool Player::CheckHitAtack(Box target)
-{
-	// プレイヤーの行動を元に、引数のnd())
-	// オブジェクトと当たり判定の処理を行う
-	// 当たっていたらtrue、外れていたらfalse
 
-	switch (cmd)
-	{
-	case CMD_DEF:		// 無入力
-
-		break;
-	case CMD_TAP:		// 短押し
-
-		if (Hit_BoxtoPlayer(target,attackBox.TAP,dir))
-		{
-			return true;
-		}
-		break;
-	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
-
-		break;
-	case CMD_FLICK:		// すばやくスライド
-		if (Hit_BoxtoPlayer(target, attackBox.FLICK, dir))
-		{
-			return true;
-		}
-		break;
-	case CMD_L_PRESS:		// 長押し
-
-		break;
-
-
-	}
-	return false;
-}
 void Player::CommandCtr()
 {
 	switch (Touch::Get()->GetCommand())
@@ -340,68 +291,77 @@ void Player::Attack()
 	}
 }
 
-/*
-void Player::TestUpdate()
+//外部呼び出し専用
+bool Player::CheckHitAtack(Box target)
 {
-	Pos listPos[4];
-	// リストに座標設定
-	listPos[0] = { WINDOW_X * 1, 0 };//1920
-	listPos[1] = { WINDOW_X * 2, 0 };//3840
-	listPos[2] = { WINDOW_X * 3, 0 };//5760
-	listPos[3] = { WINDOW_X * 4, 0 };//7680
-	 //listPos[4] = { WINDOW_X*5, 0};//9600
+	// プレイヤーの行動を元に、引数のnd())
+	// オブジェクトと当たり判定の処理を行う
+	// 当たっていたらtrue、外れていたらfalse
 
-									 // 静止フラグ
-	if (scrFlag == 0) {
-		pos.x += 5;
-	}
-	if (scrFlag == 1) {
-		pos.x += 1;
-	}
+	switch (cmd)
+	{
+	case CMD_DEF:		// 無入力
 
-	// 1850 ～ 1920■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[0].x - 70)) && (pos.x <= listPos[0].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= 0) && (pos.x <= (listPos[0].x - 70))) {
-		scrFlag = 0;
-	}
+		break;
+	case CMD_TAP:		// 短押し
 
-	// 1920 ～ 3840■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[1].x - 70)) && (pos.x <= listPos[1].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= listPos[0].x) && (pos.x <= (listPos[1].x - 70))) {
-		scrFlag = 0;
-	}
+		if (Hit_BoxtoPlayer(target, attackBox.TAP, dir))
+		{
+			return true;
+		}
+		break;
+	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
 
-	// 3840 ～ 5760■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[2].x - 70)) && (pos.x <= listPos[2].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
+		break;
+	case CMD_FLICK:		// すばやくスライド
+		if (Hit_BoxtoPlayer(target, attackBox.FLICK, dir))
+		{
+			return true;
+		}
+		break;
+	case CMD_L_PRESS:		// 長押し
+
+		break;
+
+
 	}
-	else if ((pos.x >= listPos[1].x) && (pos.x <= (listPos[2].x - 70))) {
-		scrFlag = 0;
-	}
-	// 5760 ～ 7680■■■■■■■■■■■■■■■■■■■■
-	if ((pos.x >= (listPos[3].x - 70)) && (pos.x <= listPos[3].x)) {
-		scrFlag = 1;
-		//pos.x = WINDOW_X;
-	}
-	else if ((pos.x >= listPos[2].x) && (pos.x <= (listPos[3].x - 70))) {
-		scrFlag = 0;
-	}
+	return false;
 }
 
-void Player::TestDraw(Pos _pos)
-{
-	Pos cPos;
-	cPos = _pos;
 
-	DrawFormatString(0, 0, 0xDDDDDD, _T("%d:%d"), pos.x, pos.y);
-	DrawFormatString(0, 25, 0xDDDDDD, _T("%d"), GetTouchInputNum());
-	DrawFormatString(0, 50, 0xDDDDDD, _T("%d,%d"), a, Touch::Get()->GetBuf(0));
-	DrawBox((int)pos.x + cPos.x, pos.y, (pos.x + 50) + cPos.x, pos.y + 50, 0xAA0000, true);
-}*/
+
+//参照・代入系
+void Player::HpControl(int point)
+{
+	hp += point;
+}
+int Player::GetPower()
+{
+	return applepower;
+}
+void Player::SetPower(int power)
+{
+	applepower = power;
+}
+void Player::UpPower(int power)
+{
+	applepower += power;
+}
+Pos Player::GetPos()
+{
+	return { (int)c.x, (int)c.y };
+}
+void Player::SetPos(Pos pos)
+{
+	this->pos.x = (float)pos.x;
+	this->pos.y = (float)pos.y;
+}
+STATES Player::GetSt()
+{
+	return st;
+}
+DIR Player::GetDir()
+{
+	return dir;
+}
+
