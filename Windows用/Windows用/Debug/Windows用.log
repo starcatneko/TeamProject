@@ -1,3 +1,2 @@
-﻿  LINK : 前回のインクリメンタル リンクで C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-Player.obj : error LNK2019: 未解決の外部シンボル "public: void __thiscall Touch::DrawPunicon(void)" (?DrawPunicon@Touch@@QAEXXZ) が関数 "public: void __thiscall Player::Draw(void)" (?Draw@Player@@QAEXXZ) で参照されました。
-C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe : fatal error LNK1120: 1 件の未解決の外部参照
+﻿  Camera.cpp
+  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

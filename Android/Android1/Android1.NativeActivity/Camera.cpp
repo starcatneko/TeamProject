@@ -62,6 +62,7 @@ void Camera::Move(Pos pos)
 	{
 		// カメラの座標の修正
 		this->pos.x = target.x;
+		refuge = this->pos;
 		func = &Camera::NotMove;
 	}
 }
@@ -72,7 +73,10 @@ void Camera::Shake(Pos pos)
 	++flam;
 
 	//カメラ座標を移動
-	this->pos.x += (this->pos.x <= off.x ? off.x : -off.x);
+	if (flam % 2 == 0)
+	{
+		this->pos.x += (this->pos.x <= off.x ? off.x : -off.x);
+	}
 
 	//フレームが規定時間を超えたとき
 	if (flam >= time)
