@@ -25,7 +25,7 @@ public:
 	void UpData(void);
 
 	// リセット
-	void ReSet(void);
+	void Reset(void);
 
 	// スコアの加算
 	void Up(int i);

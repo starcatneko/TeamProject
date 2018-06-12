@@ -4,6 +4,7 @@
 #include "Touch.h"
 #include "ItemMane.h"
 #include "EnemyMane.h"
+#include "Score.h"
 #include "Title.h"
 #include "Typedef.h"
 #include "DxLib.h"
@@ -53,6 +54,7 @@ void Game::Create(void)
 	Touch::Create();
 	ItemMane::Create();
 	EnemyMane::Create();
+	Score::Create();
 }
 
 // シーンの移行
@@ -68,6 +70,7 @@ void Game::Draw(void)
 	ClsDrawScreen();
 
 	scene->Draw();
+
 	//裏画面を表画面に瞬間コピー
 	ScreenFlip();
 }
@@ -103,6 +106,7 @@ void Game::Destroy(void)
 	Touch::Destroy();
 	ItemMane::Destroy();
 	EnemyMane::Destroy();
+	Score::Destroy();
 
 	//Dxlibの終了
 	DxLib_End();

@@ -15,7 +15,7 @@
 #include <algorithm>
 
 // コンストラクタ
-GamePlay::GamePlay() : speed(60), alpha(0), tmp(false)
+GamePlay::GamePlay() : speed(60), alpha(0), blend(false)
 {
 	Create();
 	item.clear();
@@ -45,16 +45,10 @@ void GamePlay::Create(void)
 void GamePlay::DrawBoxx(void)
 {
 	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
-	for (unsigned int i = 0; i < pos.size(); ++i)
-	{
-		DrawString(pos[i].x, pos[i].y, "0", GetColor(255, 0, 0), false);
-	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-	DrawFormatString(250, 250, GetColor(255, 0, 0), "%d", pos.size());
 }
 
 // 描画
@@ -64,13 +58,9 @@ void GamePlay::Draw(void)
 	ground->Draw();
 	ItemDraw();
 	pl->Draw();
-	//pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
 	fa->Draw();
-	//cam->Scroll(pl->GetPos());		// ミキオが追加
-	cam->Draw();					// ミキオが追加
-	//cam->SetPos(cam->GetPos());		// ミキオが追加
-
+	cam->Draw();
 	DrawBoxx();
 }
 
@@ -153,21 +143,25 @@ void GamePlay::ItemUpData(void)
 // 画面エフェクト
 void GamePlay::Pinch(int i, int alpha)
 {
-	this->alpha = alpha;
-	if (tmp == false)
+	if (alpha == 0)
 	{
-		alpha += i;
-		if (alpha >= 128)
+		this->alpha = alpha;
+	}
+
+	if (blend == false)
+	{
+		this->alpha += i;
+		if (this->alpha >= 128)
 		{
-			tmp = true;
+			blend = true;
 		}
 	}
 	else
 	{
-		alpha -= i;
-		if (alpha <= 0)
+		this->alpha -= i;
+		if (this->alpha < 0)
 		{
-			tmp = false;
+			blend = false;
 		}
 	}
 }
@@ -186,13 +180,13 @@ void GamePlay::NotStart(void)
 void GamePlay::Start(void)
 {
 	cam->UpData(pl->GetPos());
-	Load();
 
+	Load();
 	pl->Update();
-	//pl->TestUpdate();
 	du->Update();
 	fa->Update();
 	ItemUpData();
+
 
 	if (pl->GetPower() <= 0)
 	{

@@ -1,5 +1,6 @@
 ﻿#include "Title.h"
 #include "Touch.h"
+#include "Score.h"
 #include "Game.h"
 #include "GamePlay.h"
 #include "DxLib.h"
@@ -10,6 +11,7 @@ Title::Title() : speed(60)
 	image = 0;
 	pos = {};
 	box = { {-WINDOW_X, 0}, {WINDOW_X, WINDOW_Y} };
+	Score::Get()->Reset();
 	func = &Title::NotStart;
 }
 

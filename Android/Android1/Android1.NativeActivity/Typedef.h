@@ -46,13 +46,11 @@ struct Position
 	T y;
 
 	void operator+(T i) {
-		this->x += i;
-		this->y += i;
+		this->x += i; this->y += i;
 	}
 
 	void operator-(T i) {
-		this->x -= i;
-		this->y -= i;
+		this->x -= i; this->y -= i;
 	}
 
 	Position operator+(Position pos) {
@@ -72,18 +70,17 @@ struct Position
 	}
 
 	void operator=(T i){
-		x = i;
-		y = i;
+		x = i; y = i;
 	}
 
 	void operator-=(Position pos) {
-		x -= pos.x;
-		y -= pos.y;
+		x -= pos.x; y -= pos.y;
 	}
 
 	bool operator!=(T i){
 		return !(x == i && y == i);
 	}
+
 	bool operator!=(Position pos){
 		return !(x == pos.x && y == pos.y);
 	}
@@ -91,11 +88,13 @@ struct Position
 	bool operator==(T i){
 		return (x == i && y == i);
 	}
+
 	bool operator==(Position pos){
 		return (x == pos.x && y == pos.y);
 	}
 };
 
+// int型Position
 typedef Position<int>Pos;
 
 // ボックス情報

@@ -11,8 +11,5 @@ public:
 	virtual void Draw(void) = 0;
 	// 処理
 	virtual void UpData(void) = 0;
-
-private:
-
 };
 
