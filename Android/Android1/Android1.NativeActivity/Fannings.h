@@ -12,7 +12,7 @@ public:
 	~Fannings();
 	Pos GetPos();
 	void SetPos(Pos pos);
-	void Update();
+	void UpData();
 	void Draw();
 private:
 	//メンバ関数ポインタ
@@ -32,6 +32,7 @@ private:
 
 	std::weak_ptr<Player>p;
 	Pos pos;
+	Pos size;
 	//現在向いている方向
 	DIR dir;
 	//キャラクターの状態
@@ -49,8 +50,5 @@ private:
 	//判定のための待ち時間
 	int wait;
 	int dwait;
-
-	//x座標
-	int angleNumX;
 };
 

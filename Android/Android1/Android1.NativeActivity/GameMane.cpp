@@ -39,6 +39,12 @@ void GameMane::Kill(void)
 	++kill;
 }
 
+// 目標数の上昇
+void GameMane::Target(void)
+{
+	++target;
+}
+
 // 目標数のセット
 void GameMane::SetTarget(unsigned int cnt)
 {
