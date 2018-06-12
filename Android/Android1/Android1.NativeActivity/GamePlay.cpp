@@ -178,7 +178,7 @@ void GamePlay::NotStart(void)
 // 各クラスの処理
 void GamePlay::Start(void)
 {
-	cam->UpData(pl->GetPos());
+	cam->UpData(pl->GetLocalPos());
 
 	Load();
 	pl->Update();
