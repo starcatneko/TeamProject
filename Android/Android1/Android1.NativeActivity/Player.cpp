@@ -390,14 +390,11 @@ void Player::UpPower(int power)
 Pos Player::GetPos()
 {
 	return { (int)pos.x, (int)pos.y };
-<<<<<<< HEAD
 }
 
 Pos Player::GetLocalPos()
 {
 	return { c.x, c.y };
-=======
->>>>>>> 168859390cc9025a9ba3247e0c17c37adbf7f10e
 }
 void Player::SetPos(Pos pos)
 {
