@@ -3,7 +3,7 @@
 #include "Touch.h"
 #include <DxLib.h>
 
-Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(40), color(0x00ffff), wait(0)
+Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(5), speed(4), attackFlag(false), attackRange(40), color(0x00ffff), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Dust::NeutralUpdate;
@@ -75,15 +75,28 @@ void Dust::NeutralUpdate()
 		updater = &Dust::RunUpdate;
 	}
 
-	if (Touch::Get()->GetCommand() == CMD_TAP)
+	if (p.lock()->GetSt() == ST_ATTACK)
 	{
-		if (pos.y < p.lock()->GetPos().y + 40
-			&& p.lock()->GetPos().y - 40 < pos.y)
+		if (Touch::Get()->GetCommand() == CMD_TAP)
 		{
-			if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
-				|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+			if (pos.y < p.lock()->GetPos().y + 270 && pos.y > p.lock()->GetPos().y)
 			{
-				updater = &Dust::DieUpdate;
+				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
+					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+				{
+					updater = &Dust::DamageUpdate;
+				}
+			}
+		}
+		else if (Touch::Get()->GetCommand() == CMD_FLICK)
+		{
+			if (pos.y < p.lock()->GetPos().y + 40 && pos.y > p.lock()->GetPos().y - 40)
+			{
+				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 120)
+					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 120))
+				{
+					updater = &Dust::DamageUpdate;
+				}
 			}
 		}
 	}
@@ -135,6 +148,15 @@ void Dust::DamageUpdate()
 {
 	st = ST_DAMAGE;
 	DrawString(0, 1000, _T("DustDamage"), 0xfff000);
+	hp--;
+	if (hp <  0)
+	{
+		updater = &Dust::DieUpdate;
+	}
+	else
+	{
+		updater = &Dust::NeutralUpdate;
+	}
 }
 
 void Dust::DieUpdate()

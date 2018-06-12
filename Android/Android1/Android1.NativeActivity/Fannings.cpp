@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <DxLib.h>
 
-Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(0), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
+Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(10), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
 {
 	dir = DIR_LEFT;
 	updater = &Fannings::NeutralUpdate;
@@ -73,15 +73,28 @@ void Fannings::NeutralUpdate()
 	{
 		updater = &Fannings::RunUpdate;
 	}
-	if (Touch::Get()->GetCommand() == CMD_TAP)
+	if (p.lock()->GetSt() == ST_ATTACK)
 	{
-		if (pos.y < p.lock()->GetPos().y + 40
-			&& p.lock()->GetPos().y - 40 < pos.y)
+		if (Touch::Get()->GetCommand() == CMD_TAP)
 		{
-			if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
-				|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+			if (pos.y < p.lock()->GetPos().y + 270 && pos.y > p.lock()->GetPos().y)
 			{
-				updater = &Fannings::DieUpdate;
+				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 40)
+					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 40))
+				{
+					updater = &Fannings::DamageUpdate;
+				}
+			}
+		}
+		else if (Touch::Get()->GetCommand() == CMD_FLICK)
+		{
+			if (pos.y < p.lock()->GetPos().y + 40 && pos.y > p.lock()->GetPos().y - 40)
+			{
+				if ((p.lock()->GetDir() == DIR_RIGHT && pos.x > p.lock()->GetPos().x && pos.x - p.lock()->GetPos().x < 120)
+					|| (p.lock()->GetDir() == DIR_LEFT && pos.x < p.lock()->GetPos().x && p.lock()->GetPos().x - pos.x < 120))
+				{
+					updater = &Fannings::DamageUpdate;
+				}
 			}
 		}
 	}
@@ -132,7 +145,17 @@ void Fannings::AttackUpdate()
 void Fannings::DamageUpdate()
 {
 	st = ST_DAMAGE;
+	color = 0xff0000;
 	DrawString(0, 1000, _T("FanningsDamage"), 0xfff000);
+	hp--;
+	if (hp < 0)
+	{
+		updater = &Fannings::DieUpdate;
+	}
+	else
+	{
+		updater = &Fannings::NeutralUpdate;
+	}
 }
 
 void Fannings::DieUpdate()
