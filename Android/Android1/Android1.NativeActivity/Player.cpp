@@ -8,6 +8,7 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 
 	this->cam = cam;
+	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	tempPos = { 0,0 };
 	size = { 240,270 };
 	this->pos = {x, y};
@@ -36,7 +37,7 @@ Player::~Player()
 
 Pos Player::GetPos()
 {
-	return {(int)pos.x, (int)pos.y};
+	return {(int)c.x, (int)c.y};
 }
 
 void Player::SetPos(Pos pos)
@@ -59,6 +60,7 @@ DIR Player::GetDir()
 
 void Player::Draw()
 {
+	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	unsigned int color;
 	//int x, y;
 	switch (st)
@@ -85,7 +87,7 @@ void Player::Draw()
 		break;
 	}
 	Touch::Get()->DrawSwipe();
-	DrawFormatString(0, 0, 0xDDDDDD, _T("%4.0f:%4.0f"), pos.x, pos.y);
+	DrawFormatString(0, 0, 0xDDDDDD, _T("%d, %d"), c.x, c.y);
 	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
 
 	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
@@ -102,7 +104,7 @@ void Player::Draw()
 			DrawBox(pos.x + TAP_LECT_SIZE_X, pos.y, pos.x, pos.y + TAP_LECT_SIZE_Y, 0x00FF00, true);
 		}
 	}
-	DrawBox(pos.x,pos.y,pos.x + 240, pos.y + 270, color, true);
+	DrawBox(c.x,c.y,c.x + 240, c.y + 270, color, true);
 
 	if (cmd == CMD_FLICK)
 	{
@@ -126,7 +128,12 @@ void Player::Draw()
 
 void Player::Update()
 {
+	if (cam.lock()->GetPos().x % WINDOW_X != 0)
+	{
+		return;
+	}
 	frame++;
+	
 	StatesUpDate();
 
 	if (frame % 60 == 0)
