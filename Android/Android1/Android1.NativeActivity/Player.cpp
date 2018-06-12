@@ -104,11 +104,7 @@ void Player::Draw()
 			DrawBox((int)pos.x + attackBox.TAP.size.x, (int)pos.y, (int)pos.x, (int)pos.y + attackBox.TAP.size.y, 0x00FF00, true);
 		}
 	}
-<<<<<<< HEAD
 	DrawBox(c.x,c.y,c.x + 240, c.y + 270, color, true);
-=======
-	DrawBox((int)pos.x, (int)pos.y, (int)pos.x + size.x, (int)pos.y + size.y, color, true);
->>>>>>> NSOK
 
 	if (cmd == CMD_FLICK)
 	{
