@@ -12,7 +12,7 @@ public:
 	~Fannings();
 	Pos GetPos();
 	void SetPos(Pos pos);
-	void Update();
+	void UpData();
 	void Draw();
 private:
 	//メンバ関数ポインタ

@@ -20,6 +20,9 @@ public:
 	// キル数の上昇
 	void Kill(void);
 
+	// 目標数の上昇
+	void Target(void);
+
 	// 目標数のセット
 	void SetTarget(unsigned int cnt);
 

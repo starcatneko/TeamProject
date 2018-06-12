@@ -34,7 +34,7 @@ void Apple::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
 
-	if (CheckHit(pos, size, pl.lock()->GetPos(), { 240,270 }) == true)
+	if (CheckHit(lpos, size, pl.lock()->GetPos(), { 240,270 }) == true)
 	{
 		pl.lock()->UpPower(10);
 		if (pl.lock()->GetPower() >= 100)
