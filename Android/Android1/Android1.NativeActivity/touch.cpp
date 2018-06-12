@@ -213,49 +213,56 @@ void Touch::DrawPunicon()
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_MIDDLE, 0xff00ff, 1, 1);
 		
 
-		unsigned int punicolor = 0xFFFFFF;
+		unsigned int punicolor =0xFFFFFF;
 
 		int x = 0;
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 
+		//ぷにこん部分描画
+
+		int alpha = 0;
+		for(int x = 0; x< LENGTH_SHORT;x++)
+		{
 			if (p_con.angle >= 270)
 			{
 				p_con.angle -= 180;
 			}
 
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, punicolor, 1, 1);
+			DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, punicolor, 1, 1);
 
-		DrawTriangleAA(pos[0].x, pos[0].y,
-			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			punicolor, true);
+			DrawTriangle(pos[0].x, pos[0].y,
+				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				punicolor, true);
 
-		DrawTriangleAA(pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT/2), pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT/2),
-			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			punicolor, true);
+			DrawTriangle(pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6), pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
+				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				punicolor, true);
 
-		DrawTriangleAA(pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT/2), pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 2),
-			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-			punicolor, true);
+			DrawTriangle(pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6), pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
+				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+				punicolor, true);
 
-		DrawCircle(pos[0].x, pos[0].y, LENGTH_SHORT / 2, punicolor, 1, 1);
-		/*
-		DrawCircle(pos[0].x - (int)(fcos[p_con.angle + 90]*24),
-			pos[0].y - (int)(fsin[p_con.angle + 90] * 24), LENGTH_SHORT / 2,
-			punicolor, 1, 1);
+			DrawCircle(pos[0].x, pos[0].y, LENGTH_SHORT / 6, punicolor, 1, 1);
 
-		DrawCircle(pos[0].x - (int)(fcos[p_con.angle + 90]*36),
-			pos[0].y - (int)(fsin[p_con.angle + 90] * 36), LENGTH_SHORT / 2,
-			punicolor, 1, 1);*/
+			DrawTriangleAA(swipe_pos_start[0].x, swipe_pos_start[0].y,
+				pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6),
+				pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
+				pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6),
+				pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
+				punicolor, true);
+
+		}
+
 
 
 	}
