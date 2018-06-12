@@ -202,7 +202,7 @@ void Touch::TouchProccess()
 	}
 }
 
-void Touch::DrawSwipe()
+void Touch::DrawPunicon()
 {
 	//プニコンのLength取得種類の幅表示
 	if (p_con.time > 1)
@@ -211,14 +211,51 @@ void Touch::DrawSwipe()
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_LONG, 0xffff00, 1, 1);
 		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_MIDDLE, 0xff00ff, 1, 1);
+		
 
+		unsigned int punicolor = 0xFFFFFF;
+
+		int x = 0;
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, 0xff0000, 1, 1);
 
-		DrawTriangle(pos[0].x, pos[0].y,
-			swipe_pos_start[0].x + ((int)fcos[p_con.angle] * 18), swipe_pos_start[0].y - ((int)fsin[p_con.angle] * 18),
-			swipe_pos_start[0].x - ((int)fcos[p_con.angle] * 18), swipe_pos_start[0].y + ((int)fsin[p_con.angle] * 18),
-			0xFF2222, true);
+
+			if (p_con.angle >= 270)
+			{
+				p_con.angle -= 180;
+			}
+
+		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, punicolor, 1, 1);
+
+		DrawTriangleAA(pos[0].x, pos[0].y,
+			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			punicolor, true);
+
+		DrawTriangleAA(pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT/2), pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT/2),
+			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			punicolor, true);
+
+		DrawTriangleAA(pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT/2), pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 2),
+			swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
+			swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
+			punicolor, true);
+
+		DrawCircle(pos[0].x, pos[0].y, LENGTH_SHORT / 2, punicolor, 1, 1);
+		/*
+		DrawCircle(pos[0].x - (int)(fcos[p_con.angle + 90]*24),
+			pos[0].y - (int)(fsin[p_con.angle + 90] * 24), LENGTH_SHORT / 2,
+			punicolor, 1, 1);
+
+		DrawCircle(pos[0].x - (int)(fcos[p_con.angle + 90]*36),
+			pos[0].y - (int)(fsin[p_con.angle + 90] * 36), LENGTH_SHORT / 2,
+			punicolor, 1, 1);*/
 
 
 	}
@@ -249,7 +286,6 @@ void Touch::DrawSwipe()
 
 	}
 	DrawFormatString(600, 128, 0x000000, "%d", p_con.command);
-
 
 }
 
@@ -345,11 +381,6 @@ int Touch::GetLength()
 	return p_con.length;
 }
 
-float Touch::GetSwipeF()
-{
-	return 0.0f;
-}
-
 float Touch::GetCos()
 {
 	return fcos[p_con.angle];
@@ -362,8 +393,6 @@ float Touch::GetSin()
 
 void Touch::Punicon()
 {
-	//2018.06.08
-	//プニコンの円枠の表示処理をTouch.cppで行っているが、最終的にはPlayer.cppに移動させたい
 
 	//画面タップ中操作
 	if (GetBuf(0) >0)
@@ -374,8 +403,8 @@ void Touch::Punicon()
 		p_con.pos = { GetSwipeStart(0).x,GetSwipeStart(0).y };
 
 		//プニコンの向いている方向と長さを取得する
-		p_con.angle = ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
-			GetPos(0).x - GetSwipeStart(0).x));
+		p_con.angle = (int)(ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
+			GetPos(0).x - GetSwipeStart(0).x)));
 
 		p_con.length = (int)hypot(p_con.pos.y-pos[0].y,
 			p_con.pos.x-pos[0].x );
@@ -409,6 +438,7 @@ void Touch::Punicon()
 
 }
 
+
 void Touch::PuniCmdCtr()
 {
 
@@ -441,13 +471,7 @@ void Touch::PuniCmdCtr()
 
 void Touch::AngleCtr()
 {
-	/*
-	if (tempdis % 25 == 0)
-	{
-		p_con.angle = ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
-			GetPos(0).x - GetSwipeStart(0).x));
-	}
-	*/
+
 	if (p_con.angle > 360)
 	{
 		p_con.angle -= 360;

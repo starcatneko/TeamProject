@@ -57,7 +57,10 @@ public:
 	}
 
 	Pos GetPos(int touchNo);
+	//スワイプの始点の座標を取得
 	Pos GetSwipeStart(int touchNo);
+	//スワイプの終点の座標を取得
+	//!!現在指を置いている座標ではなく、指を離した時の座標を取得する!!
 	Pos GetSwipeGoal(int touchNo);
 	void SetPos(int touchNo, Pos pos);
 	int *GetBuf();
@@ -66,16 +69,21 @@ public:
 	void Update();
 
 	//スワイプの表示(デバッグ用)
-	void DrawSwipe();
+	void DrawPunicon();
 
 	PUNI_COMMAND GetCommand();
 
 	//スワイプ情報の取得
+	//スワイプした方向をDIR型で返してくれる
 	DIR GetSwipe();
+	//フリック情報の取得
+	//フリックした方向をDIR型で返してくれる
 	DIR GetFlick();
+
+	//スワイプしている角度を返す（プニコン）
 	int GetAngle();
+	//スワイプしている長さを返す（プニコン）
 	int GetLength();
-	float GetSwipeF();
 
 	//コサイン取得
 	float GetCos();

@@ -41,7 +41,6 @@ Player::~Player()
 void Player::Draw()
 {
 	unsigned int color;
-	//int x, y;
 	switch (st)
 	{
 	case ST_NUETRAL:
@@ -63,7 +62,8 @@ void Player::Draw()
 		color = 0xFFFFFF;
 		break;
 	}
-	Touch::Get()->DrawSwipe();
+	Touch::Get()->DrawPunicon();
+
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%d, %d"), c.x, c.y);
 	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
 	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
@@ -389,7 +389,12 @@ void Player::UpPower(int power)
 }
 Pos Player::GetPos()
 {
-	return { (int)c.x, (int)c.y };
+	return { (int)pos.x, (int)pos.y };
+}
+
+Pos Player::GetLocalPos()
+{
+	return { c.x, c.y };
 }
 void Player::SetPos(Pos pos)
 {

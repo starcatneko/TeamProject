@@ -31,6 +31,7 @@ public:
 	~Player();
 	//座標の取得
 	Pos GetPos();
+	Pos GetLocalPos();
 	//座標を格納
 	void SetPos(Pos pos);
 	//状態の取得
