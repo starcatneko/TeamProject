@@ -13,12 +13,6 @@ public:
 	Enemy();
 	// デストラクタ
 	~Enemy();
-<<<<<<< HEAD
-	void Draw();
-	void Update();
-	Box EnemyBox();
-	Box box;
-=======
 
 	// 描画
 	virtual void Draw() = 0;
@@ -85,6 +79,5 @@ protected:
 
 	// 死亡フラグ
 	bool die;
->>>>>>> okamonn
 };
 

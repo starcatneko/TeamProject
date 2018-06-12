@@ -28,21 +28,7 @@ private:
 	//死亡時の処理
 	void Die(void);
 
-<<<<<<< HEAD
-	std::weak_ptr<Player>p;
-	Pos pos;
-	Pos size;
-	//現在向いている方向
-	DIR dir;
-	//キャラクターの状態
-	STATES st;
-	//ライフポイント
-	int hp;
-	//移動速度
-	int speed;
-=======
-	
->>>>>>> okamonn
+
 	//攻撃判定
 	bool attackFlag;
 	//敵が攻撃に移る範囲
@@ -51,15 +37,11 @@ private:
 	int color;
 	//判定のための待ち時間
 	int wait;
-<<<<<<< HEAD
-	int dwait;
-=======
 
 	//x座標
 	int angleNumX;
 
 	// 関数ポインタ
 	void (Dust::*func)(void);
->>>>>>> okamonn
 };
 

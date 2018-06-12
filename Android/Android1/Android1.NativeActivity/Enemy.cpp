@@ -26,11 +26,7 @@ bool Enemy::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 // 状態の取得
 STATES Enemy::GetState(void)
 {
-<<<<<<< HEAD
-	box = { 0, 0 };
-=======
 	return state;
->>>>>>> okamonn
 }
 
 // 状態のセット
@@ -76,9 +72,5 @@ Pos Enemy::Getsize(void)
 // 死亡フラグの取得
 bool Enemy::GetDie(void)
 {
-<<<<<<< HEAD
-	return box;
-=======
 	return die;
->>>>>>> okamonn
 }
