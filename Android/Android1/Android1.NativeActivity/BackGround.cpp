@@ -10,6 +10,7 @@ BackGround::BackGround(std::weak_ptr<Camera>cam) : cam(cam)
 	image[1] = LoadMane::Get()->Load("back2.png");
 	image[2] = LoadMane::Get()->Load("back3.png");
 	image[3] = LoadMane::Get()->Load("back4.png");
+	//↓余分用
 	image[4] = LoadMane::Get()->Load("back4.png");
 	
 	for (int i = 0; i < IMAGE_MAX; ++i)

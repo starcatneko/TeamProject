@@ -79,10 +79,11 @@ private:
 	// 読み込み位置
 	int read[2];
 
-	std::vector<Pos>pos;
-
+	// 透明度
 	int alpha;
-	bool tmp;
+
+	// ピンチ時フラグ
+	bool blend;
 
 	// 関数ポインタ
 	void (GamePlay::*func)();

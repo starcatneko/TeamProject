@@ -1,5 +1,4 @@
 ﻿#include "Game.h"
-#include "Typedef.h"
 #include "DxLib.h"
 
 // メイン関数

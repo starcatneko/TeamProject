@@ -20,7 +20,7 @@ void Score::Create(void)
 {
 	if (instance == nullptr)
 	{
-		instance = new Score();
+		instance = new Score;
 	}
 }
 
@@ -45,7 +45,7 @@ void Score::UpData(void)
 }
 
 // リセット
-void Score::ReSet(void)
+void Score::Reset(void)
 {
 	score = 0;
 }
