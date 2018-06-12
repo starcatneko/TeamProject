@@ -68,7 +68,7 @@ void Dust::Neutral(void)
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
-	func = &Dust::Attack;
+		func = &Dust::Attack;
 	}
 	else
 	{
@@ -101,7 +101,7 @@ void Dust::Walk(void)
 	else
 	{
 		// 目標座標の更新
-		target = pl.lock()->GetPos();
+		target = { pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2, pl.lock()->GetPos().y + st.lock()->GetChipPlSize().y / 2 };
 		if (pos.x == target.x)
 		{
 			dir = DIR_NON;
