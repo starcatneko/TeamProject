@@ -123,5 +123,6 @@ private:
 	//Box型とプレイヤーの任意の攻撃矩形の衝突を判定する。true＝衝突
 	//P_BOX プレイヤーのattack_Box
 	bool Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir);
+	void DrawHitBox();
 };
 
