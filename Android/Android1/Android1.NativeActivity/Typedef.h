@@ -71,27 +71,27 @@ struct Position
 		return { x / pos.x , y / pos.y };
 	}
 
-	void operator=(T i)
-	{
+	void operator=(T i){
 		x = i;
 		y = i;
 	}
 
-	bool operator!=(T i)
-	{
+	void operator-=(Position pos) {
+		x -= pos.x;
+		y -= pos.y;
+	}
+
+	bool operator!=(T i){
 		return !(x == i && y == i);
 	}
-	bool operator!=(Position pos)
-	{
+	bool operator!=(Position pos){
 		return !(x == pos.x && y == pos.y);
 	}
 
-	bool operator==(T i)
-	{
+	bool operator==(T i){
 		return (x == i && y == i);
 	}
-	bool operator==(Position pos)
-	{
+	bool operator==(Position pos){
 		return (x == pos.x && y == pos.y);
 	}
 };

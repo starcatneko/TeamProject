@@ -115,5 +115,7 @@ private:
 	PUNI_COMMAND cmd;
 
 	Box testdriver;
+
+	Pos c;
 };
 

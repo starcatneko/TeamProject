@@ -1,20 +1,20 @@
 ﻿#include "Camera.h"
+#include "DxLib.h"
 
+// 画面移行時の座標のオフセット
+const int offset = 120;
 
+// 揺らし座標のオフセット
+const Pos off = { 30, 0 };
+
+// 揺らし時間
+const int time = 10;
 
 // コンストラクタ
-Camera::Camera()
+Camera::Camera() : pos({ 0,0 }), target({0,0}), speed(10), flam(0), shake(true)
 {
-	pos = { 0, 0 };
-	scrPos = { 0, 0 };
-	shakeCnt = 0;
-
-	for (int i = 0; i < GAME_SCROLL_CNT; i++) {
-		strPos[i] = { (WINDOW_X - 70) + (i * WINDOW_X), 0 };
-	}
-	// スクロール速度
-	scrSpeed[0] = 5;
-	scrSpeed[1] = 27;
+	refuge = pos;
+	func = &Camera::NotMove;
 }
 
 // デストラクタ
@@ -22,129 +22,107 @@ Camera::~Camera()
 {
 }
 
-
-
-// スクロールその1
-void Camera::Scroll()
+// 描画
+void Camera::Draw(void)
 {
-	Pos tPos;	// touchクラスの座標を格納する専用の変数
-	tPos = Touch::Get()->GetPos(0);	// tPosにtouchの座標を格納
-	if (tPos.x >= (WINDOW_X / 2)) {
-		scrPos.x -= scrSpeed[0];	// スクリーン座標に20を加算
-	}
-	// テスト：右を押していなければ最左端に戻る
-	if (pos.x > 0) {
-		if (tPos.x <= (WINDOW_X / 2)) {
-			scrPos.x += scrSpeed[0];	// スクリーン座標に20を減算
-		}
-	}
-	SetPos(scrPos);	// SetPosに格納
+#ifndef _DEBUG
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", pos);
+#endif
 }
 
-// スクロールその2
-void Camera::Scroll(Pos _pos)
+// 動いていないときの処理
+void Camera::NotMove(Pos pos)
 {
-	Pos pPos;	// touchクラスの座標を格納する専用の変数
-	pPos = _pos;
-	for (int x = 0; x < GAME_SCROLL_CNT; x++) {
-		if ((pPos.x >= strPos[x].x) && (pPos.x <= strPos[x].x + 70)) {
-			scrPos.x -= scrSpeed[1];
-		}
-	}
+	//プレイヤーの左座標が画面外の出たとき
+	if (pos.x >= WINDOW_X - offset)
+	{
+		//プレイヤーの座標を修正
+		pos.x = WINDOW_X;
+		//カメラの目標座標の更新
+		target.x += WINDOW_X;
 
-	// 画面スクロールした際、スクロールさせる速度とプレイヤーの速度原則によって
-	// 多少ずれが生じるので、ここで微調整します
-	for (int i = 1; i < GAME_SCROLL_CNT; i++) {
-		if (GetPos().x == ((-WINDOW_X * i) + 3)) scrPos.x = -WINDOW_X * i;
+		func = &Camera::Move;
 	}
-	SetPos(scrPos);	// SetPosに格納
 }
 
-// スクロールその3
-void Camera::Scroll(Pos _pos2, Pos line)
+// 動いているときの処理
+void Camera::Move(Pos pos)
 {
-	Pos pPos;	// Playerクラスの座標を格納する専用の変数
-	pPos = _pos2;
-
-	Pos linePos;// スクロール3使用の際に、スクロールを実行する際の実行判定ライン
-	linePos = line;
-
-	// 画面スクロール
-	for (int i = 0; i < (GAME_SCROLL_CNT / 2); i++) {
-		// 960 ～ 2880 && 4800 ～ 6720 && 8640 ～ 10560
-		if ((pPos.x >= (WINDOW_X  * (0.5 + (i * 2)))) && (pPos.x <= ((WINDOW_X * (2 + (i * 2)) - 70)))) {
-			if (pPos.x >= linePos.x) scrPos.x -= scrSpeed[0];
-		}
-		// 3770 ～ 3840 && 7610 ～ 7680 && 11450 ～ 11520
-		else if ((pPos.x >= ((WINDOW_X * (2 + (i * 2))) - 70)) && (pPos.x <= (WINDOW_X * (2 + (i * 2))))) scrPos.x -= scrSpeed[1];
-		if (scrPos.x == ((-WINDOW_X * ((i * 2) + 1))) - 5) scrPos.x = -WINDOW_X * ((i * 2) + 1);	// 補正1
-		if (scrPos.x == ((-WINDOW_X * (2 + (i * 2))) + 30)) scrPos.x = -WINDOW_X * (2 + (i * 2));	// 補正2
+	//目標座標が大きいとき
+	if (target.x >= this->pos.x)
+	{
+		//カメラの座標を移動
+		this->pos.x += speed;
 	}
-
-	// スクロール開始線
-	DrawFormatString(linePos.x + 5, linePos.y, 0x00ff00, "linePos.x = %d", linePos.x);
-	DrawFormatString(linePos.x + 5, linePos.y + 20, 0x00ff00, "linePos.y = %d", linePos.y);
-	DrawLine(linePos.x, linePos.y, linePos.x, (linePos.y + WINDOW_Y), 0x00ff00);
-
-	SetPos(scrPos);	// SetPosに格納
+	else
+	{
+		// カメラの座標の修正
+		this->pos.x = target.x;
+		func = &Camera::NotMove;
+	}
 }
 
-// スクロール統括理事会
-void Camera::Update(int scrMode, Pos _pos, Pos _pos2, Pos line)
+// 画面揺らし
+void Camera::Shake(Pos pos)
 {
-	// 定義
-	int mode;	// スクロールのモードを判別する変数
-	Pos pPos, tPos, lPos;	// Playerの座標格納用変数	// Touchの座標格納用変数	// 画面を半分に分割するスクロール判定線
-							// 初期値設定
-	mode = scrMode;	// modeの引数を格納
-	pPos = _pos;	// playerの座標を格納
-	tPos = _pos2;	// touchの座標を格納
-	lPos = line;	// lineを格納7
-					// スクロールモードの割り振り
-	switch (mode) {
-	case 0:	// 画面右半分をタップし続けることでスクロール実行
-		Scroll();
-		break;
-	case 1:	// 画面右端の緑のエリアに突入時に切替スクロール実行
-		Scroll(pPos);
-		break;
-	case 2:	// 2画面分スクロールし、右端の緑のエリアに突入時に切り替えスクロール実行
-		Scroll(pPos, lPos);
-		break;
+	++flam;
+
+	//カメラ座標を移動
+	this->pos.x += (this->pos.x <= off.x ? off.x : -off.x);
+
+	//フレームが規定時間を超えたとき
+	if (flam >= time)
+	{
+		//揺らしフラグの設定
+		SetShakeFlag(false);
+		//画面座標の修正
+		this->pos = refuge;
+		func = &Camera::NotMove;
 	}
-	// 描画
-	Draw();
 }
 
-// 描画処理
-void Camera::Draw()
+// 処理
+void Camera::UpData(Pos pos)
 {
-	for (int x = 0; x < GAME_SCROLL_CNT; x++) {
-		// テスト用の描画枠
-		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + WINDOW_X) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
-		// テスト用の描画座標移動の基準ライン
-		DrawBox(pos.x + (WINDOW_X * x), pos.y, (pos.x + (WINDOW_X / 2)) + (WINDOW_X * x), WINDOW_Y, 0xffff00, false);
-		// テスト用の描画座標移動の基準ライン
-		//DrawBox( 0, 0, WINDOW_X, (WINDOW_Y / 2), 0xffff00, false);
-		// 次のエリアへ！っていうスクロール用推移範囲
-		DrawBox(pos.x + strPos[x].x, strPos[x].y, pos.x + (strPos[x].x + 70), strPos[x].y + WINDOW_Y, 0x1ee100, false);
+	if (shake == true)
+	{
+		func = &Camera::Shake;
 	}
 
-	// テスト用のカメラ座標表示
-	// X座標
-	DrawFormatString(0, pos.y + 200, GetColor(0, 255, 255), _T(" pos.x = %d"), pos.x);
-	// Y座標
-	DrawFormatString(0, pos.y + 220, GetColor(0, 255, 255), _T(" pos.y = %d"), pos.y);
+	(this->*func)(pos);
 }
 
-// 座標取得(参照マン)
-Pos & Camera::GetPos()
+// 座標の修正
+Pos Camera::Correction(Pos pos)
+{
+	Pos tmp = pos;
+
+	//カメラの座標を引く
+	tmp -= this->pos;
+
+	return tmp;
+}
+
+// 座標の取得
+Pos Camera::GetPos(void)
 {
 	return pos;
 }
 
-// 座標設置
-void Camera::SetPos(Pos _pos)
+// 座標のセット
+void Camera::SetPos(Pos & pos)
 {
-	pos = _pos;
+	this->pos = pos;
+}
+
+// 揺らしフラグの取得
+bool Camera::GetShakeFlag(void)
+{
+	return shake;
+}
+
+// 揺らしフラグのセット
+void Camera::SetShakeFlag(bool flag)
+{
+	shake = flag;
 }

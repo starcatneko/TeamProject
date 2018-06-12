@@ -4,8 +4,8 @@
 #include "Game.h"
 #include "Over.h"
 #include "Camera.h"
-#include "Stage.h"
 #include "BackGround.h"
+#include "Stage.h"
 #include "Ground.h"
 #include "Player.h"
 #include "Dust.h"
@@ -33,8 +33,8 @@ GamePlay::~GamePlay()
 void GamePlay::Create(void)
 {
 	cam.reset(new Camera());
+	back.reset(new BackGround(cam));
 	st.reset(new Stage());
-	back.reset(new BackGround());
 	ground.reset(new Ground());
 	pl.reset(new Player(0.0f,(float)(ground->GetPos(0).y - 270), cam));
 	du.reset(new Dust(pl));
@@ -67,9 +67,9 @@ void GamePlay::Draw(void)
 	//pl->TestDraw(cam->GetPos());	// ミキオが追加
 	du->Draw();
 	fa->Draw();
-	cam->Scroll(pl->GetPos());		// ミキオが追加
+	//cam->Scroll(pl->GetPos());		// ミキオが追加
 	cam->Draw();					// ミキオが追加
-	cam->SetPos(cam->GetPos());		// ミキオが追加
+	//cam->SetPos(cam->GetPos());		// ミキオが追加
 
 	DrawBoxx();
 }
@@ -185,6 +185,7 @@ void GamePlay::NotStart(void)
 // 各クラスの処理
 void GamePlay::Start(void)
 {
+	cam->UpData(pl->GetPos());
 	Load();
 
 	pl->Update();
