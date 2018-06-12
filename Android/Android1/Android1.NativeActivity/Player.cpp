@@ -8,6 +8,8 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 {
 
 	this->cam = cam;
+
+	
 	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	tempPos = { 0,0 };
 	size = { 240,270 };
@@ -38,7 +40,6 @@ Player::~Player()
 
 void Player::Draw()
 {
-	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	unsigned int color;
 	//int x, y;
 	switch (st)
@@ -74,20 +75,11 @@ void Player::Draw()
 
 	DrawHitBox();
 
-	DrawBox(testdriver.pos.x, testdriver.pos.y, testdriver.pos.x+ testdriver.size.x, testdriver.pos.y+ testdriver.size.y, 0xffaaaa, false);
-
-
-	if (CheckHitAtack(testdriver))
-	{
-		DrawBox(1720, 800, 1920, 1080, 0xFFFFFF, true);
-
-	}
-
-
 }
 
 void Player::Update()
 {
+	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	if (cam.lock()->GetPos().x % WINDOW_X != 0)
 	{
 		return;
@@ -122,36 +114,79 @@ void Player::StatesUpDate()
 	{
 		case ST_NUETRAL:
 			Touch();	
-
 			break;
+
 		case ST_WALK:
 			Move();
-
 			break;
+
 		case ST_ATTACK:
 			Attack();
-
 			break;
+
 		case ST_DAMAGE:
 			st = ST_NUETRAL;
-
 			break;
+
 		case ST_DIE:
 			st = ST_NUETRAL;
-
 			break;
 	}
 
 }
+
+bool Player::MoveLimit()
+{
+	if (dir == DIR_LEFT)
+	{
+		if (c.x + Touch::Get()->GetCos() * (float)speed < 0)
+		{
+			return false;
+		}
+	}
+	if (dir == DIR_RIGHT)
+	{
+		if (c.x + Touch::Get()->GetCos() * (float)speed > WINDOW_X )
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 void Player::Move()
 {
 
 	if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
 	{
+		//画面外に出る移動量の場合、break文で移動処理を行わないようにしている
+		do
+		{
+			if (MoveLimit())
+			{
+				pos.x += Touch::Get()->GetCos() * (float)speed;
+			}
+		} while (0);
 
-		pos.x += Touch::Get()->GetCos() * (float)speed;
-		pos.y += Touch::Get()->GetSin() * (float)speed;
+		do
+		{
+			if (Touch::Get()->GetAngle() >180)
+			{
+				if (c.y + (Touch::Get()->GetSin() * (float)speed) < 0)
+				{
+					break;
+				}
+			}
+			if (Touch::Get()->GetAngle() <=180)
+			{
+				if (c.y + (Touch::Get()->GetSin() * (float)speed) > WINDOW_Y - size.y)
+				{
+					break;
+				}
+			}
+			pos.y += Touch::Get()->GetSin() * (float)speed;
 
+		} while (0);
 	}
 	else
 	{
@@ -189,36 +224,36 @@ void Player::DrawHitBox()
 	case CMD_TAP:
 		if (dir == DIR_RIGHT)
 		{
-			DrawBox(pos.x + attackBox.TAP.pos.x,
-				pos.y + attackBox.TAP.pos.y,
-				pos.x + attackBox.TAP.pos.x + attackBox.TAP.size.x,
-				pos.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
-				0xFFFF00, true);
+			DrawBox(c.x + attackBox.TAP.pos.x,
+					c.y + attackBox.TAP.pos.y,
+					c.x + attackBox.TAP.pos.x + attackBox.TAP.size.x,
+					c.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
+					0xFFFF00, true);
 		}
 		else
 		{
-			DrawBox(pos.x - attackBox.TAP.pos.x + this->size.x,
-				pos.y + attackBox.TAP.pos.y,
-				pos.x - attackBox.TAP.pos.x - attackBox.TAP.size.x + this->size.x,
-				pos.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
-				0xFFFF00, true);
+			DrawBox(c.x - attackBox.TAP.pos.x + this->size.x,
+					c.y + attackBox.TAP.pos.y,
+					c.x - attackBox.TAP.pos.x - attackBox.TAP.size.x + this->size.x,
+					c.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
+					0xFFFF00, true);
 		}
 		break;
 	case CMD_FLICK:
 		if (dir == DIR_RIGHT)
 		{
-			DrawBox(pos.x + attackBox.FLICK.pos.x,
-				pos.y + attackBox.FLICK.pos.y,
-				pos.x + attackBox.FLICK.pos.x + attackBox.FLICK.size.x,
-				pos.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
+			DrawBox(c.x + attackBox.FLICK.pos.x,
+					c.y + attackBox.FLICK.pos.y,
+					c.x + attackBox.FLICK.pos.x + attackBox.FLICK.size.x,
+					c.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
 				0xFFFF00, true);
 		}
 		else
 		{
-			DrawBox(pos.x - attackBox.FLICK.pos.x + this->size.x,
-				pos.y + attackBox.FLICK.pos.y,
-				pos.x - attackBox.FLICK.pos.x - attackBox.FLICK.size.x + this->size.x,
-				pos.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
+			DrawBox(c.x - attackBox.FLICK.pos.x + this->size.x,
+					c.y + attackBox.FLICK.pos.y,
+					c.x - attackBox.FLICK.pos.x - attackBox.FLICK.size.x + this->size.x,
+					c.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
 				0xFFFF00, true);
 		}
 
@@ -273,12 +308,17 @@ void Player::Attack()
 		{
 			if (dir == DIR_RIGHT)
 			{
-				pos.x += attack_wait;
+				if(MoveLimit())
+				{
+					pos.x += attack_wait;
+				}
 			}
 			else
 			{
-
-				pos.x -= attack_wait;
+				if (MoveLimit())
+				{
+					pos.x -= attack_wait;
+				}
 			}
 		}
 
