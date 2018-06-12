@@ -389,7 +389,7 @@ void Player::UpPower(int power)
 }
 Pos Player::GetPos()
 {
-	return { (int)c.x, (int)c.y };
+	return { (int)pos.x, (int)pos.y };
 }
 void Player::SetPos(Pos pos)
 {

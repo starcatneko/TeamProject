@@ -1,6 +1,7 @@
 ﻿#include "Fannings.h"
 #include "Player.h"
-#include <DxLib.h>
+#include "GameMane.h"
+#include "DxLib.h"
 
 Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, size{ 60, 30 }, hp(10), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0), dwait(0)
 {
@@ -24,7 +25,7 @@ void Fannings::SetPos(Pos pos)
 	this->pos.y = pos.y;
 }
 
-void Fannings::Update()
+void Fannings::UpData()
 {
 	(this->*updater)();
 }

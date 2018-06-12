@@ -1,35 +1,34 @@
 ﻿#pragma once
 #include "Enemy.h"
-#include <memory>
-
-class Player;
 
 class Dust :
 	public Enemy
 {
 public:
-	Dust(std::weak_ptr<Player>p);
+	// コンストラクタ
+	Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl);
+	// デストラクタ
 	~Dust();
-	Pos GetPos();
-	void SetPos(Pos pos);
-	void Update();
-	void Draw();
-private:
-	//メンバ関数ポインタ
-	void (Dust::*updater)();
-	//プレイヤーがいる方向によって走る向きを転換する。
-	//また、プレイヤーや他の敵がポカポカアクション状態の場合、一時待機する。
-	void NeutralUpdate();
-	//プレイヤーに向かって走る
-	void RunUpdate();
-	//攻撃
-	//現状攻撃の判定内に入った場合、「DustAttack」と表示するようにしている
-	void AttackUpdate();
-	//ダメージ管理。HPが0になった場合、DieUpdateに遷移する。
-	void DamageUpdate();
-	//死亡。情報を削除する。
-	void DieUpdate();
 
+	// 描画
+	void Draw(void);
+
+	// 処理
+	void UpData(void);
+	
+private:
+	// 待機時の処理
+	void Neutral(void);
+	// 移動時の処理
+	void Walk(void);
+	// 攻撃時の処理
+	void Attack(void);
+	// ダメージ時の処理
+	void Damage(void);
+	//死亡時の処理
+	void Die(void);
+
+<<<<<<< HEAD
 	std::weak_ptr<Player>p;
 	Pos pos;
 	Pos size;
@@ -41,6 +40,9 @@ private:
 	int hp;
 	//移動速度
 	int speed;
+=======
+	
+>>>>>>> okamonn
 	//攻撃判定
 	bool attackFlag;
 	//敵が攻撃に移る範囲
@@ -49,6 +51,15 @@ private:
 	int color;
 	//判定のための待ち時間
 	int wait;
+<<<<<<< HEAD
 	int dwait;
+=======
+
+	//x座標
+	int angleNumX;
+
+	// 関数ポインタ
+	void (Dust::*func)(void);
+>>>>>>> okamonn
 };
 

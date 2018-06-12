@@ -1,4 +1,5 @@
 ﻿#include "EnemyMane.h"
+#include "GameMane.h"
 #include "Dust.h"
 #include "Fannings.h"
 
@@ -31,8 +32,12 @@ void EnemyMane::Destroy(void)
 	}
 }
 
-std::shared_ptr<Enemy> EnemyMane::CreateEnemy(Pos pos, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Enemy> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
-	std::shared_ptr<Enemy>ene = std::make_shared<Enemy>(st);
-	return ene;
+	std::shared_ptr<Enemy>dust = std::make_shared<Dust>(pos, cam, st, pl);
+
+	//目標撃退数の上昇
+	GameMane::Get()->Target();
+
+	return dust;
 }

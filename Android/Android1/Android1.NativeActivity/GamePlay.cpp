@@ -37,8 +37,8 @@ void GamePlay::Create(void)
 	st.reset(new Stage());
 	ground.reset(new Ground());
 	pl.reset(new Player(0.0f,(float)(ground->GetPos(0).y - 270), cam));
-	du.reset(new Dust(pl));
-	fa.reset(new Fannings(pl));
+	du.reset(new Dust({0,0}, cam, st, pl));
+	//fa.reset(new Fannings(pl));
 }
 
 // ボックス描画
@@ -59,7 +59,7 @@ void GamePlay::Draw(void)
 	ItemDraw();
 	pl->Draw();
 	du->Draw();
-	fa->Draw();
+	//fa->Draw();
 	cam->Draw();
 	DrawBoxx();
 }
@@ -84,7 +84,6 @@ void GamePlay::Load(void)
 		if (s_enemy[i] == 0)
 		{
 			Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
-			enemy.push_back(EnemyMane::Get()->CreateEnemy(p, st, pl));
 		}
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipEneSize().y)
@@ -183,8 +182,8 @@ void GamePlay::Start(void)
 
 	Load();
 	pl->Update();
-	du->Update();
-	fa->Update();
+	du->UpData();
+	//fa->UpData();
 	ItemUpData();
 
 
