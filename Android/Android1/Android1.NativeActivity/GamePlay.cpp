@@ -112,7 +112,7 @@ void GamePlay::Load(void)
 		if (s_item[i] == 1)
 		{
 			Pos tmp = { read[1] * st->GetChipItemSize().x, (y * st->GetChipItemSize().y) };
-			item.push_back(ItemMane::Get()->CreateApple(tmp, st, pl));
+			item.push_back(ItemMane::Get()->CreateApple(tmp, cam, st, pl));
 		}
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipItemSize().y)

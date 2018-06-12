@@ -2,6 +2,7 @@
 #include "Item.h"
 #include <memory>
 
+class Camera;
 class Stage;
 class Player;
 
@@ -23,7 +24,7 @@ public:
 	static void Destroy(void);
 
 	// アップルの生成
-	std::shared_ptr<Item> CreateApple(Pos pos, std::shared_ptr<Stage>st, std::shared_ptr<Player>pl);
+	std::shared_ptr<Item> CreateApple(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage>st, std::shared_ptr<Player>pl);
 
 private:
 	// コンストラクタ

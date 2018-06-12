@@ -6,7 +6,7 @@ class Apple :
 {
 public:
 	// コンストラクタ
-	Apple(Pos pos, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl);
+	Apple(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl);
 	// デストラクタ
 	~Apple();
 

@@ -2,6 +2,7 @@
 #include "Typedef.h"
 #include <memory>
 
+class Camera;
 class Stage;
 class Player;
 
@@ -35,6 +36,9 @@ public:
 	bool CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2);
 
 protected:
+	// カメラ
+	std::weak_ptr<Camera>cam;
+
 	// ステージ
 	std::weak_ptr<Stage>st;
 
@@ -46,6 +50,9 @@ protected:
 
 	// 座標
 	Pos pos;
+
+	// ローカル座標
+	Pos lpos;
 
 	// サイズ
 	Pos size;

@@ -1,4 +1,5 @@
 ﻿#include "Camera.h"
+#include "GameMane.h"
 #include "DxLib.h"
 
 // 画面移行時の座標のオフセット
@@ -11,7 +12,7 @@ const Pos off = { 30, 0 };
 const int time = 10;
 
 // コンストラクタ
-Camera::Camera() : pos({ 0,0 }), target({0,0}), speed(10), flam(0), shake(true)
+Camera::Camera() : pos({ 0,0 }), target({0,0}), speed(10), flam(0), shake(false)
 {
 	refuge = pos;
 	func = &Camera::NotMove;
@@ -34,12 +35,15 @@ void Camera::Draw(void)
 void Camera::NotMove(Pos pos)
 {
 	//プレイヤーの左座標が画面外の出たとき
-	if (pos.x >= WINDOW_X - offset)
+	if (pos.x >= WINDOW_X - offset
+		&& GameMane::Get()->GetKillCnt() >= GameMane::Get()->GetTargetNum())
 	{
 		//プレイヤーの座標を修正
 		pos.x = WINDOW_X;
 		//カメラの目標座標の更新
 		target.x += WINDOW_X;
+
+		GameMane::Get()->Reset();
 
 		func = &Camera::Move;
 	}
@@ -84,6 +88,7 @@ void Camera::Shake(Pos pos)
 // 処理
 void Camera::UpData(Pos pos)
 {
+	//揺らしフラグがtrueのとき
 	if (shake == true)
 	{
 		func = &Camera::Shake;
