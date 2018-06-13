@@ -36,7 +36,7 @@ void GamePlay::Create(void)
 	back.reset(new BackGround(cam));
 	st.reset(new Stage());
 	ground.reset(new Ground());
-	pl.reset(new Player(0.0f,(float)(ground->GetPos(0).y - 270), cam));
+	pl.reset(new Player({ 0,(ground->GetPos(0).y - 270) }, cam, st));
 	du.reset(new Dust({0,0}, cam, st, pl));
 	fa.reset(new Fannings({ 0,0 }, cam, st, pl));
 }
@@ -181,7 +181,7 @@ void GamePlay::Start(void)
 	cam->UpData(pl->GetLocalPos());
 
 	Load();
-	pl->Update();
+	pl->UpData();
 	du->UpData();
 	fa->UpData();
 	ItemUpData();

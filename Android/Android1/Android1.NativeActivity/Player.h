@@ -1,131 +1,111 @@
 ﻿#pragma once
-#include <memory>
 #include "Typedef.h"
-#include "Camera.h"
+#include <memory>
 
-#define TAP_LECT_SIZE_X 40
-#define TAP_LECT_POS_X	0
-#define TAP_LECT_SIZE_Y 270
-#define TAP_LECT_POS_Y	0
-
-#define FLICK_LECT_SIZE_X	240
-#define FLICK_LECT_POS_X	0
-#define FLICK_LECT_SIZE_Y	120
-#define FLICK_LECT_POS_Y	80
-
-
-
-typedef struct {
-	Box TAP;
-	Box FLICK;
-}HitBoxIndex;
+class Camera;
+class Stage;
 
 class Player
 {
 public:
-	//コンストラクタ
-	Player()
-	{}
-	Player(float x, float y, std::weak_ptr<Camera> cam);
-	//デストラクタ
+	// コンストラクタ
+	Player(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st);
+	// デストラクタ
 	~Player();
-	//座標の取得
-	Pos GetPos();
-	Pos GetLocalPos();
-	//座標を格納
+
+	// 描画
+	void Draw(void);
+
+	// 処理
+	void UpData(void);
+
+	// 座標の取得
+	Pos GetPos(void);
+	// 座標のセット
 	void SetPos(Pos pos);
-	//状態の取得
-	STATES GetSt();
 
-	//方向の取得（左右）
-	DIR GetDir();
-	//描画
-	void Draw();
-	//更新処理
-	void Update();
+	// ローカル座標の取得
+	Pos GetLocalPos(void);
+	// ローカル座標のセット
+	void SetLocalPos(Pos pos);
 
-	// HP処理 HPを引数の値動かす
-	void HpControl(int point);
+	// 体力の取得
+	int GetHp(void);
+	// 体力のセット
+	void SetHp(int hp);
+	// 体力の上昇
+	void UpHp(int i);
+	// 体力の減少
+	void DownHp(int i);
 
-	// パワーの値を取得
-	int GetPower();
-	// パワーの値を設定
-	void SetPower(int power);
-	// パワーを数値分動かす
-	void UpPower(int power);
+	// アップルパワーの取得
+	int GetPower(void);
+	// アップルパワーのセット
+	void SetPower(int pw);
+	// アップルパワーの上昇
+	void UpPower(int pw);
 
-	bool CheckHitAtack(Box target);
-	//コントローラーのコマンドの内容に合わせてプレイヤーを処理する
-	void CommandCtr();
+	// 状態の取得
+	STATES GetState(void);
+	// 状態のセット
+	void SetState(STATES state);
 
-	void Attack();
-
-
-
-
-	// テスト用
-	void TestUpdate(int scrMode);
-	void TestDraw(Pos _pos);
+	// 死亡フラグの取得
+	bool GetDie(void);
 
 private:
-	//座標(int1)
-	Position<float> pos;
-	//大きさ
+	// 待機時の処理
+	void Nuetral(void);
+
+	// 移動時の処理
+	void Walk(void);
+
+	// 攻撃時の処理
+	void Attack(void);
+
+	// ダメージ時の処理
+	void Damage(void);
+
+	// 死亡時の処理
+	void Die(void);
+
+
+	// カメラクラス
+	std::weak_ptr<Camera>cam;
+
+	// ステージクラス
+	std::weak_ptr<Stage>st;
+
+	// 座標
+	Pos pos;
+
+	// ローカル座標
+	Pos lpos;
+
+	// サイズ
 	Pos size;
-	//Position<float> fpos;
-	//移動目的座標
-	Pos tempPos;
-	//移動目標との距離
-	int tempdis;
 
-	//特殊ゲージ リンゴを拾って回復、各種技能や時間経過で消費
-	int applepower;
+	// ステータス
+	STATES state;
 
-	//現在向いている方向
+	// 移動向き
 	DIR dir;
-	//キャラクターの状態
-	STATES st;
-	//ライフポイント
+
+	// 体力
 	int hp;
 
-	//移動速度
+	// アップルパワー
+	int power;
+
+	// 移動速度
 	int speed;
 
-	void StatesUpDate();
+	// 死亡フラグ
+	bool die;
 
-	bool MoveLimit();
+	// 経過フレーム
+	int flam;
 
-
-	// スクロールする際に使用します
-	int scrFlag;
-
-	// 画面をタッチした時のプレイヤーの処理
-	void Touch();
-
-	// 移動処理
-	void Move();
-
-	std::weak_ptr<Camera> cam;
-	
-	// 生存しているフレーム
-	int frame;
-
-	// 攻撃のウェイト用のフレーム(硬直時間)
-	int attack_wait;
-	// 現在処理中のコマンド
-	//PUNI_COMMAND cmd;
-
-	// 攻撃のオフセットとサイズを格納する
-	// コンストラクタで設定
-	HitBoxIndex attackBox;
-
-	Box testdriver;
-
-	//ローカル座標
-	Pos c;
-	//Box型とプレイヤーの任意の攻撃矩形の衝突を判定する。true＝衝突
-	//P_BOX プレイヤーのattack_Box
-	bool Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir);
-	void DrawHitBox();
+	// 関数ポインタ
+	void (Player::*func)(void);
 };
-
