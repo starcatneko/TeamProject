@@ -8,7 +8,7 @@
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	angleNumX(this->pos.x - 40), attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0)
+	attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
 {
 	this->cam = cam;
 	this->st = st;
@@ -29,7 +29,7 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 20, angleNumX, pos.y - 20, color, true);
+	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y - size.x, color, true);
 
 	switch (state)
 	{
@@ -53,7 +53,6 @@ void Dust::Draw(void)
 	}
 
 	DrawFormatString(200, 1000, GetColor(255, 0, 0), _T("ダストの座標：%d, %d"), pos);
-	DrawBox(target.x - attackRange, target.y - attackRange, target.x + attackRange, target.y + attackRange, 0x000000, true);
 }
 
 // 待機時の処理
@@ -63,6 +62,7 @@ void Dust::Neutral(void)
 	{
 		return;
 	}
+
 
 	//プレイヤーとの距離を求める
 	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
@@ -80,6 +80,13 @@ void Dust::Neutral(void)
 			target = pl.lock()->GetPos();
 			func = &Dust::Walk;
 		}
+	}
+
+	box = { pos, size };
+	if (pl.lock()->CheckHitAtack(box))
+	{
+		SetState(ST_DAMAGE);
+		func = &Dust::Damage;
 	}
 }
 
@@ -116,7 +123,6 @@ void Dust::Walk(void)
 		if (dir == DIR_LEFT)
 		{
 			pos.x -= speed;
-			angleNumX = pos.x + 40;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
@@ -125,7 +131,6 @@ void Dust::Walk(void)
 		else if (dir == DIR_RIGHT)
 		{
 			pos.x += speed;
-			angleNumX = pos.x - 40;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
@@ -133,12 +138,13 @@ void Dust::Walk(void)
 		}
 		else
 		{
-			angleNumX = pos.x;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
 			}
 		}
+		SetState(ST_NUETRAL);
+		func = &Dust::Neutral;
 	}
 }
 
@@ -164,7 +170,7 @@ void Dust::Damage(void)
 	{
 		return;
 	}
-
+	color = 0xff0000;
 	if (hp <= 0)
 	{
 		state = ST_DIE;

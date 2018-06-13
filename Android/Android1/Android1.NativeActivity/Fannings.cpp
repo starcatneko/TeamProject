@@ -138,6 +138,8 @@ void Fannings::Walk(void)
 				pos.y += (pos.y > target.y ? -speed : speed);
 			}
 		}
+		SetState(ST_NUETRAL);
+		func = &Fannings::Neutral;
 	}
 }
 
