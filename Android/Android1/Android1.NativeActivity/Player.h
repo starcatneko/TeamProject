@@ -113,7 +113,7 @@ private:
 	// 攻撃のウェイト用のフレーム(硬直時間)
 	int attack_wait;
 	// 現在処理中のコマンド
-	PUNI_COMMAND cmd;
+	//PUNI_COMMAND cmd;
 
 	// 攻撃のオフセットとサイズを格納する
 	// コンストラクタで設定

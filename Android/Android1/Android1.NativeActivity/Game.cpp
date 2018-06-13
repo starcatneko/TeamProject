@@ -70,6 +70,7 @@ void Game::Draw(void)
 	ClsDrawScreen();
 
 	scene->Draw();
+	Touch::Get()->Draw();
 
 	//裏画面を表画面に瞬間コピー
 	ScreenFlip();
@@ -80,7 +81,7 @@ void Game::UpData(void)
 {
 	Draw();
 
-	Touch::Get()->Update();
+	Touch::Get()->UpData();
 	scene->UpData();
 }
 

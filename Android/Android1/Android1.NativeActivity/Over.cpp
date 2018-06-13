@@ -32,7 +32,7 @@ void Over::UpData(void)
 // スタート前
 void Over::NotStart(void)
 {
-	for (int i = 0; i < TOUCH_MAX; ++i)
+	/*for (int i = 0; i < TOUCH_MAX; ++i)
 	{
 		if (Touch::Get()->GetBuf(i) != 0)
 		{
@@ -42,7 +42,7 @@ void Over::NotStart(void)
 		{
 			func = &Over::Start;
 		}
-	}
+	}*/
 }
 
 // スタート

@@ -36,7 +36,9 @@ void Title::UpData(void)
 // スタート前
 void Title::NotStart(void)
 {
-	if(Touch::Get()->GetFlick() == DIR_RIGHT)
+	DIR dir = DIR_NON;
+	if(Touch::Get()->Check(FLICK,dir) == true,
+		dir == DIR_RIGHT)
 	{
 		func = &Title::Start;
 	}

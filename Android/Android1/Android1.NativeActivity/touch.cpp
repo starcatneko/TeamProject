@@ -1,491 +1,478 @@
 ﻿#include "Touch.h"
 #include "DxLib.h"
-#include <string.h>
 #include <math.h>
-#include <memory>
+#include <algorithm>
 
 Touch* Touch::instance = nullptr;
 
+// タップ範囲時間
+const unsigned int tapTime = 10;
 
-Touch::Touch()
+// 円の最大角度
+const float circle = 360.0f;
+
+// 半径
+const int radius = 25;
+
+// 座標のオフセット
+const int offset = 5;
+
+// コンストラクタ
+Touch::Touch() : flam(0)
 {
-	memset(touch_buf, 0, sizeof(touch_buf));
-	memset(pos_buf, -1, sizeof(pos_buf));
-	memset(pos, 0, sizeof(pos));
-	memset(swipe_pos_start, 0, sizeof(swipe_pos_start));
-	memset(swipe_pos_goal, 0, sizeof(swipe_pos_goal));
-	//ZeroMemory(&p_con, sizeof(p_con));
+	Reset();
+	state = ST_NON;
+	memset(pos, -1, sizeof(pos));
+	old_pos = -1;
 
-	int i;
-	for (i = 0; i<360; i++) {
-		fsin[i] = sinf(i*PI / 180.0f);
-		fcos[i] = cosf(i*PI / 180.0f);
+	for (float i = 0; i < circle; ++i)
+	{
+		tri.push_back({ std::sinf(RAD(i)), std::cosf((RAD(i))) });
 	}
-
-
 }
 
+// デストラクタ
 Touch::~Touch()
 {
-
+	Reset();
 }
 
-void Touch::Create()
+// インスタンス化
+void Touch::Create(void)
 {
-	if (!instance)
+	if (instance == nullptr)
 	{
 		instance = new Touch;
 	}
-
 }
-void Touch::Destroy()
+
+// 破棄
+void Touch::Destroy(void)
 {
-	if (instance)
+	if (instance != nullptr)
 	{
 		delete instance;
 		instance = nullptr;
 	}
 }
 
-Pos Touch::GetPos(int touchNo)
+// 状態のセット
+void Touch::SetState(State i)
 {
-	return pos[touchNo];
+	state = i;
+	flam = 0;
+	memset(pos, -1, sizeof(pos));
+	old_pos = -1;
 }
 
-Pos Touch::GetSwipeStart(int touchNo)
+// 描画
+void Touch::Draw(void)
 {
-	return swipe_pos_start[touchNo];
+	DrawFormatString(0, 0, GetColor(255, 0, 0), "基準座標%d:%d", pos[ST_NON]);
+	DrawFormatString(0, 50, GetColor(255, 0, 0), "今の座標%d:%d", pos[ST_TOUCH]);
+	DrawFormatString(0, 100, GetColor(255, 0, 0), "前の座標%d:%d", old_pos);
+	DrawFormatString(0, 150, GetColor(255, 0, 0), "押下時間:%d", flam);
+	DrawFormatString(0, 200, GetColor(255, 0, 0), "移動向き:%d", (int)d);
+
+	float angle = GetUnsignedAngle();
+	DrawFormatString(0, 250, GetColor(255, 0, 0), "角度:%d", (int)angle);
+
+	if (pos[ST_TOUCH] != -1 && pos[ST_NON] != -1)
+	{
+		int n = (int)angle + 90 * ((int)angle / 360);
+
+		DrawTriangle(
+			pos[ST_TOUCH].x, pos[ST_TOUCH].y,
+			pos[ST_NON].x - (int)(tri[n].cos * radius), pos[ST_NON].y + (int)(tri[n].sin * radius),
+			pos[ST_NON].x + (int)(tri[n].cos * radius), pos[ST_NON].y - (int)(tri[n].sin * radius),
+			GetColor(255, 255, 255), true);
+
+		DrawCircle(pos[ST_TOUCH].x, pos[ST_TOUCH].y, 10, GetColor(255, 255, 255), true);
+		DrawCircle(pos[ST_NON].x, pos[ST_NON].y, radius * 2, GetColor(255, 255, 255), true);
+	}
+
+	if (Tap() == true)
+	{
+		DrawString(500, 50, "タップ", GetColor(255, 0, 0), false);
+	}
+
+	if (Press() == true)
+	{
+		DrawString(500, 100, "プレス", GetColor(255, 0, 0), false);
+	}
+
+	if (Flick(d) == true)
+	{
+		DrawString(500, 150, "フリック", GetColor(255, 0, 0), false);
+	}
+
+	if (Swipe(d) == true)
+	{
+		DrawString(500, 200, "スワイプ", GetColor(255, 0, 0), false);
+	}
+
 }
 
-Pos Touch::GetSwipeGoal(int touchNo)
+// 処理
+void Touch::UpData(void)
 {
-	return swipe_pos_goal[touchNo];
-}
-
-void Touch::SetPos(int touchNo, Pos pos)
-{
-	this->pos[touchNo] = pos;
-}
-
-int *Touch::GetBuf()
-{
-	return touch_buf;
-}
-
-int Touch::GetBuf(int touchNo)
-{
-	return touch_buf[touchNo];
-}
-
-void Touch::Update()
-{
-	touchNum = GetTouchInputNum();
-
+	old_pos = pos[ST_TOUCH];
 #ifndef __ANDROID__
-	MouseProccess();
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+	{
+		if (state != ST_NON)
+		{
+			GetMousePoint(&pos[ST_TOUCH].x, &pos[ST_TOUCH].y);
+		}
+		else
+		{
+			SetState(ST_TOUCH);
+			GetMousePoint(&pos[ST_NON].x, &pos[ST_NON].y);
+			pos[ST_TOUCH] = pos[ST_NON];
+		}
+		++flam;
+	}
 #else
-	TouchProccess();
-
-#endif
-
-	PuniCmdCtr();
-	Punicon();
-}
-//Win
-void Touch::MouseProccess()
-{
-	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
-
-	if ((GetMouseInput() && MOUSE_INPUT_LEFT) != 0)
-	{
-		touchNum = 3;
-
-		// tN = 処理するタッチ番号
-		// touchNum = 現在タッチしている指の数
-		for (int tN = 0; tN < touchNum; tN++)
-		{
-			// [0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
-
-			GetMousePoint(&pos[tN].x, &pos[tN].y);
-			
-			// タッチ時の処理
-			if (touch_buf[tN] == 1)
-			{
-				swipe_pos_start[tN] = pos[tN];
-			}
-		}
-
-		for (int tN = 0; tN < TOUCH_MAX; tN++)
-		{
-			pos_buf[tN] = pos[tN];
-			for (int x = TEMP_MAX - 1; x >= 0; x--)
-			{
-				pos_buf[tN] = pos_buf[tN];
-			}
-			touch_buf[tN]++;
-		}
-	}
-	else
-	{
-		for (int tN = 0; tN < TOUCH_MAX; tN++)
-		{
-			//画面がタッチされておらず、前フレームがタッチされていた場合
-			if (touch_buf[tN] >0)
-			{
-				touch_buf[tN] = -1;
-				swipe_pos_goal[tN] = pos[tN];
-				
-			}
-			//前のフレームからタッチされていない状態
-			else
-			{
-				touch_buf[tN] = 0;
-
-			}
-		}
-	}
-
-
-}
-//Android
-void Touch::TouchProccess()
-{
-	//タッチされた箇所の取得（タッチされた箇所が1個以上ある場合）
-
-	
 	if (GetTouchInputNum() > 0)
 	{
-
-		//tN = 処理するタッチ番号
-		//touchNum = 現在タッチしている指の数
-		for (int tN = 0; tN < touchNum; tN++)
+		if (st != ST_NON)
 		{
-			//[0]番のタッチ情報を取得し、X座標を変数xに、Y座標を変数yに渡す
+			GetTouchInput(0, &pos[ST_TOUCH].x, &pos[ST_TOUCH].y);
+		}
+		else
+		{
+			SetState(ST_TOUCH);
+			GetTouchInput(0, &pos[ST_NON].x, &pos[ST_NON].y);
+		}
+		++flam;
+	}
+#endif
+	else
+	{
+		pos[ST_TOUCH] = -1;
+	}
+}
 
-			GetTouchInput(tN, &pos[tN].x, &pos[tN].y);
-			// タッチ時の処理
-			if (touch_buf[tN] == 1)
-			{
-				swipe_pos_start[tN] = pos[tN];
-			}
+// タップ確認
+bool Touch::Tap(void)
+{
+	int x = std::abs(pos[ST_NON].x - old_pos.x);
+	int y = std::abs(pos[ST_NON].y - old_pos.y);
 
+#ifndef __ANDROID__
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0
+		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
+		&& (x <= offset && y <= offset))
+	{
+		SetState(ST_NON);
+		return true;
+	}
+#else
+	if (GetTouchInputNum() <= 0
+		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
+		&& x <= offset && y <= offset)
+	{
+		SetState(ST_NON);
+		return true;
+	}
+#endif
+	return false;
+}
+
+// 長押し確認
+bool Touch::Press(void)
+{
+	int x = abs(pos[ST_NON].x - pos[ST_TOUCH].x);
+	int y = abs(pos[ST_NON].y - pos[ST_TOUCH].y);
+
+#ifndef __ANDROID__
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0
+		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
+		&& x <= offset && y <= offset)
+	{
+		return true;
+	}
+#else
+	if (GetTouchInputNum() > 0
+		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
+		&& x <= offset && y <= offset)
+	{
+		return true;
+	}
+#endif
+	if (flam > tapTime && pos[ST_TOUCH] == -1
+		&& old_pos != -1)
+	{
+		SetState(ST_NON);
+	}
+
+	return false;
+}
+
+// フリック確認
+bool Touch::Flick(DIR& dir)
+{
+	int x = std::abs(pos[ST_NON].x - old_pos.x);
+	int y = std::abs(pos[ST_NON].y - old_pos.y);
+
+#ifndef __ANDROID__
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0
+		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
+		&& (x > offset || y > offset))
+	{
+		float tmp = GetUnsignedAngle();
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
+		{
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
 		}
 
-		for (int tN = 0; tN < TOUCH_MAX; tN++)
+		SetState(ST_NON);
+		return true;
+	}
+#else
+	if (GetTouchInputNum() <= 0
+		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
+		&& (x > offset || y > offset))
+	{
+		float tmp = GetUnsignedAngle(true);
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
 		{
-			pos_buf[tN] = pos[tN];
-			for (int x = TEMP_MAX - 1; x >= 0; x--)
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
+		SetState(ST_NON);
+		return true;
+	}
+#endif
+
+	return false;
+}
+
+// スワイプ確認
+bool Touch::Swipe(DIR& dir)
+{
+	int x = abs(pos[ST_NON].x - pos[ST_TOUCH].x);
+	int y = abs(pos[ST_NON].y - pos[ST_TOUCH].y);
+
+#ifndef __ANDROID__
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0
+		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
+		&& (x > offset || y > offset))
+	{
+		float tmp = GetUnsignedAngle();
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
+		{
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
+		return true;
+	}
+#else
+	if (GetTouchInputNum() > 0
+		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
+		&& (x > offset || y > offset))
+	{
+		float tmp = GetUnsignedAngle(true);
+
+		if (pos[ST_NON].x < old_pos.x
+			&& 45.0f <= tmp && tmp < 135.0f)
+		{
+			dir = DIR_RIGHT;
+		}
+		else if (pos[ST_NON].y > old_pos.y
+			&& 135.0f <= tmp && tmp < 225.0f)
+		{
+			dir = DIR_UP;
+		}
+		else if (pos[ST_NON].x > old_pos.x
+			&& 225.0f <= tmp && tmp < 315.0f)
+		{
+			dir = DIR_LEFT;
+		}
+		else
+		{
+			dir = DIR_DOWN;
+		}
+
+		return true;
+	}
+#endif
+	if (flam > tapTime && pos[ST_TOUCH] == -1
+		&& old_pos != -1)
+	{
+		SetState(ST_NON);
+	}
+
+	return false;
+}
+
+// タッチの確認
+bool Touch::Check(Type type, DIR & dir)
+{
+	bool flag = false;
+
+	switch (type)
+	{
+	case TAP:
+		flag = Tap();
+		dir = DIR_NON;
+		break;
+	case PRESS:
+		flag = Press();
+		dir = DIR_NON;
+		break;
+	case FLICK:
+		flag = Flick(dir);
+		break;
+	case SWIPE:
+		flag = Swipe(dir);
+		break;
+	default:
+		break;
+	}
+
+	return flag;
+}
+
+// リセット
+void Touch::Reset(void)
+{
+	tri.clear();
+}
+
+// 角度確認(サインド)
+float Touch::GetAngle(bool flag)
+{
+	if (pos[ST_NON] == -1 || old_pos == -1)
+	{
+		return 0.0f;
+	}
+
+	float angle = (flag == true ? atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))));
+
+	return angle;
+}
+
+// 角度確認(アンサインド)
+float Touch::GetUnsignedAngle(bool flag)
+{
+	if (pos[ST_NON] == -1 || old_pos == -1)
+	{
+		return 0.0f;
+	}
+
+	float angle = (flag == true ? atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))
+		: ANGLE(atan2f((float)(old_pos.x - pos[ST_NON].x), (float)(old_pos.y - pos[ST_NON].y))));
+
+	float tmp = 0.0f;
+	if (ANGLE(angle) < 0)
+	{
+		if (flag == true)
+		{
+			tmp = RAD(circle) + angle;
+		}
+		else
+		{
+			tmp = circle + angle;
+			if (tmp >= circle)
 			{
-				pos_buf[tN] = pos_buf[tN];
+				tmp = 0;
 			}
-			touch_buf[tN]++;
 		}
 	}
 	else
 	{
-		for (int tN = 0; tN < TOUCH_MAX; tN++)
-		{
-			//画面がタッチされておらず、前フレームがタッチされていた場合
-			if (touch_buf[tN] >0)
-			{
-				touch_buf[tN] = -1;				
-				swipe_pos_goal[tN] = pos[tN];
-
-
-			}
-			//前のフレームからタッチされていない状態
-			else
-			{
-				touch_buf[tN] = 0;
-			}
-		}
+		tmp = angle;
 	}
+
+	return tmp;
 }
 
-void Touch::DrawPunicon()
+// 支点座標の取得
+Pos Touch::GetPos(void)
 {
-	//プニコンのLength取得種類の幅表示
-	if (p_con.time > 1)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, 200, 0x0000ff, 1, 1);
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_LONG, 0xffff00, 1, 1);
-		DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_MIDDLE, 0xff00ff, 1, 1);
-		
-
-		unsigned int punicolor =0xFFFFFF;
-
-		int x = 0;
-
-				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-
-		//ぷにこん部分描画
-
-		int alpha = 0;
-		for(int x = 0; x< LENGTH_SHORT;x++)
-		{
-			if (p_con.angle >= 270)
-			{
-				p_con.angle -= 180;
-			}
-
-			DrawCircle(swipe_pos_start[0].x, swipe_pos_start[0].y, LENGTH_SHORT, punicolor, 1, 1);
-
-			DrawTriangle(pos[0].x, pos[0].y,
-				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				punicolor, true);
-
-			DrawTriangle(pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6), pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
-				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				punicolor, true);
-
-			DrawTriangle(pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6), pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
-				swipe_pos_start[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT),
-				swipe_pos_start[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT),
-				punicolor, true);
-
-			DrawCircle(pos[0].x, pos[0].y, LENGTH_SHORT / 6, punicolor, 1, 1);
-
-			DrawTriangleAA(swipe_pos_start[0].x, swipe_pos_start[0].y,
-				pos[0].x - (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6),
-				pos[0].y - (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
-				pos[0].x + (int)(fcos[p_con.angle + 90] * LENGTH_SHORT / 6),
-				pos[0].y + (int)(fsin[p_con.angle + 90] * LENGTH_SHORT / 6),
-				punicolor, true);
-
-		}
-
-
-
-	}
-	DrawFormatString(600, 25, 0xDDDDDD, _T("PUNICON__%d:%d,length_%d angle_%d,%d"), p_con.pos.x, p_con.pos.y, p_con.length, p_con.angle, p_con.time);
-
-	//DrawFormatString(600, 0, 0xFFFF00, "%d:%d\n%d:%d", GetPos(0).x, GetPos(0).y,GetSwipeStart(0).x, GetSwipeStart(0).y);
-
-	//p_conのコマンドに合わせて色を変える君
-	switch (p_con.command)
-	{
-	case CMD_DEF:
-		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFFFFFF, true);
-		break;
-	case CMD_FLICK:
-		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFF0000, true);
-		break;
-	case CMD_L_PRESS:
-		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFF00FF, true);
-
-		break;
-	case CMD_SWIPE:
-		DrawBox(600, 128, 600 + 24, 128 + 24, 0x00FF00, true);
-
-		break;
-	case CMD_TAP:
-		DrawBox(600, 128, 600 + 24, 128 + 24, 0xFFFF00, true);
-		break;
-
-	}
-	DrawFormatString(600, 128, 0x000000, "%d", p_con.command);
-
+	return pos[ST_NON];
 }
 
-PUNI_COMMAND Touch::GetCommand()
+// 現在座標の取得
+Pos Touch::GetNowPos(void)
 {
-	return p_con.command;
+	return pos[ST_TOUCH];
 }
 
-DIR Touch::GetSwipe()
+// 前座標の取得
+Pos Touch::GetOldPos(void)
 {
-	if (p_con.command == CMD_SWIPE)
+	return old_pos;
+}
+
+// 支点と現在座標との距離の取得
+Pos Touch::GetDistance(bool flag)
+{
+	Pos tmp;
+	if (flag == false)
 	{
-		switch ((p_con.angle +45) / 90)
-		{
-		case 0:
-			return DIR_RIGHT;
-			break;
-
-		case 1:
-			return DIR_DOWN;
-			break;
-
-		case 2:
-			return DIR_LEFT;
-			break;
-
-		case 3:
-			return DIR_UP;
-			break;
-		}
-
-		//右側だけ拗らせてる
-		if (p_con.angle >= 315)
-		{
-			return DIR_RIGHT;
-
-		}
+		tmp = { std::abs(pos[ST_NON].x - pos[ST_TOUCH].x), std::abs(pos[ST_NON].y - pos[ST_TOUCH].y) };
 	}
 	else
 	{
-		return DIR_NON;
+		tmp = { std::abs(pos[ST_NON].x - old_pos.x), std::abs(pos[ST_NON].y - old_pos.y) };
 	}
 
-	return DIR_NON;
+	return tmp;
 }
 
-DIR Touch::GetFlick()
+// 三角関数の取得
+Trigono Touch::GetTri(int index)
 {
-	if (p_con.command == CMD_FLICK)
-	{
-		switch ((p_con.angle +45) / 90)
-		{
-		case 0:
-			return DIR_RIGHT;
-			break;
-
-		case 1:
-			return DIR_DOWN;
-			break;
-
-		case 2:
-			return DIR_LEFT;
-			break;
-
-		case 3:
-			return DIR_UP;
-			break;
-		}
-
-		//右側だけ拗らせてる
-		if (p_con.angle >= 315)
-		{
-			return DIR_RIGHT;
-
-		}
-	}
-	else
-	{
-		return DIR_NON;
-	}
-
-	return DIR_NON;
-
+	return tri[index];
 }
-
-int Touch::GetAngle()
-{
-	return p_con.angle;
-}
-
-int Touch::GetLength()
-{
-	return p_con.length;
-}
-
-float Touch::GetCos()
-{
-	return fcos[p_con.angle];
-}
-
-float Touch::GetSin()
-{
-	return fsin[p_con.angle];
-}
-
-void Touch::Punicon()
-{
-
-	//画面タップ中操作
-	if (GetBuf(0) >0)
-	{
-
-		p_con.time++;
-
-		p_con.pos = { GetSwipeStart(0).x,GetSwipeStart(0).y };
-
-		//プニコンの向いている方向と長さを取得する
-		p_con.angle = (int)(ANGLE(atan2(GetPos(0).y - GetSwipeStart(0).y,
-			GetPos(0).x - GetSwipeStart(0).x)));
-
-		p_con.length = (int)hypot(p_con.pos.y-pos[0].y,
-			p_con.pos.x-pos[0].x );
-
-		AngleCtr();
-
-		//プニコンが円枠の範囲外に出た場合の操作
-		if (p_con.length > LENGTH_MAX)
-		{
-			p_con.length = LENGTH_MAX;
-		}
-
-		p_con.verocity = (int)(hypot(pos_buf[0].y - pos[0].y,
-			pos_buf[0].x - pos[0].x));
-
-		/*
-		tempPos.x += (fcos[angle]);
-		tempPos.y += (fsin[angle]);
-		*/
-
-	}
-	else if (GetBuf(0) == 0)
-	{
-		p_con.command = CMD_DEF;
-		p_con.length = 0;
-		p_con.time = 0;
-		p_con.verocity = 0;
-	}
-
-
-
-}
-
-
-void Touch::PuniCmdCtr()
-{
-
-	//タップ入力受付 プニコンの長さが短距離で入力時間が短時間の場合
-	if (p_con.time <= TAP_TIME && p_con.length<LENGTH_SHORT
-		&& touch_buf[0] == -1)
-	{
-		p_con.command = CMD_TAP;
-	}
-	//フリック入力受付 
-	if (p_con.time <= FLICK_TIME && p_con.length>= LENGTH_LONG &&
-		touch_buf[0] == -1)
-	{
-		p_con.command = CMD_FLICK;
-	}
-	//長押し受付
-	if (touch_buf[0] > 1 && p_con.time > TAP_TIME
-		&& p_con.length < LENGTH_SHORT && p_con.command != CMD_SWIPE)
-	{
-		p_con.command = CMD_L_PRESS;
-	}//スワイプ入力受付
-	else if(touch_buf[0] >1 && p_con.time > TAP_TIME)
-	{
-		p_con.command = CMD_SWIPE;
-	}
-	
-	
-
-}
-
-void Touch::AngleCtr()
-{
-
-	if (p_con.angle > 360)
-	{
-		p_con.angle -= 360;
-	}
-	if (p_con.angle < 0)
-	{
-		p_con.angle += 360;
-	}
-}
-

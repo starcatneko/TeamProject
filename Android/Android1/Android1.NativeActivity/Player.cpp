@@ -62,7 +62,7 @@ void Player::Draw()
 		color = 0xFFFFFF;
 		break;
 	}
-	Touch::Get()->DrawPunicon();
+	//Touch::Get()->DrawPunicon();
 
 	DrawFormatString(0, 0, 0xDDDDDD, _T("%d, %d"), c.x, c.y);
 	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
@@ -98,7 +98,7 @@ void Player::Update()
 void Player::StatesUpDate()
 {
 	CommandCtr();
-	if (Touch::Get()->GetLength() > LENGTH_SHORT / 2)
+	/*if (Touch::Get()->GetLength() > LENGTH_SHORT / 2)
 	{
 		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
 		{
@@ -108,7 +108,7 @@ void Player::StatesUpDate()
 		{
 			dir = DIR_RIGHT;
 		}
-	}
+	}*/
 
 	switch (st)
 	{
@@ -137,7 +137,7 @@ void Player::StatesUpDate()
 
 bool Player::MoveLimit()
 {
-	if (dir == DIR_LEFT)
+	/*if (dir == DIR_LEFT)
 	{
 		if (c.x + Touch::Get()->GetCos() * (float)speed < 0)
 		{
@@ -150,14 +150,14 @@ bool Player::MoveLimit()
 		{
 			return false;
 		}
-	}
+	}*/
 	return true;
 }
 
 void Player::Move()
 {
 
-	if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
+	/*if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
 	{
 		//画面外に出る移動量の場合、break文で移動処理を行わないようにしている
 		
@@ -189,7 +189,7 @@ void Player::Move()
 	else
 	{
 		st = ST_NUETRAL;
-	}
+	}*/
 }
 bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
 {
@@ -217,7 +217,7 @@ bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
 }
 void Player::DrawHitBox()
 {
-	switch (cmd)
+	/*switch (cmd)
 	{
 	case CMD_TAP:
 		if (dir == DIR_RIGHT)
@@ -256,19 +256,19 @@ void Player::DrawHitBox()
 		}
 
 		break;
-	}
+	}*/
 }
 void Player::Touch()
 {
-	if (Touch::Get()->GetLength() > LENGTH_SHORT)
+	/*if (Touch::Get()->GetLength() > LENGTH_SHORT)
 	{
 		st = ST_WALK;
-	}
+	}*/
 }
 
 void Player::CommandCtr()
 {
-	switch (Touch::Get()->GetCommand())
+	/*switch (Touch::Get()->GetCommand())
 	{
 	case CMD_DEF:		// 無入力
 
@@ -291,7 +291,7 @@ void Player::CommandCtr()
 		//attack_wait = 60;
 		break;
 
-	}
+	}*/
 
 }
 
@@ -302,7 +302,7 @@ void Player::Attack()
 	{
 		attack_wait--;
 
-		if (cmd == CMD_FLICK)
+		/*if (cmd == CMD_FLICK)
 		{
 			if (dir == DIR_RIGHT)
 			{
@@ -325,7 +325,7 @@ void Player::Attack()
 			attack_wait = 0;
 			st = ST_NUETRAL;
 			cmd = CMD_DEF;
-		}
+		}*/
 	}
 }
 
@@ -336,7 +336,7 @@ bool Player::CheckHitAtack(Box target)
 	// オブジェクトと当たり判定の処理を行う
 	// 当たっていたらtrue、外れていたらfalse
 
-	switch (cmd)
+	/*switch (cmd)
 	{
 	case CMD_DEF:		// 無入力
 
@@ -362,7 +362,7 @@ bool Player::CheckHitAtack(Box target)
 		break;
 
 
-	}
+	}*/
 	return false;
 }
 
