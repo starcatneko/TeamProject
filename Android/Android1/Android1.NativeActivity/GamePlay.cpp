@@ -183,7 +183,7 @@ void GamePlay::Start(void)
 	Load();
 	pl->Update();
 	du->UpData();
-	//fa->UpData();
+	fa->UpData();
 	ItemUpData();
 
 

@@ -37,6 +37,8 @@ private:
 	int color;
 	//判定のための待ち時間
 	int wait;
+	//振り向き判定のための待ち時間
+	int dirwait;
 
 	//x座標
 	int angleNumX;

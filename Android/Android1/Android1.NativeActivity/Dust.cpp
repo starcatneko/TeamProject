@@ -8,7 +8,7 @@
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	angleNumX(this->pos.x - 40), attackFlag(false), attackRange(40), color(0x00ffff), wait(0)
+	angleNumX(this->pos.x - 40), attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0)
 {
 	this->cam = cam;
 	this->st = st;
@@ -53,6 +53,7 @@ void Dust::Draw(void)
 	}
 
 	DrawFormatString(200, 1000, GetColor(255, 0, 0), _T("ダストの座標：%d, %d"), pos);
+	DrawBox(target.x - attackRange, target.y - attackRange, target.x + attackRange, target.y + attackRange, 0x000000, true);
 }
 
 // 待機時の処理
@@ -64,7 +65,7 @@ void Dust::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -92,7 +93,7 @@ void Dust::Walk(void)
 	color = 0x00ffff;
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -102,13 +103,14 @@ void Dust::Walk(void)
 	{
 		// 目標座標の更新
 		target = { pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2, pl.lock()->GetPos().y + st.lock()->GetChipPlSize().y / 2 };
-		if (pos.x == target.x)
+		if (dirwait == 0)
 		{
-			dir = DIR_NON;
+			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dirwait = 30;
 		}
 		else
 		{
-			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dirwait--;
 		}
 
 		if (dir == DIR_LEFT)

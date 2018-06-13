@@ -8,7 +8,7 @@
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	angleNumX(this->pos.x - 60), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
+	angleNumX(this->pos.x - 60), attackFlag(false), attackRange(50), color(0x00ffff), wait(0), dirwait(0)
 {
 	this->cam = cam;
 	this->st = st;
@@ -64,7 +64,7 @@ void Fannings::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -92,7 +92,7 @@ void Fannings::Walk(void)
 	color = 0x00ffff;
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - pl.lock()->GetPos().x), std::abs(pos.y - pl.lock()->GetPos().y) };
+	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -101,14 +101,15 @@ void Fannings::Walk(void)
 	else
 	{
 		// 目標座標の更新
-		target = pl.lock()->GetPos();
-		if (pos.x == target.x)
+		target = { pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2, pl.lock()->GetPos().y + st.lock()->GetChipPlSize().y / 2 };
+		if (dirwait == 0)
 		{
-			dir = DIR_NON;
+			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dirwait = 30;
 		}
 		else
 		{
-			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dirwait--;
 		}
 
 		if (dir == DIR_LEFT)
