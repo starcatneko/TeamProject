@@ -1,410 +1,270 @@
 ﻿#include "Player.h"
 #include "Touch.h"
-#include "dxlib.h"
-#include <math.h>
-#include "Typedef.h"
+#include "Camera.h"
+#include "Stage.h"
+#include "DxLib.h"
 
-Player::Player(float x, float y, std::weak_ptr<Camera> cam)
+// コンストラクタ
+Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
 {
-
-	this->cam = cam;
-
-	
-	this->pos = {x, y};
-	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
-	tempPos = { 0,0 };
-	size = { 240,270 };
-	st = ST_NUETRAL;
-	hp = 0;
+	lpos = this->cam.lock()->Correction(this->pos);
+	size = this->st.lock()->GetChipPlSize();
+	state = ST_NUETRAL;
+	dir = DIR_NON;
+	hp = 5;
+	power = 0;
 	speed = 5;
-	applepower = 80;
-	dir = DIR_LEFT;
-
-	
-	testdriver.pos = { 200,400 };
-	testdriver.size = { 240,270 };
-
-	attackBox.TAP = { { 160,70 },{ 160,80 } };
-	attackBox.FLICK = { { 120,30 },{ 240,120 } };
-
-	frame = 0;
-	attack_wait = 0;
-
-	
-	scrFlag = 0;
+	die = false;
+	flam = 0;
+	func = &Player::Nuetral;
 }
 
+// デストラクタ
 Player::~Player()
 {
 }
 
-void Player::Draw()
+// 描画
+void Player::Draw(void)
 {
-	unsigned int color;
-	switch (st)
+	if (state != ST_ATTACK)
 	{
-	case ST_NUETRAL:
-		color = 0xEE0000;
-		break;
-	case ST_WALK:
-		color = 0x00EE00;
-		break;
-	case ST_ATTACK:
-		color = 0xFFAA00;
-		break;
-	case ST_DAMAGE:
-		color = 0x0000FF;
-		break;
-	case ST_DIE:
-		color = 0xEE00EE;
-		break;
-	default:
-		color = 0xFFFFFF;
-		break;
+		DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 0, 255), true);
 	}
-	//Touch::Get()->DrawPunicon();
-
-	DrawFormatString(0, 0, 0xDDDDDD, _T("%d, %d"), c.x, c.y);
-	DrawFormatString(0, 24, 0xDDDDDD, _T("Apple Power::%d"), applepower);
-	DrawFormatString(0, 48, 0xDDDDDD, _T("HP::%d"), hp);
-	DrawFormatString(0, 72, 0xDDDDDD, _T("attack_wait::%d"), attack_wait);
-	DrawFormatString(128, 0, 0xDDDDDD, _T("dir::%d"), dir);
-	
-
-	DrawBox(c.x,c.y,c.x + size.x, c.y + size.y, color, true);
-
-	DrawHitBox();
-
+	else
+	{
+		DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(255,0,0), true);
+	}
+	if (state == ST_NUETRAL)
+	{
+		DrawString(800, 50, "待機中", GetColor(255, 0, 0));
+	}
+	if (state == ST_WALK)
+	{
+		DrawString(800, 50, "歩き中", GetColor(255, 0, 0));
+	}
+	if (state == ST_ATTACK)
+	{
+		DrawString(800, 50, "攻撃中", GetColor(255, 0, 0));
+	}
+	if (state == ST_DAMAGE)
+	{
+		DrawString(800, 50, "ダメージ中", GetColor(255, 0, 0));
+	}
+	if (state == ST_DIE)
+	{
+		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
+	}
 }
 
-void Player::Update()
+// 待機時の処理
+void Player::Nuetral(void)
 {
-	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
-	if (cam.lock()->GetPos().x % WINDOW_X != 0)
+	if (state != ST_NUETRAL)
 	{
 		return;
 	}
-	frame++;
-	
-	StatesUpDate();
 
-	if (frame % 60 == 0)
+	DIR tmp = DIR_NON;
+	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
-		applepower--;
+		SetState(ST_ATTACK);
+		func = &Player::Attack;
+	}
+
+	if (Touch::Get()->Check(SWIPE, tmp) == true)
+	{
+		SetState(ST_WALK);
+		func = &Player::Walk;
 	}
 
 }
 
-void Player::StatesUpDate()
+// 移動時の処理
+void Player::Walk(void)
 {
-	CommandCtr();
-	/*if (Touch::Get()->GetLength() > LENGTH_SHORT / 2)
+	if (state != ST_WALK)
 	{
-		if (Touch::Get()->GetAngle() > 90 && Touch::Get()->GetAngle() < 270)
-		{
-			dir = DIR_LEFT;
-		}
-		else
-		{
-			dir = DIR_RIGHT;
-		}
-	}*/
-
-	switch (st)
-	{
-		case ST_NUETRAL:
-			Touch();	
-			break;
-
-		case ST_WALK:
-			Move();
-			break;
-
-		case ST_ATTACK:
-			Attack();
-			break;
-
-		case ST_DAMAGE:
-			st = ST_NUETRAL;
-			break;
-
-		case ST_DIE:
-			st = ST_NUETRAL;
-			break;
+		return;
 	}
 
-}
-
-bool Player::MoveLimit()
-{
-	/*if (dir == DIR_LEFT)
+	DIR tmp = DIR_NON;
+	if (Touch::Get()->Check(SWIPE, tmp) != true)
 	{
-		if (c.x + Touch::Get()->GetCos() * (float)speed < 0)
-		{
-			return false;
-		}
-	}
-	if (dir == DIR_RIGHT)
-	{
-		if (c.x + Touch::Get()->GetCos() * (float)speed > WINDOW_X )
-		{
-			return false;
-		}
-	}*/
-	return true;
-}
-
-void Player::Move()
-{
-
-	/*if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
-	{
-		//画面外に出る移動量の場合、break文で移動処理を行わないようにしている
-		
-		if (MoveLimit())
-		{
-			pos.x += Touch::Get()->GetCos() * (float)speed;
-		}
-
-		do
-		{
-			if (Touch::Get()->GetAngle() >180)
-			{
-				if (c.y + (Touch::Get()->GetSin() * (float)speed) < 0)
-				{
-					break;
-				}
-			}
-			if (Touch::Get()->GetAngle() <=180)
-			{
-				if (c.y + (Touch::Get()->GetSin() * (float)speed) > WINDOW_Y - size.y)
-				{
-					break;
-				}
-			}
-			pos.y += Touch::Get()->GetSin() * (float)speed;
-
-		} while (0);
+		SetState(ST_NUETRAL);
+		func = &Player::Nuetral;
+		return;
 	}
 	else
 	{
-		st = ST_NUETRAL;
-	}*/
-}
-bool Player::Hit_BoxtoPlayer(Box A, Box P_BOX, DIR dir)
-{
-	if (dir == DIR_RIGHT)
-	{
-		if (A.pos.x < (P_BOX.pos.x + P_BOX.size.x + this->pos.x)
-			&& P_BOX.pos.x + this->pos.x < (A.pos.x + A.size.x)
-			&& A.pos.y < (P_BOX.pos.y + P_BOX.size.y + this->pos.y)
-			&& P_BOX.pos.y + this->pos.y < (A.pos.y + A.size.y))
-		{
-			return true;
-		}
-	}
-	else
-	{
-		if (A.pos.x < (-P_BOX.pos.x  + this->pos.x + this->size.x)
-			&& -P_BOX.pos.x - P_BOX.size.x + this->pos.x + this->size.x< (A.pos.x + A.size.x)
-			&& A.pos.y < (P_BOX.pos.y + P_BOX.size.y + this->pos.y)
-			&& P_BOX.pos.y + this->pos.y < (A.pos.y + A.size.y))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-void Player::DrawHitBox()
-{
-	/*switch (cmd)
-	{
-	case CMD_TAP:
+		//移動方向の更新
+		dir = (Touch::Get()->GetUnsignedAngle() > 0.0f && Touch::Get()->GetUnsignedAngle() < 180.0f) ? DIR_RIGHT : DIR_LEFT;
+
 		if (dir == DIR_RIGHT)
 		{
-			DrawBox(c.x + attackBox.TAP.pos.x,
-					c.y + attackBox.TAP.pos.y,
-					c.x + attackBox.TAP.pos.x + attackBox.TAP.size.x,
-					c.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
-					0xFFFF00, true);
-		}
-		else
-		{
-			DrawBox(c.x - attackBox.TAP.pos.x + this->size.x,
-					c.y + attackBox.TAP.pos.y,
-					c.x - attackBox.TAP.pos.x - attackBox.TAP.size.x + this->size.x,
-					c.y + attackBox.TAP.pos.y + attackBox.TAP.size.y,
-					0xFFFF00, true);
-		}
-		break;
-	case CMD_FLICK:
-		if (dir == DIR_RIGHT)
-		{
-			DrawBox(c.x + attackBox.FLICK.pos.x,
-					c.y + attackBox.FLICK.pos.y,
-					c.x + attackBox.FLICK.pos.x + attackBox.FLICK.size.x,
-					c.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
-				0xFFFF00, true);
-		}
-		else
-		{
-			DrawBox(c.x - attackBox.FLICK.pos.x + this->size.x,
-					c.y + attackBox.FLICK.pos.y,
-					c.x - attackBox.FLICK.pos.x - attackBox.FLICK.size.x + this->size.x,
-					c.y + attackBox.FLICK.pos.y + attackBox.FLICK.size.y,
-				0xFFFF00, true);
-		}
-
-		break;
-	}*/
-}
-void Player::Touch()
-{
-	/*if (Touch::Get()->GetLength() > LENGTH_SHORT)
-	{
-		st = ST_WALK;
-	}*/
-}
-
-void Player::CommandCtr()
-{
-	/*switch (Touch::Get()->GetCommand())
-	{
-	case CMD_DEF:		// 無入力
-
-		break;
-	case CMD_TAP:		// 短押し
-		cmd = CMD_TAP;
-		attack_wait = 4;
-		st = ST_ATTACK;
-		break;
-	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
-
-		break;
-	case CMD_FLICK:		// すばやくスライド
-		cmd = CMD_FLICK;
-		attack_wait = 16;
-		st = ST_ATTACK;
-		break;
-	case CMD_L_PRESS:		// 長押し
-
-		//attack_wait = 60;
-		break;
-
-	}*/
-
-}
-
-void Player::Attack()
-{
-	//攻撃状態
-	if(attack_wait >=0)
-	{
-		attack_wait--;
-
-		/*if (cmd == CMD_FLICK)
-		{
-			if (dir == DIR_RIGHT)
+			pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
+			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 			{
-				if(MoveLimit())
-				{
-					pos.x += attack_wait;
-				}
+				pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
 			}
 			else
 			{
-				if (MoveLimit())
-				{
-					pos.x -= attack_wait;
-				}
+				pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
 			}
 		}
-
-		if (attack_wait <= 0)
+		else if (dir == DIR_LEFT)
 		{
-			attack_wait = 0;
-			st = ST_NUETRAL;
-			cmd = CMD_DEF;
-		}*/
+			pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
+			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
+			{
+				pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
+			}
+			else
+			{
+				pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
+			}
+		}
 	}
 }
 
-//外部呼び出し専用
-bool Player::CheckHitAtack(Box target)
+// 攻撃時の処理
+void Player::Attack(void)
 {
-	// プレイヤーの行動を元に、引数のnd())
-	// オブジェクトと当たり判定の処理を行う
-	// 当たっていたらtrue、外れていたらfalse
-
-	/*switch (cmd)
+	if (state != ST_ATTACK)
 	{
-	case CMD_DEF:		// 無入力
+		return;
+	}
 
-		break;
-	case CMD_TAP:		// 短押し
-
-		if (Hit_BoxtoPlayer(target, attackBox.TAP, dir))
-		{
-			return true;
-		}
-		break;
-	case CMD_SWIPE:		// スワイプ（ゆっくりスライド）
-
-		break;
-	case CMD_FLICK:		// すばやくスライド
-		if (Hit_BoxtoPlayer(target, attackBox.FLICK, dir))
-		{
-			return true;
-		}
-		break;
-	case CMD_L_PRESS:		// 長押し
-
-		break;
-
-
-	}*/
-	return false;
+	//攻撃アニメーションが終わったとき
+	SetState(ST_NUETRAL);
+	func = &Player::Nuetral;
 }
 
-
-
-//参照・代入系
-void Player::HpControl(int point)
+// ダメージ時の処理
+void Player::Damage(void)
 {
-	hp += point;
-}
-int Player::GetPower()
-{
-	return applepower;
-}
-void Player::SetPower(int power)
-{
-	applepower = power;
-}
-void Player::UpPower(int power)
-{
-	applepower += power;
-}
-Pos Player::GetPos()
-{
-	return { (int)pos.x, (int)pos.y };
+	if (state != ST_DAMAGE)
+	{
+		return;
+	}
+
+	if (hp <= 0)
+	{
+		SetState(ST_DIE);
+		func = &Player::Die;
+	}
 }
 
-Pos Player::GetLocalPos()
+// 死亡時の処理
+void Player::Die(void)
 {
-	return { c.x, c.y };
+	if (state != ST_DIE)
+	{
+		return;
+	}
+
+	//死亡アニメーションが終わったとき
+	die = true;
 }
+
+// 処理
+void Player::UpData(void)
+{
+	lpos = cam.lock()->Correction(pos);
+
+	if (state == ST_DAMAGE)
+	{
+		func = &Player::Damage;
+	}
+
+	(this->*func)();
+}
+
+// 座標の取得
+Pos Player::GetPos(void)
+{
+	return pos;
+}
+
+// 座標のセット
 void Player::SetPos(Pos pos)
 {
-	this->pos.x = (float)pos.x;
-	this->pos.y = (float)pos.y;
-}
-STATES Player::GetSt()
-{
-	return st;
-}
-DIR Player::GetDir()
-{
-	return dir;
+	this->pos = pos;
 }
 
+// ローカル座標の取得
+Pos Player::GetLocalPos(void)
+{
+	return lpos;
+}
+
+// ローカル座標のセット
+void Player::SetLocalPos(Pos pos)
+{
+	lpos = pos;
+}
+
+// 体力の取得
+int Player::GetHp(void)
+{
+	return hp;
+}
+
+// 体力のセット
+void Player::SetHp(int hp)
+{
+	this->hp = hp;
+}
+
+// 体力の上昇
+void Player::UpHp(int i)
+{
+	hp += i;
+}
+
+// 体力の減少
+void Player::DownHp(int i)
+{
+	hp -= i;
+}
+
+// アップルパワーの取得
+int Player::GetPower(void)
+{
+	return power;
+}
+
+// アップルパワーのセット
+void Player::SetPower(int pw)
+{
+	power = pw;
+}
+
+// アップルパワーの上昇
+void Player::UpPower(int pw)
+{
+	power += pw;
+}
+
+// 状態の取得
+STATES Player::GetState(void)
+{
+	return state;
+}
+
+// 状態のセット
+void Player::SetState(STATES state)
+{
+	this->state = state;
+	flam = 0;
+	if (this->state == ST_DAMAGE)
+	{
+		--hp;
+	}
+}
+
+// 死亡フラグの取得
+bool Player::GetDie(void)
+{
+	return die;
+}
