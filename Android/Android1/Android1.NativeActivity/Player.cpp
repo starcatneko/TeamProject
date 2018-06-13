@@ -10,10 +10,10 @@ Player::Player(float x, float y, std::weak_ptr<Camera> cam)
 	this->cam = cam;
 
 	
+	this->pos = {x, y};
 	c = cam.lock()->Correction({ (int)pos.x, (int)pos.y });
 	tempPos = { 0,0 };
 	size = { 240,270 };
-	this->pos = {x, y};
 	st = ST_NUETRAL;
 	hp = 0;
 	speed = 5;
@@ -160,13 +160,11 @@ void Player::Move()
 	if (Touch::Get()->GetLength() > LENGTH_SHORT && Touch::Get()->GetBuf(0) > 0)
 	{
 		//画面外に出る移動量の場合、break文で移動処理を行わないようにしている
-		do
+		
+		if (MoveLimit())
 		{
-			if (MoveLimit())
-			{
-				pos.x += Touch::Get()->GetCos() * (float)speed;
-			}
-		} while (0);
+			pos.x += Touch::Get()->GetCos() * (float)speed;
+		}
 
 		do
 		{

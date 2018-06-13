@@ -216,8 +216,8 @@ void Touch::DrawPunicon()
 		unsigned int punicolor =0xFFFFFF;
 
 		int x = 0;
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 		//ぷにこん部分描画
 
