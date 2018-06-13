@@ -39,9 +39,8 @@ private:
 	int wait;
 	//振り向き判定のための待ち時間
 	int dirwait;
-
-	//x座標
-	int angleNumX;
+	//プレイヤーに渡す被攻撃矩形
+	Box box;
 
 	// 関数ポインタ
 	void (Dust::*func)(void);
