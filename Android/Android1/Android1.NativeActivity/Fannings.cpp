@@ -8,7 +8,7 @@
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	angleNumX(this->pos.x - 60), attackFlag(false), attackRange(50), color(0x00ffff), wait(0), dirwait(0)
+	attackFlag(false), attackRange(50), color(0x00ffff), wait(0), dirwait(0)
 {
 	this->cam = cam;
 	this->st = st;
@@ -29,7 +29,8 @@ Fannings::~Fannings()
 //描画
 void Fannings::Draw(void)
 {
-	DrawTriangle(pos.x, pos.y, angleNumX, pos.y + 30, angleNumX, pos.y - 30, color, true);
+	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, color, true);
+	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, 0x0000ff, false);
 
 	switch (state)
 	{
@@ -115,7 +116,6 @@ void Fannings::Walk(void)
 		if (dir == DIR_LEFT)
 		{
 			pos.x -= speed;
-			angleNumX = pos.x + 40;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
@@ -124,7 +124,6 @@ void Fannings::Walk(void)
 		else if (dir == DIR_RIGHT)
 		{
 			pos.x += speed;
-			angleNumX = pos.x - 40;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
@@ -132,7 +131,6 @@ void Fannings::Walk(void)
 		}
 		else
 		{
-			angleNumX = pos.x;
 			if (pos.y != target.y)
 			{
 				pos.y += (pos.y > target.y ? -speed : speed);
