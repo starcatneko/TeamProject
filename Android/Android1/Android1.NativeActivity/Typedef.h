@@ -1,8 +1,12 @@
 ﻿#pragma once
 
 // ウィンドウサイズ
-#define WINDOW_X 1920
-#define WINDOW_Y 1080
+#define WINDOW_Y 1920
+#define WINDOW_X 1080
+
+//表示サイズ
+#define SET_GRAPH_Y 1080
+#define SET_GRAPH_X 608 
 
 // タッチの最大数
 #define TOUCH_MAX 3
