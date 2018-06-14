@@ -1,6 +1,7 @@
 ﻿#include "Camera.h"
 #include "GameMane.h"
 #include "DxLib.h"
+#include <algorithm>
 
 // 画面移行時の座標のオフセット
 const int offset = 120;
@@ -9,7 +10,7 @@ const int offset = 120;
 const Pos off = { 30, 0 };
 
 // 揺らし時間
-const int time = 10;
+const int timer = 10;
 
 // コンストラクタ
 Camera::Camera() : pos({ 0,0 }), target({ 0,0}), speed(15), frame(0), shake(false)
@@ -90,7 +91,7 @@ void Camera::Shake(Pos pos)
 	}
 
 	//フレームが規定時間を超えたとき
-	if (frame >= shake_frame + time)
+	if (frame >= shake_frame + timer)
 	{
 		//揺らしフラグの設定
 		SetShakeFlag(false);
