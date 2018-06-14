@@ -125,6 +125,7 @@
     <Content Include="assets\back3.png" />
     <Content Include="assets\back4.png" />
     <Content Include="assets\flick.png" />
+    <Content Include="assets\hp.png" />
     <Content Include="assets\player_sample.png" />
     <Content Include="assets\sample.png" />
     <Content Include="assets\yazirusi.png" />

@@ -34,6 +34,11 @@ public:
 	// サイズの取得
 	Pos GetSize(void);
 
+	// 中心座標の取得
+	Pos GetCenter(void);
+	// 中心座標のセット
+	void SetCenter(Pos center);
+
 	// 体力の取得
 	int GetHp(void);
 	// 体力のセット
@@ -65,6 +70,12 @@ private:
 	// アニメーション管理
 	void Animator(DIR dir, int flam);
 
+	// アニメーションのセット
+	void SetAnim(STATES state, DIR dir, Box box);
+
+	// あたり矩形のセット
+	void SetRect(STATES state, DIR dir, int flam, Box box);
+
 	// 待機時の処理
 	void Nuetral(void);
 
@@ -80,6 +91,9 @@ private:
 	// 死亡時の処理
 	void Die(void);
 
+	// リセット
+	void Reset(void);
+
 
 	// カメラクラス
 	std::weak_ptr<Camera>cam;
@@ -90,6 +104,9 @@ private:
 	// 画像データ
 	int image;
 
+	// 体力画像データ
+	int himage;
+
 	// 座標
 	Pos pos;
 
@@ -98,6 +115,9 @@ private:
 
 	// サイズ
 	Pos size;
+
+	// 中心座標
+	Pos center;
 
 	// ターゲット座標
 	Pos target;
@@ -132,8 +152,11 @@ private:
 	// 無敵フレーム
 	int m_flam;
 
-	// 歩きアニメーション
+	// アニメーション
 	std::map<STATES, std::map<DIR, std::vector<Box>>>anim;
+
+	// あたり矩形
+	std::map<STATES, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
 
 	// 関数ポインタ
 	void (Player::*func)(void);

@@ -14,12 +14,17 @@ const int animTime = 5;
 // 無敵時間
 const int invincible = 10;
 
+// HP画像のサイズ
+const Pos hpSize = { 128,128 };
+
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
 {
 	image = LoadMane::Get()->Load("player_sample.png");
+	himage = LoadMane::Get()->Load("hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
+	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 	target = lpos;
 	state = ST_NUETRAL;
 	dir = DIR_UP;
@@ -32,8 +37,10 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	index = 0;
 	m_flam = -1;
 
+	Reset();
+
 	//待機
-	anim[ST_NUETRAL][DIR_DOWN].push_back({ 48, 0, 48, 48 });
+	anim[ST_NUETRAL][DIR_DOWN].push_back({ {48, 0}, {48, 48} });
 	anim[ST_NUETRAL][DIR_LEFT].push_back({ 48, 48, 48, 48 });
 	anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
 	anim[ST_NUETRAL][DIR_UP].push_back({ 48, 48 * 3, 48, 48 });
@@ -70,6 +77,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 // デストラクタ
 Player::~Player()
 {
+	Reset();
 }
 
 // 描画
@@ -102,6 +110,17 @@ void Player::Draw(void)
 		}
 	}
 
+	for (int i = 0; i < hp; ++i)
+	{
+		DrawRectRotaGraph2(
+			(hpSize.x * i) + (int)(hpSize.x * 0.6) / 2 - (int)(hpSize.x * 0.6) / 2 * i, 0 + (int)(hpSize.y * 0.6) / 2,
+			0, 0,
+			hpSize.x, hpSize.y,
+			hpSize.x / 2, hpSize.y / 2,
+			0.6, 0.0, himage, true, false, false);
+	}
+
+#ifndef _DEBUG
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 255, 0), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -130,6 +149,7 @@ void Player::Draw(void)
 	{
 		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
 	}
+#endif
 }
 
 // アニメーション管理
@@ -141,6 +161,18 @@ void Player::Animator(DIR dir, int flam)
 		index = ((unsigned)(index + 1) < anim[state][dir].size()) ? ++index : 0;
 		this->flam = 0;
 	}
+}
+
+// アニメーションのセット
+void Player::SetAnim(STATES state, DIR dir, Box box)
+{
+	anim[state][dir].push_back(box);
+}
+
+// あたり矩形のセット
+void Player::SetRect(STATES state, DIR dir, int flam, Box box)
+{
+	rect[state][dir][flam].push_back(box);
 }
 
 // 待機時の処理
@@ -326,6 +358,13 @@ void Player::UpData(void)
 	}
 }
 
+// リセット
+void Player::Reset(void)
+{
+	anim.clear();
+	rect.clear();
+}
+
 // 座標の取得
 Pos Player::GetPos(void)
 {
@@ -354,6 +393,18 @@ void Player::SetLocalPos(Pos pos)
 Pos Player::GetSize(void)
 {
 	return size;
+}
+
+// 中心座標の取得
+Pos Player::GetCenter(void)
+{
+	return center;
+}
+
+// 中心座標のセット
+void Player::SetCenter(Pos center)
+{
+	this->center = center;
 }
 
 // 体力の取得
