@@ -6,7 +6,13 @@
 #include "DxLib.h"
 
 // ノックバック
-const int nock = 10;
+const int nock = 30;
+
+// アニメーション速度
+const int animTime = 5;
+
+// 無敵時間
+const int invincible = 10;
 
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
@@ -24,7 +30,9 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	die = false;
 	flam = 0;
 	index = 0;
+	m_flam = -1;
 
+	//待機
 	anim[ST_NUETRAL][DIR_DOWN].push_back( { 48, 0, 48, 48 });
 	anim[ST_NUETRAL][DIR_LEFT].push_back( { 48, 48, 48, 48 });
 	anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
@@ -32,10 +40,29 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	
 	for (int i = 0; i < 3; ++i)
 	{
+		//歩き
 		anim[ST_WALK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
 		anim[ST_WALK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
 		anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
 		anim[ST_WALK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+
+		//攻撃
+		anim[ST_ATTACK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+		anim[ST_ATTACK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_ATTACK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim[ST_ATTACK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+
+		//ダメージ
+		anim[ST_DAMAGE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+		anim[ST_DAMAGE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_DAMAGE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim[ST_DAMAGE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+
+		//死亡
+		anim[ST_DIE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+		anim[ST_DIE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_DIE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim[ST_DIE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
 	}
 	func = &Player::Nuetral;
 }
@@ -51,14 +78,34 @@ void Player::Draw(void)
 	DIR tmp;
 	tmp = (dir == DIR_NON) ? old_dir : dir;
 
-	DrawRectRotaGraph2(
-		lpos.x + (anim[ST_WALK][tmp][index].size.x * 5) / 2, lpos.y + (anim[ST_WALK][tmp][index].size.y* 5) / 2,
-		anim[ST_WALK][tmp][index].pos.x, anim[ST_WALK][tmp][index].pos.y,
-		anim[ST_WALK][tmp][index].size.x, anim[ST_WALK][tmp][index].size.y,
-		anim[ST_WALK][tmp][index].size.x / 2, anim[ST_WALK][tmp][index].size.y / 2,
-		5.0, 0.0, image, true, false, false);
+	if (m_flam % 2 != 0)
+	{
+		if (state != ST_DIE)
+		{
+			DrawRectRotaGraph2(
+				lpos.x + (anim[state][tmp][index].size.x * 5) / 2, lpos.y + (anim[state][tmp][index].size.y * 5) / 2,
+				anim[state][tmp][index].pos.x, anim[state][tmp][index].pos.y,
+				anim[state][tmp][index].size.x, anim[state][tmp][index].size.y,
+				anim[state][tmp][index].size.x / 2, anim[state][tmp][index].size.y / 2,
+				5.0, 0.0, image, true, false, false);
+		}
+		else
+		{
+			static int x = 0;
+			DrawRectRotaGraph2(
+				lpos.x + (anim[state][tmp][index].size.x * 5) / 2, lpos.y + (anim[state][tmp][index].size.y * 5) / 2,
+				anim[state][tmp][index].pos.x + x, anim[state][tmp][index].pos.y,
+				anim[state][tmp][index].size.x - x, anim[state][tmp][index].size.y,
+				(anim[state][tmp][index].size.x - x) / 2, anim[state][tmp][index].size.y / 2,
+				5.0, 0.0, image, true, false, false);
+			x += 5;
+		}
+	}
+
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
 	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
+	DrawFormatString(600, 700, GetColor(255, 0, 0), "配列番号：%d", index);
+	DrawFormatString(600, 800, GetColor(255, 0, 0), "フレーム：%d", flam);
 	if (state == ST_NUETRAL)
 	{
 		DrawString(800, 50, "待機中", GetColor(255, 0, 0));
@@ -84,14 +131,11 @@ void Player::Draw(void)
 // アニメーション管理
 void Player::Animator(DIR dir, int flam)
 {
-	if (dir != DIR_NON)
+	++this->flam;
+	if (this->flam > flam)
 	{
-		++this->flam;
-		if (this->flam >= flam)
-		{
-			index = ((unsigned)(index + 1) < anim[ST_WALK][dir].size()) ? ++index : 0;
-			this->flam = 0;
-		}
+		index = ((unsigned)(index + 1) < anim[state][dir].size()) ? ++index : 0;
+		this->flam = 0;
 	}
 }
 
@@ -109,8 +153,9 @@ void Player::Nuetral(void)
 	DIR tmp = DIR_NON;
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
-		SetState(ST_ATTACK);
-		func = &Player::Attack;
+		SetState(ST_DAMAGE);
+		dir = old_dir;
+		func = &Player::Damage;
 	}
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
@@ -180,9 +225,12 @@ void Player::Attack(void)
 		return;
 	}
 
-	//攻撃アニメーションが終わったとき
-	SetState(ST_NUETRAL);
-	func = &Player::Nuetral;
+	//アニメーションが終わったとき
+	if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+	{
+		SetState(ST_NUETRAL);
+		func = &Player::Nuetral;
+	}
 }
 
 // ダメージ時の処理
@@ -200,36 +248,42 @@ void Player::Damage(void)
 	}
 	else
 	{
-		DIR tmp;
-		tmp = (dir == DIR_NON) ? old_dir : dir;
-		switch (tmp)
+		dir = (dir == DIR_NON) ? old_dir : dir;
+		switch (dir)
 		{
 		case DIR_DOWN:
 			if (target.y - nock < lpos.y)
 			{
-				lpos.y -= speed;
+				pos.y -= speed;
 			}
 			break;
 		case DIR_LEFT:
 			if (target.x + nock > lpos.x)
 			{
-				lpos.x += speed;
+				pos.x += speed;
 			}
 			break;
 		case DIR_RIGHT:
 			if (target.x - nock < lpos.x)
 			{
-				lpos.x -= speed;
+				pos.x -= speed;
 			}
 			break;
 		case DIR_UP:
 			if (target.y + nock > lpos.y)
 			{
-				lpos.y += speed;
+				pos.y += speed;
 			}
 			break;
 		default:
 			break;
+		}
+
+		//アニメーションが終わったとき
+		if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+		{
+			SetState(ST_NUETRAL);
+			func = &Player::Nuetral;
 		}
 	}
 }
@@ -242,8 +296,12 @@ void Player::Die(void)
 		return;
 	}
 
-	//死亡アニメーションが終わったとき
-	die = true;
+	dir = (dir == DIR_NON) ? old_dir : dir;
+	//アニメーションが終わったとき
+	if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+	{
+		die = true;
+	}
 }
 
 // 処理
@@ -251,7 +309,7 @@ void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
 	
-	Animator(dir, 5);
+	Animator(dir, animTime);
 
 	if (state == ST_DAMAGE)
 	{
@@ -259,6 +317,11 @@ void Player::UpData(void)
 	}
 
 	(this->*func)();
+
+	if (m_flam != -1)
+	{
+		m_flam = (m_flam < invincible) ? ++m_flam : -1;
+	}
 }
 
 // 座標の取得
@@ -350,6 +413,7 @@ void Player::SetState(STATES state)
 	{
 		--hp;
 		target = lpos;
+		m_flam = 0;
 	}
 }
 
@@ -357,4 +421,15 @@ void Player::SetState(STATES state)
 bool Player::GetDie(void)
 {
 	return die;
+}
+
+// 無敵状態かの確認
+bool Player::CheckInvincible(void)
+{
+	if (m_flam != -1)
+	{
+		return true;
+	}
+
+	return false;
 }

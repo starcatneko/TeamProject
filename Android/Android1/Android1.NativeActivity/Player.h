@@ -58,6 +58,9 @@ public:
 	// 死亡フラグの取得
 	bool GetDie(void);
 
+	// 無敵状態かの確認
+	bool CheckInvincible(void);
+
 private:
 	// アニメーション管理
 	void Animator(DIR dir, int flam);
@@ -125,6 +128,9 @@ private:
 
 	// 配列の番号
 	int index;
+
+	// 無敵フレーム
+	int m_flam;
 
 	// 歩きアニメーション
 	std::map<STATES, std::map<DIR, std::vector<Box>>>anim;

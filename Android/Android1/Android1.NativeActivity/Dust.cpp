@@ -29,8 +29,8 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, color, true);
-	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, 0xff0000, false);
+	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, color, true);
+	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0xff0000, false);
 
 	switch (state)
 	{
@@ -65,7 +65,7 @@ void Dust::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
+	Pos tmp = { std::abs(lpos.x - (pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2)), std::abs(lpos.y - (pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -77,7 +77,7 @@ void Dust::Neutral(void)
 		if (wait <= 0)
 		{
 			SetState(ST_WALK);
-			target = pl.lock()->GetPos();
+			target = pl.lock()->GetLocalPos();
 			func = &Dust::Walk;
 		}
 	}
@@ -101,7 +101,7 @@ void Dust::Walk(void)
 	color = 0x00ffff;
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
+	Pos tmp = { std::abs(lpos.x - (pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2)), std::abs(lpos.y - (pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
@@ -110,10 +110,10 @@ void Dust::Walk(void)
 	else
 	{
 		// 目標座標の更新
-		target = { pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2, pl.lock()->GetPos().y + st.lock()->GetChipPlSize().y / 2 };
+		target = { pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2, pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2 };
 		if (dirwait == 0)
 		{
-			dir = (pos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dir = (lpos.x > target.x ? DIR_LEFT : DIR_RIGHT);
 			dirwait = 30;
 		}
 		else
@@ -124,24 +124,24 @@ void Dust::Walk(void)
 		if (dir == DIR_LEFT)
 		{
 			pos.x -= speed;
-			if (pos.y != target.y)
+			if (lpos.y != target.y)
 			{
-				pos.y += (pos.y > target.y ? -speed : speed);
+				pos.y += (lpos.y > target.y ? -speed : speed);
 			}
 		}
 		else if (dir == DIR_RIGHT)
 		{
 			pos.x += speed;
-			if (pos.y != target.y)
+			if (lpos.y != target.y)
 			{
-				pos.y += (pos.y > target.y ? -speed : speed);
+				pos.y += (lpos.y > target.y ? -speed : speed);
 			}
 		}
 		else
 		{
-			if (pos.y != target.y)
+			if (lpos.y != target.y)
 			{
-				pos.y += (pos.y > target.y ? -speed : speed);
+				pos.y += (lpos.y > target.y ? -speed : speed);
 			}
 		}
 		SetState(ST_NUETRAL);
@@ -201,6 +201,8 @@ void Dust::Die(void)
 // 処理
 void Dust::UpData(void)
 {
+	lpos = cam.lock()->Correction(pos);
+
 	(this->*func)();
 }
 
