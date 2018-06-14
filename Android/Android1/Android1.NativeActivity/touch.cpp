@@ -250,7 +250,7 @@ bool Touch::Flick(DIR& dir)
 		&& flam <= tapTime && pos[ST_TOUCH] == -1 && old_pos != -1
 		&& (x > offset || y > offset))
 	{
-		float tmp = GetUnsignedAngle(true);
+		float tmp = GetUnsignedAngle();
 
 		if (pos[ST_NON].x < old_pos.x
 			&& 45.0f <= tmp && tmp < 135.0f)
@@ -320,7 +320,7 @@ bool Touch::Swipe(DIR& dir)
 		&& flam > tapTime && pos[ST_TOUCH] != -1 && old_pos != -1
 		&& (x > offset || y > offset))
 	{
-		float tmp = GetUnsignedAngle(true);
+		float tmp = GetUnsignedAngle();
 
 		if (pos[ST_NON].x < old_pos.x
 			&& 45.0f <= tmp && tmp < 135.0f)
