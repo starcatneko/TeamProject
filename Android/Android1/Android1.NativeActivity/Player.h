@@ -29,6 +29,9 @@ public:
 	// ローカル座標のセット
 	void SetLocalPos(Pos pos);
 
+	// サイズの取得
+	Pos GetSize(void);
+
 	// 体力の取得
 	int GetHp(void);
 	// 体力のセット
