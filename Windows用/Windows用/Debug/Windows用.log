@@ -1,2 +1,21 @@
-﻿  Camera.cpp
+﻿  Apple.cpp
+  BackGround.cpp
+  Camera.cpp
+  Dust.cpp
+  Enemy.cpp
+  EnemyMane.cpp
+  Fannings.cpp
+  Game.cpp
+  GamePlay.cpp
+  Ground.cpp
+  Item.cpp
+  ItemMane.cpp
+  LoadMane.cpp
+  Over.cpp
+  Player.cpp
+  Score.cpp
+  Stage.cpp
+  Title.cpp
+  Touch.cpp
+  コードを生成中...
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
