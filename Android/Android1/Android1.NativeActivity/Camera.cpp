@@ -34,14 +34,14 @@ void Camera::Draw(void)
 // 動いていないときの処理
 void Camera::NotMove(Pos pos)
 {
-	//プレイヤーの左座標が画面外の出たとき
-	if (pos.x >= WINDOW_X - offset
+	//プレイヤーの上座標が画面外の出たとき
+	if (pos.y <= 0
 		&& GameMane::Get()->GetKillCnt() >= GameMane::Get()->GetTargetNum())
 	{
 		//プレイヤーの座標を修正
-		pos.x = WINDOW_X;
+		pos.y = 0;
 		//カメラの目標座標の更新
-		target.x += WINDOW_X;
+		target.y -= WINDOW_Y;
 
 		GameMane::Get()->Reset();
 
@@ -53,15 +53,15 @@ void Camera::NotMove(Pos pos)
 void Camera::Move(Pos pos)
 {
 	//目標座標が大きいとき
-	if (target.x >= this->pos.x)
+	if (target.y <= this->pos.y)
 	{
 		//カメラの座標を移動
-		this->pos.x += speed;
+		this->pos.y -= speed;
 	}
 	else
 	{
 		// カメラの座標の修正
-		this->pos.x = target.x;
+		this->pos.y = target.y;
 		refuge = this->pos;
 		func = &Camera::NotMove;
 	}
