@@ -22,10 +22,10 @@ Game::~Game()
 // システムの初期化
 void Game::Init(void)
 {
-	SetWindowSizeChangeEnableFlag(TRUE);
 	SetGraphMode(WINDOW_X, WINDOW_Y, 32);
-	SetWindowSize(SET_GRAPH_X, SET_GRAPH_Y);
 #ifndef __ANDROID__
+	SetWindowSizeChangeEnableFlag(TRUE);
+	SetWindowSize(SET_GRAPH_X, SET_GRAPH_Y);
 	//true:window　false:ﾌﾙｽｸﾘｰﾝ
 	ChangeWindowMode(true);
 	//windowテキストの設定

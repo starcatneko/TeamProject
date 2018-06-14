@@ -1,16 +1,20 @@
 ﻿#include "Title.h"
+#include "LoadMane.h"
 #include "Touch.h"
 #include "Score.h"
 #include "Game.h"
 #include "GamePlay.h"
 #include "DxLib.h"
 
+// 矢印のサイズ
+const Pos arrowSize = { 122, 154 };
+
 // コンストラクタ
-Title::Title() : speed(60)
+Title::Title() : speed(100), large(2)
 {
-	image = 0;
-	pos = {};
-	box = { {-WINDOW_X, 0}, {WINDOW_X, WINDOW_Y} };
+	image = LoadMane::Get()->Load("yazirusi.png");
+	pos = { (WINDOW_X / 2) - (arrowSize.x * large) / 2, (WINDOW_Y / 2) - (arrowSize.y * large) / 2 };
+	box = { {0, WINDOW_Y}, {WINDOW_X, WINDOW_Y} };
 	Score::Get()->Reset();
 	func = &Title::NotStart;
 }
@@ -23,7 +27,12 @@ Title::~Title()
 // 描画
 void Title::Draw(void)
 {
-	DrawString(250, 250, _T("タイトル画面"), GetColor(255, 0, 0), false);
+	DrawRectRotaGraph2(
+		pos.x + (arrowSize.x * large) / 2, pos.y + (arrowSize.y * large) / 2,
+		0,0,arrowSize.x, arrowSize.y, 
+		arrowSize.x / 2, arrowSize.y / 2,
+		(double)large, 0.0, image, true, false, false);
+
 	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
 }
 
@@ -38,7 +47,7 @@ void Title::NotStart(void)
 {
 	DIR dir = DIR_NON;
 	if(Touch::Get()->Check(FLICK,dir) == true
-		&& dir == DIR_RIGHT)
+		&& dir == DIR_UP)
 	{
 		func = &Title::Start;
 	}
@@ -47,9 +56,10 @@ void Title::NotStart(void)
 // スタート
 void Title::Start(void)
 {
-	box.pos.x += speed;
-	if (box.pos.x >= 0)
+	box.pos.y -= speed;
+	if (box.pos.y <= 0)
 	{
+		box.pos.y = 0;
 		Game::Get().ChangeScene(new GamePlay());
 	}
 }

@@ -4,7 +4,7 @@
 Score* Score::instance = nullptr;
 
 // コンストラクタ
-Score::Score() : score(0), pos{0,0}
+Score::Score() : score(0), pos({0,0})
 {
 }
 
