@@ -4,44 +4,201 @@
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   BackGround.cpp
-  Dust.cpp
-Dust.cpp(5,60): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
-  Dust::Dust(std::weak_ptr<Player>p) : p(p), pos{1000, 500}, angleNumX(pos.x - 40), hp(0), speed(4), attackFlag(false), attackRange(50), color(0x00ffff), wait(0)
-                                                             ^
-Dust.cpp(129,2): warning : expression result unused [-Wunused-value]
-          &GameMane::Kill;
-          ^~~~~~~~~~~~~~~
-  In file included from Dust.cpp:1:
-./Dust.h(40,6): warning : private field 'hp' is not used [-Wunused-private-field]
-          int hp;
-              ^
-  3 warnings generated.
+  Camera.cpp
+Camera.cpp(6,11): warning : unused variable 'offset' [-Wunused-const-variable]
+  const int offset = 120;
+            ^
+  1 warning generated.
   Enemy.cpp
+Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state' [-Wreorder]
+  Enemy::Enemy() : dir(DIR_NON), speed(0), state(ST_NUETRAL), target({0,0}), die(false)
+                                 ^
+  1 warning generated.
   EnemyMane.cpp
-  Fannings.cpp
-Fannings.cpp(5,70): warning : field 'angleNumX' will be initialized after field 'hp' [-Wreorder]
-  Fannings::Fannings(std::weak_ptr<Player>p) : p(p), pos{ 1000, 250 }, angleNumX(pos.x - 60), hp(0), speed(6), attackFlag(false), attackRange(50), color(0x00ff00), wait(0)
-                                                                       ^
-  In file included from Fannings.cpp:1:
-./Fannings.h(40,6): warning : private field 'hp' is not used [-Wunused-private-field]
-          int hp;
-              ^
-  2 warnings generated.
-  Game.cpp
   GameMane.cpp
   GamePlay.cpp
+GamePlay.cpp(86,8): warning : unused variable 'p' [-Wunused-variable]
+                          Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+                              ^
+  1 warning generated.
+  Ground.cpp
   Item.cpp
   ItemMane.cpp
   LoadMane.cpp
   Main.cpp
   Over.cpp
   Player.cpp
-Player.cpp(187,10): warning : 5 enumeration values not handled in switch: 'CMD_DEF', 'CMD_TAP', 'CMD_SWIPE'... [-Wswitch]
-          switch (Touch::Get()->GetCommand())
-                  ^
-  1 warning generated.
+Player.cpp(18,79): warning : field 'pos' will be initialized after field 'cam' [-Wreorder]
+  Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
+                                                                                ^
+Player.cpp(36,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_DOWN].push_back( { 48, 0, 48, 48 });
+                                                  ^~~~~
+                                                  {    }
+Player.cpp(36,49): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_DOWN].push_back( { 48, 0, 48, 48 });
+                                                         ^~~~~~
+                                                         {     }
+Player.cpp(37,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_LEFT].push_back( { 48, 48, 48, 48 });
+                                                  ^~~~~~
+                                                  {     }
+Player.cpp(37,50): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_LEFT].push_back( { 48, 48, 48, 48 });
+                                                          ^~~~~~
+                                                          {     }
+Player.cpp(38,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
+                                                  ^~~~~~~~~~
+                                                  {         }
+Player.cpp(38,54): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
+                                                              ^~~~~~
+                                                              {     }
+Player.cpp(39,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_UP].push_back(   { 48, 48 * 3, 48, 48 });
+                                                  ^~~~~~~~~~
+                                                  {         }
+Player.cpp(39,54): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          anim[ST_NUETRAL][DIR_UP].push_back(   { 48, 48 * 3, 48, 48 });
+                                                              ^~~~~~
+                                                              {     }
+Player.cpp(44,40): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                       ^~~~~~~~~~~~~
+                                                       {            }
+Player.cpp(44,55): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                                      ^~~~~~
+                                                                      {     }
+Player.cpp(45,40): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                       ^~~~~~~~~~~~~~
+                                                       {             }
+Player.cpp(45,56): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                                       ^~~~~~
+                                                                       {     }
+Player.cpp(46,40): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                       ^~~~~~~~~~~~~~~~~~
+                                                       {                 }
+Player.cpp(46,60): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                                           ^~~~~~
+                                                                           {     }
+Player.cpp(47,40): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                       ^~~~~~~~~~~~~~~~~~
+                                                       {                 }
+Player.cpp(47,60): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_WALK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                                           ^~~~~~
+                                                                           {     }
+Player.cpp(50,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                         ^~~~~~~~~~~~~
+                                                         {            }
+Player.cpp(50,57): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                                        ^~~~~~
+                                                                        {     }
+Player.cpp(51,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                         ^~~~~~~~~~~~~~
+                                                         {             }
+Player.cpp(51,58): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                                         ^~~~~~
+                                                                         {     }
+Player.cpp(52,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                         ^~~~~~~~~~~~~~~~~~
+                                                         {                 }
+Player.cpp(52,62): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                                             ^~~~~~
+                                                                             {     }
+Player.cpp(53,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                         ^~~~~~~~~~~~~~~~~~
+                                                         {                 }
+Player.cpp(53,62): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_ATTACK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                                             ^~~~~~
+                                                                             {     }
+Player.cpp(56,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                         ^~~~~~~~~~~~~
+                                                         {            }
+Player.cpp(56,57): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                                        ^~~~~~
+                                                                        {     }
+Player.cpp(57,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                         ^~~~~~~~~~~~~~
+                                                         {             }
+Player.cpp(57,58): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                                         ^~~~~~
+                                                                         {     }
+Player.cpp(58,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                         ^~~~~~~~~~~~~~~~~~
+                                                         {                 }
+Player.cpp(58,62): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                                             ^~~~~~
+                                                                             {     }
+Player.cpp(59,42): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                         ^~~~~~~~~~~~~~~~~~
+                                                         {                 }
+Player.cpp(59,62): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DAMAGE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                                             ^~~~~~
+                                                                             {     }
+Player.cpp(62,39): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                      ^~~~~~~~~~~~~
+                                                      {            }
+Player.cpp(62,54): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+                                                                     ^~~~~~
+                                                                     {     }
+Player.cpp(63,39): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                      ^~~~~~~~~~~~~~
+                                                      {             }
+Player.cpp(63,55): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+                                                                      ^~~~~~
+                                                                      {     }
+Player.cpp(64,39): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                      ^~~~~~~~~~~~~~~~~~
+                                                      {                 }
+Player.cpp(64,59): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+                                                                          ^~~~~~
+                                                                          {     }
+Player.cpp(65,39): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                      ^~~~~~~~~~~~~~~~~~
+                                                      {                 }
+Player.cpp(65,59): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+                  anim[ST_DIE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+                                                                          ^~~~~~
+                                                                          {     }
+  41 warnings generated.
+  Scene.cpp
   Score.cpp
+  In file included from Score.cpp:1:
+./Score.h(49,6): warning : private field 'pos' is not used [-Wunused-private-field]
+          Pos pos;
+              ^
+  1 warning generated.
   Stage.cpp
   Title.cpp
-  Touch.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

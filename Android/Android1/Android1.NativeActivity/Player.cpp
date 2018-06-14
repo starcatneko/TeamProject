@@ -102,6 +102,10 @@ void Player::Draw(void)
 		}
 	}
 
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 255, 0), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
 	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
 	DrawFormatString(600, 700, GetColor(255, 0, 0), "配列番号：%d", index);
@@ -147,15 +151,11 @@ void Player::Nuetral(void)
 		return;
 	}
 
-	//移動停止
-	dir = DIR_NON;
-
 	DIR tmp = DIR_NON;
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
-		SetState(ST_DAMAGE);
-		dir = old_dir;
-		func = &Player::Damage;
+		SetState(ST_ATTACK);
+		func = &Player::Attack;
 	}
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
@@ -224,6 +224,8 @@ void Player::Attack(void)
 	{
 		return;
 	}
+
+	dir = (dir == DIR_NON) ? old_dir : dir;
 
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)

@@ -37,6 +37,9 @@ private:
 	// 画像データ
 	int image;
 
+	// 拡大
+	int large;
+
 	// 関数ポインタ
 	void (Title::*func)(void);
 };

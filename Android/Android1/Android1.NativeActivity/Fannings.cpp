@@ -5,6 +5,7 @@
 #include "GameMane.h"
 #include "Touch.h"
 #include "DxLib.h"
+#include <algorithm>
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :

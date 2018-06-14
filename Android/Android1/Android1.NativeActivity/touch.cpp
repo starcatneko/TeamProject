@@ -27,7 +27,7 @@ Touch::Touch() : flam(0)
 
 	for (float i = 0; i < circle; ++i)
 	{
-		tri.push_back({ std::sinf(RAD(i)), std::cosf((RAD(i))) });
+		tri.push_back({ sinf(RAD(i)), cosf((RAD(i))) });
 	}
 }
 
@@ -135,7 +135,7 @@ void Touch::UpData(void)
 #else
 	if (GetTouchInputNum() > 0)
 	{
-		if (st != ST_NON)
+		if (state != ST_NON)
 		{
 			GetTouchInput(0, &pos[ST_TOUCH].x, &pos[ST_TOUCH].y);
 		}

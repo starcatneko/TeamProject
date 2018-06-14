@@ -5,5 +5,7 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back2.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back3.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\back4.png \
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\player_sample.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sample.png \
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\yazirusi.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\bin\AndroidManifest.xml \
