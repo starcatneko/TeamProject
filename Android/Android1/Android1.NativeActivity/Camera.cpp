@@ -12,40 +12,41 @@ const Pos off = { 30, 0 };
 const int time = 10;
 
 // コンストラクタ
-Camera::Camera() : pos({ 0,0 }), target({0,0}), speed(10), flam(0), shake(false)
+Camera::Camera() : pos({ 0,0 }), target({ 0,0}), speed(15), frame(0), shake(false)
 {
-	refuge = pos;
+	refuge = { 0,0 };
 	func = &Camera::NotMove;
+	shake_frame = 0;
 }
 
 // デストラクタ
 Camera::~Camera()
 {
 }
-
-// 描画
 void Camera::Draw(void)
 {
 #ifndef _DEBUG
 	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", pos);
+	DrawFormatString(250, 275, GetColor(255, 0, 0), "カメラ目標：%d,%d", target);
 #endif
 }
 
 // 動いていないときの処理
 void Camera::NotMove(Pos pos)
 {
-	//プレイヤーの上座標が画面外の出たとき
-	if (pos.y <= 0
+	//プレイヤーのローカル座標がカメラの目標点を超えた時
+	if (pos.y <= WINDOW_Y / 2
 		&& GameMane::Get()->GetKillCnt() >= GameMane::Get()->GetTargetNum())
 	{
 		//プレイヤーの座標を修正
-		pos.y = 0;
+		//pos.y = 0;
 		//カメラの目標座標の更新
-		target.y -= WINDOW_Y;
+		target.y -= (WINDOW_Y / 2)-pos.y;
 
 		GameMane::Get()->Reset();
 
 		func = &Camera::Move;
+		UpData(pos);
 	}
 }
 
@@ -53,15 +54,22 @@ void Camera::NotMove(Pos pos)
 void Camera::Move(Pos pos)
 {
 	//目標座標が大きいとき
-	if (target.y <= this->pos.y)
+	if (target.y < this->pos.y)
 	{
 		//カメラの座標を移動
-		this->pos.y -= speed;
+		if (speed < (abs)(this->pos.y - target.y))
+		{
+			this->pos.y -= speed;
+		}
+		else
+		{
+			this->pos.y -= (abs)(this->pos.y - target.y);
+		}
 	}
 	else
 	{
 		// カメラの座標の修正
-		this->pos.y = target.y;
+		//this->pos.y = target.y;
 		refuge = this->pos;
 		func = &Camera::NotMove;
 	}
@@ -70,28 +78,33 @@ void Camera::Move(Pos pos)
 // 画面揺らし
 void Camera::Shake(Pos pos)
 {
-	++flam;
+	if (shake_frame == 0)
+	{
+		shake_frame = frame;
+	}
 
 	//カメラ座標を移動
-	if (flam % 2 == 0)
+	if (frame % 2 == 0)
 	{
 		this->pos.x += (this->pos.x <= off.x ? off.x : -off.x);
 	}
 
 	//フレームが規定時間を超えたとき
-	if (flam >= time)
+	if (frame >= shake_frame + time)
 	{
 		//揺らしフラグの設定
 		SetShakeFlag(false);
 		//画面座標の修正
 		this->pos = refuge;
 		func = &Camera::NotMove;
+		shake_frame = 0;
 	}
 }
 
 // 処理
 void Camera::UpData(Pos pos)
 {
+	++frame;
 	//揺らしフラグがtrueのとき
 	if (shake == true)
 	{

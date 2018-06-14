@@ -53,7 +53,8 @@ private:
 	int speed;
 
 	// フレーム
-	int flam;
+	int frame;
+	int shake_frame;
 
 	// 揺らしフラグ
 	bool shake;

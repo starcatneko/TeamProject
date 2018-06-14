@@ -15,7 +15,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	power = 0;
 	speed = 5;
 	die = false;
-	flam = 0;
+	frame = 0;
 	func = &Player::Nuetral;
 }
 
@@ -55,6 +55,10 @@ void Player::Draw(void)
 	{
 		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
 	}
+
+	DrawFormatString(800, 75, 0xffffff, "pos:%d,%d", pos.x, pos.y);
+	DrawFormatString(800, 100, 0xffffff, "lpos:%d,%d", lpos.x, lpos.y);
+
 }
 
 // 待機時の処理
@@ -115,6 +119,7 @@ void Player::Walk(void)
 		else if (dir == DIR_LEFT)
 		{
 			pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
+			
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 			{
 				pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
@@ -171,7 +176,6 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
-
 	if (state == ST_DAMAGE)
 	{
 		func = &Player::Damage;
