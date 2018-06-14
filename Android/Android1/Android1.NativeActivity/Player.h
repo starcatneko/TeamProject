@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "Typedef.h"
 #include <memory>
+#include <map>
+#include <vector>
 
 class Camera;
 class Stage;
@@ -56,9 +58,13 @@ public:
 	// 死亡フラグの取得
 	bool GetDie(void);
 
-	void Animation(void);
+	// 無敵状態かの確認
+	bool CheckInvincible(void);
 
 private:
+	// アニメーション管理
+	void Animator(DIR dir, int flam);
+
 	// 待機時の処理
 	void Nuetral(void);
 
@@ -81,6 +87,9 @@ private:
 	// ステージクラス
 	std::weak_ptr<Stage>st;
 
+	// 画像データ
+	int image;
+
 	// 座標
 	Pos pos;
 
@@ -90,11 +99,17 @@ private:
 	// サイズ
 	Pos size;
 
+	// ターゲット座標
+	Pos target;
+
 	// ステータス
 	STATES state;
 
 	// 移動向き
 	DIR dir;
+
+	// 前の移動向き
+	DIR old_dir;
 
 	// 体力
 	int hp;
@@ -108,11 +123,17 @@ private:
 	// 死亡フラグ
 	bool die;
 
-	// 経過フレーム
-	int frame;
+	// フレーム
+	int flam;
 
-	// 
-	int tempframe;
+	// 配列の番号
+	int index;
+
+	// 無敵フレーム
+	int m_flam;
+
+	// 歩きアニメーション
+	std::map<STATES, std::map<DIR, std::vector<Box>>>anim;
 
 	// 関数ポインタ
 	void (Player::*func)(void);
