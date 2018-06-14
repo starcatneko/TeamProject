@@ -53,6 +53,8 @@ public:
 	// 死亡フラグの取得
 	bool GetDie(void);
 
+	void Animation(void);
+
 private:
 	// 待機時の処理
 	void Nuetral(void);
@@ -104,7 +106,10 @@ private:
 	bool die;
 
 	// 経過フレーム
-	int flam;
+	int frame;
+
+	// 
+	int tempframe;
 
 	// 関数ポインタ
 	void (Player::*func)(void);

@@ -256,7 +256,7 @@ STATES Player::GetState(void)
 void Player::SetState(STATES state)
 {
 	this->state = state;
-	flam = 0;
+	frame = 0;
 	if (this->state == ST_DAMAGE)
 	{
 		--hp;
@@ -267,4 +267,11 @@ void Player::SetState(STATES state)
 bool Player::GetDie(void)
 {
 	return die;
+}
+
+
+void Player::Animation(void)
+{
+	
+
 }
