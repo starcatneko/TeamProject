@@ -204,6 +204,12 @@ void Player::SetLocalPos(Pos pos)
 	lpos = pos;
 }
 
+// サイズの取得
+Pos Player::GetSize(void)
+{
+	return size;
+}
+
 // 体力の取得
 int Player::GetHp(void)
 {
