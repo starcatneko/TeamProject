@@ -40,7 +40,10 @@ private:
 	int flick;
 
 	// 拡大
-	int large;
+	std::map<int, int>large;
+
+	// 
+	int line;
 
 	// 関数ポインタ
 	void (Title::*func)(void);
