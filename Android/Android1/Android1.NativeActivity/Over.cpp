@@ -32,17 +32,11 @@ void Over::UpData(void)
 // スタート前
 void Over::NotStart(void)
 {
-	/*for (int i = 0; i < TOUCH_MAX; ++i)
+	DIR tmp = DIR_NON;
+	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
-		if (Touch::Get()->GetBuf(i) != 0)
-		{
-			continue;
-		}
-		else
-		{
-			func = &Over::Start;
-		}
-	}*/
+		func = &Over::Start;
+	}
 }
 
 // スタート

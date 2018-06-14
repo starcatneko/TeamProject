@@ -9,13 +9,18 @@
 // 矢印のサイズ
 const Pos arrowSize = { 122, 154 };
 
+// フリックの文字サイズ
+const Pos flickSize = { 601, 214 };
+
 // コンストラクタ
-Title::Title() : speed(100), large(2)
+Title::Title() : speed(100)
 {
 	image = LoadMane::Get()->Load("yazirusi.png");
 	flick = LoadMane::Get()->Load("flick.png");
-	pos[image] = { (WINDOW_X / 2) - (arrowSize.x * large) / 2, (WINDOW_Y / 2) - (arrowSize.y * large) / 2 };
-	pos[flick] = { (WINDOW_X / 2) - (arrowSize.x * large) / 2, (WINDOW_Y / 2) - (arrowSize.y * large) / 2 };
+	large[image] = 2;
+	large[flick] = 1;
+	pos[image] = { (WINDOW_X / 2) - (arrowSize.x * large[image]) / 2, (WINDOW_Y / 2) - (arrowSize.y * large[image]) / 2 };
+	pos[flick] = { (WINDOW_X / 2) - (flickSize.x * large[flick]) / 2, (WINDOW_Y / 2) - (flickSize.y * large[flick]) / 2 };
 	box = { {0, WINDOW_Y}, {WINDOW_X, WINDOW_Y} };
 	Score::Get()->Reset();
 	func = &Title::NotStart;
@@ -30,10 +35,16 @@ Title::~Title()
 void Title::Draw(void)
 {
 	DrawRectRotaGraph2(
-		pos[image].x + (arrowSize.x * large) / 2, pos[image].y + (arrowSize.y * large) / 2,
+		pos[image].x + (arrowSize.x * large[image]) / 2, pos[image].y + (arrowSize.y * large[image]) / 2,
 		0,0,arrowSize.x, arrowSize.y, 
 		arrowSize.x / 2, arrowSize.y / 2,
-		(double)large, 0.0, image, true, false, false);
+		(double)large[image], 0.0, image, true, false, false);
+
+	DrawRectRotaGraph2(
+		pos[flick].x + (flickSize.x * large[flick]) / 2, pos[flick].y + (flickSize.y * large[flick]) / 2,
+		0, 0, flickSize.x, flickSize.y,
+		flickSize.x / 2, flickSize.y / 2,
+		(double)large[flick], 0.0, flick, true, false, false);
 
 
 
@@ -43,6 +54,14 @@ void Title::Draw(void)
 // 処理
 void Title::UpData(void)
 {
+	if (pos[image].y > 200)
+	{
+		pos[image].y -= 10;
+	}
+	else
+	{
+		pos[image].y = (WINDOW_Y / 2) - (arrowSize.y * large[image]) / 2;
+	}
 	(this->*func)();
 }
 
