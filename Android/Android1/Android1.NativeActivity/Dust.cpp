@@ -29,7 +29,8 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y - size.x, color, true);
+	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, color, true);
+	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, 0xff0000, false);
 
 	switch (state)
 	{
@@ -63,7 +64,6 @@ void Dust::Neutral(void)
 		return;
 	}
 
-
 	//プレイヤーとの距離を求める
 	Pos tmp = { std::abs(pos.x - (pl.lock()->GetPos().x + st.lock()->GetChipPlSize().x / 2)), std::abs(pos.y - (pl.lock()->GetPos().y + st.lock()->GetChipPlSize().x / 2)) };
 	if (tmp.x <= attackRange && tmp.y <= attackRange)
@@ -82,6 +82,7 @@ void Dust::Neutral(void)
 		}
 	}
 
+	//プレイヤーの攻撃矩形を用いて当たり判定を求める
 	box = { pos, size };
 	if (pl.lock()->CheckHitAtack(box))
 	{

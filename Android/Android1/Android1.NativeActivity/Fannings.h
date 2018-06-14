@@ -40,9 +40,6 @@ private:
 	//振り向き判定のための待ち時間
 	int dirwait;
 
-	//x座標
-	int angleNumX;
-
 	// 関数ポインタ
 	void (Fannings::*func)(void);
 };
