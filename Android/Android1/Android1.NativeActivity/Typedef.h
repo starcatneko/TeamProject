@@ -34,11 +34,19 @@ enum DIR {
 	DIR_UP		= 8
 };
 
+// 状態
 enum STATES {
+	//待機
 	ST_NUETRAL,
+	//歩き
 	ST_WALK,
+	//回避
+	ST_AVOID,
+	//攻撃
 	ST_ATTACK,
+	//ダメージ
 	ST_DAMAGE,
+	//死亡
 	ST_DIE
 };
 
@@ -81,6 +89,10 @@ struct Position
 		x -= pos.x; y -= pos.y;
 	}
 
+	void operator+=(Position pos) {
+		x += pos.x; y += pos.y;
+	}
+
 	bool operator!=(T i){
 		return !(x == i && y == i);
 	}
@@ -104,8 +116,8 @@ typedef Position<int>Pos;
 // ボックス情報
 struct Box
 {
-	// 座標
+	//座標
 	Pos pos;
-	// サイズ
+	//サイズ
 	Pos size;
 };

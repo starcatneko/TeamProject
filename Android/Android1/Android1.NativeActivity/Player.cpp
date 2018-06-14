@@ -1,21 +1,42 @@
 ﻿#include "Player.h"
+#include "LoadMane.h"
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "DxLib.h"
 
+// ノックバック
+const int nock = 10;
+
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
 {
+	image = LoadMane::Get()->Load("player_sample.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
+	target = lpos;
 	state = ST_NUETRAL;
-	dir = DIR_NON;
+	dir = DIR_UP;
+	old_dir = dir;
 	hp = 5;
 	power = 0;
 	speed = 5;
 	die = false;
 	flam = 0;
+	index = 0;
+
+	anim[ST_NUETRAL][DIR_DOWN].push_back( { 48, 0, 48, 48 });
+	anim[ST_NUETRAL][DIR_LEFT].push_back( { 48, 48, 48, 48 });
+	anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
+	anim[ST_NUETRAL][DIR_UP].push_back(   { 48, 48 * 3, 48, 48 });
+	
+	for (int i = 0; i < 3; ++i)
+	{
+		anim[ST_WALK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
+		anim[ST_WALK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim[ST_WALK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+	}
 	func = &Player::Nuetral;
 }
 
@@ -27,14 +48,17 @@ Player::~Player()
 // 描画
 void Player::Draw(void)
 {
-	if (state != ST_ATTACK)
-	{
-		DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 0, 255), true);
-	}
-	else
-	{
-		DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(255,0,0), true);
-	}
+	DIR tmp;
+	tmp = (dir == DIR_NON) ? old_dir : dir;
+
+	DrawRectRotaGraph2(
+		lpos.x + (anim[ST_WALK][tmp][index].size.x * 5) / 2, lpos.y + (anim[ST_WALK][tmp][index].size.y* 5) / 2,
+		anim[ST_WALK][tmp][index].pos.x, anim[ST_WALK][tmp][index].pos.y,
+		anim[ST_WALK][tmp][index].size.x, anim[ST_WALK][tmp][index].size.y,
+		anim[ST_WALK][tmp][index].size.x / 2, anim[ST_WALK][tmp][index].size.y / 2,
+		5.0, 0.0, image, true, false, false);
+	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
+	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
 	if (state == ST_NUETRAL)
 	{
 		DrawString(800, 50, "待機中", GetColor(255, 0, 0));
@@ -57,6 +81,20 @@ void Player::Draw(void)
 	}
 }
 
+// アニメーション管理
+void Player::Animator(DIR dir, int flam)
+{
+	if (dir != DIR_NON)
+	{
+		++this->flam;
+		if (this->flam >= flam)
+		{
+			index = ((unsigned)(index + 1) < anim[ST_WALK][dir].size()) ? ++index : 0;
+			this->flam = 0;
+		}
+	}
+}
+
 // 待機時の処理
 void Player::Nuetral(void)
 {
@@ -64,6 +102,9 @@ void Player::Nuetral(void)
 	{
 		return;
 	}
+
+	//移動停止
+	dir = DIR_NON;
 
 	DIR tmp = DIR_NON;
 	if (Touch::Get()->Check(TAP, tmp) == true)
@@ -98,9 +139,13 @@ void Player::Walk(void)
 	else
 	{
 		//移動方向の更新
-		dir = (Touch::Get()->GetUnsignedAngle() > 0.0f && Touch::Get()->GetUnsignedAngle() < 180.0f) ? DIR_RIGHT : DIR_LEFT;
+		dir = tmp;
+		if (dir != DIR_NON)
+		{
+			old_dir = dir;
+		}
 
-		if (dir == DIR_RIGHT)
+		if (dir == DIR_RIGHT || dir == DIR_UP || dir == DIR_DOWN)
 		{
 			pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
@@ -112,7 +157,7 @@ void Player::Walk(void)
 				pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
 			}
 		}
-		else if (dir == DIR_LEFT)
+		else if (dir == DIR_LEFT || dir == DIR_UP || dir == DIR_DOWN)
 		{
 			pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
@@ -153,6 +198,40 @@ void Player::Damage(void)
 		SetState(ST_DIE);
 		func = &Player::Die;
 	}
+	else
+	{
+		DIR tmp;
+		tmp = (dir == DIR_NON) ? old_dir : dir;
+		switch (tmp)
+		{
+		case DIR_DOWN:
+			if (target.y - nock < lpos.y)
+			{
+				lpos.y -= speed;
+			}
+			break;
+		case DIR_LEFT:
+			if (target.x + nock > lpos.x)
+			{
+				lpos.x += speed;
+			}
+			break;
+		case DIR_RIGHT:
+			if (target.x - nock < lpos.x)
+			{
+				lpos.x -= speed;
+			}
+			break;
+		case DIR_UP:
+			if (target.y + nock > lpos.y)
+			{
+				lpos.y += speed;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 // 死亡時の処理
@@ -171,6 +250,8 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
+	
+	Animator(dir, 5);
 
 	if (state == ST_DAMAGE)
 	{
@@ -262,10 +343,13 @@ STATES Player::GetState(void)
 void Player::SetState(STATES state)
 {
 	this->state = state;
-	frame = 0;
+	dir = DIR_NON;
+	flam = 0;
+	index = 0;
 	if (this->state == ST_DAMAGE)
 	{
 		--hp;
+		target = lpos;
 	}
 }
 
@@ -273,11 +357,4 @@ void Player::SetState(STATES state)
 bool Player::GetDie(void)
 {
 	return die;
-}
-
-
-void Player::Animation(void)
-{
-	
-
 }
