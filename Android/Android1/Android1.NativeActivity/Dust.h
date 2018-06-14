@@ -35,7 +35,7 @@ private:
 	int attackRange;
 	//配色(Debugのとき状態で色分けする)
 	int color;
-	//判定のための待ち時間
+	//移動判定のための待ち時間
 	int wait;
 	//振り向き判定のための待ち時間
 	int dirwait;
