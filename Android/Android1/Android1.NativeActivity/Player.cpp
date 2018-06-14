@@ -33,37 +33,38 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	m_flam = -1;
 
 	//待機
-	anim[ST_NUETRAL][DIR_DOWN].push_back( { 48, 0, 48, 48 });
-	anim[ST_NUETRAL][DIR_LEFT].push_back( { 48, 48, 48, 48 });
+	anim[ST_NUETRAL][DIR_DOWN].push_back({ 48, 0, 48, 48 });
+	anim[ST_NUETRAL][DIR_LEFT].push_back({ 48, 48, 48, 48 });
 	anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
-	anim[ST_NUETRAL][DIR_UP].push_back(   { 48, 48 * 3, 48, 48 });
-	
+	anim[ST_NUETRAL][DIR_UP].push_back({ 48, 48 * 3, 48, 48 });
+
 	for (int i = 0; i < 3; ++i)
 	{
 		//歩き
-		anim[ST_WALK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
-		anim[ST_WALK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_WALK][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim[ST_WALK][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
 		anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_WALK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+		anim[ST_WALK][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//攻撃
-		anim[ST_ATTACK][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
-		anim[ST_ATTACK][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_ATTACK][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim[ST_ATTACK][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
 		anim[ST_ATTACK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_ATTACK][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+		anim[ST_ATTACK][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//ダメージ
-		anim[ST_DAMAGE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
-		anim[ST_DAMAGE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
+		anim[ST_DAMAGE][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim[ST_DAMAGE][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
 		anim[ST_DAMAGE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_DAMAGE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
+		anim[ST_DAMAGE][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//死亡
-		anim[ST_DIE][DIR_DOWN].push_back( { 0 + 48 * i, 0, 48, 48 });
-		anim[ST_DIE][DIR_LEFT].push_back( { 0 + 48 * i, 48, 48, 48 });
-		anim[][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_DIE][DIR_UP].push_back(   { 0 + 48 * i, 48 * 3, 48, 48 });
-	}ST_DIE
+		anim[ST_DIE][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim[ST_DIE][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
+		anim[ST_DIE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim[ST_DIE][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
+	}
+	func = &Player::Nuetral;
 }
 
 // デストラクタ
@@ -129,10 +130,6 @@ void Player::Draw(void)
 	{
 		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
 	}
-
-	DrawFormatString(800, 75, 0xffffff, "pos:%d,%d", pos.x, pos.y);
-	DrawFormatString(800, 100, 0xffffff, "lpos:%d,%d", lpos.x, lpos.y);
-
 }
 
 // アニメーション管理
@@ -208,7 +205,6 @@ void Player::Walk(void)
 		else if (dir == DIR_LEFT || dir == DIR_UP || dir == DIR_DOWN)
 		{
 			pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
-			
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 			{
 				pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos * speed) : 0;
@@ -314,7 +310,7 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
-	
+
 	Animator(dir, animTime);
 
 	if (state == ST_DAMAGE)

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Scene.h"
 #include "Typedef.h"
+#include <map>
 
 class Title :
 	public Scene
@@ -26,7 +27,7 @@ private:
 
 
 	// 座標
-	Pos pos;
+	std::map<int, Pos>pos;
 
 	// ボックス
 	Box box;
@@ -36,6 +37,7 @@ private:
 
 	// 画像データ
 	int image;
+	int flick;
 
 	// 拡大
 	int large;
