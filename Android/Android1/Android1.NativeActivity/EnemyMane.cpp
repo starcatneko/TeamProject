@@ -41,3 +41,13 @@ std::shared_ptr<Enemy> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam
 
 	return dust;
 }
+
+std::shared_ptr<Enemy> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+{
+	std::shared_ptr<Enemy>fannings = std::make_shared<Fannings>(pos, cam, st, pl);
+
+	//目標撃退数の上昇
+	GameMane::Get()->Target();
+
+	return fannings;
+}

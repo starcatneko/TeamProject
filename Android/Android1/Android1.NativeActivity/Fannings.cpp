@@ -172,13 +172,13 @@ void Fannings::Damage(void)
 	{
 		return;
 	}
-
+	color = 0xff0000;
 	if (hp <= 0)
 	{
 		state = ST_DIE;
 		func = &Fannings::Die;
 	}
-	else
+	else if(pl.lock()->GetState() != ST_ATTACK)
 	{
 		state = ST_NUETRAL;
 		func = &Fannings::Neutral;
