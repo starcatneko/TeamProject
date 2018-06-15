@@ -30,6 +30,7 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
+	DrawFormatString(0, 800, 0xffffff, "target::%d", GameMane::Get()->GetKillCnt());
 	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, color, true);
 	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0xff0000, false);
 

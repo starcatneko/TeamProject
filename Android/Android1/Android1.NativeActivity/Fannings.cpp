@@ -82,6 +82,14 @@ void Fannings::Neutral(void)
 			func = &Fannings::Walk;
 		}
 	}
+
+	if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true
+		&& pl.lock()->GetState() == ST_ATTACK)
+	{
+		SetState(ST_DAMAGE);
+		func = &Fannings::Damage;
+	}
+
 }
 
 // 移動時の処理
@@ -177,6 +185,7 @@ void Fannings::Damage(void)
 	}
 }
 
+
 // 死亡時の処理
 void Fannings::Die(void)
 {
@@ -194,5 +203,6 @@ void Fannings::Die(void)
 // 処理
 void Fannings::UpData(void)
 {
+	lpos = cam.lock()->Correction(pos);
 	(this->*func)();
 }
