@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "GameMane.h"
 #include "Touch.h"
+#include "Debug.h"
 #include "DxLib.h"
 #include <algorithm>
 
