@@ -71,10 +71,8 @@ void Game::ChangeScene(Scene * s)
 void Game::Draw(void)
 {
 	//画面消去
-	if (Debug::Get().drawclear)
-	{
 		ClsDrawScreen();
-	}
+	
 
 	scene->Draw();
 	Touch::Get()->Draw();
