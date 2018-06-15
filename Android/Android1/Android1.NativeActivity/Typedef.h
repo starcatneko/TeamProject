@@ -40,8 +40,6 @@ enum STATES {
 	ST_NUETRAL,
 	//歩き
 	ST_WALK,
-	//回避
-	ST_AVOID,
 	//攻撃
 	ST_ATTACK,
 	//ダメージ
@@ -120,4 +118,22 @@ struct Box
 	Pos pos;
 	//サイズ
 	Pos size;
+};
+
+// 短形タイプ
+enum class RectType
+{
+	Damage,
+	Attack
+};
+
+// 短形情報
+struct Rect
+{
+	//中心座標からのオフセット
+	Pos offset;
+	//サイズ
+	Pos size;
+	//短形タイプ
+	RectType type;
 };

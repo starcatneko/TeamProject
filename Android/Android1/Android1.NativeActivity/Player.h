@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <string>
 
 class Camera;
 class Stage;
@@ -124,6 +125,9 @@ private:
 
 	// ステータス
 	STATES state;
+
+	// モード
+	std::string mode;
 
 	// 移動向き
 	DIR dir;
