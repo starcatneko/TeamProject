@@ -124,10 +124,12 @@
     <Content Include="assets\back2.png" />
     <Content Include="assets\back3.png" />
     <Content Include="assets\back4.png" />
+    <Content Include="assets\Dwait.png" />
+    <Content Include="assets\Dwalk.png" />
     <Content Include="assets\flick.png" />
     <Content Include="assets\hp.png" />
-    <Content Include="assets\player_sample.png" />
-    <Content Include="assets\sample.png" />
+    <Content Include="assets\Nwait.png" />
+    <Content Include="assets\Nwalk.png" />
     <Content Include="assets\yazirusi.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">

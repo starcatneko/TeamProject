@@ -5,10 +5,18 @@
 #include "Stage.h"
 #include "DxLib.h"
 
+// 体力最大値
+#define HP_MAX 5
+
 // 待機アニメーション関係
 #define WAIT_ANIM_CNT 16
 #define WAIT_ANIM_X 4
 #define WAIT_ANIM_Y 4
+
+// 移動アニメーション関係
+#define WALK_ANIM_CNT 32
+#define WALK_ANIM_X 4
+#define WALK_ANIM_Y 8
 
 // モードの種類
 /* wait, walk, attack, damage, die*/
@@ -17,7 +25,7 @@
 const int nock = 30;
 
 // アニメーション速度
-const int animTime = 5;
+std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1} };
 
 // 無敵時間
 const int invincible = 10;
@@ -29,11 +37,16 @@ const Pos hpSize = { 128,128 };
 const int large = 1;
 
 // コンストラクタ
-Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
+Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam(cam), st(st), pos(pos)
 {
 	Reset();
 
 	normal["wait"] = LoadMane::Get()->Load("Nwait.png");
+	normal["walk"] = LoadMane::Get()->Load("Nwalk.png");
+
+	pinch["wait"] = LoadMane::Get()->Load("Dwait.png");
+	pinch["walk"] = LoadMane::Get()->Load("Dwalk.png");
+
 	himage = LoadMane::Get()->Load("hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
@@ -43,7 +56,8 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	mode = "wait";
 	dir = DIR_UP;
 	old_dir = dir;
-	hp = 5;
+	reverse = false;
+	hp = HP_MAX;
 	power = 0;
 	speed = 5;
 	die = false;
@@ -65,27 +79,55 @@ Player::~Player()
 // 描画
 void Player::Draw(void)
 {
+	DIR tmp = (dir == DIR_NON) ? old_dir : dir;
+
 	if (m_flam % 2 != 0)
 	{
-		if (state != ST_DIE)
+		if (hp >= HP_MAX / 2)
 		{
-			DrawRectRotaGraph2(
-				lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-				anim[mode][index].pos.x, anim[mode][index].pos.y,
-				anim[mode][index].size.x, anim[mode][index].size.y,
-				anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-				(double)large, 0.0, normal[mode], true, false, false);
+			if (state != ST_DIE)
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim[mode][tmp][index].size.x * large) / 2, lpos.y + (anim[mode][tmp][index].size.y * large) / 2,
+					anim[mode][tmp][index].pos.x, anim[mode][tmp][index].pos.y,
+					anim[mode][tmp][index].size.x, anim[mode][tmp][index].size.y,
+					anim[mode][tmp][index].size.x / 2, anim[mode][tmp][index].size.y / 2,
+					(double)large, 0.0, normal[mode], true, reverse, false);
+			}
+			else
+			{
+				static int x = 0;
+				DrawRectRotaGraph2(
+					lpos.x + (anim[mode][tmp][index].size.x * large) / 2, lpos.y + (anim[mode][tmp][index].size.y * large) / 2,
+					anim[mode][tmp][index].pos.x + x, anim[mode][tmp][index].pos.y,
+					anim[mode][tmp][index].size.x - x, anim[mode][tmp][index].size.y,
+					(anim[mode][tmp][index].size.x - x) / 2, anim[mode][tmp][index].size.y / 2,
+					(double)large, 0.0, normal[mode], true, reverse, false);
+				x += 5;
+			}
 		}
 		else
 		{
-			static int x = 0;
-			DrawRectRotaGraph2(
-				lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-				anim[mode][index].pos.x + x, anim[mode][index].pos.y,
-				anim[mode][index].size.x - x, anim[mode][index].size.y,
-				(anim[mode][index].size.x - x) / 2, anim[mode][index].size.y / 2,
-				(double)large, 0.0, normal[mode], true, false, false);
-			x += 5;
+			if (state != ST_DIE)
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim[mode][tmp][index].size.x * large) / 2, lpos.y + (anim[mode][tmp][index].size.y * large) / 2,
+					anim[mode][tmp][index].pos.x, anim[mode][tmp][index].pos.y,
+					anim[mode][tmp][index].size.x, anim[mode][tmp][index].size.y,
+					anim[mode][tmp][index].size.x / 2, anim[mode][tmp][index].size.y / 2,
+					(double)large, 0.0, pinch[mode], true, reverse, false);
+			}
+			else
+			{
+				static int x = 0;
+				DrawRectRotaGraph2(
+					lpos.x + (anim[mode][tmp][index].size.x * large) / 2, lpos.y + (anim[mode][tmp][index].size.y * large) / 2,
+					anim[mode][tmp][index].pos.x + x, anim[mode][tmp][index].pos.y,
+					anim[mode][tmp][index].size.x - x, anim[mode][tmp][index].size.y,
+					(anim[mode][tmp][index].size.x - x) / 2, anim[mode][tmp][index].size.y / 2,
+					(double)large, 0.0, pinch[mode], true, reverse, false);
+				x += 5;
+			}
 		}
 	}
 
@@ -132,28 +174,41 @@ void Player::Draw(void)
 }
 
 // アニメーション管理
-void Player::Animator(int flam)
+void Player::Animator(DIR dir, int flam)
 {
 	++this->flam;
 	if (this->flam > flam)
 	{
-		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
+		index = ((unsigned)(index + 1) < anim[mode][dir].size()) ? ++index : 0;
 		this->flam = 0;
 	}
 }
 
 // アニメーションのセット
-void Player::SetAnim(std::string mode, Pos pos, Pos size)
+void Player::SetAnim(std::string mode, DIR dir, Pos pos, Pos size)
 {
-	anim[mode].push_back({pos, size});
+	anim[mode][dir].push_back({pos, size});
 }
 
 // アニメーションのセット
 void Player::AnimInit(void)
 {
+	//待機
 	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
 	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", DIR_UP,    { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", DIR_RIGHT, { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", DIR_LEFT,  { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", DIR_DOWN,  { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+	}
+
+	//歩き
+	for (int i = 0; i < WALK_ANIM_CNT; ++i)
+	{
+		SetAnim("walk", DIR_UP,    { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
+		SetAnim("walk", DIR_RIGHT, { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
+		SetAnim("walk", DIR_LEFT,  { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
+		SetAnim("walk", DIR_DOWN,  { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
 }
 
@@ -215,6 +270,11 @@ void Player::Walk(void)
 
 		if (dir == DIR_RIGHT || dir == DIR_UP || dir == DIR_DOWN)
 		{
+			if (dir == DIR_RIGHT && reverse != false)
+			{
+				reverse = false;
+			}
+
 			pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 			{
@@ -227,6 +287,11 @@ void Player::Walk(void)
 		}
 		else if (dir == DIR_LEFT || dir == DIR_UP || dir == DIR_DOWN)
 		{
+			if (dir == DIR_LEFT && reverse != true)
+			{
+				reverse = true;
+			}
+
 			pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).sin * speed) : 0;
 			if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 			{
@@ -251,7 +316,7 @@ void Player::Attack(void)
 	dir = (dir == DIR_NON) ? old_dir : dir;
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
 		SetState(ST_NUETRAL);
 		SetMode("wait");
@@ -307,7 +372,7 @@ void Player::Damage(void)
 		}
 
 		//アニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
+		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 		{
 			SetState(ST_NUETRAL);
 			SetMode("wait");
@@ -326,7 +391,7 @@ void Player::Die(void)
 
 	dir = (dir == DIR_NON) ? old_dir : dir;
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
 		die = true;
 	}
@@ -337,7 +402,8 @@ void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
 
-	Animator(animTime);
+	DIR tmp = (dir == DIR_NON) ? old_dir : dir;
+	Animator(tmp, animTime[mode]);
 
 	if (state == ST_DAMAGE)
 	{
@@ -356,6 +422,7 @@ void Player::UpData(void)
 void Player::Reset(void)
 {
 	normal.clear();
+	pinch.clear();
 	anim.clear();
 	rect.clear();
 }
