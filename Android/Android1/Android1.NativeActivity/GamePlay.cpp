@@ -186,6 +186,12 @@ void GamePlay::Start(void)
 	fa->UpData();
 	ItemUpData();
 
+	//ゲームオーバー移行
+	if (pl->GetDie() == true)
+	{
+		Game::Get().ChangeScene(new Over());
+	}
+
 
 	if (pl->GetPower() <= 0)
 	{
