@@ -61,6 +61,11 @@ public:
 	// 状態のセット
 	void SetState(STATES state);
 
+	// モードの取得
+	std::string GetMode(void);
+	// モードのセット
+	void SetMode(std::string mode);
+
 	// 死亡フラグの取得
 	bool GetDie(void);
 
@@ -72,10 +77,10 @@ private:
 	void Animator(DIR dir, int flam);
 
 	// アニメーションのセット
-	void SetAnim(STATES state, DIR dir, Box box);
+	void SetAnim(std::string mode, DIR dir, Box box);
 
 	// あたり矩形のセット
-	void SetRect(STATES state, DIR dir, int flam, Box box);
+	void SetRect(std::string mode, DIR dir, int flam, Box box);
 
 	// 待機時の処理
 	void Nuetral(void);
@@ -102,8 +107,11 @@ private:
 	// ステージクラス
 	std::weak_ptr<Stage>st;
 
-	// 画像データ
-	int image;
+	// ノーマル画像データ
+	int normal;
+
+	// ピンチ画像データ
+	int pinch;
 
 	// 体力画像データ
 	int himage;
@@ -157,10 +165,10 @@ private:
 	int m_flam;
 
 	// アニメーション
-	std::map<STATES, std::map<DIR, std::vector<Box>>>anim;
+	std::map<std::string, std::map<DIR, std::vector<Box>>>anim;
 
 	// あたり矩形
-	std::map<STATES, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
+	std::map<std::string, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
 
 	// 関数ポインタ
 	void (Player::*func)(void);

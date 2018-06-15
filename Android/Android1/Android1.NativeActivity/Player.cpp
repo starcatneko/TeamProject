@@ -5,6 +5,9 @@
 #include "Stage.h"
 #include "DxLib.h"
 
+// モードの種類
+/* wait, walk, attack, damage, die*/
+
 // ノックバック
 const int nock = 30;
 
@@ -20,13 +23,14 @@ const Pos hpSize = { 128,128 };
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
 {
-	image = LoadMane::Get()->Load("player_sample.png");
+	normal = LoadMane::Get()->Load("player_sample.png");
 	himage = LoadMane::Get()->Load("hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 	target = lpos;
 	state = ST_NUETRAL;
+	mode = "wait";
 	dir = DIR_UP;
 	old_dir = dir;
 	hp = 5;
@@ -40,36 +44,36 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	Reset();
 
 	//待機
-	anim[ST_NUETRAL][DIR_DOWN].push_back({ {48, 0}, {48, 48} });
-	anim[ST_NUETRAL][DIR_LEFT].push_back({ 48, 48, 48, 48 });
-	anim[ST_NUETRAL][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
-	anim[ST_NUETRAL][DIR_UP].push_back({ 48, 48 * 3, 48, 48 });
+	anim["wait"][DIR_DOWN].push_back({ {48, 0}, {48, 48} });
+	anim["wait"][DIR_LEFT].push_back({ 48, 48, 48, 48 });
+	anim["wait"][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
+	anim["wait"][DIR_UP].push_back({ 48, 48 * 3, 48, 48 });
 
 	for (int i = 0; i < 3; ++i)
 	{
 		//歩き
-		anim[ST_WALK][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim[ST_WALK][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim[ST_WALK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_WALK][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
+		anim["walk"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim["walk"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
+		anim["walk"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim["walk"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//攻撃
-		anim[ST_ATTACK][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim[ST_ATTACK][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim[ST_ATTACK][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_ATTACK][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
+		anim["attack"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim["attack"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
+		anim["attack"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim["attack"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//ダメージ
-		anim[ST_DAMAGE][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim[ST_DAMAGE][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim[ST_DAMAGE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_DAMAGE][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
+		anim["damage"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim["damage"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
+		anim["damage"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim["damage"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 
 		//死亡
-		anim[ST_DIE][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim[ST_DIE][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim[ST_DIE][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim[ST_DIE][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
+		anim["die"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
+		anim["die"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
+		anim["die"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
+		anim["die"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
 	}
 	func = &Player::Nuetral;
 }
@@ -91,21 +95,21 @@ void Player::Draw(void)
 		if (state != ST_DIE)
 		{
 			DrawRectRotaGraph2(
-				lpos.x + (anim[state][tmp][index].size.x * 5) / 2, lpos.y + (anim[state][tmp][index].size.y * 5) / 2,
-				anim[state][tmp][index].pos.x, anim[state][tmp][index].pos.y,
-				anim[state][tmp][index].size.x, anim[state][tmp][index].size.y,
-				anim[state][tmp][index].size.x / 2, anim[state][tmp][index].size.y / 2,
-				5.0, 0.0, image, true, false, false);
+				lpos.x + (anim[mode][tmp][index].size.x * 5) / 2, lpos.y + (anim[mode][tmp][index].size.y * 5) / 2,
+				anim[mode][tmp][index].pos.x, anim[mode][tmp][index].pos.y,
+				anim[mode][tmp][index].size.x, anim[mode][tmp][index].size.y,
+				anim[mode][tmp][index].size.x / 2, anim[mode][tmp][index].size.y / 2,
+				5.0, 0.0, normal, true, false, false);
 		}
 		else
 		{
 			static int x = 0;
 			DrawRectRotaGraph2(
-				lpos.x + (anim[state][tmp][index].size.x * 5) / 2, lpos.y + (anim[state][tmp][index].size.y * 5) / 2,
-				anim[state][tmp][index].pos.x + x, anim[state][tmp][index].pos.y,
-				anim[state][tmp][index].size.x - x, anim[state][tmp][index].size.y,
-				(anim[state][tmp][index].size.x - x) / 2, anim[state][tmp][index].size.y / 2,
-				5.0, 0.0, image, true, false, false);
+				lpos.x + (anim[mode][tmp][index].size.x * 5) / 2, lpos.y + (anim[mode][tmp][index].size.y * 5) / 2,
+				anim[mode][tmp][index].pos.x + x, anim[mode][tmp][index].pos.y,
+				anim[mode][tmp][index].size.x - x, anim[mode][tmp][index].size.y,
+				(anim[mode][tmp][index].size.x - x) / 2, anim[mode][tmp][index].size.y / 2,
+				5.0, 0.0, normal, true, false, false);
 			x += 5;
 		}
 	}
@@ -158,21 +162,21 @@ void Player::Animator(DIR dir, int flam)
 	++this->flam;
 	if (this->flam > flam)
 	{
-		index = ((unsigned)(index + 1) < anim[state][dir].size()) ? ++index : 0;
+		index = ((unsigned)(index + 1) < anim[mode][dir].size()) ? ++index : 0;
 		this->flam = 0;
 	}
 }
 
 // アニメーションのセット
-void Player::SetAnim(STATES state, DIR dir, Box box)
+void Player::SetAnim(std::string mode, DIR dir, Box box)
 {
-	anim[state][dir].push_back(box);
+	anim[mode][dir].push_back(box);
 }
 
 // あたり矩形のセット
-void Player::SetRect(STATES state, DIR dir, int flam, Box box)
+void Player::SetRect(std::string mode, DIR dir, int flam, Box box)
 {
-	rect[state][dir][flam].push_back(box);
+	rect[mode][dir][flam].push_back(box);
 }
 
 // 待機時の処理
@@ -187,12 +191,14 @@ void Player::Nuetral(void)
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
 		SetState(ST_ATTACK);
+		SetMode("attack");
 		func = &Player::Attack;
 	}
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
 	{
 		SetState(ST_WALK);
+		SetMode("walk");
 		func = &Player::Walk;
 	}
 
@@ -210,6 +216,7 @@ void Player::Walk(void)
 	if (Touch::Get()->Check(SWIPE, tmp) != true)
 	{
 		SetState(ST_NUETRAL);
+		SetMode("wait");
 		func = &Player::Nuetral;
 		return;
 	}
@@ -260,9 +267,10 @@ void Player::Attack(void)
 	dir = (dir == DIR_NON) ? old_dir : dir;
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
 	{
 		SetState(ST_NUETRAL);
+		SetMode("wait");
 		func = &Player::Nuetral;
 	}
 }
@@ -278,6 +286,7 @@ void Player::Damage(void)
 	if (hp <= 0)
 	{
 		SetState(ST_DIE);
+		SetMode("die");
 		func = &Player::Die;
 	}
 	else
@@ -314,9 +323,10 @@ void Player::Damage(void)
 		}
 
 		//アニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+		if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
 		{
 			SetState(ST_NUETRAL);
+			SetMode("wait");
 			func = &Player::Nuetral;
 		}
 	}
@@ -332,7 +342,7 @@ void Player::Die(void)
 
 	dir = (dir == DIR_NON) ? old_dir : dir;
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[state][dir].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
 	{
 		die = true;
 	}
@@ -464,10 +474,23 @@ void Player::SetState(STATES state)
 	index = 0;
 	if (this->state == ST_DAMAGE)
 	{
+		SetMode("damage");
 		--hp;
 		target = lpos;
 		m_flam = 0;
 	}
+}
+
+// モードの取得
+std::string Player::GetMode(void)
+{
+	return mode;
+}
+
+// モードのセット
+void Player::SetMode(std::string mode)
+{
+	this->mode = mode;
 }
 
 // 死亡フラグの取得
