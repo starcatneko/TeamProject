@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "GamePlay.h"
 #include "DxLib.h"
+#include "Debug.h"
 
 // 矢印のサイズ
 const Pos arrowSize = { 122, 154 };
@@ -46,9 +47,20 @@ void Title::Draw(void)
 		flickSize.x / 2, flickSize.y / 2,
 		(double)large[flick], 0.0, flick, true, false, false);
 
-
-
 	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
+
+	if (Debug::Get().drawclear == false)
+	{
+			DrawRectRotaGraph2(GetRand(WINDOW_X),
+				box.pos.y - 10 + (GetRand(200)),
+		0, 0, flickSize.x, flickSize.y,
+		flickSize.x / 2, flickSize.y / 2,
+		(double)large[flick], 0.0, flick, true, false, false);
+
+		//DrawCircle(GetRand(WINDOW_X), box.pos.y - 10 + (GetRand(200)), 100, 0xffffff, true, true);
+	}
+
+
 }
 
 // 処理
@@ -72,6 +84,7 @@ void Title::NotStart(void)
 	if(Touch::Get()->Check(FLICK,dir) == true
 		&& dir == DIR_UP)
 	{
+		//Debug::Get().drawclear = false;
 		func = &Title::Start;
 	}
 }

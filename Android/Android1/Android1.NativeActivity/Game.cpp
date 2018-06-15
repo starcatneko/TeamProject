@@ -8,6 +8,7 @@
 #include "Title.h"
 #include "Typedef.h"
 #include "DxLib.h"
+#include "Debug.h"
 
 // コンストラクタ
 Game::Game()
@@ -57,6 +58,7 @@ void Game::Create(void)
 	ItemMane::Create();
 	EnemyMane::Create();
 	Score::Create();
+	Debug::Create();
 }
 
 // シーンの移行
@@ -69,7 +71,10 @@ void Game::ChangeScene(Scene * s)
 void Game::Draw(void)
 {
 	//画面消去
-	ClsDrawScreen();
+	if (Debug::Get().drawclear)
+	{
+		ClsDrawScreen();
+	}
 
 	scene->Draw();
 	Touch::Get()->Draw();

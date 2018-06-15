@@ -1,11 +1,24 @@
 #include "Debug.h"
 #include "Typedef.h"
 #include "DxLib.h"
-\
 
+Debug* Debug::instance = nullptr;
+
+void Debug::Create()
+{
+	if(instance ==nullptr)
+		instance = new Debug;
+}
+
+void Debug::Destroy()
+{
+	if (instance != nullptr)
+		delete instance;
+}
 
 Debug::Debug()
 {
+	drawclear = true;
 }
 
 
