@@ -58,12 +58,7 @@ void GamePlay::Draw(void)
 	back->Draw();
 	ground->Draw();
 	ItemDraw();
-<<<<<<< HEAD
-	du->Draw();
-	//fa->Draw();
-=======
 	EnemyDraw();
->>>>>>> Sueyoshiii
 	pl->Draw();
 	cam->Draw();
 	DrawBoxx();

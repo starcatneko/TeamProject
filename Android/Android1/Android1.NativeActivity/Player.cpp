@@ -79,6 +79,25 @@ Player::~Player()
 	Reset();
 }
 
+// ラスタースクロール
+void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansion, float rotation, float period, float vibration, bool trans, bool xturn, bool yturn)
+{
+	static float  correction = 0.0f;
+
+	for (int i = 0; i < size.y; ++i)
+	{
+		DrawRectRotaGraph2(
+			(int)((float)((pos.x + (size.x * expansion) / 2) - size.x / (2 * 20)) + cosf((i + correction) / 180.0f * PI * period) * vibration), (int)(pos.y + (size.y * expansion) / 2) - (size.y / (2 * 20)) + i,
+			rect.x, rect.y + i,
+			size.x, 1,
+			(size.x / 2), (size.y / 2),
+			(double)expansion, (double)rotation,
+			image, trans, xturn, yturn);
+	}
+
+	++correction;
+}
+
 // 通常描画
 void Player::NormalDraw(void)
 {
@@ -96,6 +115,7 @@ void Player::NormalDraw(void)
 			anim[mode][index].size.x, anim[mode][index].size.y,
 			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
 			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
+		
 	}
 	else
 	{
