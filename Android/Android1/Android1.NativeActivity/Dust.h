@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Enemy.h"
-
+#include "Debug.h"
 class Dust :
 	public Enemy
 {
