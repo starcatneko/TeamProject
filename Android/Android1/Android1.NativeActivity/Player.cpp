@@ -5,6 +5,11 @@
 #include "Stage.h"
 #include "DxLib.h"
 
+// 待機アニメーション関係
+#define WAIT_ANIM_CNT 16
+#define WAIT_ANIM_X 4
+#define WAIT_ANIM_Y 4
+
 // モードの種類
 /* wait, walk, attack, damage, die*/
 
@@ -20,10 +25,15 @@ const int invincible = 10;
 // HP画像のサイズ
 const Pos hpSize = { 128,128 };
 
+// プレイヤーの拡大率
+const int large = 1;
+
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : pos(pos), cam(cam), st(st)
 {
-	normal = LoadMane::Get()->Load("player_sample.png");
+	Reset();
+
+	normal["wait"] = LoadMane::Get()->Load("Nwait.png");
 	himage = LoadMane::Get()->Load("hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
@@ -41,40 +51,8 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) : po
 	index = 0;
 	m_flam = -1;
 
-	Reset();
+	AnimInit();
 
-	//待機
-	anim["wait"][DIR_DOWN].push_back({ {48, 0}, {48, 48} });
-	anim["wait"][DIR_LEFT].push_back({ 48, 48, 48, 48 });
-	anim["wait"][DIR_RIGHT].push_back({ 48, 48 * 2, 48, 48 });
-	anim["wait"][DIR_UP].push_back({ 48, 48 * 3, 48, 48 });
-
-	for (int i = 0; i < 3; ++i)
-	{
-		//歩き
-		anim["walk"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim["walk"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim["walk"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim["walk"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
-
-		//攻撃
-		anim["attack"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim["attack"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim["attack"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim["attack"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
-
-		//ダメージ
-		anim["damage"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim["damage"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim["damage"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim["damage"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
-
-		//死亡
-		anim["die"][DIR_DOWN].push_back({ 0 + 48 * i, 0, 48, 48 });
-		anim["die"][DIR_LEFT].push_back({ 0 + 48 * i, 48, 48, 48 });
-		anim["die"][DIR_RIGHT].push_back({ 0 + 48 * i, 48 * 2, 48, 48 });
-		anim["die"][DIR_UP].push_back({ 0 + 48 * i, 48 * 3, 48, 48 });
-	}
 	func = &Player::Nuetral;
 }
 
@@ -87,29 +65,26 @@ Player::~Player()
 // 描画
 void Player::Draw(void)
 {
-	DIR tmp;
-	tmp = (dir == DIR_NON) ? old_dir : dir;
-
 	if (m_flam % 2 != 0)
 	{
 		if (state != ST_DIE)
 		{
 			DrawRectRotaGraph2(
-				lpos.x + (anim[mode][tmp][index].size.x * 5) / 2, lpos.y + (anim[mode][tmp][index].size.y * 5) / 2,
-				anim[mode][tmp][index].pos.x, anim[mode][tmp][index].pos.y,
-				anim[mode][tmp][index].size.x, anim[mode][tmp][index].size.y,
-				anim[mode][tmp][index].size.x / 2, anim[mode][tmp][index].size.y / 2,
-				5.0, 0.0, normal, true, false, false);
+				lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+				anim[mode][index].pos.x, anim[mode][index].pos.y,
+				anim[mode][index].size.x, anim[mode][index].size.y,
+				anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
+				(double)large, 0.0, normal[mode], true, false, false);
 		}
 		else
 		{
 			static int x = 0;
 			DrawRectRotaGraph2(
-				lpos.x + (anim[mode][tmp][index].size.x * 5) / 2, lpos.y + (anim[mode][tmp][index].size.y * 5) / 2,
-				anim[mode][tmp][index].pos.x + x, anim[mode][tmp][index].pos.y,
-				anim[mode][tmp][index].size.x - x, anim[mode][tmp][index].size.y,
-				(anim[mode][tmp][index].size.x - x) / 2, anim[mode][tmp][index].size.y / 2,
-				5.0, 0.0, normal, true, false, false);
+				lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+				anim[mode][index].pos.x + x, anim[mode][index].pos.y,
+				anim[mode][index].size.x - x, anim[mode][index].size.y,
+				(anim[mode][index].size.x - x) / 2, anim[mode][index].size.y / 2,
+				(double)large, 0.0, normal[mode], true, false, false);
 			x += 5;
 		}
 	}
@@ -157,20 +132,29 @@ void Player::Draw(void)
 }
 
 // アニメーション管理
-void Player::Animator(DIR dir, int flam)
+void Player::Animator(int flam)
 {
 	++this->flam;
 	if (this->flam > flam)
 	{
-		index = ((unsigned)(index + 1) < anim[mode][dir].size()) ? ++index : 0;
+		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
 		this->flam = 0;
 	}
 }
 
 // アニメーションのセット
-void Player::SetAnim(std::string mode, DIR dir, Box box)
+void Player::SetAnim(std::string mode, Pos pos, Pos size)
 {
-	anim[mode][dir].push_back(box);
+	anim[mode].push_back({pos, size});
+}
+
+// アニメーションのセット
+void Player::AnimInit(void)
+{
+	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
+	{
+		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+	}
 }
 
 // あたり矩形のセット
@@ -267,7 +251,7 @@ void Player::Attack(void)
 	dir = (dir == DIR_NON) ? old_dir : dir;
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
 	{
 		SetState(ST_NUETRAL);
 		SetMode("wait");
@@ -323,7 +307,7 @@ void Player::Damage(void)
 		}
 
 		//アニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
+		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
 		{
 			SetState(ST_NUETRAL);
 			SetMode("wait");
@@ -342,7 +326,7 @@ void Player::Die(void)
 
 	dir = (dir == DIR_NON) ? old_dir : dir;
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode][dir].size() && flam >= animTime)
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime)
 	{
 		die = true;
 	}
@@ -353,7 +337,7 @@ void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
 
-	Animator(dir, animTime);
+	Animator(animTime);
 
 	if (state == ST_DAMAGE)
 	{
@@ -371,6 +355,7 @@ void Player::UpData(void)
 // リセット
 void Player::Reset(void)
 {
+	normal.clear();
 	anim.clear();
 	rect.clear();
 }
