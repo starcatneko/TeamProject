@@ -137,3 +137,12 @@ struct Rect
 	//短形タイプ
 	RectType type;
 };
+
+// プレイヤーのタイプ
+enum class PlType
+{
+	//通常
+	normal,
+	//ピンチ
+	pinch
+};

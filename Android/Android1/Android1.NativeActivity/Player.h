@@ -76,16 +76,21 @@ public:
 	std::vector<Rect> GetRect(void);
 
 private:
+	// 通常描画
+	void NormalDraw(void);
+	// ピンチ描画
+	void PinchDraw(void);
+
 	// アニメーション管理
-	void Animator(DIR dir, int flam);
+	void Animator(int flam);
 
 	// アニメーションのセット
-	void SetAnim(std::string mode, DIR dir, Pos pos, Pos size);
+	void SetAnim(std::string mode, Pos pos, Pos size);
 	// アニメーションのセット
 	void AnimInit(void);
 
 	// あたり矩形のセット
-	void SetRect(std::string mode, int index, DIR dir, int flam, Pos offset, Pos size, RectType type);
+	void SetRect(PlType ptype, std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype);
 	// あたり矩形のセット
 	void RectInit(void);
 
@@ -114,11 +119,8 @@ private:
 	// ステージクラス
 	std::weak_ptr<Stage>st;
 
-	// ノーマル画像データ
-	std::map<std::string, int>normal;
-
-	// ピンチ画像データ
-	std::map<std::string, int>pinch;
+	// 画像データ
+	std::map<PlType, std::map<std::string, int>>image;
 
 	// 体力画像データ
 	int himage;
@@ -137,6 +139,9 @@ private:
 
 	// ターゲット座標
 	Pos target;
+
+	// タイプ
+	PlType type;
 
 	// ステータス
 	STATES state;
@@ -174,12 +179,16 @@ private:
 	// 無敵フレーム
 	int m_flam;
 
+
 	// アニメーション
-	std::map<std::string, std::map<DIR, std::vector<Box>>>anim;
+	std::map<std::string, std::vector<Box>>anim;
 
 	// あたり矩形
-	std::map<std::string, std::map<int, std::map<DIR, std::map<int, std::vector<Rect>>>>>rect;
+	std::map<PlType, std::map<std::string, std::map<int, std::map<int, std::vector<Rect>>>>>rect;
 
-	// 関数ポインタ
+	// 関数ポインタ(描画)
+	void (Player::*draw)(void);
+
+	// 関数ポインタ(処理)
 	void (Player::*func)(void);
 };

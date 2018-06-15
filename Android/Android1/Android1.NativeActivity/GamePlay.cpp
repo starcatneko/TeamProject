@@ -58,7 +58,7 @@ void GamePlay::Draw(void)
 	ground->Draw();
 	ItemDraw();
 	du->Draw();
-	//fa->Draw();
+	fa->Draw();
 	pl->Draw();
 	cam->Draw();
 	DrawBoxx();
