@@ -74,10 +74,12 @@ public:
 
 private:
 	// アニメーション管理
-	void Animator(DIR dir, int flam);
+	void Animator(int flam);
 
 	// アニメーションのセット
-	void SetAnim(std::string mode, DIR dir, Box box);
+	void SetAnim(std::string mode, Pos pos, Pos size);
+	// アニメーションのセット
+	void AnimInit(void);
 
 	// あたり矩形のセット
 	void SetRect(std::string mode, DIR dir, int flam, Box box);
@@ -108,7 +110,7 @@ private:
 	std::weak_ptr<Stage>st;
 
 	// ノーマル画像データ
-	int normal;
+	std::map<std::string, int>normal;
 
 	// ピンチ画像データ
 	int pinch;
@@ -165,7 +167,7 @@ private:
 	int m_flam;
 
 	// アニメーション
-	std::map<std::string, std::map<DIR, std::vector<Box>>>anim;
+	std::map<std::string, std::vector<Box>>anim;
 
 	// あたり矩形
 	std::map<std::string, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
