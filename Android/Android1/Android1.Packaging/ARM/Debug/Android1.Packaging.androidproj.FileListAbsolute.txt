@@ -39,5 +39,4 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\apple.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\flick.png
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\hp.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\yazirusi.png

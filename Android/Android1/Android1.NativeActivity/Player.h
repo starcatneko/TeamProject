@@ -74,10 +74,10 @@ public:
 
 private:
 	// アニメーション管理
-	void Animator(int flam);
+	void Animator(DIR dir, int flam);
 
 	// アニメーションのセット
-	void SetAnim(std::string mode, Pos pos, Pos size);
+	void SetAnim(std::string mode, DIR dir, Pos pos, Pos size);
 	// アニメーションのセット
 	void AnimInit(void);
 
@@ -113,7 +113,7 @@ private:
 	std::map<std::string, int>normal;
 
 	// ピンチ画像データ
-	int pinch;
+	std::map<std::string, int>pinch;
 
 	// 体力画像データ
 	int himage;
@@ -145,6 +145,9 @@ private:
 	// 前の移動向き
 	DIR old_dir;
 
+	// 反転フラグ
+	bool reverse;
+
 	// 体力
 	int hp;
 
@@ -167,7 +170,7 @@ private:
 	int m_flam;
 
 	// アニメーション
-	std::map<std::string, std::vector<Box>>anim;
+	std::map<std::string, std::map<DIR, std::vector<Box>>>anim;
 
 	// あたり矩形
 	std::map<std::string, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
