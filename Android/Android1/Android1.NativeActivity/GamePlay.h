@@ -49,6 +49,11 @@ private:
 	// 読み込み
 	void Load(void);
 
+	//敵の描画
+	void EnemyDraw(void);
+	//敵の処理
+	void EnemyUpdate(void);
+
 	// アイテムの描画
 	void ItemDraw(void);
 	// アイテムの処理

@@ -19,6 +19,7 @@ GamePlay::GamePlay() : speed(60), alpha(0), blend(false)
 {
 	Create();
 	item.clear();
+	enemy.clear();
 	box = { { 0, 0 },{ WINDOW_X, WINDOW_Y } };
 	memset(read, 0, sizeof(read));
 	func = &GamePlay::NotStart;
@@ -57,8 +58,7 @@ void GamePlay::Draw(void)
 	back->Draw();
 	ground->Draw();
 	ItemDraw();
-	du->Draw();
-	fa->Draw();
+	EnemyDraw();
 	pl->Draw();
 	cam->Draw();
 	DrawBoxx();
@@ -78,12 +78,18 @@ void GamePlay::Load(void)
 	int y = 0;
 	//敵
 	auto s_enemy = st->GetEnemy(x, (x + WINDOW_X));
-
 	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
 		if (s_enemy[i] == 0)
 		{
-			Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+			Pos tmp = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
+		}
+		else if (s_enemy[i] == 1)
+		{
+			Pos tmp = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+
+			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
 		}
 		++y;
 		if (y >= st->GetStageSize().y / st->GetChipEneSize().y)
@@ -108,6 +114,30 @@ void GamePlay::Load(void)
 		{
 			++read[1];
 			y = 0;
+		}
+	}
+}
+
+void GamePlay::EnemyDraw(void)
+{
+	for (auto itr = enemy.begin(); itr != enemy.end(); itr++)
+	{
+		(*itr)->Draw();
+	}
+}
+
+void GamePlay::EnemyUpdate(void)
+{
+	for (auto itr = enemy.begin(); itr != enemy.end();)
+	{
+		(*itr)->UpData();
+		if ((*itr)->GetDie() == true)
+		{
+			itr = enemy.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }
@@ -182,8 +212,7 @@ void GamePlay::Start(void)
 
 	Load();
 	pl->UpData();
-	du->UpData();
-	fa->UpData();
+	EnemyUpdate();
 	ItemUpData();
 
 	//ゲームオーバー移行

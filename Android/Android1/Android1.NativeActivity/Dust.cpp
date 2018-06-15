@@ -179,7 +179,7 @@ void Dust::Damage(void)
 		state = ST_DIE;
 		func = &Dust::Die;
 	}
-	else
+	else if (pl.lock()->GetState() != ST_ATTACK)
 	{
 		state = ST_NUETRAL;
 		func = &Dust::Neutral;
