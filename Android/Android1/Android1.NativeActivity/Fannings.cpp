@@ -30,8 +30,8 @@ Fannings::~Fannings()
 //描画
 void Fannings::Draw(void)
 {
-	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, color, true);
-	DrawBox(pos.x, pos.y, pos.x + size.x, pos.y + size.y, 0x0000ff, false);
+	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, color, true);
+	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0x0000ff, false);
 
 	switch (state)
 	{
