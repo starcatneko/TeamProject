@@ -66,6 +66,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	m_flam = -1;
 
 	AnimInit();
+	RectInit();
 
 	func = &Player::Nuetral;
 }
@@ -142,8 +143,13 @@ void Player::Draw(void)
 	}
 
 #ifndef _DEBUG
+	auto p = GetRect();
+
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 255, 0), true);
+	for (auto& r : p)
+	{
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, GetColor(0, 255, 0), true);
+	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
@@ -213,9 +219,47 @@ void Player::AnimInit(void)
 }
 
 // あたり矩形のセット
-void Player::SetRect(std::string mode, DIR dir, int flam, Box box)
+void Player::SetRect(std::string mode, int index, DIR dir, int flam, Pos offset, Pos size, RectType type)
 {
-	rect[mode][dir][flam].push_back(box);
+	rect[mode][index][dir][flam].push_back({ offset, size, type });
+}
+
+// あたり矩形のセット
+void Player::RectInit(void)
+{
+	//待機
+	for (unsigned int in = 0; in < anim["wait"][DIR_UP].size(); ++in)
+	{
+		for (int i = 0; i < animTime["wait"]; ++i)
+		{
+			SetRect("wait", in, DIR_UP,    i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			SetRect("wait", in, DIR_RIGHT, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			SetRect("wait", in, DIR_LEFT,  i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			SetRect("wait", in, DIR_DOWN,  i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+		}
+	}
+
+	//移動
+	for (unsigned int in = 0; in < anim["walk"][DIR_UP].size(); ++in)
+	{
+		for (int i = 0; i < animTime["walk"]; ++i)
+		{
+			if (20 <= in && in <= 27)
+			{
+				SetRect("walk", in, DIR_UP,    i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_RIGHT, i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_LEFT,  i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_DOWN,  i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			}
+			else
+			{
+				SetRect("walk", in, DIR_UP,    i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_RIGHT, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_LEFT,  i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, DIR_DOWN,  i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			}
+		}
+	}
 }
 
 // 待機時の処理
@@ -401,6 +445,7 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
+	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
 	DIR tmp = (dir == DIR_NON) ? old_dir : dir;
 	Animator(tmp, animTime[mode]);
@@ -560,4 +605,28 @@ bool Player::CheckInvincible(void)
 	}
 
 	return false;
+}
+
+// あたり矩形の取得
+std::vector<Rect> Player::GetRect(void)
+{
+	DIR tmp = (dir == DIR_NON) ? old_dir : dir;
+	std::vector<Rect>box;
+
+	if (reverse == false)
+	{
+		for (auto& r : rect[mode][index][tmp][flam])
+		{
+			box.push_back({ { center.x + r.offset.x, center.y + r.offset.y }, r.size, r.type });
+		}
+	}
+	else
+	{
+		for (auto& r : rect[mode][index][tmp][flam])
+		{
+			box.push_back({ { center.x - r.offset.x - r.size.x, center.y + r.offset.y }, { r.size.x, r.size.y }, r.type });
+		}
+	}
+
+	return box;
 }

@@ -72,6 +72,9 @@ public:
 	// 無敵状態かの確認
 	bool CheckInvincible(void);
 
+	// あたり矩形の取得
+	std::vector<Rect> GetRect(void);
+
 private:
 	// アニメーション管理
 	void Animator(DIR dir, int flam);
@@ -82,7 +85,9 @@ private:
 	void AnimInit(void);
 
 	// あたり矩形のセット
-	void SetRect(std::string mode, DIR dir, int flam, Box box);
+	void SetRect(std::string mode, int index, DIR dir, int flam, Pos offset, Pos size, RectType type);
+	// あたり矩形のセット
+	void RectInit(void);
 
 	// 待機時の処理
 	void Nuetral(void);
@@ -173,7 +178,7 @@ private:
 	std::map<std::string, std::map<DIR, std::vector<Box>>>anim;
 
 	// あたり矩形
-	std::map<std::string, std::map<DIR, std::map<int, std::vector<Box>>>>rect;
+	std::map<std::string, std::map<int, std::map<DIR, std::map<int, std::vector<Rect>>>>>rect;
 
 	// 関数ポインタ
 	void (Player::*func)(void);
