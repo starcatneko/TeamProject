@@ -22,7 +22,7 @@ Title::Title() : speed(100)
 	large[flick] = 1;
 	pos[image] = { (WINDOW_X / 2) - (arrowSize.x * large[image]) / 2, (WINDOW_Y / 2) - (arrowSize.y * large[image]) / 2 };
 	pos[flick] = { (WINDOW_X / 2) - (flickSize.x * large[flick]) / 2, (WINDOW_Y / 2) - (flickSize.y * large[flick]) / 2 };
-	box = { {0, WINDOW_Y}, {WINDOW_X, WINDOW_Y} };
+	box = { { WINDOW_X, 0}, {WINDOW_X, WINDOW_Y} };
 	Score::Get()->Reset();
 	func = &Title::NotStart;
 }
@@ -80,7 +80,6 @@ void Title::NotStart(void)
 	if(Touch::Get()->Check(FLICK,dir) == true
 		&& dir == DIR_UP)
 	{
-		Debug::Get().drawclear = false;
 		func = &Title::Start;
 	}
 }
@@ -88,7 +87,9 @@ void Title::NotStart(void)
 // スタート
 void Title::Start(void)
 {
-	box.pos.y += speed;
+	Debug::Get().drawclear = false;
+
+	box.pos.y += WINDOW_Y/60;
 	if (box.pos.y >= WINDOW_Y)
 	{
 		box.pos.y = WINDOW_Y;

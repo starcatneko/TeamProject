@@ -45,7 +45,6 @@ void GamePlay::Create(void)
 void GamePlay::DrawBoxx(void)
 {
 	Debug::Get().Update();
-	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
@@ -55,6 +54,9 @@ void GamePlay::DrawBoxx(void)
 // 描画
 void GamePlay::Draw(void)
 {
+	//背景が無い時に分かりやすいように
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x222222, true);
+
 	back->Draw();
 	ground->Draw();
 	ItemDraw();
@@ -63,6 +65,7 @@ void GamePlay::Draw(void)
 	pl->Draw();
 	cam->Draw();
 	DrawBoxx();
+
 }
 
 // 処理
@@ -169,7 +172,7 @@ void GamePlay::Pinch(int i, int alpha)
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
-	box.pos.y -= speed;
+	box.pos.y -= WINDOW_Y/60;
 
 	if (box.pos.y <= -WINDOW_Y)
 	{
