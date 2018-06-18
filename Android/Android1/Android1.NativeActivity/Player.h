@@ -93,7 +93,7 @@ private:
 	void AnimInit(void);
 
 	// あたり矩形のセット
-	void SetRect(PlType ptype, std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype);
+	void SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype);
 	// あたり矩形のセット
 	void RectInit(void);
 
@@ -104,7 +104,8 @@ private:
 	void Walk(void);
 
 	// 攻撃時の処理
-	void Attack(void);
+	void Attack1(void);
+	void Attack2(void);
 
 	// ダメージ時の処理
 	void Damage(void);
@@ -182,12 +183,15 @@ private:
 	// 無敵フレーム
 	int m_flam;
 
+	// 攻撃2移行フラグ
+	bool attack2;
+
 
 	// アニメーション
 	std::map<std::string, std::vector<Box>>anim;
 
 	// あたり矩形
-	std::map<PlType, std::map<std::string, std::map<int, std::map<int, std::vector<Rect>>>>>rect;
+	std::map<PlType, std::map<std::string, std::map<int, std::vector<Rect>>>>rect;
 
 	// 関数ポインタ(描画)
 	void (Player::*draw)(void);

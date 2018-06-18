@@ -10,7 +10,7 @@ Camera.cpp(7,11): warning : unused variable 'offset' [-Wunused-const-variable]
             ^
   1 warning generated.
   Dust.cpp
-Dust.cpp(12,81): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+Dust.cpp(13,81): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
                                                                                          ^~~~
                                                                                          {   }
@@ -35,12 +35,7 @@ Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state'
                ^
   1 warning generated.
   Game.cpp
-  GameMane.cpp
   GamePlay.cpp
-GamePlay.cpp(86,8): warning : unused variable 'p' [-Wunused-variable]
-                          Pos p = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
-                              ^
-  1 warning generated.
   Ground.cpp
   Item.cpp
   ItemMane.cpp

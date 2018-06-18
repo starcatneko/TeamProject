@@ -208,7 +208,8 @@ void Dust::UpData(void)
 	std::vector<Rect>p = pl.lock()->GetRect();
 	for (unsigned int i = 0; i < p.size(); ++i)
 	{
-		if (CheckHit(lpos, size, p[i].offset, p[i].size) == true)
+		if (CheckHit(lpos, size, p[i].offset, p[i].size) == true
+			&& p[i].type == RectType::Attack)
 		{
 			color = (0xff00ff);
 			break;
