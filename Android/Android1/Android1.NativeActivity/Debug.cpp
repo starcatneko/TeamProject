@@ -21,14 +21,6 @@ void Debug::Destroy()
 Debug::Debug()
 {
 	drawclear = true;
-	image = LoadMane::Get()->Load("apple.png");
-	gage = LoadMane::Get()->Load("gage.png");
-	mask = LoadMane::Get()->Load("gage_mask3.png");
-	gage_red = LoadMane::Get()->Load("gage_red.png");
-	cnt = 0;
-	subscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
-	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
-
 }
 
 
@@ -65,29 +57,6 @@ void Debug::DrawParticle()
 
 void Debug::DrawGage()
 {
-
-	GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
-
-	// ï`âÊêÊïœçX
-	SetDrawScreen(subscreen);
-	ClearDrawScreen();
-
-	DrawGraph(0, 0, mask, true);
-	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
-	DrawGraph(-cnt%256, 60, gage_red, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-
-	// ï`âÊêÊÇó†âÊñ Ç…ïœçX
-	SetDrawScreen(DX_SCREEN_BACK);
-	ClearDrawScreen();
-	DrawGraph(0, 0, tempscreen, true);
-
-	DrawGraph(500, 0, gage, true);
-	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
-	DrawGraph(500, 0, subscreen,true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-
-
 
 }
 void Debug::Update()
@@ -177,7 +146,7 @@ Particle::~Particle()
 
 void Particle::Draw()
 {
-	DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/100, 0, Debug::Get().image, true, false, false);
+	//DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/100, 0, Debug::Get().image, true, false, false);
 	//DrawExtendGraph(box.pos.x, box.pos.y, box.pos.x + box.size.x * 4, box.pos.y+box.size.y*4,Debug::Get().image, true);
 	//DrawCircle(box.pos.x, box.pos.y, 128, 0xffff00, true, true);
 }

@@ -65,6 +65,7 @@ Player::~Player()
 // 描画
 void Player::Draw(void)
 {
+	
 	if (m_flam % 2 != 0)
 	{
 		if (state != ST_DIE)
@@ -98,7 +99,7 @@ void Player::Draw(void)
 			hpSize.x / 2, hpSize.y / 2,
 			0.6, 0.0, himage, true, false, false);
 	}
-
+	
 #ifndef _DEBUG
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, GetColor(0, 255, 0), true);

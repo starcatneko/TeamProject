@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Scene.h"
+#include "Interface.h"
 #include "Typedef.h"
 #include <memory>
 #include <vector>
@@ -38,6 +39,7 @@ public:
 
 private:
 	std::shared_ptr<Camera>cam;
+	std::shared_ptr<Interface>ui;
 	std::shared_ptr<Stage>st;
 	std::shared_ptr<BackGround>back;
 	std::shared_ptr<Ground>ground;

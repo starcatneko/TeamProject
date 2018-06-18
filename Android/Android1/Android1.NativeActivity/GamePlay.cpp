@@ -11,6 +11,7 @@
 #include "Dust.h"
 #include "Fannings.h"
 #include "Item.h"
+#include "Interface.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -33,6 +34,7 @@ GamePlay::~GamePlay()
 void GamePlay::Create(void)
 {
 	cam.reset(new Camera());
+	ui.reset(new Interface(pl));
 	back.reset(new BackGround(cam));
 	st.reset(new Stage());
 	ground.reset(new Ground());
@@ -65,7 +67,7 @@ void GamePlay::Draw(void)
 	fa->Draw();
 	pl->Draw();
 	cam->Draw();
-
+	ui->Draw();
 	DrawBoxx();
 	Debug::Get().DrawGage();
 
@@ -191,6 +193,7 @@ void GamePlay::Start(void)
 	Load();
 	pl->UpData();
 	du->UpData();
+	ui->UpData();
 	fa->UpData();
 	ItemUpData();
 
