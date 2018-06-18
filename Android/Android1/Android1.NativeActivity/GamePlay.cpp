@@ -74,42 +74,42 @@ void GamePlay::UpData(void)
 // 読み込み
 void GamePlay::Load(void)
 {
-	int x = abs(cam->GetPos().x);
+	int y = abs(cam->GetPos().y);
 
-	int y = 0;
+	int x = 0;
 	//敵
-	auto s_enemy = st->GetEnemy(x, (x + WINDOW_X));
+	auto s_enemy = st->GetEnemy(y, (y + WINDOW_Y));
 	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
 		 if (s_enemy[i] == 1)
 		{
-			Pos tmp = { read[1] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+			Pos tmp = { x * st->GetChipEneSize().x, read[0] * st->GetChipEneSize().y };
 			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
 			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
 		}
-		++y;
-		if (y >= st->GetStageSize().y / st->GetChipEneSize().y)
+		++x;
+		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)
 		{
 			++read[0];
-			y = 0;
+			x = 0;
 		}
 	}
 
-	y = 0;
+	x = 0;
 	//アイテム
-	auto s_item = st->GetItem(x, (x + WINDOW_X));
+	auto s_item = st->GetItem(y, (y + WINDOW_Y));
 	for (unsigned int i = 0; i < s_item.size(); ++i)
 	{
 		if (s_item[i] == 1)
 		{
-			Pos tmp = { read[1] * st->GetChipItemSize().x, (y * st->GetChipItemSize().y) };
+			Pos tmp = { x * st->GetChipItemSize().x, -(read[1] * st->GetChipItemSize().y) };
 			item.push_back(ItemMane::Get()->CreateApple(tmp, cam, st, pl));
 		}
-		++y;
-		if (y >= st->GetStageSize().y / st->GetChipItemSize().y)
+		++x;
+		if (x >= st->GetStageSize().x / st->GetChipItemSize().x)
 		{
 			++read[1];
-			y = 0;
+			x = 0;
 		}
 	}
 }

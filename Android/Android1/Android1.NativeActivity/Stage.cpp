@@ -10,13 +10,13 @@ std::string ite = "item.csv";
 const Pos eneSize = { 240, 270 };
 
 // 敵のチップ数
-const Pos eneCnt = { 32, 4 };
+const Pos eneCnt = { 4, 28 };
 
 // アイテムのサイズ
 const Pos iteSize = { 128, 128 };
 
 // アイテムのチップ数
-const Pos iteCnt = { 60, 8 };
+const Pos iteCnt = { 8, 60 };
 
 // プレイヤーのサイズ
 const Pos plSize = { 240, 270 };
@@ -68,15 +68,18 @@ void Stage::LoadEnemy(void)
 	{
 		return;
 	}
+	//反転
+	std::reverse(dummy.begin(), dummy.end());
+
 	data["enemy"].resize(dummy.size());
-	for (int i = 0; i < eneCnt.y; ++i)
+
+	for (int y = 0; y < eneCnt.y; ++y)
 	{
-		for (int j = 0; j < eneCnt.x; ++j)
+		for (int x = 0; x < eneCnt.x; ++x)
 		{
-			data["enemy"][j * (eneCnt.y) + i] = dummy[i * (eneCnt.x) + j];
+			data["enemy"][y * eneCnt.x + x] = dummy[y * eneCnt.x +(eneCnt.x - 1) - x];
 		}
 	}
-	size["enemy"] = { (int)(data["enemy"].size() / eneCnt.y) * eneSize.x, (int)(data["enemy"].size() / eneCnt.x) * eneSize.y };
 }
 
 // アイテムの読み込み
@@ -108,29 +111,32 @@ void Stage::LoadItem(void)
 	{
 		return;
 	}
+	//反転
+	std::reverse(dummy.begin(), dummy.end());
+
 	data["item"].resize(dummy.size());
-	for (int i = 0; i < iteCnt.y; ++i)
+
+	for (int y = 0; y < iteCnt.y; ++y)
 	{
-		for (int j = 0; j < iteCnt.x; ++j)
+		for (int x = 0; x < iteCnt.x; ++x)
 		{
-			data["item"][j * (iteCnt.y) + i] = dummy[i * (iteCnt.x) + j];
+			data["item"][y * iteCnt.x + x] = dummy[y * iteCnt.x + (iteCnt.x - 1) - x];
 		}
 	}
-	size["item"] = { (int)(data["item"].size() / iteCnt.y) * iteSize.x, (int)(data["item"].size() / iteCnt.x) * iteSize.y };
 }
 
 // 敵の情報の取得
 std::vector<int> Stage::GetEnemy(int minx, int maxx)
 {
-	int left = std::max(minx / eneSize.x, read[0]);
-	int right = maxx / eneSize.x;
-	if (right <= read[0])
+	int down = std::max(minx / eneSize.y, read[0]);
+	int up = maxx / eneSize.y;
+	if (up <= read[0])
 	{
 		return std::vector<int>();
 	}
 
-	auto index = left * eneCnt.y;
-	auto indey = right * eneCnt.y;
+	auto index = down * eneCnt.x;
+	auto indey = up * eneCnt.x;
 
 	auto begin = data["enemy"].begin() + index;
 	auto itr = data["enemy"].end();
@@ -139,7 +145,7 @@ std::vector<int> Stage::GetEnemy(int minx, int maxx)
 	if (indey < (int)data["enemy"].size())
 	{
 		end = data["enemy"].begin() + indey;
-		read[0] = right;
+		read[0] = up;
 	}
 	else
 	{
@@ -152,15 +158,15 @@ std::vector<int> Stage::GetEnemy(int minx, int maxx)
 // アイテムの情報の取得
 std::vector<int> Stage::GetItem(int minx, int maxx)
 {
-	int left = std::max(minx / iteSize.x, read[1]);
-	int right = maxx / iteSize.x;
-	if (right <= read[1])
+	int down = std::max(minx / iteSize.y, read[1]);
+	int up = maxx / iteSize.y;
+	if (up <= read[1])
 	{
 		return std::vector<int>();
 	}
 
-	auto index = left * iteCnt.y;
-	auto indey = right * iteCnt.y;
+	auto index = down * iteCnt.x;
+	auto indey = up * iteCnt.x;
 
 	auto begin = data["item"].begin() + index;
 	auto itr = data["item"].end();
@@ -169,7 +175,7 @@ std::vector<int> Stage::GetItem(int minx, int maxx)
 	if (indey < (int)data["item"].size())
 	{
 		end = data["item"].begin() + indey;
-		read[1] = right;
+		read[1] = up;
 	}
 	else
 	{
@@ -182,7 +188,7 @@ std::vector<int> Stage::GetItem(int minx, int maxx)
 // ステージのサイズの取得
 Pos Stage::GetStageSize(void)
 {
-	return size["enemy"];
+	return { WINDOW_X, WINDOW_Y * 4 };
 }
 
 // 敵チップサイズの取得
