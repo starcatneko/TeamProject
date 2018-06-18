@@ -128,6 +128,8 @@
     <Content Include="assets\Dwalk.png" />
     <Content Include="assets\flick.png" />
     <Content Include="assets\hp.png" />
+    <Content Include="assets\Npunch.png" />
+    <Content Include="assets\Npunch2.png" />
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
     <Content Include="assets\yazirusi.png" />

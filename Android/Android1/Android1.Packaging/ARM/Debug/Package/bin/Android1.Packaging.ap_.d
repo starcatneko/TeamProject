@@ -9,6 +9,8 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Dwalk.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\flick.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\hp.png \
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Npunch.png \
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Npunch2.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Nwait.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Nwalk.png \
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sample.png \

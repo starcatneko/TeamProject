@@ -1,9 +1,14 @@
 ﻿#include "Player.h"
+#include "GameMane.h"
 #include "LoadMane.h"
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "DxLib.h"
+#include <algorithm>
+
+int red = GetColor(255, 0, 0);
+int green = GetColor(0, 255, 0);
 
 // 体力最大値
 #define HP_MAX 5
@@ -18,14 +23,19 @@
 #define WALK_ANIM_X 4
 #define WALK_ANIM_Y 8
 
+// 攻撃アニメーション関係
+#define ATTACK_ANIM_CNT 12
+#define ATTACK_ANIM_X 4
+#define ATTACK_ANIM_Y 3
+
 // モードの種類
-/* wait, walk, attack, damage, die*/
+/* wait, walk, attack, attack2, damage, die*/
 
 // ノックバック
 const int nock = 30;
 
 // アニメーション速度
-std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1} };
+std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"attack1", 1}, {"attack2", 1} };
 
 // 無敵時間
 const int invincible = 10;
@@ -41,13 +51,15 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 {
 	Reset();
 
-	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Nwait.png");
-	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Nwalk.png");
+	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Player/Nwait.png");
+	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Player/Nwalk.png");
+	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Player/Npunch.png");
+	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Player/Npunch2.png");
 
-	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Dwait.png");
-	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Dwalk.png");
+	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Player/Dwait.png");
+	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Player/Dwalk.png");
 
-	himage = LoadMane::Get()->Load("hp.png");
+	himage = LoadMane::Get()->Load("Player/hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
@@ -65,6 +77,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	flam = 0;
 	index = 0;
 	m_flam = -1;
+	attack2 = false;
 
 	AnimInit();
 	RectInit();
@@ -180,14 +193,24 @@ void Player::Draw(void)
 	}
 
 #ifndef _DEBUG
+
 	auto p = GetRect();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	for (auto& r : p)
 	{
-		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, GetColor(0, 255, 0), true);
+		if (r.type == RectType::Damage)
+		{
+			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, green, true);
+		}
+		else
+		{
+			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, red, true);
+		}
+		
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
 	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
@@ -219,7 +242,11 @@ void Player::Draw(void)
 // アニメーション管理
 void Player::Animator(int flam)
 {
-	++this->flam;
+	if (GameMane::Get()->GetHit() == false)
+	{
+		++this->flam;
+	}
+
 	if (this->flam > flam)
 	{
 		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
@@ -247,12 +274,24 @@ void Player::AnimInit(void)
 	{
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
+
+	//攻撃1
+	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
+	{
+		SetAnim("attack1", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+	}
+
+	//攻撃2
+	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
+	{
+		SetAnim("attack2", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+	}
 }
 
 // あたり矩形のセット
-void Player::SetRect(PlType ptype, std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype)
+void Player::SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
-	rect[ptype][mode][index][flam].push_back({ offset, size, rtype });
+	rect[ptype][mode][index].push_back({ offset, size, rtype });
 }
 
 // あたり矩形のセット
@@ -261,51 +300,72 @@ void Player::RectInit(void)
 	//待機
 	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["wait"]; ++i)
+		if ((in <= 4) || (12 <= in && in <= 15))
 		{
-			if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
-			{
-				//通常
-				SetRect(PlType::normal, "wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
-				//ピンチ
-				SetRect(PlType::pinch,  "wait", in, i, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
-			}
-			else
-			{
-				//通常
-				SetRect(PlType::normal, "wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
-				//ピンチ
-				SetRect(PlType::pinch,  "wait", in, i, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 20 }, { (size.x / 2) - 10, (size.y - 60 / 2) - 20 }, RectType::Damage);
-			}
+			//通常
+			SetRect(PlType::normal, "wait", in, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			//ピンチ
+			SetRect(PlType::pinch,  "wait", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+		else
+		{
+			//通常
+			SetRect(PlType::normal, "wait", in, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			//ピンチ
+			SetRect(PlType::pinch,  "wait", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 20 }, { (size.x / 2) - 10, (size.y - 60 / 2) - 20 }, RectType::Damage);
 		}
 	}
 
 	//移動
 	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["walk"]; ++i)
+		if (5 <= in && in <= 10)
 		{
-			if (5 <= in && in <= 10)
-			{
-				//通常
-				SetRect(PlType::normal, "walk", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
-				//ピンチ
-				SetRect(PlType::pinch,  "walk", in, i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 30, (size.y - 60 / 2) - 30 }, RectType::Damage);
-			}
-			else if (20 <= in && in <= 27)
-			{
-				//通常
-				SetRect(PlType::normal, "walk", in, i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-				//ピンチ
-				SetRect(PlType::pinch,  "walk", in, i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 30, (size.y - 60 / 2) - 30 }, RectType::Damage);
-			}
-			else
-			{
-				//通常
-				SetRect(PlType::normal, "walk", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
-				//ピンチ
-				SetRect(PlType::pinch,  "walk", in, i, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
-			}
+			//通常
+			SetRect(PlType::normal, "walk", in, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			//ピンチ
+			SetRect(PlType::pinch,  "walk", in, { (-size.x / 4) - 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 30, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+		else if (20 <= in && in <= 27)
+		{
+			//通常
+			SetRect(PlType::normal, "walk", in, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			//ピンチ
+			SetRect(PlType::pinch,  "walk", in, { (-size.x / 4) - 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 30, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+		else
+		{
+			//通常
+			SetRect(PlType::normal, "walk", in, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+			//ピンチ
+			SetRect(PlType::pinch,  "walk", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+	}
+
+	//攻撃1
+	for (unsigned int in = 0; in < anim["attack1"].size(); ++in)
+	{
+		if(in > 5)
+		{ 
+			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+		}
+		else
+		{
+			//通常
+			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+		}
+		
+	}
+
+	//攻撃2
+	for (unsigned int in = 0; in < anim["attack2"].size(); ++in)
+	{
+		//通常
+		SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+		if (in > 5)
+		{
+			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
 		}
 	}
 }
@@ -322,8 +382,8 @@ void Player::Nuetral(void)
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
 		SetState(ST_ATTACK);
-		SetMode("attack");
-		func = &Player::Attack;
+		SetMode("attack1");
+		func = &Player::Attack1;
 	}
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
@@ -390,14 +450,48 @@ void Player::Walk(void)
 }
 
 // 攻撃時の処理
-void Player::Attack(void)
+void Player::Attack1(void)
 {
 	if (state != ST_ATTACK)
 	{
 		return;
 	}
 
-	dir = (dir == DIR_NON) ? old_dir : dir;
+	DIR tmp = DIR_NON;
+
+	if (Touch::Get()->Check(TAP, tmp) == true)
+	{
+		if (attack2 == false)
+		{
+			attack2 = true;
+		}
+	}
+
+	//アニメーションが終わったとき
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	{
+		if (attack2 == false)
+		{
+			SetState(ST_NUETRAL);
+			SetMode("wait");
+			func = &Player::Nuetral;
+		}
+		else
+		{
+			SetState(ST_ATTACK);
+			SetMode("attack2");
+			func = &Player::Attack2;
+		}
+	}
+}
+
+// 攻撃時の処理
+void Player::Attack2(void)
+{
+	if (state != ST_ATTACK)
+	{
+		return;
+	}
 
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
@@ -621,6 +715,7 @@ void Player::SetState(STATES state)
 	dir = DIR_NON;
 	flam = 0;
 	index = 0;
+	attack2 = false;
 	if (this->state == ST_DAMAGE)
 	{
 		SetMode("damage");
@@ -666,14 +761,14 @@ std::vector<Rect> Player::GetRect(void)
 
 	if (reverse == false)
 	{
-		for (auto& r : rect[type][mode][index][flam])
+		for (auto& r : rect[type][mode][index])
 		{
 			box.push_back({ { center.x + r.offset.x, center.y + r.offset.y }, r.size, r.type });
 		}
 	}
 	else
 	{
-		for (auto& r : rect[type][mode][index][flam])
+		for (auto& r : rect[type][mode][index])
 		{
 			box.push_back({ { center.x - r.offset.x - r.size.x, center.y + r.offset.y }, { r.size.x, r.size.y }, r.type });
 		}
