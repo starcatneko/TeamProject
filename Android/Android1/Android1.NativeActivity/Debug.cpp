@@ -22,7 +22,13 @@ Debug::Debug()
 {
 	drawclear = true;
 	image = LoadMane::Get()->Load("apple.png");
+	gage = LoadMane::Get()->Load("gage.png");
+	mask = LoadMane::Get()->Load("gage_mask3.png");
+	gage_red = LoadMane::Get()->Load("gage_red.png");
 	cnt = 0;
+	subscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+
 }
 
 
@@ -42,32 +48,73 @@ void Debug::DebugText(std::string s,int i,int offset_x,int offset_y,int color)
 
 void Debug::DrawParticle()
 {
+	//(*itr)->Draw();
+	//SetDrawBright(255, 255,255);
+	/*
+	DrawRotaGraph(200, 200,
+		0.01f * cnt, 0, Debug::Get().image, true, false, false);
+*/
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
 	for (auto itr = ptc.begin(); itr != ptc.end(); ++itr)
 	{
 		//SetDrawBright(200+GetRand(55),200 + GetRand(55),200 + GetRand(55));
-		//SetDrawBlendMode(DX_BLENDMODE_ADD, 220);
-
-		(*itr)->Draw();
-		//SetDrawBright(255, 255,255);
-
-		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
+}
+
+void Debug::DrawGage()
+{
+
+	GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
+
+	// 描画先変更
+	SetDrawScreen(subscreen);
+	ClearDrawScreen();
+
+	DrawGraph(0, 0, mask, true);
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
+	DrawGraph(-cnt%256, 60, gage_red, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
+	// 描画先を裏画面に変更
+	SetDrawScreen(DX_SCREEN_BACK);
+	ClearDrawScreen();
+	DrawGraph(0, 0, tempscreen, true);
+
+	DrawGraph(500, 0, gage, true);
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
+	DrawGraph(500, 0, subscreen,true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
+
 
 }
 void Debug::Update()
 {
 	cnt++;
-	ParticleUpdate();
+	//ParticleUpdate();
 	DrawParticle();
+	//CreateMaskScreen();
+	
+	//DrawMask(cnt * 64, 800, mask, DX_MASKTRANS_BLACK);
+	//DrawMask(cnt * 64, 700, mask, DX_MASKTRANS_NONE);
+	//DrawMask(cnt * 64, 600, mask, DX_MASKTRANS_WHITE);
+	
+
 	DrawFormatString(0, 0, 0xffffff, "%d", cnt);
 }
 void Debug::ParticleUpdate()
 {
 	Box Boxx = { {50,0}, {256,256} };
-	if (cnt++ < 72 && cnt % 4 == 0)
+
+	//パーティクルを追加する処理を行うフレーム数(cnt)
+
+	if (cnt++ < 100 && cnt % 6 == 0)
 	{
 		int i = 0;
-		while (i < 12)
+		//同時に追加するパーティクルの数(i)
+		while (i < 16)
 		{
 			i++;
 			ptc.push_back(std::make_shared<Particle>(Boxx));
@@ -80,19 +127,31 @@ void Debug::ParticleUpdate()
 
 		//(*itr)->box.pos.x += cos(RAD((*itr)->angle)) * (*itr)->speed;      // x座標を更新
 		//(*itr)->box.pos.y += sin(RAD((*itr)->angle)) * (*itr)->speed;      // y座標を更新
-		
-		//(*itr)->box.pos.y += (*itr)->speed + 6;
-		(*itr)->speed++;
+
+		(*itr)->box.pos.y += (*itr)->speed;
+
+		if ((*itr)->cnt == 0)
+		{
+			(*itr)->speed = 0;
+		}
+
 		if ((*itr)->cnt < 0)
 		{
 			//(*itr)->box.size.x -= 12;
 			//(*itr)->box.size.y -= 12;
-			if((*itr)->box.pos.y > WINDOW_Y+128)
+			(*itr)->speed++;
+
+			if ((*itr)->box.pos.y > WINDOW_Y + 128)
+			{
 				itr = ptc.erase(itr);
+
+			}
 
 		}
 		else
 		{
+
+			(*itr)->speed++;
 			//(*itr)->box.size.x +=12;
 			//(*itr)->box.size.y +=12;
 
@@ -105,10 +164,10 @@ void Debug::ParticleUpdate()
 Particle::Particle(Box box)
 {
 	this->box = box;
-	this->box.pos = {GetRand(1400)-200,GetRand(400)-2120};
+	this->box.pos = {GetRand(1380)-200,GetRand(400)-820};
 	angle = 260 +GetRand(20) ;
-	speed = 0;
-	cnt = 20;
+	speed = 20;
+	cnt = 80;
 }
 
 Particle::~Particle()
@@ -118,7 +177,7 @@ Particle::~Particle()
 
 void Particle::Draw()
 {
-	DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/75, 0, Debug::Get().image, true, false, false);
+	DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/100, 0, Debug::Get().image, true, false, false);
 	//DrawExtendGraph(box.pos.x, box.pos.y, box.pos.x + box.size.x * 4, box.pos.y+box.size.y*4,Debug::Get().image, true);
 	//DrawCircle(box.pos.x, box.pos.y, 128, 0xffff00, true, true);
 }

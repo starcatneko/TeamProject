@@ -37,10 +37,18 @@ public:
 	~Debug();
 	void DebugText(std::string s, int i, int offset_x, int offset_y, int color);
 	void DrawParticle();
+	void DrawGage();
 	void Update();
 	void ParticleUpdate();
+	//画像ハンドル
+	int gage;
+	int gage_red;
 	int image;
+	int mask;
 
+	int screenmask;		//subscreenと合成する
+	int subscreen;		//マスクと波でリンゴ型の波を作り、裏画面と合成する
+	int tempscreen;		//描画していたスクリーンを一時的に退避させる
 	std::list<std::shared_ptr<Particle>>ptc;
 
 	//particle

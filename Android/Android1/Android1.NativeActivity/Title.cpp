@@ -35,7 +35,7 @@ Title::~Title()
 // 描画
 void Title::Draw(void)
 {
-	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xaa0000, true);
+	//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xaa0000, true);
 	DrawRectRotaGraph2(
 		pos[image].x + (arrowSize.x * large[image]) / 2, pos[image].y + (arrowSize.y * large[image]) / 2,
 		0,0,arrowSize.x, arrowSize.y, 
@@ -49,7 +49,7 @@ void Title::Draw(void)
 		(double)large[flick], 0.0, flick, true, false, false);
 
 	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
-
+	Debug::Get().DrawGage();
 	if (Debug::Get().drawclear == false)
 	{
 		Debug::Get().Update();

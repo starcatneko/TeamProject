@@ -44,11 +44,12 @@ void GamePlay::Create(void)
 // ボックス描画
 void GamePlay::DrawBoxx(void)
 {
-	Debug::Get().Update();
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	Debug::Get().Update();
+
 }
 
 // 描画
@@ -64,7 +65,9 @@ void GamePlay::Draw(void)
 	fa->Draw();
 	pl->Draw();
 	cam->Draw();
+
 	DrawBoxx();
+	Debug::Get().DrawGage();
 
 }
 
