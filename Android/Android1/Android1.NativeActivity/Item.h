@@ -29,7 +29,7 @@ public:
 	// サイズのセット
 	void SetSize(Pos size);
 
-	// あたりフラグの取得
+	// あたりフラグの取得d
 	bool GetHit(void);
 
 	// 当たり判定
@@ -53,6 +53,9 @@ protected:
 
 	// ローカル座標
 	Pos lpos;
+
+	// 中心点
+	Pos center;
 
 	// サイズ
 	Pos size;

@@ -59,6 +59,8 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Player/Dwait.png");
 	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Player/Dwalk.png");
 
+	effect["effect1"] = LoadMane::Get()->Load("Player/effect1.png");
+
 	himage = LoadMane::Get()->Load("Player/hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
@@ -78,9 +80,10 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	index = 0;
 	m_flam = -1;
 	attack2 = false;
-
+	
 	AnimInit();
 	RectInit();
+	EffectInit();
 
 	draw = &Player::NormalDraw;
 	func = &Player::Nuetral;
@@ -192,6 +195,19 @@ void Player::Draw(void)
 			0.6, 0.0, himage, true, false, false);
 	}
 
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			DrawRectRotaGraph2(
+			GetEffect(itr->first).x, GetEffect(itr->first).y,
+			itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x), 
+			itr->second.size.x, itr->second.size.y, 
+			itr->second.size.x / 2, itr->second.size.y / 2,
+			1.0, 0.0, effect[itr->first], true, reverse, false);
+		}
+	}
+
 #ifndef _DEBUG
 
 	auto p = GetRect();
@@ -251,6 +267,29 @@ void Player::Animator(int flam)
 	{
 		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
 		this->flam = 0;
+	}
+}
+
+// エフェクト管理
+void Player::Effector(void)
+{
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			++itr->second.nowflam;
+		}
+		else
+		{
+			itr->second.index = 0;
+			itr->second.nowflam = 0;
+		}
+
+		if (itr->second.nowflam > itr->second.flam)
+		{
+			itr->second.index = (itr->second.index + 1 < itr->second.max) ? ++itr->second.index : 0;
+			itr->second.nowflam = 0;
+		}
 	}
 }
 
@@ -370,6 +409,18 @@ void Player::RectInit(void)
 	}
 }
 
+// エフェクトのセット
+void Player::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
+{
+	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
+}
+
+// エフェクトのセット
+void Player::EffectInit(void)
+{
+	SetEffect("effect1", 6, 3, 2, { -50,-80 }, { 240, 240 }, 5);
+}
+
 // 待機時の処理
 void Player::Nuetral(void)
 {
@@ -459,6 +510,8 @@ void Player::Attack1(void)
 
 	DIR tmp = DIR_NON;
 
+	effe["effect1"].flag = true;
+
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
 		if (attack2 == false)
@@ -467,9 +520,13 @@ void Player::Attack1(void)
 		}
 	}
 
+	effe["effect1"].flag = true;
+
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
+		effe["effect1"].flag = false;
+
 		if (attack2 == false)
 		{
 			SetState(ST_NUETRAL);
@@ -493,9 +550,12 @@ void Player::Attack2(void)
 		return;
 	}
 
+	effe["effect1"].flag = true;
+
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
+		effe["effect1"].flag = false;
 		SetState(ST_NUETRAL);
 		SetMode("wait");
 		func = &Player::Nuetral;
@@ -584,6 +644,7 @@ void Player::UpData(void)
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
 	Animator(animTime[mode]);
+	Effector();
 
 	if (state == ST_DAMAGE)
 	{
@@ -614,8 +675,10 @@ void Player::UpData(void)
 void Player::Reset(void)
 {
 	image.clear();
+	effect.clear();
 	anim.clear();
 	rect.clear();
+	effe.clear();
 }
 
 // 座標の取得
@@ -775,4 +838,22 @@ std::vector<Rect> Player::GetRect(void)
 	}
 
 	return box;
+}
+
+// エフェクト座標の取得
+Pos Player::GetEffect(std::string name, int large)
+{
+	Pos tmp;
+	if (reverse == false)
+	{
+		tmp.x = (center.x + effe[name].offset.x) + effe[name].size.x * large / 2;
+		tmp.y = (center.y + effe[name].offset.y) + effe[name].size.y * large / 2;
+	}
+	else
+	{
+		tmp.x = (center.x - effe[name].offset.x) - effe[name].size.x * large / 2;
+		tmp.y = (center.y + effe[name].offset.y) + effe[name].size.y * large / 2;
+	}
+
+	return tmp;
 }

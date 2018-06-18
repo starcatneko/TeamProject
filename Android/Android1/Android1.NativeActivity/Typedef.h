@@ -146,3 +146,26 @@ enum class PlType
 	//ピンチ
 	pinch
 };
+
+// エフェクト情報
+struct Effect
+{
+	//最大数
+	int max;
+	//Xカウント
+	int x;
+	//Yカウント
+	int y;
+	//プレイヤー中心座標からのオフセット
+	Pos offset;
+	//サイズ
+	Pos size;
+	//発動フラグ
+	bool flag;
+	//現在のインデックス
+	int index;
+	// 現在のフレーム
+	int nowflam;
+	//移行フレーム
+	int flam;
+};
