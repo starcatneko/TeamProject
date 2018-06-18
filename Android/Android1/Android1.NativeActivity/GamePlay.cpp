@@ -59,7 +59,7 @@ void GamePlay::Draw(void)
 	back->Draw();
 	ground->Draw();
 	ItemDraw();
-	EnemyDraw();
+	//EnemyDraw();
 	pl->Draw();
 	cam->Draw();
 	DrawBoxx();

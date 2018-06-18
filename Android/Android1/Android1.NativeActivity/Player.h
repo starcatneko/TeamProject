@@ -78,6 +78,9 @@ public:
 	// あたり矩形の取得
 	std::vector<Rect> GetRect(void);
 
+	// エフェクト座標の取得
+	Pos GetEffect(std::string name, int large = 1);
+
 private:
 	// 通常描画
 	void NormalDraw(void);
@@ -86,6 +89,9 @@ private:
 
 	// アニメーション管理
 	void Animator(int flam);
+
+	// エフェクト管理
+	void Effector(void);
 
 	// アニメーションのセット
 	void SetAnim(std::string mode, Pos pos, Pos size);
@@ -96,6 +102,11 @@ private:
 	void SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype);
 	// あたり矩形のセット
 	void RectInit(void);
+
+	// エフェクトのセット
+	void SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam);
+	// エフェクトのセット
+	void EffectInit(void);
 
 	// 待機時の処理
 	void Nuetral(void);
@@ -125,6 +136,9 @@ private:
 
 	// 画像データ
 	std::map<PlType, std::map<std::string, int>>image;
+
+	// エフェクト画像データ
+	std::map<std::string, int>effect;
 
 	// 体力画像データ
 	int himage;
@@ -192,6 +206,9 @@ private:
 
 	// あたり矩形
 	std::map<PlType, std::map<std::string, std::map<int, std::vector<Rect>>>>rect;
+
+	// エフェクト
+	std::map<std::string, Effect>effe;
 
 	// 関数ポインタ(描画)
 	void (Player::*draw)(void);

@@ -46,8 +46,8 @@ bool Item::GetHit(void)
 // 当たり判定
 bool Item::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 {
-	if (pos1.x + size1.x > pos2.x && pos1.x < pos2.x + size2.x
-		&& pos1.y + size1.y < pos2.y + size2.y && pos1.y > pos2.y)
+	if(pos1.x < pos2.x + size2.x && pos1.x + size1.x > pos2.x
+	&& pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y)
 	{
 		hit = true;
 
