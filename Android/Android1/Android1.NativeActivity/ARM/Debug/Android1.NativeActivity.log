@@ -35,6 +35,7 @@ Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state'
                ^
   1 warning generated.
   Game.cpp
+  GameMane.cpp
   GamePlay.cpp
   Ground.cpp
   Item.cpp
@@ -53,4 +54,9 @@ Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state'
   Stage.cpp
   Title.cpp
   Touch.cpp
-  Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
+   undefined reference to 'Debug::Create()'
+   undefined reference to 'Debug::Update()'
+   undefined reference to 'Debug::instance'
+   undefined reference to 'Debug::Update()'
+  clang.exe: error: linker command failed with exit code 1 (use -v to see invocation)
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Application Type\Android\3.0\Android.Common.targets(104,5): error MSB6006: "clang.exe" はコード 1 を伴って終了しました。

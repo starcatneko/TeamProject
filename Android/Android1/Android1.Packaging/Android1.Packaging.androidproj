@@ -124,10 +124,15 @@
     <Content Include="assets\back2.png" />
     <Content Include="assets\back3.png" />
     <Content Include="assets\back4.png" />
+    <Content Include="assets\Ddash.png" />
+    <Content Include="assets\Dpunch.png" />
+    <Content Include="assets\Dpunch2.png" />
     <Content Include="assets\Dwait.png" />
     <Content Include="assets\Dwalk.png" />
+    <Content Include="assets\effect1.png" />
     <Content Include="assets\flick.png" />
     <Content Include="assets\hp.png" />
+    <Content Include="assets\Ndash.png" />
     <Content Include="assets\Npunch.png" />
     <Content Include="assets\Npunch2.png" />
     <Content Include="assets\Nwait.png" />
