@@ -8,6 +8,9 @@
 #include "DxLib.h"
 #include <algorithm>
 
+// アニメーション速度
+std::map<std::string, const int>animTime = { { "wait", 5 },{ "walk", 1 } };
+
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
 	attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
@@ -56,6 +59,45 @@ void Dust::Draw(void)
 	}
 
 	DrawFormatString(200, 1000, GetColor(255, 0, 0), _T("ダストの座標：%d, %d"), pos);
+}
+
+void Dust::SetAnim(std::string mode, Pos pos, Pos size)
+{
+}
+
+void Dust::AnimInit(void)
+{
+}
+
+//あたり矩形のセット
+void Dust::SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype)
+{
+	rect[mode][index][flam].push_back({ offset, size, rtype });
+}
+
+//あたり矩形のセット
+void Dust::RectInit(void)
+{
+	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
+	{
+		for (int i = 0; i < animTime["wait"]; ++i)
+		{
+			if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
+			{
+				//通常
+				SetRect("wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				//ピンチ
+				SetRect("wait", in, i, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+			}
+			else
+			{
+				//通常
+				SetRect("wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				//ピンチ
+				SetRect("wait", in, i, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 20 }, { (size.x / 2) - 10, (size.y - 60 / 2) - 20 }, RectType::Damage);
+			}
+		}
+	}
 }
 
 // 待機時の処理
@@ -217,4 +259,5 @@ void Dust::UpData(void)
 
 	(this->*func)();
 }
+
 

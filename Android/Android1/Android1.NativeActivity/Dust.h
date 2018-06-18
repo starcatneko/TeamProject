@@ -17,6 +17,19 @@ public:
 	void UpData(void);
 	
 private:
+	// アニメーション管理
+	void Animator(int flam);
+
+	// アニメーションのセット
+	void SetAnim(std::string mode, Pos pos, Pos size);
+	// アニメーションのセット
+	void AnimInit(void);
+
+	//あたり矩形のセット
+	void SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype);
+	//あたり矩形のセット
+	void RectInit(void);
+
 	// 待機時の処理
 	void Neutral(void);
 	// 移動時の処理
@@ -41,6 +54,11 @@ private:
 	int dirwait;
 	//プレイヤーに渡す被攻撃矩形
 	Box box;
+
+	// アニメーション
+	std::map<std::string, std::vector<Box>>anim;
+	// あたり矩形
+	 std::map<std::string, std::map<int, std::map<int, std::vector<Rect>>>>rect;
 
 	// 関数ポインタ
 	void (Dust::*func)(void);
