@@ -73,7 +73,7 @@ void Debug::ParticleUpdate()
 		}
 	}
 	//ptc.push_back(std::make_shared<Particle>(Pos{ 400,200 }, Pos{ 400,200 }));
-	for (auto itr = ptc.begin(); itr != ptc.end(); ++itr)
+	for (auto itr = ptc.begin(); itr != ptc.end();)
 	{ 
 		(*itr)->cnt--;
 
@@ -83,6 +83,10 @@ void Debug::ParticleUpdate()
 		if ((*itr)->cnt < 0)
 		{
 			itr = ptc.erase(itr);
+		}
+		else
+		{
+			++itr;
 		}
 	}
 }
