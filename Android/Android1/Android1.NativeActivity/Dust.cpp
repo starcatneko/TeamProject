@@ -85,12 +85,12 @@ void Dust::Neutral(void)
 	}
 
 	//プレイヤーの攻撃矩形を用いて当たり判定を求める
-	/*if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true
+	if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true
 		&& pl.lock()->GetState() == ST_ATTACK)
 	{
 		SetState(ST_DAMAGE);
 		func = &Dust::Damage;
-	}*/
+	}
 }
 
 // 移動時の処理

@@ -81,15 +81,10 @@ void GamePlay::Load(void)
 	auto s_enemy = st->GetEnemy(x, (x + WINDOW_X));
 	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
-		if (s_enemy[i] == 0)
+		 if (s_enemy[i] == 1)
 		{
-			Pos tmp = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
+			Pos tmp = { read[1] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
 			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
-		}
-		else if (s_enemy[i] == 1)
-		{
-			Pos tmp = { read[0] * st->GetChipEneSize().x, y * st->GetChipEneSize().y };
-
 			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
 		}
 		++y;
