@@ -209,6 +209,7 @@
     <ClCompile Include="Apple.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Dust.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyMane.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="GameMane.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemMane.cpp" />
     <ClCompile Include="LoadMane.cpp" />
@@ -233,6 +235,7 @@
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Dust.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyMane.h" />
@@ -241,6 +244,7 @@
     <ClInclude Include="GameMane.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemMane.h" />
     <ClInclude Include="LoadMane.h" />
