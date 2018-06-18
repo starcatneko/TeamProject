@@ -122,7 +122,7 @@ void GamePlay::EnemyDraw(void)
 	}
 }
 
-void GamePlay::EnemyUpdate(void)
+void GamePlay::EnemyUpData(void)
 {
 	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
@@ -209,7 +209,7 @@ void GamePlay::Start(void)
 
 	Load();
 	pl->UpData();
-	EnemyUpdate();
+	EnemyUpData();
 	ItemUpData();
 
 	//ゲームオーバー移行

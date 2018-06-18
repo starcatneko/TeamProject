@@ -52,7 +52,7 @@ private:
 	//敵の描画
 	void EnemyDraw(void);
 	//敵の処理
-	void EnemyUpdate(void);
+	void EnemyUpData(void);
 
 	// アイテムの描画
 	void ItemDraw(void);
