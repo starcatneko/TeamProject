@@ -36,8 +36,8 @@ void Camera::Draw(void)
 void Camera::NotMove(Pos pos)
 {
 	//プレイヤーのローカル座標がカメラの目標点を超えた時
-	if (pos.y <= WINDOW_Y / 2)
-		//&& GameMane::Get()->GetKillCnt() >= GameMane::Get()->GetTargetNum())
+	if (pos.y <= WINDOW_Y / 2
+		&& GameMane::Get()->GetKillCnt() >= GameMane::Get()->GetTargetNum())
 	{
 		//プレイヤーの座標を修正
 		//pos.y = 0;

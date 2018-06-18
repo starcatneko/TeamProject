@@ -219,7 +219,7 @@ void GamePlay::Start(void)
 	}
 
 
-	if (pl->GetPower() <= 0)
+	if (pl->GetHp() <= 2)
 	{
 		Pinch(5, 128);
 	}

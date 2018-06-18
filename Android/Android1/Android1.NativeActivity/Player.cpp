@@ -135,12 +135,12 @@ void Player::NormalDraw(void)
 	
 	if (state != ST_DIE)
 	{
-		//DrawRectRotaGraph2(
-		//	lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-		//	anim[mode][index].pos.x, anim[mode][index].pos.y,
-		//	anim[mode][index].size.x, anim[mode][index].size.y,
-		//	anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-		//	(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
+		DrawRectRotaGraph2(
+			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+			anim[mode][index].pos.x, anim[mode][index].pos.y,
+			anim[mode][index].size.x, anim[mode][index].size.y,
+			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
+			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
 		
 	}
 	else
@@ -411,11 +411,11 @@ void Player::RectInit(void)
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
 		}
 		//ピンチ
-		if (in >= 2 && in <= 7)
+		if (in >= 2 && in <= 4)
 		{
 			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) - 30, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) , (size.y - 60 / 2) - 30 }, RectType::Damage);
 		}
-		else if (in >= 7 && in <= 11)
+		else if (in >= 5 && in <= 11)
 		{
 			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
 			SetRect(PlType::pinch, "attack1", in, { (size.x / 3) + 10, (-size.y / 3) + 10 }, { (size.x / 6), (size.y / 2) + 30 }, RectType::Attack);
