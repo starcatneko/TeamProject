@@ -24,6 +24,7 @@ Touch::Touch() : flam(0)
 	state = ST_NON;
 	memset(pos, -1, sizeof(pos));
 	old_pos = -1;
+	angle = 0.0f;
 
 	for (float i = 0; i < circle; ++i)
 	{
@@ -241,7 +242,7 @@ bool Touch::Flick(DIR& dir)
 		{
 			dir = DIR_DOWN;
 		}
-
+		angle = GetUnsignedAngle();
 		SetState(ST_NON);
 		return true;
 	}
@@ -271,7 +272,7 @@ bool Touch::Flick(DIR& dir)
 		{
 			dir = DIR_DOWN;
 		}
-
+		angle = GetUnsignedAngle();
 		SetState(ST_NON);
 		return true;
 	}
@@ -475,4 +476,10 @@ Pos Touch::GetDistance(bool flag)
 Trigono Touch::GetTri(int index)
 {
 	return tri[index];
+}
+
+// 緊急
+float Touch::GetAngel(void)
+{
+	return angle;
 }

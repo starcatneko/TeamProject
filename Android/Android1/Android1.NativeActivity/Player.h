@@ -114,6 +114,9 @@ private:
 	// 移動時の処理
 	void Walk(void);
 
+	// ダッシュ時の処理
+	void Dash(void);
+
 	// 攻撃時の処理
 	void Attack1(void);
 	void Attack2(void);
@@ -199,6 +202,9 @@ private:
 
 	// 攻撃2移行フラグ
 	bool attack2;
+
+	// ダッシュ時の角度
+	float dash;
 
 
 	// アニメーション

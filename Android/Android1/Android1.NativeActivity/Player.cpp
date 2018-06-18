@@ -23,19 +23,24 @@ int green = GetColor(0, 255, 0);
 #define WALK_ANIM_X 4
 #define WALK_ANIM_Y 8
 
+//ダッシュアニメーション関係
+#define DASH_ANIM_CNT 12
+#define DASH_ANIM_X 4
+#define DASH_ANIM_Y 3
+
 // 攻撃アニメーション関係
 #define ATTACK_ANIM_CNT 12
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
 // モードの種類
-/* wait, walk, attack, attack2, damage, die*/
+/* wait, walk, dash, attack, attack2, damage, die*/
 
 // ノックバック
 const int nock = 30;
 
 // アニメーション速度
-std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"attack1", 1}, {"attack2", 1} };
+std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 1}, {"attack1", 1}, {"attack2", 1} };
 
 // 無敵時間
 const int invincible = 10;
@@ -53,11 +58,15 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 
 	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Player/Nwait.png");
 	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Player/Nwalk.png");
+	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Player/Ndash.png");
 	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Player/Npunch.png");
 	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Player/Npunch2.png");
 
 	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Player/Dwait.png");
 	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Player/Dwalk.png");
+	image[PlType::pinch]["dash"] = LoadMane::Get()->Load("Player/Ddash.png");
+	image[PlType::pinch]["attack1"] = LoadMane::Get()->Load("Player/Dpunch.png");
+	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Player/Dpunch2.png");
 
 	effect["effect1"] = LoadMane::Get()->Load("Player/effect1.png");
 
@@ -80,6 +89,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	index = 0;
 	m_flam = -1;
 	attack2 = false;
+	dash = 0.0f;
 	
 	AnimInit();
 	RectInit();
@@ -314,6 +324,12 @@ void Player::AnimInit(void)
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
 
+	//ダッシュ
+	for (int i = 0; i < DASH_ANIM_CNT; ++i)
+	{
+		SetAnim("dash", { size.x * (i % DASH_ANIM_X), size.y * (i / DASH_ANIM_X) }, size);
+	}
+
 	//攻撃1
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
@@ -384,27 +400,54 @@ void Player::RectInit(void)
 	//攻撃1
 	for (unsigned int in = 0; in < anim["attack1"].size(); ++in)
 	{
-		if(in > 5)
-		{ 
+		//通常
+		if (in > 5)
+		{
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
 		}
 		else
 		{
-			//通常
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
 		}
-		
+		//ピンチ
+		if (in >= 2 && in <= 7)
+		{
+			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) - 30, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) , (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+		else if (in >= 7 && in <= 11)
+		{
+			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+			SetRect(PlType::pinch, "attack1", in, { (size.x / 3) + 10, (-size.y / 3) + 10 }, { (size.x / 6), (size.y / 2) + 30 }, RectType::Attack);
+		}
+		else
+		{
+			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
 	}
 
 	//攻撃2
 	for (unsigned int in = 0; in < anim["attack2"].size(); ++in)
 	{
 		//通常
-		SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 		if (in > 5)
 		{
+			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+		}
+		else
+		{
+			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+		}
+		//ピンチ
+		if (in >= 2 && in <= 10)
+		{
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2)  }, RectType::Attack);
+		}
+		else
+		{
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
 		}
 	}
 }
@@ -430,12 +473,6 @@ void Player::Nuetral(void)
 	}
 
 	DIR tmp = DIR_NON;
-	if (Touch::Get()->Check(TAP, tmp) == true)
-	{
-		SetState(ST_ATTACK);
-		SetMode("attack1");
-		func = &Player::Attack1;
-	}
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
 	{
@@ -444,6 +481,20 @@ void Player::Nuetral(void)
 		func = &Player::Walk;
 	}
 
+	if (Touch::Get()->Check(FLICK, tmp) == true)
+	{
+		SetState(ST_WALK);
+		SetMode("dash");
+		dash = Touch::Get()->GetAngel();
+		func = &Player::Dash;
+	}
+
+	if (Touch::Get()->Check(TAP, tmp) == true)
+	{
+		SetState(ST_ATTACK);
+		SetMode("attack1");
+		func = &Player::Attack1;
+	}
 }
 
 // 移動時の処理
@@ -500,6 +551,49 @@ void Player::Walk(void)
 	}
 }
 
+// ダッシュ時の処理
+void Player::Dash(void)
+{
+	if (state != ST_WALK)
+	{
+		return;
+	}
+
+	reverse = (dash < 180.0f) ? false : true;
+
+	if (reverse == false)
+	{
+		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed + 2)) : 0;
+		if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
+		{
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+		}
+		else
+		{
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+		}
+	}
+	else
+	{
+		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed + 2)) : 0;
+		if (Touch::Get()->GetTri((int)dash).cos > 0)
+		{
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+		}
+		else
+		{
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+		}
+	}
+
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	{
+		SetState(ST_NUETRAL);
+		SetMode("wait");
+		func = &Player::Nuetral;
+	}
+}
+
 // 攻撃時の処理
 void Player::Attack1(void)
 {
@@ -510,7 +604,10 @@ void Player::Attack1(void)
 
 	DIR tmp = DIR_NON;
 
-	effe["effect1"].flag = true;
+	if (type == PlType::normal)
+	{
+		effe["effect1"].flag = true;
+	}
 
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
@@ -519,8 +616,6 @@ void Player::Attack1(void)
 			attack2 = true;
 		}
 	}
-
-	effe["effect1"].flag = true;
 
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
@@ -550,7 +645,10 @@ void Player::Attack2(void)
 		return;
 	}
 
-	effe["effect1"].flag = true;
+	if (type == PlType::normal)
+	{
+		effe["effect1"].flag = true;
+	}
 
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])

@@ -70,6 +70,9 @@ public:
 	// 三角関数の取得
 	Trigono GetTri(int index);
 
+	// 緊急
+	float GetAngel(void);
+
 private:
 	// コンストラクタ
 	Touch();
@@ -105,10 +108,14 @@ private:
 	// 前座標
 	Pos old_pos;
 
+	// 角度
+	float angle;
+
 	// タッチしているフレーム
 	unsigned int flam;
 
+	DIR d;
+
 	// 三角関数
 	std::vector<Trigono>tri;
-	DIR d;
 };
