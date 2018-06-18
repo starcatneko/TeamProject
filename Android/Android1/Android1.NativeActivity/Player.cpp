@@ -135,12 +135,12 @@ void Player::NormalDraw(void)
 	
 	if (state != ST_DIE)
 	{
-		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y,
-			anim[mode][index].size.x, anim[mode][index].size.y,
-			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
+		//DrawRectRotaGraph2(
+		//	lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+		//	anim[mode][index].pos.x, anim[mode][index].pos.y,
+		//	anim[mode][index].size.x, anim[mode][index].size.y,
+		//	anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
+		//	(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
 		
 	}
 	else
