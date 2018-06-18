@@ -44,5 +44,6 @@ private:
 
 	// シーンクラス
 	std::shared_ptr<Scene>scene;
+
 };
 
