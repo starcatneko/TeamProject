@@ -59,7 +59,7 @@ void GamePlay::DrawBoxx(void)
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xff00ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	
-	Debug::Get().Update();
+	Debug::Get()->Update();
 }
 
 // 描画
@@ -75,7 +75,6 @@ void GamePlay::Draw(void)
 	cam->Draw();
 	ui->Draw();
 	DrawBoxx();
-	Debug::Get().DrawGage();
 }
 
 // 画像データのセット

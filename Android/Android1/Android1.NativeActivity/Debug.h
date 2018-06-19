@@ -23,9 +23,9 @@ class Debug
 {
 public:
 
-	static Debug& Get(void)
+	static Debug* Get(void)
 	{
-		return *instance;
+		return instance;
 	}
 	static Debug* instance;
 	static void Create();
@@ -40,10 +40,14 @@ public:
 	void DrawGage();
 	void Update();
 	void ParticleUpdate();
+	void FpsTimeFanction();
 	std::list<std::shared_ptr<Particle>>ptc;
 
 	//particle
 	int ptcnt;
 
+	int FpsTime_i;
+	int FpsTime[2];
+	double Fps;
 };
 

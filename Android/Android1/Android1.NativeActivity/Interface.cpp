@@ -53,6 +53,7 @@ void Interface::DrawGage()
 	GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
 
 	// 描画先変更
+	
 	SetDrawScreen(subscreen_ap);
 	ClearDrawScreen();
 
@@ -84,10 +85,6 @@ void Interface::DrawGage()
 	ClearDrawScreen();
 	DrawGraph(0, 0, tempscreen, true);
 
-	//エフェクト用スクリーンにエフェクトを掛ける
-	GraphFilter(filterscreen, DX_GRAPH_FILTER_GAUSS, 16, 1400);
-	GraphFilter(filterscreen, DX_GRAPH_FILTER_LEVEL, 60, 210, 120, 0, 255);
-	
 	//アップルゲージ表示
 	DrawGraph(pos_ap.x, pos_ap.y, gage, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255);

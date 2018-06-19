@@ -114,6 +114,10 @@ private:
 	// タッチしているフレーム
 	unsigned int flam;
 
+	//プニコン用のスクリーン
+	int screen_puni;
+	int tempscreen;
+
 	DIR d;
 
 	// 三角関数
