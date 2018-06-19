@@ -26,6 +26,11 @@ private:
 	// アニメーションのセット
 	void AnimInit(void);
 
+	//中心座標の取得
+	Pos GetCenter(void);
+	//中心座標のセット
+	void SetCenter(Pos center);
+
 	//あたり矩形のセット
 	void SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype);
 	//あたり矩形のセット

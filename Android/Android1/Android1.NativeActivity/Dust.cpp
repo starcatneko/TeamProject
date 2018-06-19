@@ -46,7 +46,7 @@ void Dust::Draw(void)
 {
 #ifndef _DEBUG
 	//DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, color, true);
-	DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0xff0000, false);
+	//DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0xff0000, false);
 
 	auto d = GetRect();
 
@@ -113,6 +113,16 @@ void Dust::AnimInit(void)
 	{
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
+}
+
+Pos Dust::GetCenter(void)
+{
+	return center;
+}
+
+void Dust::SetCenter(Pos center)
+{
+	this->center = center;
 }
 
 //あたり矩形のセット
@@ -307,6 +317,7 @@ void Dust::Die(void)
 void Dust::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
+	center = { (lpos.x - size.x / 2), (lpos.y - size.y / 2) };
 
 	Animator(animTime[mode]);
 

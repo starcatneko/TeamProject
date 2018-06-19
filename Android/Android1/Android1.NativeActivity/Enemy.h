@@ -42,7 +42,7 @@ public:
 
 	// サイズの取得
 	Pos Getsize(void);
-
+	
 	// 死亡フラグの取得
 	bool GetDie(void);
 
