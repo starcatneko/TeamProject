@@ -136,6 +136,7 @@
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
     <Content Include="assets\titleback.png" />
+    <Content Include="assets\tree.png" />
     <Content Include="assets\yazirusi.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">

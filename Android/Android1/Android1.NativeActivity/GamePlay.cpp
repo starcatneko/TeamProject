@@ -129,6 +129,10 @@ void GamePlay::Load(void)
 		{
 			item.push_back(ItemMane::Get()->CreateApple(tmp, cam, st, pl));
 		}
+		else if (s_item[i] == 2)
+		{
+			item.push_back(ItemMane::Get()->CreateTree(tmp, cam, st, pl));
+		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipItemSize().x)
 		{

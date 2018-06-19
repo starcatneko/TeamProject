@@ -146,6 +146,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Stage.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Title.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Touch.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Apple.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\StageData.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Title.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Touch.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Tree.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Typedef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,2 +1,7 @@
-﻿  BackGround.cpp
+﻿  Game.cpp
+  GamePlay.cpp
+  ItemMane.cpp
+  Stage.cpp
+  Tree.cpp
+  コードを生成中...
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

@@ -9,13 +9,12 @@ Camera.cpp(7,11): warning : unused variable 'offset' [-Wunused-const-variable]
   const int offset = 120;
             ^
   1 warning generated.
-  Debug.cpp
   Dust.cpp
-Dust.cpp(23,81): warning : suggest braces around initialization of subobject [-Wmissing-braces]
-          attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
-                                                                                         ^~~~
-                                                                                         {   }
-Dust.cpp(142,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
+Dust.cpp(23,82): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+          attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
+                                                                                          ^~~~
+                                                                                          {   }
+Dust.cpp(149,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
                           if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
                                ~ ^  ~~
   In file included from Dust.cpp:1:
@@ -39,24 +38,24 @@ Enemy.cpp(5,120): warning : field 'animTime' will be initialized after field 'fl
   3 warnings generated.
   EnemyMane.cpp
   Fannings.cpp
+Fannings.cpp(143,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
+                          if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
+                               ~ ^  ~~
   In file included from Fannings.cpp:1:
-./Fannings.h(33,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
+./Fannings.h(51,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
           bool attackFlag;
                ^
-  1 warning generated.
+  2 warnings generated.
   Game.cpp
-  GameMane.cpp
   GamePlay.cpp
   In file included from GamePlay.cpp:1:
 ./GamePlay.h(95,6): warning : private field 'speed' is not used [-Wunused-private-field]
           int speed;
               ^
   1 warning generated.
-  Interface.cpp
   Item.cpp
   ItemMane.cpp
   LoadMane.cpp
-  Main.cpp
   Over.cpp
   Player.cpp
 Player.cpp(49,11): warning : unused variable 'hpSize' [-Wunused-const-variable]
@@ -73,4 +72,5 @@ Player.cpp(49,11): warning : unused variable 'hpSize' [-Wunused-const-variable]
   Stage.cpp
   Title.cpp
   Touch.cpp
+  Tree.cpp
   Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
