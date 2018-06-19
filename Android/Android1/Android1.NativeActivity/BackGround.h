@@ -3,7 +3,7 @@
 #include <memory>
 
 // 画像の最大数
-#define IMAGE_MAX 5
+#define IMAGE_MAX 2
 
 class Camera;
 
