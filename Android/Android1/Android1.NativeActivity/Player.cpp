@@ -69,6 +69,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Player/Dpunch2.png");
 
 	effect["effect1"] = LoadMane::Get()->Load("Player/effect1.png");
+	effect["effect2"] = LoadMane::Get()->Load("Player/effect2.png");
 
 	himage = LoadMane::Get()->Load("Player/hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
@@ -240,7 +241,7 @@ void Player::Draw(void)
 
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
 	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
-	DrawFormatString(800, 700, GetColor(255, 0, 0), "配列番号：%d", index);
+	DrawFormatString(800, 700, GetColor(255, 0, 0), "配列番号：%d", effe["effect2"].index);
 	
 	if (state == ST_NUETRAL)
 	{
@@ -462,6 +463,7 @@ void Player::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos siz
 void Player::EffectInit(void)
 {
 	SetEffect("effect1", 6, 3, 2, { -50,-80 }, { 240, 240 }, 5);
+	SetEffect("effect2", 5, 5, 1, { -160,-10 }, { 240, 240 }, 4);
 }
 
 // 待機時の処理
@@ -561,6 +563,8 @@ void Player::Dash(void)
 
 	reverse = (dash < 180.0f) ? false : true;
 
+	effe["effect2"].flag = true;
+
 	if (reverse == false)
 	{
 		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed + 2)) : 0;
@@ -588,6 +592,7 @@ void Player::Dash(void)
 
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
+		effe["effect2"].flag = false;
 		SetState(ST_NUETRAL);
 		SetMode("wait");
 		func = &Player::Nuetral;
