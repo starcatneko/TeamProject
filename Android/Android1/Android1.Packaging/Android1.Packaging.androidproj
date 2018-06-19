@@ -120,10 +120,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Content Include="assets\apple.png" />
-    <Content Include="assets\back1.png" />
-    <Content Include="assets\back2.png" />
-    <Content Include="assets\back3.png" />
-    <Content Include="assets\back4.png" />
     <Content Include="assets\Ddash.png" />
     <Content Include="assets\Dpunch.png" />
     <Content Include="assets\Dpunch2.png" />
@@ -132,6 +128,7 @@
     <Content Include="assets\effect1.png" />
     <Content Include="assets\effect2.png" />
     <Content Include="assets\flick.png" />
+    <Content Include="assets\gameback.png" />
     <Content Include="assets\load.png" />
     <Content Include="assets\Ndash.png" />
     <Content Include="assets\Npunch.png" />
