@@ -20,7 +20,7 @@
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(40), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
+	attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
 {
 	this->cam = cam;
 	this->st = st;
@@ -53,7 +53,14 @@ void Dust::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	for (auto& r : d)
 	{
-		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, GetColor(0, 255, 0), true);
+		if (r.type == RectType::Damage)
+		{
+			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0x00ff00, true);
+		}
+		else
+		{
+			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0xff0000, true);
+		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -180,8 +187,9 @@ void Dust::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(lpos.x - (pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2)), std::abs(lpos.y - (pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2)) };
-	if (tmp.x <= attackRange && tmp.y <= attackRange)
+	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
+	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
+	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
 	{
 		SetState(ST_ATTACK);
 		func = &Dust::Attack;
@@ -192,7 +200,7 @@ void Dust::Neutral(void)
 		if (wait <= 0)
 		{
 			SetState(ST_WALK);
-			target = pl.lock()->GetLocalPos();
+			target = pl.lock()->GetCenter();
 			func = &Dust::Walk;
 		}
 	}
@@ -215,9 +223,9 @@ void Dust::Walk(void)
 	}
 	color = 0x00ffff;
 
-	//プレイヤーとの距離を求める
-	Pos tmp = { std::abs(lpos.x - (pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2)), std::abs(lpos.y - (pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2)) };
-	if (tmp.x <= attackRange && tmp.y <= attackRange)
+	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
+	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
+	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
 	{
 		SetState(ST_ATTACK);
 		func = &Dust::Attack;
@@ -225,10 +233,10 @@ void Dust::Walk(void)
 	else
 	{
 		// 目標座標の更新
-		target = { pl.lock()->GetLocalPos().x + pl.lock()->GetSize().x / 2, pl.lock()->GetLocalPos().y + pl.lock()->GetSize().y / 2 };
+		target = { pl.lock()->GetCenter().x, pl.lock()->GetCenter().y };
 		if (dirwait == 0)
 		{
-			dir = (lpos.x > target.x ? DIR_LEFT : DIR_RIGHT);
+			dir = (center.x > target.x ? DIR_LEFT : DIR_RIGHT);
 			dirwait = 30;
 		}
 		else
@@ -239,24 +247,24 @@ void Dust::Walk(void)
 		if (dir == DIR_LEFT)
 		{
 			pos.x -= speed;
-			if (lpos.y != target.y)
+			if (center.y != target.y)
 			{
-				pos.y += (lpos.y > target.y ? -speed : speed);
+				pos.y += (center.y > target.y ? -speed : speed);
 			}
 		}
 		else if (dir == DIR_RIGHT)
 		{
 			pos.x += speed;
-			if (lpos.y != target.y)
+			if (center.y != target.y)
 			{
-				pos.y += (lpos.y > target.y ? -speed : speed);
+				pos.y += (center.y > target.y ? -speed : speed);
 			}
 		}
 		else
 		{
-			if (lpos.y != target.y)
+			if (center.y != target.y)
 			{
-				pos.y += (lpos.y > target.y ? -speed : speed);
+				pos.y += (center.y > target.y ? -speed : speed);
 			}
 		}
 		SetState(ST_NUETRAL);
@@ -317,7 +325,7 @@ void Dust::Die(void)
 void Dust::UpData(void)
 {
 	lpos = cam.lock()->Correction(pos);
-	center = { (lpos.x - size.x / 2), (lpos.y - size.y / 2) };
+	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
 	Animator(animTime[mode]);
 
