@@ -56,20 +56,20 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 {
 	Reset();
 
-	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Player/Nwait.png");
-	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Player/Nwalk.png");
-	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Player/Ndash.png");
-	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Player/Npunch.png");
-	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Player/Npunch2.png");
+	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Nwait.png");
+	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Nwalk.png");
+	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Ndash.png");
+	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Npunch.png");
+	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Npunch2.png");
 
-	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Player/Dwait.png");
-	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Player/Dwalk.png");
-	image[PlType::pinch]["dash"] = LoadMane::Get()->Load("Player/Ddash.png");
-	image[PlType::pinch]["attack1"] = LoadMane::Get()->Load("Player/Dpunch.png");
-	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Player/Dpunch2.png");
+	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Dwait.png");
+	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Dwalk.png");
+	image[PlType::pinch]["dash"] = LoadMane::Get()->Load("Ddash.png");
+	image[PlType::pinch]["attack1"] = LoadMane::Get()->Load("Dpunch.png");
+	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Dpunch2.png");
 
-	effect["effect1"] = LoadMane::Get()->Load("Player/effect1.png");
-	effect["effect2"] = LoadMane::Get()->Load("Player/effect2.png");
+	effect["effect1"] = LoadMane::Get()->Load("effect1.png");
+	effect["effect2"] = LoadMane::Get()->Load("effect2.png");
 
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();

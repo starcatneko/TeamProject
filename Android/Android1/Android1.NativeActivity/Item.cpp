@@ -16,17 +16,6 @@ Item::~Item()
 {
 }
 
-// アニメーション管理
-void Item::Animator(int cnt, int flam)
-{
-	++this->flam;
-	if (this->flam >= flam)
-	{
-		index = (index + 1 < cnt) ? ++index : 0;
-		this->flam = 0;
-	}
-}
-
 // 座標の取得
 Pos Item::GetPos(void)
 {
@@ -55,6 +44,17 @@ void Item::SetSize(Pos size)
 bool Item::GetHit(void)
 {
 	return hit;
+}
+
+// アニメーション管理
+void Item::Animator(int cnt, int flam)
+{
+	++this->flam;
+	if (this->flam >= flam)
+	{
+		index = (index + 1 < cnt) ? ++index : 0;
+		this->flam = 0;
+	}
 }
 
 // 当たり判定

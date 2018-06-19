@@ -19,9 +19,6 @@ public:
 	// 処理
 	virtual void UpData(void) = 0;
 
-	// アニメーション管理
-	void Animator(int cnt, int flam);
-
 	// 座標の取得
 	Pos GetPos(void);
 	// 座標のセット
@@ -34,6 +31,9 @@ public:
 
 	// あたりフラグの取得d
 	bool GetHit(void);
+
+	// アニメーション管理
+	void Animator(int cnt, int flam);
 
 	// 当たり判定
 	bool CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2);
