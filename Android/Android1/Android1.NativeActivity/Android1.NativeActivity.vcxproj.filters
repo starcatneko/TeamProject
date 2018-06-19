@@ -64,9 +64,6 @@
     <ClCompile Include="EnemyMane.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>リソース</Filter>
-    </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
@@ -139,9 +136,6 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="EnemyMane.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">

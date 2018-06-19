@@ -35,15 +35,22 @@ Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state'
                ^
   1 warning generated.
   Game.cpp
-  GameMane.cpp
   GamePlay.cpp
-  Ground.cpp
+  In file included from GamePlay.cpp:1:
+./GamePlay.h(84,6): warning : private field 'speed' is not used [-Wunused-private-field]
+          int speed;
+              ^
+  1 warning generated.
   Item.cpp
   ItemMane.cpp
   LoadMane.cpp
   Main.cpp
   Over.cpp
   Player.cpp
+Player.cpp(49,11): warning : unused variable 'hpSize' [-Wunused-const-variable]
+  const Pos hpSize = { 128,128 };
+            ^
+  1 warning generated.
   Scene.cpp
   Score.cpp
   In file included from Score.cpp:1:
@@ -53,10 +60,10 @@ Enemy.cpp(5,32): warning : field 'speed' will be initialized after field 'state'
   1 warning generated.
   Stage.cpp
   Title.cpp
+  In file included from Title.cpp:1:
+./Title.h(36,6): warning : private field 'speed' is not used [-Wunused-private-field]
+          int speed;
+              ^
+  1 warning generated.
   Touch.cpp
-   undefined reference to 'Debug::Create()'
-   undefined reference to 'Debug::Update()'
-   undefined reference to 'Debug::instance'
-   undefined reference to 'Debug::Update()'
-  clang.exe: error: linker command failed with exit code 1 (use -v to see invocation)
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Application Type\Android\3.0\Android.Common.targets(104,5): error MSB6006: "clang.exe" はコード 1 を伴って終了しました。
+  Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

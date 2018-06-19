@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "BackGround.h"
 #include "Stage.h"
-#include "Ground.h"
 #include "Player.h"
 #include "Dust.h"
 #include "Fannings.h"
@@ -37,7 +36,6 @@ void GamePlay::Create(void)
 	cam.reset(new Camera());
 	back.reset(new BackGround(cam));
 	st.reset(new Stage());
-	ground.reset(new Ground());
 	pl.reset(new Player({ WINDOW_X / 2 - st->GetChipPlSize().x / 2,(WINDOW_Y - st->GetChipPlSize().y) }, cam, st));
 	ui.reset(new Interface(pl));
 	du.reset(new Dust({0,0}, cam, st, pl));
@@ -62,7 +60,6 @@ void GamePlay::Draw(void)
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x222222, true);
 
 	back->Draw();
-	ground->Draw();
 	ItemDraw();
 	//EnemyDraw();
 	pl->Draw();
