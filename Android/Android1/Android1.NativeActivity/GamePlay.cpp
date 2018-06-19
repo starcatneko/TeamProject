@@ -38,8 +38,6 @@ void GamePlay::Create(void)
 	st.reset(new Stage());
 	pl.reset(new Player({ WINDOW_X / 2 - st->GetChipPlSize().x / 2,(WINDOW_Y - st->GetChipPlSize().y) }, cam, st));
 	ui.reset(new Interface(pl));
-	du.reset(new Dust({0,0}, cam, st, pl));
-	fa.reset(new Fannings({ 0,0 }, cam, st, pl));
 }
 
 // ボックス描画
@@ -50,7 +48,6 @@ void GamePlay::DrawBoxx(void)
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	Debug::Get().Update();
-
 }
 
 // 描画
@@ -61,18 +58,12 @@ void GamePlay::Draw(void)
 
 	back->Draw();
 	ItemDraw();
-	//EnemyDraw();
+	EnemyDraw();
 	pl->Draw();
 	cam->Draw();
 	ui->Draw();
 	DrawBoxx();
 	Debug::Get().DrawGage();
-
-	for (int i = 0; i < s.size(); ++i)
-	{
-		Pos p = cam->Correction(s[i]);
-		DrawBox(p.x, p.y, p.x + 240, p.y + 270, GetColor(255, 0, 0), true);
-	}
 }
 
 // 処理
@@ -91,12 +82,15 @@ void GamePlay::Load(void)
 	auto s_enemy = st->GetEnemy(y, (y + WINDOW_Y));
 	for (unsigned int i = 0; i < s_enemy.size(); ++i)
 	{
-		 if (s_enemy[i] == 1)
+		Pos tmp = { x * st->GetChipEneSize().x, -(read[0] * st->GetChipEneSize().y) + WINDOW_Y - st->GetChipEneSize().y - 40 };
+
+		if (s_enemy[i] == 1)
 		{
-			Pos tmp = { x * st->GetChipEneSize().x, -(read[0] * st->GetChipEneSize().y) + WINDOW_Y - st->GetChipEneSize().y - 40 };
 			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
+		}
+		else if (s_enemy[i] == 2)
+		{
 			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
-			s.push_back(tmp);
 		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)
@@ -111,9 +105,9 @@ void GamePlay::Load(void)
 	auto s_item = st->GetItem(y, (y + WINDOW_Y));
 	for (unsigned int i = 0; i < s_item.size(); ++i)
 	{
+		Pos tmp = { x * st->GetChipItemSize().x, -(read[1] * st->GetChipItemSize().y) + WINDOW_Y - st->GetChipItemSize().y - st->GetChipItemSize().y / 2 };
 		if (s_item[i] == 1)
 		{
-			Pos tmp = { x * st->GetChipItemSize().x, -(read[1] * st->GetChipItemSize().y) + WINDOW_Y - st->GetChipItemSize().y - st->GetChipItemSize().y / 2 };
 			item.push_back(ItemMane::Get()->CreateApple(tmp, cam, st, pl));
 		}
 		++x;
@@ -221,10 +215,8 @@ void GamePlay::Start(void)
 	Load();
 	pl->UpData();
 	EnemyUpData();
-	du->UpData();
-	ui->UpData();
-	fa->UpData();
 	ItemUpData();
+	ui->UpData();
 
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)

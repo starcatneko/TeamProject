@@ -60,6 +60,7 @@ void Title::Draw(void)
 		0,0,arrowSize.x, arrowSize.y, 
 		arrowSize.x / 2, arrowSize.y / 2,
 		(double)large["yazirusi"], 0.0, image["yazirusi"], true, false, false);
+
 	//フリック文字
 	DrawRectRotaGraph2(
 		pos["flick"].x + (flickSize.x * large["flick"]) / 2, pos["flick"].y + (flickSize.y * large["flick"]) / 2,
@@ -83,19 +84,6 @@ void Title::UpData(void)
 	{
 		pos["yazirusi"].y = (WINDOW_Y / 2) - (arrowSize.y * large["yazirusi"]) / 2;
 	}
-
-	if (CheckHitKey(KEY_INPUT_UP))
-	{
-		i += 0.1;
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN))
-	{
-		if (i > 0)
-		{
-			i -= 0.1;
-		}
-	}
-
 
 	(this->*func)();
 }

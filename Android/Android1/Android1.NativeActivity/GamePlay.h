@@ -44,8 +44,6 @@ private:
 	std::shared_ptr<BackGround>back;
 	std::shared_ptr<Ground>ground;
 	std::shared_ptr<Player> pl;
-	std::shared_ptr<Dust> du;
-	std::shared_ptr<Fannings> fa;
 
 
 	// 読み込み
@@ -94,7 +92,5 @@ private:
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
-
-	std::vector<Pos> s;
 };
 
