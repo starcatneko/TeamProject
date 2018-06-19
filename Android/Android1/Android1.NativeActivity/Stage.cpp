@@ -10,13 +10,13 @@ std::string ite = "item.csv";
 const Pos eneSize = { 240, 270 };
 
 // 敵のチップ数
-const Pos eneCnt = { 4, 28 };
+const Pos eneCnt = { 4, 29 };
 
 // アイテムのサイズ
 const Pos iteSize = { 128, 128 };
 
 // アイテムのチップ数
-const Pos iteCnt = { 8, 60 };
+const Pos iteCnt = { 8, 61 };
 
 // プレイヤーのサイズ
 const Pos plSize = { 240, 270 };

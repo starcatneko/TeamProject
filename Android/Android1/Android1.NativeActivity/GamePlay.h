@@ -94,5 +94,7 @@ private:
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
+
+	std::vector<Pos> s;
 };
 

@@ -68,6 +68,11 @@ void GamePlay::Draw(void)
 	DrawBoxx();
 	Debug::Get().DrawGage();
 
+	for (int i = 0; i < s.size(); ++i)
+	{
+		Pos p = cam->Correction(s[i]);
+		DrawBox(p.x, p.y, p.x + 240, p.y + 270, GetColor(255, 0, 0), true);
+	}
 }
 
 // 処理
@@ -88,9 +93,10 @@ void GamePlay::Load(void)
 	{
 		 if (s_enemy[i] == 1)
 		{
-			Pos tmp = { x * st->GetChipEneSize().x, read[0] * st->GetChipEneSize().y };
+			Pos tmp = { x * st->GetChipEneSize().x, -(read[0] * st->GetChipEneSize().y) + WINDOW_Y - st->GetChipEneSize().y - 40 };
 			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
 			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
+			s.push_back(tmp);
 		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)
