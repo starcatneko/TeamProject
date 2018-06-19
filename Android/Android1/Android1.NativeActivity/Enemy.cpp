@@ -2,7 +2,7 @@
 #include "Stage.h"
 
 // コンストラクタ
-Enemy::Enemy() : dir(DIR_NON), speed(0), state(ST_NUETRAL), target({0,0}), die(false)
+Enemy::Enemy() : mode("wait"), dir(DIR_NON), speed(0), state(ST_NUETRAL), target({ 0,0 }), die(false), reverse(false), animTime({ { "wait", 5 },{ "walk", 1 } }), flam(0), index(0)
 {
 }
 
@@ -73,4 +73,27 @@ Pos Enemy::Getsize(void)
 bool Enemy::GetDie(void)
 {
 	return die;
+}
+
+//あたり矩形の取得
+std::vector<Rect> Enemy::GetRect(void)
+{
+	std::vector<Rect>box;
+
+	if (reverse == false)
+	{
+		for (auto& r : rect[mode][index][flam])
+		{
+			box.push_back({ { center.x + r.offset.x, center.y + r.offset.y }, r.size, r.type });
+		}
+	}
+	else
+	{
+		for (auto& r : rect[mode][index][flam])
+		{
+			box.push_back({ { center.x - r.offset.x - r.size.x, center.y + r.offset.y },{ r.size.x, r.size.y }, r.type });
+		}
+	}
+
+	return box;
 }

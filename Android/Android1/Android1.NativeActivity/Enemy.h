@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "Typedef.h"
 #include <memory>
+#include <map>
+#include <vector>
+#include <string>
 
 class Camera;
 class Stage;
@@ -39,7 +42,7 @@ public:
 
 	// サイズの取得
 	Pos Getsize(void);
-
+	
 	// 死亡フラグの取得
 	bool GetDie(void);
 
@@ -62,6 +65,15 @@ protected:
 	// サイズ
 	Pos size;
 
+	// 中心座標
+	Pos center;
+
+	// 目標座標
+	Pos target;
+
+	// モード
+	std::string mode;
+
 	// 向き
 	DIR dir;
 
@@ -74,10 +86,28 @@ protected:
 	// 体力
 	int hp;
 
-	// 目標座標
-	Pos target;
-
 	// 死亡フラグ
 	bool die;
+
+	// 反転フラグ
+	bool reverse;
+
+	// フレーム
+	int flam;
+
+	// 配列の番号
+	int index;
+
+	// アニメーション速度
+	std::map<std::string, const int>animTime;
+
+	// アニメーション
+	std::map<std::string, std::vector<Box>>anim;
+
+	// あたり矩形
+	std::map<std::string, std::map<int, std::map<int, std::vector<Rect>>>>rect;
+
+	// あたり矩形の取得
+	std::vector<Rect> GetRect(void);
 };
 
