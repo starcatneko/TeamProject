@@ -25,6 +25,12 @@ Interface::~Interface()
 void Interface::UpData()
 {
 	cnt++;
+
+	// カウンターは一時間周期でリセット
+	if (cnt > 60 * 60 * 60 )
+	{
+		cnt = 0;
+	}
 }
 
 void Interface::Draw()
@@ -43,14 +49,7 @@ void Interface::DrawGage()
 
 	DrawGraph(0, 0, mask, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
-	DrawGraph(-(cnt % 256), 60, gage_red, true);
-
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-
-	SetDrawScreen(filterscreen);
-	DrawGraph(0, 0, mask, true);
-	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
-	DrawGraph(-(cnt % 256), 60, gage_red, true);
+	DrawGraph(-(cnt % 256),20+ pl.lock()->GetPower(), gage_red, true);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
@@ -62,10 +61,6 @@ void Interface::DrawGage()
 	DrawGraph(500, 0, gage, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
 	DrawGraph(500, 0, subscreen, true);
-
-	GraphBlend(filterscreen, DX_GRAPH_BLEND_DODGE,
-
-	DrawGraph(500, 0, filterscreen, true);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 

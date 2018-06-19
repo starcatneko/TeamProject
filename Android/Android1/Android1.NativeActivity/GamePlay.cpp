@@ -34,11 +34,11 @@ GamePlay::~GamePlay()
 void GamePlay::Create(void)
 {
 	cam.reset(new Camera());
-	ui.reset(new Interface(pl));
 	back.reset(new BackGround(cam));
 	st.reset(new Stage());
 	ground.reset(new Ground());
 	pl.reset(new Player({ 0,(ground->GetPos(0).y - 270) }, cam, st));
+	ui.reset(new Interface(pl));
 	du.reset(new Dust({0,0}, cam, st, pl));
 	fa.reset(new Fannings({ 0,0 }, cam, st, pl));
 }
