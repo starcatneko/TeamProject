@@ -7,22 +7,33 @@
 #include "DxLib.h"
 #include "Debug.h"
 
+// 画像要素
+/*back, yazirusi, flick*/
+
+// 背景サイズ
+const Pos backSize = { 1080, 1920 };
+
 // 矢印のサイズ
 const Pos arrowSize = { 122, 154 };
 
 // フリックの文字サイズ
 const Pos flickSize = { 601, 214 };
 
+// 拡大率
+std::map<std::string, int>large = { {"back", 1}, {"yazirusi", 2}, {"flick", 1} };
+
+double i = 1.0;
+
 // コンストラクタ
-Title::Title() : speed(100)
+Title::Title() : alpha(0)
 {
-	image = LoadMane::Get()->Load("yazirusi.png");
-	flick = LoadMane::Get()->Load("flick.png");
-	large[image] = 2;
-	large[flick] = 1;
-	pos[image] = { (WINDOW_X / 2) - (arrowSize.x * large[image]) / 2, (WINDOW_Y / 2) - (arrowSize.y * large[image]) / 2 };
-	pos[flick] = { (WINDOW_X / 2) - (flickSize.x * large[flick]) / 2, (WINDOW_Y / 2) - (flickSize.y * large[flick]) / 2 };
-	box = { { WINDOW_X, 0}, {WINDOW_X, WINDOW_Y} };
+	image["back"] = LoadMane::Get()->Load("titleback.png");
+	image["yazirusi"] = LoadMane::Get()->Load("yazirusi.png");
+	image["flick"] = LoadMane::Get()->Load("flick.png");
+	pos["back"] = { WINDOW_X / 2, WINDOW_Y / 2 };
+	pos["yazirusi"] = { (WINDOW_X / 2) - (arrowSize.x * large["yazirusi"]) / 2, (WINDOW_Y / 2) - (arrowSize.y * large["yazirusi"]) / 2 };
+	pos["flick"] = { (WINDOW_X / 2) - (flickSize.x * large["flick"]) / 2, (WINDOW_Y / 2) - (flickSize.y * large["flick"]) / 2 };
+
 	Score::Get()->Reset();
 	func = &Title::NotStart;
 }
@@ -35,41 +46,57 @@ Title::~Title()
 // 描画
 void Title::Draw(void)
 {
-	//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xaa0000, true);
+	//背景
 	DrawRectRotaGraph2(
-		pos[image].x + (arrowSize.x * large[image]) / 2, pos[image].y + (arrowSize.y * large[image]) / 2,
+		(pos["back"].x + (backSize.x * large["back"]) / 2) - WINDOW_X / 2,
+		(pos["back"].y + (backSize.y * large["back"]) / 2) - WINDOW_Y / 2, 
+		0,0,backSize.x, backSize.y, 
+		backSize.x / 2, backSize.y / 2, 
+		i, 0.0, image["back"], true, false, false);
+
+	//矢印
+	DrawRectRotaGraph2(
+		pos["yazirusi"].x + (arrowSize.x * large["yazirusi"]) / 2, pos["yazirusi"].y + (arrowSize.y * large["yazirusi"]) / 2,
 		0,0,arrowSize.x, arrowSize.y, 
 		arrowSize.x / 2, arrowSize.y / 2,
-		(double)large[image], 0.0, image, true, false, false);
-
+		(double)large["yazirusi"], 0.0, image["yazirusi"], true, false, false);
+	//フリック文字
 	DrawRectRotaGraph2(
-		pos[flick].x + (flickSize.x * large[flick]) / 2, pos[flick].y + (flickSize.y * large[flick]) / 2,
+		pos["flick"].x + (flickSize.x * large["flick"]) / 2, pos["flick"].y + (flickSize.y * large["flick"]) / 2,
 		0, 0, flickSize.x, flickSize.y,
 		flickSize.x / 2, flickSize.y / 2,
-		(double)large[flick], 0.0, flick, true, false, false);
+		(double)large["flick"], 0.0, image["flick"], true, false, false);
 
-	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
-	Debug::Get().DrawGage();
-	if (Debug::Get().drawclear == false)
-	{
-		Debug::Get().Update();
-		//DrawLine(0, box.pos.y,WINDOW_X, box.pos.y,0xffffff, 120);
-		//DrawCircle(GetRand(WINDOW_X), box.pos.y - 10 + (GetRand(200)), 100, 0xffffff, true, true);
-	}
-
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	DrawBox(0,0,WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // 処理
 void Title::UpData(void)
 {
-	if (pos[image].y > 200)
+	if (pos["yazirusi"].y > 200)
 	{
-		pos[image].y -= 10;
+		pos["yazirusi"].y -= 10;
 	}
 	else
 	{
-		pos[image].y = (WINDOW_Y / 2) - (arrowSize.y * large[image]) / 2;
+		pos["yazirusi"].y = (WINDOW_Y / 2) - (arrowSize.y * large["yazirusi"]) / 2;
 	}
+
+	if (CheckHitKey(KEY_INPUT_UP))
+	{
+		i += 0.1;
+	}
+	if (CheckHitKey(KEY_INPUT_DOWN))
+	{
+		if (i > 0)
+		{
+			i -= 0.1;
+		}
+	}
+
+
 	(this->*func)();
 }
 
@@ -87,12 +114,12 @@ void Title::NotStart(void)
 // スタート
 void Title::Start(void)
 {
-	Debug::Get().drawclear = false;
+	alpha += 60;
+	i += 0.1;
+	pos["back"].y += 60;
 
-	box.pos.y += WINDOW_Y/60;
-	if (box.pos.y >= WINDOW_Y)
+	if (i >= 2)
 	{
-		box.pos.y = WINDOW_Y;
 		Game::Get().ChangeScene(new GamePlay());
 	}
 }

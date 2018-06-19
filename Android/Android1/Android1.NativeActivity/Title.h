@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Typedef.h"
 #include <map>
+#include <string>
 
 class Title :
 	public Scene
@@ -27,20 +28,13 @@ private:
 
 
 	// 座標
-	std::map<int, Pos>pos;
+	std::map<std::string, Pos>pos;
 
-	// ボックス
-	Box box;
-
-	// 移動速度
-	int speed;
+	// 透明度
+	int alpha;
 
 	// 画像データ
-	int image;
-	int flick;
-
-	// 拡大
-	std::map<int, int>large;
+	std::map<std::string, int>image;
 
 	// 関数ポインタ
 	void (Title::*func)(void);
