@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Enemy.h"
 #include "Debug.h"
+
 class Dust :
 	public Enemy
 {
@@ -55,10 +56,6 @@ private:
 	//プレイヤーに渡す被攻撃矩形
 	Box box;
 
-	// アニメーション
-	std::map<std::string, std::vector<Box>>anim;
-	// あたり矩形
-	 std::map<std::string, std::map<int, std::map<int, std::vector<Rect>>>>rect;
 
 	// 関数ポインタ
 	void (Dust::*func)(void);
