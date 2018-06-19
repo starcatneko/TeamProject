@@ -37,10 +37,9 @@ public:
 	~Debug();
 	void DebugText(std::string s, int i, int offset_x, int offset_y, int color);
 	void DrawParticle();
+	void DrawGage();
 	void Update();
 	void ParticleUpdate();
-	int image;
-
 	std::list<std::shared_ptr<Particle>>ptc;
 
 	//particle

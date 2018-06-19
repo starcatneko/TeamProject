@@ -11,6 +11,7 @@
 #include "Dust.h"
 #include "Fannings.h"
 #include "Item.h"
+#include "Interface.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -38,6 +39,7 @@ void GamePlay::Create(void)
 	st.reset(new Stage());
 	ground.reset(new Ground());
 	pl.reset(new Player({ 0,(ground->GetPos(0).y - 270) }, cam, st));
+	ui.reset(new Interface(pl));
 	du.reset(new Dust({0,0}, cam, st, pl));
 	fa.reset(new Fannings({ 0,0 }, cam, st, pl));
 }
@@ -45,24 +47,30 @@ void GamePlay::Create(void)
 // ボックス描画
 void GamePlay::DrawBoxx(void)
 {
-	Debug::Get().Update();
-	DrawBox(box.pos.x, box.pos.y, (box.pos.x + box.size.x), (box.pos.y + box.size.y), GetColor(0, 0, 0), true);
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	Debug::Get().Update();
+
 }
 
 // 描画
 void GamePlay::Draw(void)
 {
+	//背景が無い時に分かりやすいように
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x222222, true);
+
 	back->Draw();
 	ground->Draw();
 	ItemDraw();
 	//EnemyDraw();
 	pl->Draw();
 	cam->Draw();
+	ui->Draw();
 	DrawBoxx();
+	Debug::Get().DrawGage();
+
 }
 
 // 処理
@@ -194,7 +202,7 @@ void GamePlay::Pinch(int i, int alpha)
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
-	box.pos.y -= speed;
+	box.pos.y -= WINDOW_Y/60;
 
 	if (box.pos.y <= -WINDOW_Y)
 	{
@@ -210,6 +218,9 @@ void GamePlay::Start(void)
 	Load();
 	pl->UpData();
 	EnemyUpData();
+	du->UpData();
+	ui->UpData();
+	fa->UpData();
 	ItemUpData();
 
 	//ゲームオーバー移行
