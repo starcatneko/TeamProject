@@ -40,12 +40,13 @@ void Debug::DebugText(std::string s,int i,int offset_x,int offset_y,int color)
 
 void Debug::DrawParticle()
 {
+	/*
 	//(*itr)->Draw();
 	//SetDrawBright(255, 255,255);
-	/*
+	
 	DrawRotaGraph(200, 200,
 		0.01f * cnt, 0, Debug::Get().image, true, false, false);
-*/
+	*/
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
@@ -124,10 +125,6 @@ void Debug::ParticleUpdate()
 			//(*itr)->box.size.x +=12;
 			//(*itr)->box.size.y +=12;
 
-		}
-		else
-		{
-			++itr;
 		}
 	}
 }
