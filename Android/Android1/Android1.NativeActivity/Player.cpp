@@ -11,7 +11,7 @@ int red = GetColor(255, 0, 0);
 int green = GetColor(0, 255, 0);
 
 // 体力最大値
-#define HP_MAX 5
+#define HP_MAX 100
 
 // 待機アニメーション関係
 #define WAIT_ANIM_CNT 16
@@ -71,7 +71,6 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	effect["effect1"] = LoadMane::Get()->Load("Player/effect1.png");
 	effect["effect2"] = LoadMane::Get()->Load("Player/effect2.png");
 
-	himage = LoadMane::Get()->Load("Player/hp.png");
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
@@ -194,16 +193,6 @@ void Player::Draw(void)
 	if (m_flam % 2 != 0)
 	{
 		(this->*draw)();
-	}
-
-	for (int i = 0; i < hp; ++i)
-	{
-		DrawRectRotaGraph2(
-			(hpSize.x * i) + (int)(hpSize.x * 0.6) / 2 - (int)(hpSize.x * 0.6) / 2 * i, 0 + (int)(hpSize.y * 0.6) / 2,
-			0, 0,
-			hpSize.x, hpSize.y,
-			hpSize.x / 2, hpSize.y / 2,
-			0.6, 0.0, himage, true, false, false);
 	}
 
 	for (auto itr = effe.begin(); itr != effe.end(); ++itr)

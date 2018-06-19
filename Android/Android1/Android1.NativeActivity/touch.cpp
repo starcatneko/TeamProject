@@ -15,7 +15,7 @@ const float circle = 360.0f;
 const int radius = 25;
 
 // 座標のオフセット
-const int offset = 5;
+const int offset = 10;
 
 // コンストラクタ
 Touch::Touch() : flam(0)

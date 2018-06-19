@@ -143,9 +143,6 @@ private:
 	// エフェクト画像データ
 	std::map<std::string, int>effect;
 
-	// 体力画像データ
-	int himage;
-
 	// 座標
 	Pos pos;
 

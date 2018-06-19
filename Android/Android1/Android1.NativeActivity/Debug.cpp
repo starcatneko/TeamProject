@@ -125,10 +125,6 @@ void Debug::ParticleUpdate()
 			//(*itr)->box.size.y +=12;
 
 		}
-		else
-		{
-			++itr;
-		}
 	}
 }
 
