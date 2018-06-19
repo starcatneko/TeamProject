@@ -552,7 +552,10 @@ void Player::Dash(void)
 
 	reverse = (dash < 180.0f) ? false : true;
 
-	effe["effect2"].flag = true;
+	if (type == PlType::normal)
+	{
+		effe["effect2"].flag = true;
+	}
 
 	if (reverse == false)
 	{

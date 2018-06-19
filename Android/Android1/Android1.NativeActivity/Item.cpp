@@ -5,12 +5,26 @@
 Item::Item()
 {
 	image = 0;
+	large = 1;
+	index = 0;
+	flam = 0;
 	hit = false;
 }
 
 // デストラクタ
 Item::~Item()
 {
+}
+
+// アニメーション管理
+void Item::Animator(int cnt, int flam)
+{
+	++this->flam;
+	if (this->flam >= flam)
+	{
+		index = (index + 1 < cnt) ? ++index : 0;
+		this->flam = 0;
+	}
 }
 
 // 座標の取得

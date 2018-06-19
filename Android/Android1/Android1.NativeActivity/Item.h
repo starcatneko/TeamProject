@@ -19,6 +19,9 @@ public:
 	// 処理
 	virtual void UpData(void) = 0;
 
+	// アニメーション管理
+	void Animator(int cnt, int flam);
+
 	// 座標の取得
 	Pos GetPos(void);
 	// 座標のセット
@@ -59,6 +62,15 @@ protected:
 
 	// サイズ
 	Pos size;
+
+	// 拡大率
+	int large;
+
+	// 配列番号
+	int index;
+
+	// フレーム
+	int flam;
 
 	// あたりフラグ
 	bool hit;
