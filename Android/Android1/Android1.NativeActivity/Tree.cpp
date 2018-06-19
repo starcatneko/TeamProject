@@ -48,4 +48,36 @@ void Tree::UpData(void)
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 
 	Animator(TREE_CNT, timer);
+
+	/*auto p = pl.lock()->GetLocalPos();
+	auto s = pl.lock()->GetSize();
+
+	if (pl.lock()->GetReverse() == false)
+	{
+		if (lpos.x < p.x + s.x + 1
+			&& lpos.x + size.x > p.x + s.x
+			&& lpos.y < p.y + s.y + 1
+			&& lpos.y + size.y > p.y - 1)
+		{
+			pl.lock()->SetSpeed(0);
+		}
+		else
+		{
+			pl.lock()->SetSpeed(5);
+		}
+	}
+	else
+	{
+		if (lpos.x + size.x > p.x - 1
+			&& lpos.x < p.x
+			&& lpos.y < p.y + s.y + 1
+			&& lpos.y + size.y > p.y - 1)
+		{
+			pl.lock()->SetSpeed(0);
+		}
+		else
+		{
+			pl.lock()->SetSpeed(5);
+		}
+	}*/
 }

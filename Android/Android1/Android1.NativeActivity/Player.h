@@ -69,6 +69,12 @@ public:
 	// モードのセット
 	void SetMode(std::string mode);
 
+	// 移動速度のセット
+	void SetSpeed(int id);
+
+	// 反転フラグの取得
+	bool GetReverse(void);
+
 	// 死亡フラグの取得
 	bool GetDie(void);
 
