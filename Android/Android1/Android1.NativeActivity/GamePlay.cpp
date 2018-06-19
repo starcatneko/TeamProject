@@ -1,4 +1,5 @@
 ﻿#include "GamePlay.h"
+#include "LoadMane.h"
 #include "ItemMane.h"
 #include "EnemyMane.h"
 #include "Game.h"
@@ -14,13 +15,18 @@
 #include "DxLib.h"
 #include <algorithm>
 
+// 読み込み画像関係
+#define LOAD_SIZE_X 460
+#define LOAD_SIZE_Y 116
+
 // コンストラクタ
-GamePlay::GamePlay() : speed(60), alpha(0), blend(false)
+GamePlay::GamePlay() : speed(60), blend(false), flam(0)
 {
+	Reset();
 	Create();
-	item.clear();
-	enemy.clear();
-	box = { { 0, 0 },{ WINDOW_X, WINDOW_Y } };
+	ImageInit();
+	alpha["image"] = 255;
+	alpha["pinch"] = 0;
 	memset(read, 0, sizeof(read));
 	func = &GamePlay::NotStart;
 }
@@ -28,6 +34,7 @@ GamePlay::GamePlay() : speed(60), alpha(0), blend(false)
 // デストラクタ
 GamePlay::~GamePlay()
 {
+	Reset();
 }
 
 // インスタンス化
@@ -43,10 +50,15 @@ void GamePlay::Create(void)
 // ボックス描画
 void GamePlay::DrawBoxx(void)
 {
-
-	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 0, 255), true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
+	pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["pinch"]);
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xff00ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	
 	Debug::Get().Update();
 }
 
@@ -66,10 +78,17 @@ void GamePlay::Draw(void)
 	Debug::Get().DrawGage();
 }
 
-// 処理
-void GamePlay::UpData(void)
+// 画像データのセット
+void GamePlay::SetImage(std::string name, std::string fileName, Pos pos, Pos size)
 {
-	(this->*func)();
+	image[name] = LoadMane::Get()->Load(fileName.c_str());
+	box[name] = { pos, size };
+}
+
+// 画像データのセット
+void GamePlay::ImageInit(void)
+{
+	SetImage("load", "load.png", { WINDOW_X - LOAD_SIZE_X, WINDOW_Y - LOAD_SIZE_Y * 2 }, { LOAD_SIZE_X, LOAD_SIZE_Y });
 }
 
 // 読み込み
@@ -119,6 +138,7 @@ void GamePlay::Load(void)
 	}
 }
 
+// 敵の描画
 void GamePlay::EnemyDraw(void)
 {
 	for (auto itr = enemy.begin(); itr != enemy.end(); itr++)
@@ -127,6 +147,7 @@ void GamePlay::EnemyDraw(void)
 	}
 }
 
+// 敵の処理
 void GamePlay::EnemyUpData(void)
 {
 	for (auto itr = enemy.begin(); itr != enemy.end();)
@@ -171,27 +192,36 @@ void GamePlay::ItemUpData(void)
 }
 
 // 画面エフェクト
-void GamePlay::Pinch(int i, int alpha)
+void GamePlay::Pinch(void)
 {
-	if (alpha == 0)
+	if (pl->GetHp() > 30)
 	{
-		this->alpha = alpha;
-	}
-
-	if (blend == false)
-	{
-		this->alpha += i;
-		if (this->alpha >= 128)
+		if (blend == true)
 		{
-			blend = true;
+			blend = false;
 		}
+
+		alpha["pinch"] = 0;
+
+		return;
 	}
 	else
 	{
-		this->alpha -= i;
-		if (this->alpha < 0)
+		if (blend == false)
 		{
-			blend = false;
+			++alpha["pinch"];
+			if (alpha["pinch"] >= 100)
+			{
+				blend = true;
+			}
+		}
+		else
+		{
+			--alpha["pinch"];
+			if (alpha["pinch"] <= 0)
+			{
+				blend = false;
+			}
 		}
 	}
 }
@@ -199,41 +229,32 @@ void GamePlay::Pinch(int i, int alpha)
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
-	box.pos.y -= WINDOW_Y/60;
-
-	if (box.pos.y <= -WINDOW_Y)
+	++flam;
+	if (SECOND(flam) >= 1)
 	{
-		func = &GamePlay::Start;
+		alpha["image"] -= 25;
+		if (alpha["image"] <= 0)
+		{
+			func = &GamePlay::Start;
+		}
 	}
 }
 
 // 各クラスの処理
 void GamePlay::Start(void)
 {
-	cam->UpData(pl->GetLocalPos());
-
-	Load();
 	pl->UpData();
 	EnemyUpData();
 	ItemUpData();
 	ui->UpData();
+
+	Pinch();
 
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)
 	{
 		Game::Get().ChangeScene(new Over());
 	}
-
-
-	if (pl->GetHp() <= 2)
-	{
-		Pinch(5, 128);
-	}
-	else
-	{
-		Pinch(0);
-	}
-
 
 #ifndef __ANDROID__
 	if (CheckHitKey(KEY_INPUT_RETURN))
@@ -242,4 +263,24 @@ void GamePlay::Start(void)
 	}
 #else
 #endif
+}
+
+// 処理
+void GamePlay::UpData(void)
+{
+	cam->UpData(pl->GetLocalPos());
+
+	Load();
+
+	(this->*func)();
+}
+
+// リセット
+void GamePlay::Reset(void)
+{
+	image.clear();
+	box.clear();
+	alpha.clear();
+	item.clear();
+	enemy.clear();
 }

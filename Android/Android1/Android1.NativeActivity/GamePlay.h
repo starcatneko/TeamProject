@@ -3,8 +3,10 @@
 #include "Interface.h"
 #include "Typedef.h"
 #include <memory>
+#include <map>
 #include <vector>
 #include <list>
+#include <string>
 
 class Camera;
 class Stage;
@@ -46,6 +48,11 @@ private:
 	std::shared_ptr<Player> pl;
 
 
+	// 画像データのセット
+	void SetImage(std::string name, std::string fileName, Pos pos, Pos size);
+	// 画像データのセット
+	void ImageInit(void);
+
 	// 読み込み
 	void Load(void);
 
@@ -60,13 +67,16 @@ private:
 	void ItemUpData(void);
 
 	// 画面エフェクト
-	void Pinch(int i, int alpha = 0);
+	void Pinch(void);
 
 	// 各クラスの処理前
 	void NotStart(void);
 
 	// 各クラスの処理
 	void Start(void);
+
+	// リセット
+	void Reset(void);
 
 
 	// アイテムのリスト
@@ -75,8 +85,11 @@ private:
 	//敵のリスト
 	std::list<std::shared_ptr<Enemy>>enemy;
 
-	// ボックス
-	Box box;
+	// 画像データ
+	std::map<std::string, int>image;
+
+	// 画像座標
+	std::map<std::string, Box>box;
 
 	// 移動速度
 	int speed;
@@ -85,10 +98,13 @@ private:
 	int read[2];
 
 	// 透明度
-	int alpha;
+	std::map<std::string, int>alpha;
 
 	// ピンチ時フラグ
 	bool blend;
+
+	// フレーム
+	int flam;
 
 	// 関数ポインタ
 	void (GamePlay::*func)();

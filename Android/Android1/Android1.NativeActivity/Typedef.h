@@ -21,6 +21,9 @@
 // 弧度法変換
 #define ANGLE(X) (X)*(180.0f/PI)
 
+// 秒変換
+#define SECOND(X) (X)/(60)
+
 
 
 
