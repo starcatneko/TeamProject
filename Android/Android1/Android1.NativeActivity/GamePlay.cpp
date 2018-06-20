@@ -28,6 +28,7 @@ GamePlay::GamePlay() : blend(false), flam(0)
 	alpha["image"] = 255;
 	alpha["pinch"] = 0;
 	memset(read, 0, sizeof(read));
+	draw = &GamePlay::LoadDraw;
 	func = &GamePlay::NotStart;
 }
 
@@ -47,34 +48,39 @@ void GamePlay::Create(void)
 	ui.reset(new Interface(pl));
 }
 
-// ボックス描画
-void GamePlay::DrawBoxx(void)
+// 読み込み描画
+void GamePlay::LoadDraw(void)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["pinch"]);
-	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xff00ff, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	
-	Debug::Get()->Update();
+	if (alpha["image"] <= 0)
+	{
+		draw = &GamePlay::NormalDraw;
+	}
 }
 
-// 描画
-void GamePlay::Draw(void)
+// 通常描画
+void GamePlay::NormalDraw(void)
 {
-	//背景が無い時に分かりやすいように
-	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x222222, true);
-
 	back->Draw();
 	ItemDraw();
 	EnemyDraw();
 	pl->Draw();
 	cam->Draw();
 	ui->Draw();
-	DrawBoxx();
+	
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["pinch"]);
+	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xff00ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+// 描画
+void GamePlay::Draw(void)
+{
+	(this->*draw)();
 }
 
 // 画像データのセット

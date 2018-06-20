@@ -206,59 +206,13 @@ void Player::Draw(void)
 		if (itr->second.flag == true)
 		{
 			DrawRectRotaGraph2(
-			GetEffect(itr->first).x, GetEffect(itr->first).y,
-			itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x), 
-			itr->second.size.x, itr->second.size.y, 
-			itr->second.size.x / 2, itr->second.size.y / 2,
-			1.0, 0.0, effect[itr->first], true, reverse, false);
+				GetEffect(itr->first).x, GetEffect(itr->first).y,
+				itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+				itr->second.size.x, itr->second.size.y,
+				itr->second.size.x / 2, itr->second.size.y / 2,
+				1.0, 0.0, effect[itr->first], true, reverse, false);
 		}
 	}
-
-#ifndef _DEBUG
-
-	auto p = GetRect();
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	for (auto& r : p)
-	{
-		if (r.type == RectType::Damage)
-		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, green, true);
-		}
-		else
-		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, red, true);
-		}
-		
-	}
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-
-	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
-	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", Score::Get()->GetScore());
-	DrawFormatString(800, 700, GetColor(255, 0, 0), "配列番号：%d", effe["effect2"].index);
-	
-	if (state == ST_NUETRAL)
-	{
-		DrawString(800, 50, "待機中", GetColor(255, 0, 0));
-	}
-	if (state == ST_WALK)
-	{
-		DrawString(800, 50, "歩き中", GetColor(255, 0, 0));
-	}
-	if (state == ST_ATTACK)
-	{
-		DrawString(800, 50, "攻撃中", GetColor(255, 0, 0));
-	}
-	if (state == ST_DAMAGE)
-	{
-		DrawString(800, 50, "ダメージ中", GetColor(255, 0, 0));
-	}
-	if (state == ST_DIE)
-	{
-		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
-	}
-#endif
 }
 
 // アニメーション管理

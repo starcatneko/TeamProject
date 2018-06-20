@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "Scene.h"
+#include <map>
+#include <string>
+
 class Over :
 	public Scene
 {

@@ -30,9 +30,6 @@ public:
 	// インスタンス化
 	void Create(void);
 
-	// ボックス描画
-	void DrawBoxx(void);
-
 	// 描画
 	void Draw(void);
 
@@ -46,6 +43,11 @@ private:
 	std::shared_ptr<BackGround>back;
 	std::shared_ptr<Ground>ground;
 	std::shared_ptr<Player> pl;
+
+	// 読み込み描画
+	void LoadDraw(void);
+	// 通常描画
+	void NormalDraw(void);
 
 
 	// 画像データのセット
@@ -102,6 +104,9 @@ private:
 
 	// フレーム
 	int flam;
+
+	// 関数ポインタ
+	void (GamePlay::*draw)();
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
