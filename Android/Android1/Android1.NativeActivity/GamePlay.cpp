@@ -250,6 +250,7 @@ void GamePlay::Start(void)
 	EnemyUpData();
 	ItemUpData();
 	ui->UpData();
+	back->UpData();
 
 	Pinch();
 

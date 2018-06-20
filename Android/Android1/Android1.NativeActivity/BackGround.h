@@ -32,7 +32,7 @@ private:
 
 	// 画像データ
 	int image[IMAGE_MAX];
-
+	int image_layer;
 	// 座標
 	Pos pos[IMAGE_MAX];
 
