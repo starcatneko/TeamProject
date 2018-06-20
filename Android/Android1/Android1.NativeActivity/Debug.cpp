@@ -10,6 +10,7 @@ void Debug::Create()
 {
 	if(instance ==nullptr)
 		instance = new Debug;
+
 }
 
 void Debug::Destroy()
@@ -21,6 +22,11 @@ void Debug::Destroy()
 Debug::Debug()
 {
 	drawclear = true;
+	FpsTime_i = 0;
+	FpsTime[0] = 0;
+	FpsTime[1] = 0;
+	Fps = 0;
+
 }
 
 
@@ -45,7 +51,7 @@ void Debug::DrawParticle()
 	//SetDrawBright(255, 255,255);
 	
 	DrawRotaGraph(200, 200,
-		0.01f * cnt, 0, Debug::Get().image, true, false, false);
+		0.01f * cnt, 0, Debug::Get()->image, true, false, false);
 	*/
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
@@ -56,23 +62,13 @@ void Debug::DrawParticle()
 	}
 }
 
-void Debug::DrawGage()
-{
 
-}
 void Debug::Update()
 {
-	cnt++;
 	//ParticleUpdate();
 	DrawParticle();
 	//CreateMaskScreen();
-	
-	//DrawMask(cnt * 64, 800, mask, DX_MASKTRANS_BLACK);
-	//DrawMask(cnt * 64, 700, mask, DX_MASKTRANS_NONE);
-	//DrawMask(cnt * 64, 600, mask, DX_MASKTRANS_WHITE);
-	
 
-	DrawFormatString(0, 0, 0xffffff, "%d", cnt);
 }
 void Debug::ParticleUpdate()
 {
@@ -147,7 +143,24 @@ Particle::~Particle()
 
 void Particle::Draw()
 {
-	//DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/100, 0, Debug::Get().image, true, false, false);
-	//DrawExtendGraph(box.pos.x, box.pos.y, box.pos.x + box.size.x * 4, box.pos.y+box.size.y*4,Debug::Get().image, true);
+	//DrawRotaGraph(box.pos.x, box.pos.y, (double)box.size.x/100, 0, Debug::Get()->image, true, false, false);
+	//DrawExtendGraph(box.pos.x, box.pos.y, box.pos.x + box.size.x * 4, box.pos.y+box.size.y*4,Debug::Get()->image, true);
 	//DrawCircle(box.pos.x, box.pos.y, 128, 0xffff00, true, true);
+}
+
+
+
+void Debug::FpsTimeFanction() {
+	if (FpsTime_i == 0)
+		FpsTime[0] = GetNowCount();               //1周目の時間取得
+	if (FpsTime_i == 49) {
+		FpsTime[1] = GetNowCount();               //50周目の時間取得
+		Fps = 1000.0f / ((FpsTime[1] - FpsTime[0]) / 50.0f);//測定した値からfpsを計算
+		FpsTime_i = 0;//カウントを初期化
+	}
+	else
+		FpsTime_i++;//現在何周目かカウント
+	if (Fps != 0)
+		DrawFormatString(0, 600, 0xffffff, "FPS %.1f", Fps); //fpsを表示
+	return;
 }

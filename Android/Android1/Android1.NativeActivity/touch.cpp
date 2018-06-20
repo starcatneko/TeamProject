@@ -15,7 +15,7 @@ const float circle = 360.0f;
 const int radius = 25;
 
 // 座標のオフセット
-const int offset = 10;
+const int offset = 50;
 
 // コンストラクタ
 Touch::Touch() : flam(0)
@@ -30,6 +30,10 @@ Touch::Touch() : flam(0)
 	{
 		tri.push_back({ sinf(RAD(i)), cosf((RAD(i))) });
 	}
+	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+
+	screen_puni = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+
 }
 
 // デストラクタ
@@ -77,19 +81,43 @@ void Touch::Draw(void)
 
 	float angle = GetUnsignedAngle();
 	DrawFormatString(0, 250, GetColor(255, 0, 0), "角度:%d", (int)angle);
+	
 
 	if (pos[ST_TOUCH] != -1 && pos[ST_NON] != -1)
 	{
+		
 		int n = (int)angle + 90 * ((int)angle / 360);
-
+		
 		DrawTriangle(
 			pos[ST_TOUCH].x, pos[ST_TOUCH].y,
 			pos[ST_NON].x - (int)(tri[n].cos * radius), pos[ST_NON].y + (int)(tri[n].sin * radius),
 			pos[ST_NON].x + (int)(tri[n].cos * radius), pos[ST_NON].y - (int)(tri[n].sin * radius),
 			GetColor(255, 255, 255), true);
 
-		DrawCircle(pos[ST_TOUCH].x, pos[ST_TOUCH].y, 10, GetColor(255, 255, 255), true);
+		DrawTriangle(
+			pos[ST_TOUCH].x - (int)(tri[n].cos * radius), pos[ST_TOUCH].y + (int)(tri[n].sin * radius),
+			pos[ST_NON].x - (int)(tri[n].cos * radius*2), pos[ST_NON].y + (int)(tri[n].sin * radius*2),
+			pos[ST_NON].x + (int)(tri[n].cos * radius*2), pos[ST_NON].y - (int)(tri[n].sin * radius*2),
+			GetColor(255, 255, 255), true);
+
+		DrawTriangle(
+			pos[ST_TOUCH].x + (int)(tri[n].cos * radius), pos[ST_TOUCH].y - (int)(tri[n].sin * radius),
+			pos[ST_NON].x - (int)(tri[n].cos * radius*2), pos[ST_NON].y + (int)(tri[n].sin * radius * 2),
+			pos[ST_NON].x + (int)(tri[n].cos * radius * 2), pos[ST_NON].y - (int)(tri[n].sin * radius * 2),
+			GetColor(255, 255, 255), true);
+
+		DrawTriangle(
+			pos[ST_NON].x, pos[ST_NON].y ,
+			pos[ST_TOUCH].x - (int)(tri[n].cos * radius), pos[ST_TOUCH].y + (int)(tri[n].sin * radius),
+			pos[ST_TOUCH].x + (int)(tri[n].cos * radius), pos[ST_TOUCH].y - (int)(tri[n].sin * radius),
+			GetColor(255, 255, 255), true);
+
+		
+
+		DrawCircle(pos[ST_TOUCH].x, pos[ST_TOUCH].y, radius, GetColor(255, 255, 255), true);
 		DrawCircle(pos[ST_NON].x, pos[ST_NON].y, radius * 2, GetColor(255, 255, 255), true);
+
+
 	}
 
 	if (Tap() == true)

@@ -78,6 +78,7 @@ void Game::Draw(void)
 	Touch::Get()->Draw();
 
 
+	Debug::Get()->FpsTimeFanction();
 	//裏画面を表画面に瞬間コピー
 	ScreenFlip();
 }
