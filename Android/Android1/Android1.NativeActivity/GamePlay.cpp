@@ -217,7 +217,7 @@ void GamePlay::Pinch(void)
 		if (blend == false)
 		{
 			++alpha["pinch"];
-			if (alpha["pinch"] >= 100)
+			if (alpha["pinch"] >= 80)
 			{
 				blend = true;
 			}

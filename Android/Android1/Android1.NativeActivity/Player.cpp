@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "GameMane.h"
 #include "LoadMane.h"
+#include "Score.h"
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
@@ -12,6 +13,9 @@ int green = GetColor(0, 255, 0);
 
 // 体力最大値
 #define HP_MAX 100
+
+// パワー最大値
+#define POWER_MAX 100
 
 // 待機アニメーション関係
 #define WAIT_ANIM_CNT 16
@@ -44,6 +48,9 @@ std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 
 
 // 無敵時間
 const int invincible = 10;
+
+// 移動速度
+const int baseSpeed = 5;
 
 // プレイヤーの拡大率
 const int large = 1;
@@ -80,7 +87,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	reverse = false;
 	hp = HP_MAX;
 	power = 0;
-	speed = 5;
+	speed = baseSpeed;
 	die = false;
 	flam = 0;
 	index = 0;
@@ -88,6 +95,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	attack2 = false;
 	dash = 0.0f;
 	tmp = DIR_NON;
+	w_flam = 0;
 	
 	AnimInit();
 	RectInit();
@@ -227,7 +235,7 @@ void Player::Draw(void)
 
 
 	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
-	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
+	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", Score::Get()->GetScore());
 	DrawFormatString(800, 700, GetColor(255, 0, 0), "配列番号：%d", effe["effect2"].index);
 	
 	if (state == ST_NUETRAL)
@@ -392,7 +400,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
@@ -421,7 +429,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
@@ -727,6 +735,8 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	type = (hp >= HP_MAX / 2) ? PlType::normal : PlType::pinch;
+	
+	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
 
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
@@ -741,21 +751,34 @@ void Player::UpData(void)
 
 	(this->*func)();
 
-	if (m_flam != -1)
+	if (m_flam != -1 && GameMane::Get()->GetHit() == false)
 	{
 		m_flam = (m_flam < invincible) ? ++m_flam : -1;
 	}
 
+	if (GameMane::Get()->GetHit() == false && state != ST_DIE)
+	{
+		++w_flam;
+		if (w_flam >= 60 * 3 || GetPower() == 0)
+		{
+			w_flam = 0;
+		}
+
+		if (w_flam % (60 * 3) == 0)
+		{
+			DownPower(1);
+		}
+	}
+
+	Score::Get()->SetScore(power);
+
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-		--hp;
+		DownHp(10);
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
-		if (hp < HP_MAX)
-		{
-			++hp;
-		}
+		UpHp(10);
 	}
 }
 
@@ -827,12 +850,20 @@ void Player::SetHp(int hp)
 void Player::UpHp(int i)
 {
 	hp += i;
+	if (hp > HP_MAX)
+	{
+		SetHp(HP_MAX);
+	}
 }
 
 // 体力の減少
 void Player::DownHp(int i)
 {
 	hp -= i;
+	if (hp < 0)
+	{
+		SetHp(0);
+	}
 }
 
 // アップルパワーの取得
@@ -851,6 +882,20 @@ void Player::SetPower(int pw)
 void Player::UpPower(int pw)
 {
 	power += pw;
+	if (power > POWER_MAX)
+	{
+		SetPower(POWER_MAX);
+	}
+}
+
+// アップルパワーの減少
+void Player::DownPower(int pw)
+{
+	power -= pw;
+	if (power < 0)
+	{
+		SetPower(0);
+	}
 }
 
 // 状態の取得
