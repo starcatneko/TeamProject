@@ -41,6 +41,9 @@ private:
 	// アルファ
 	int alpha;
 
+	// フレーム
+	int flam;
+
 	// 関数ポインタ
 	void (Over::*func)(void);
 };

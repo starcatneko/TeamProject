@@ -16,7 +16,7 @@
 #define BAXK_Y 1
 
 // コンストラクタ
-Over::Over() : alpha(0)
+Over::Over() : alpha(0), flam(0)
 {
 	Reset();
 	image["over"] = LoadMane::Get()->Load("over.png");
@@ -51,6 +51,8 @@ void Over::Draw(void)
 // スタート前
 void Over::NotStart(void)
 {
+	++flam;
+	
 	if (alpha < 255)
 	{
 		alpha += 1;
@@ -66,7 +68,8 @@ void Over::NotStart(void)
 	}
 
 	DIR tmp = DIR_NON;
-	if (Touch::Get()->Check(TAP, tmp) == true)
+	if (Touch::Get()->Check(TAP, tmp) == true
+		|| flam >= 300)
 	{
 		func = &Over::Start;
 	}

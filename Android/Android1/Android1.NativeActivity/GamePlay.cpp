@@ -51,6 +51,13 @@ void GamePlay::Create(void)
 // 読み込み描画
 void GamePlay::LoadDraw(void)
 {
+	back->Draw();
+	ItemDraw();
+	EnemyDraw();
+	pl->Draw();
+	cam->Draw();
+	ui->Draw();
+
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
