@@ -10,6 +10,7 @@ Item::Item()
 	index = 0;
 	flam = 0;
 	effectiv = 0;
+	effect_cnt = 0;
 	hit = false;
 }
 
@@ -70,7 +71,7 @@ bool Item::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 	&& pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y)
 	{
 		hit = true;
-
+		effect_cnt = 30;
 		return true;
 	}
 

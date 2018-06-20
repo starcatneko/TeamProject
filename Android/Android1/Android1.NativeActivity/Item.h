@@ -77,4 +77,7 @@ protected:
 
 	// あたりフラグ
 	bool hit;
+
+	// エフェクト処理フレーム
+	int effect_cnt;
 };
