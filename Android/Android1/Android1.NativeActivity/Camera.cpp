@@ -16,6 +16,7 @@ const int timer = 10;
 Camera::Camera() : pos({ 0,0 }), target({ 0,0}), speed(15), frame(0), shake(false)
 {
 	refuge = { 0,0 };
+	end = false;
 	func = &Camera::NotMove;
 	shake_frame = 0;
 }
@@ -27,7 +28,7 @@ Camera::~Camera()
 void Camera::Draw(void)
 {
 #ifndef _DEBUG
-	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", pos);
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", end, pos.x);
 	DrawFormatString(250, 275, GetColor(255, 0, 0), "カメラ目標：%d,%d", target);
 #endif
 }
@@ -38,6 +39,11 @@ void Camera::NotMove(Pos pos)
 	
 	if (this->pos.y < -(WINDOW_Y * 3))
 	{
+		if (end == false)
+		{
+			end = true;
+		}
+
 		return;
 	}
 	
@@ -155,4 +161,10 @@ bool Camera::GetShakeFlag(void)
 void Camera::SetShakeFlag(bool flag)
 {
 	shake = flag;
+}
+
+// 移動終了フラグの取得
+bool Camera::GetEnd(void)
+{
+	return end;
 }

@@ -29,6 +29,9 @@ public:
 	// 揺らしフラグのセット
 	void SetShakeFlag(bool flag);
 
+	// 移動終了フラグの取得
+	bool GetEnd(void);
+
 private:
 	// 動いていないときの処理
 	void NotMove(Pos pos);
@@ -58,6 +61,9 @@ private:
 
 	// 揺らしフラグ
 	bool shake;
+
+	// 移動終了フラグ
+	bool end;
 
 	// 関数ポインタ
 	void (Camera::*func)(Pos);
