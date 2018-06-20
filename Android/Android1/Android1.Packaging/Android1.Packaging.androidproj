@@ -137,6 +137,8 @@
     <Content Include="assets\Npunch2.png" />
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
+    <Content Include="assets\over.png" />
+    <Content Include="assets\overback.png" />
     <Content Include="assets\titleback.png" />
     <Content Include="assets\tree.png" />
     <Content Include="assets\yazirusi.png" />

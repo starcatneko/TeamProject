@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "GameMane.h"
 #include "LoadMane.h"
+#include "Score.h"
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
@@ -12,6 +13,9 @@ int green = GetColor(0, 255, 0);
 
 // 体力最大値
 #define HP_MAX 100
+
+// パワー最大値
+#define POWER_MAX 100
 
 // 待機アニメーション関係
 #define WAIT_ANIM_CNT 16
@@ -44,6 +48,9 @@ std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 
 
 // 無敵時間
 const int invincible = 10;
+
+// 移動速度
+const int baseSpeed = 5;
 
 // プレイヤーの拡大率
 const int large = 1;
@@ -80,7 +87,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	reverse = false;
 	hp = HP_MAX;
 	power = 0;
-	speed = 5;
+	speed = baseSpeed;
 	die = false;
 	flam = 0;
 	index = 0;
@@ -88,6 +95,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	attack2 = false;
 	dash = 0.0f;
 	tmp = DIR_NON;
+	w_flam = 0;
 	
 	AnimInit();
 	RectInit();
@@ -198,59 +206,13 @@ void Player::Draw(void)
 		if (itr->second.flag == true)
 		{
 			DrawRectRotaGraph2(
-			GetEffect(itr->first).x, GetEffect(itr->first).y,
-			itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x), 
-			itr->second.size.x, itr->second.size.y, 
-			itr->second.size.x / 2, itr->second.size.y / 2,
-			1.0, 0.0, effect[itr->first], true, reverse, false);
+				GetEffect(itr->first).x, GetEffect(itr->first).y,
+				itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+				itr->second.size.x, itr->second.size.y,
+				itr->second.size.x / 2, itr->second.size.y / 2,
+				1.0, 0.0, effect[itr->first], true, reverse, false);
 		}
 	}
-
-#ifndef _DEBUG
-
-	auto p = GetRect();
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	for (auto& r : p)
-	{
-		if (r.type == RectType::Damage)
-		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, green, true);
-		}
-		else
-		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, red, true);
-		}
-		
-	}
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-
-	DrawFormatString(200, 700, GetColor(255, 0, 0), "PL座標：%d,%d", lpos);
-	DrawFormatString(500, 700, GetColor(255, 0, 0), "PL方向：%d", dir);
-	DrawFormatString(800, 700, GetColor(255, 0, 0), "配列番号：%d", effe["effect2"].index);
-	
-	if (state == ST_NUETRAL)
-	{
-		DrawString(800, 50, "待機中", GetColor(255, 0, 0));
-	}
-	if (state == ST_WALK)
-	{
-		DrawString(800, 50, "歩き中", GetColor(255, 0, 0));
-	}
-	if (state == ST_ATTACK)
-	{
-		DrawString(800, 50, "攻撃中", GetColor(255, 0, 0));
-	}
-	if (state == ST_DAMAGE)
-	{
-		DrawString(800, 50, "ダメージ中", GetColor(255, 0, 0));
-	}
-	if (state == ST_DIE)
-	{
-		DrawString(800, 50, "死亡中", GetColor(255, 0, 0));
-	}
-#endif
 }
 
 // アニメーション管理
@@ -392,7 +354,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
@@ -421,7 +383,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, 10 }, { (size.x / 4), (size.y / 6) }, RectType::Attack);
+			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
@@ -555,7 +517,7 @@ void Player::Dash(void)
 	if (reverse == false)
 	{
 		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
-		if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
+		if (Touch::Get()->GetTri((int)dash).cos > 0)
 		{
 			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
@@ -727,6 +689,8 @@ void Player::Die(void)
 void Player::UpData(void)
 {
 	type = (hp >= HP_MAX / 2) ? PlType::normal : PlType::pinch;
+	
+	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
 
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
@@ -741,21 +705,34 @@ void Player::UpData(void)
 
 	(this->*func)();
 
-	if (m_flam != -1)
+	if (m_flam != -1 && GameMane::Get()->GetHit() == false)
 	{
 		m_flam = (m_flam < invincible) ? ++m_flam : -1;
 	}
 
+	if (GameMane::Get()->GetHit() == false && state != ST_DIE)
+	{
+		++w_flam;
+		if (w_flam >= 60 * 3 || GetPower() == 0)
+		{
+			w_flam = 0;
+		}
+
+		if (w_flam % (60 * 3) == 0)
+		{
+			DownPower(1);
+		}
+	}
+
+	Score::Get()->SetScore(power);
+
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-		--hp;
+		DownHp(10);
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
-		if (hp < HP_MAX)
-		{
-			++hp;
-		}
+		UpHp(10);
 	}
 }
 
@@ -827,12 +804,20 @@ void Player::SetHp(int hp)
 void Player::UpHp(int i)
 {
 	hp += i;
+	if (hp > HP_MAX)
+	{
+		SetHp(HP_MAX);
+	}
 }
 
 // 体力の減少
 void Player::DownHp(int i)
 {
 	hp -= i;
+	if (hp < 0)
+	{
+		SetHp(0);
+	}
 }
 
 // アップルパワーの取得
@@ -851,6 +836,20 @@ void Player::SetPower(int pw)
 void Player::UpPower(int pw)
 {
 	power += pw;
+	if (power > POWER_MAX)
+	{
+		SetPower(POWER_MAX);
+	}
+}
+
+// アップルパワーの減少
+void Player::DownPower(int pw)
+{
+	power -= pw;
+	if (power < 0)
+	{
+		SetPower(0);
+	}
 }
 
 // 状態の取得

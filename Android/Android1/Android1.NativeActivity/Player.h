@@ -58,6 +58,8 @@ public:
 	void SetPower(int pw);
 	// アップルパワーの上昇
 	void UpPower(int pw);
+	// アップルパワーの減少
+	void DownPower(int pw);
 
 	// 状態の取得
 	STATES GetState(void);
@@ -218,6 +220,8 @@ private:
 	// 緊急
 	DIR tmp;
 
+	// ワールドフレーム
+	int w_flam;
 
 	// アニメーション
 	std::map<std::string, std::vector<Box>>anim;

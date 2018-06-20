@@ -26,6 +26,7 @@ Apple::Apple(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage> st, std::we
 	this->size = this->st.lock()->GetChipItemSize();
 	lpos = this->cam.lock()->Correction(this->pos);
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
+	effectiv = 10;
 }
 
 // デストラクタ
@@ -53,11 +54,7 @@ void Apple::UpData(void)
 
 	if (CheckHit(center, {1,1}, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()) == true)
 	{
-		pl.lock()->UpPower(10);
-		if (pl.lock()->GetPower() >= 100)
-		{
-			pl.lock()->SetPower(100);
-		}
+		pl.lock()->UpPower(effectiv);
 	}
 
 	if (lpos.y > WINDOW_Y + size.y / 2)

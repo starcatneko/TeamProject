@@ -72,6 +72,9 @@ protected:
 	// フレーム
 	int flam;
 
+	// 効果量
+	int effectiv;
+
 	// あたりフラグ
 	bool hit;
 };

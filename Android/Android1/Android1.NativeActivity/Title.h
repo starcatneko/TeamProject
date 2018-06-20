@@ -26,15 +26,23 @@ private:
 	// スタート
 	void Start(void);
 
+	// リセット
+	void Reset(void);
 
-	// 座標
-	std::map<std::string, Pos>pos;
 
 	// 透明度
 	int alpha;
 
 	// 画像データ
 	std::map<std::string, int>image;
+
+	// 拡大率
+	std::map<std::string, int>large;
+
+	// 座標
+	std::map<std::string, Pos>pos;
+
+	double i;
 
 	// 関数ポインタ
 	void (Title::*func)(void);
