@@ -1,5 +1,7 @@
 ﻿#include "Tree.h"
 #include "LoadMane.h"
+#include "GameMane.h"
+#include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"
@@ -24,6 +26,8 @@ Tree::Tree(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage> st, std::weak
 	this->size = this->st.lock()->GetChipItemSize();
 	lpos = this->cam.lock()->Correction(this->pos);
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
+	dir = DIR_NON;
+	reverse = this->pl.lock()->GetReverse();
 }
 
 // デストラクタ
@@ -49,35 +53,37 @@ void Tree::UpData(void)
 
 	Animator(TREE_CNT, timer);
 
-	/*auto p = pl.lock()->GetLocalPos();
-	auto s = pl.lock()->GetSize();
-
-	if (pl.lock()->GetReverse() == false)
+	if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true)
 	{
-		if (lpos.x < p.x + s.x + 1
-			&& lpos.x + size.x > p.x + s.x
-			&& lpos.y < p.y + s.y + 1
-			&& lpos.y + size.y > p.y - 1)
+		hit = false;
+
+		if (pl.lock()->GetMode() == "walk")
 		{
-			pl.lock()->SetSpeed(0);
+			if (dir == pl.lock()->GetTmp()
+				|| reverse == pl.lock()->GetReverse())
+			{
+				pl.lock()->SetSpeed(0);
+			}
+			else
+			{
+				pl.lock()->SetSpeed(5);
+			}
 		}
-		else
+		else if(pl.lock()->GetMode() == "dash")
 		{
-			pl.lock()->SetSpeed(5);
+			if (reverse == pl.lock()->GetReverse())
+			{
+				pl.lock()->SetSpeed(0);
+			}
+			else
+			{
+				pl.lock()->SetSpeed(5);
+			}
 		}
 	}
 	else
 	{
-		if (lpos.x + size.x > p.x - 1
-			&& lpos.x < p.x
-			&& lpos.y < p.y + s.y + 1
-			&& lpos.y + size.y > p.y - 1)
-		{
-			pl.lock()->SetSpeed(0);
-		}
-		else
-		{
-			pl.lock()->SetSpeed(5);
-		}
-	}*/
+		dir = pl.lock()->GetTmp();
+		reverse = pl.lock()->GetReverse();
+	}
 }

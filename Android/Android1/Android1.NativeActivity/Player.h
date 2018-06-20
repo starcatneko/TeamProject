@@ -75,6 +75,12 @@ public:
 	// 反転フラグの取得
 	bool GetReverse(void);
 
+	// 緊急の取得
+	DIR GetTmp(void);
+
+	// ダッシュの取得
+	float GetDash(void);
+
 	// 死亡フラグの取得
 	bool GetDie(void);
 
@@ -208,6 +214,9 @@ private:
 
 	// ダッシュ時の角度
 	float dash;
+
+	// 緊急
+	DIR tmp;
 
 
 	// アニメーション

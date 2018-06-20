@@ -1,5 +1,6 @@
 ﻿#include "Apple.h"
 #include "LoadMane.h"
+#include "GameMane.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"

@@ -17,5 +17,7 @@ public:
 
 private:
 
+	DIR dir;
+	bool reverse;
 };
 

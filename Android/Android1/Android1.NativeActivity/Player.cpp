@@ -90,6 +90,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	m_flam = -1;
 	attack2 = false;
 	dash = 0.0f;
+	tmp = DIR_NON;
 	
 	AnimInit();
 	RectInit();
@@ -463,8 +464,6 @@ void Player::Nuetral(void)
 		return;
 	}
 
-	DIR tmp = DIR_NON;
-
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
 	{
 		SetState(ST_WALK);
@@ -496,7 +495,6 @@ void Player::Walk(void)
 		return;
 	}
 
-	DIR tmp = DIR_NON;
 	if (Touch::Get()->Check(SWIPE, tmp) != true)
 	{
 		SetState(ST_NUETRAL);
@@ -598,8 +596,6 @@ void Player::Attack1(void)
 	{
 		return;
 	}
-
-	DIR tmp = DIR_NON;
 
 	if (type == PlType::normal)
 	{
@@ -905,6 +901,18 @@ void Player::SetSpeed(int id)
 bool Player::GetReverse(void)
 {
 	return reverse;
+}
+
+// 緊急の取得
+DIR Player::GetTmp(void)
+{
+	return tmp;
+}
+
+// ダッシュの取得
+float Player::GetDash(void)
+{
+	return dash;
 }
 
 // 死亡フラグの取得

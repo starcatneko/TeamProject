@@ -1,4 +1,5 @@
 ﻿#include "Item.h"
+#include "GameMane.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -49,7 +50,11 @@ bool Item::GetHit(void)
 // アニメーション管理
 void Item::Animator(int cnt, int flam)
 {
-	++this->flam;
+	if (GameMane::Get()->GetHit() == false)
+	{
+		++this->flam;
+	}
+
 	if (this->flam >= flam)
 	{
 		index = (index + 1 < cnt) ? ++index : 0;
