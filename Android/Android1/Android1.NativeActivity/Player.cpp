@@ -517,7 +517,7 @@ void Player::Dash(void)
 	if (reverse == false)
 	{
 		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
-		if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
+		if (Touch::Get()->GetTri((int)dash).cos > 0)
 		{
 			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
