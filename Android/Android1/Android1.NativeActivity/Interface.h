@@ -22,6 +22,9 @@ private:
 	int gage_mater;
 	int gage_mater_temp;
 
+	int gage_mater_hp;
+	int gage_mater_temp_hp;
+
 	// ‰æ‘œƒnƒ“ƒhƒ‹
 	int hp_gage;
 	int hp_mask;

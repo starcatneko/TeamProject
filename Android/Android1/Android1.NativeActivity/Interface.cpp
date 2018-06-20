@@ -71,8 +71,7 @@ void Interface::DrawGage()
 
 	DrawGraph(0, 0,hp_mask, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255);
-	DrawBox(0, 0, pl.lock()->GetHp()+256+355, 256, 0x66ff66, true);
-
+	DrawBox(0, 0, gage_mater_hp*4.8, 256, 0x00ff00, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	// •`‰ææ•ÏX
@@ -109,9 +108,17 @@ void Interface::DrawGage()
 
 
 	//pl.lock()->SetPower(100);
+
+	// ƒQ[ƒWã¸•`‰æ
 	gage_mater_temp = pl.lock()->GetPower();
 	if (gage_mater != gage_mater_temp)
 	{
 		(gage_mater < gage_mater_temp ? gage_mater++ : gage_mater--);
+	}
+
+	gage_mater_temp_hp = pl.lock()->GetHp();
+	if (gage_mater_hp != gage_mater_temp_hp)
+	{
+		(gage_mater_hp < gage_mater_temp_hp ? gage_mater_hp++ : gage_mater_hp--);
 	}
 }
