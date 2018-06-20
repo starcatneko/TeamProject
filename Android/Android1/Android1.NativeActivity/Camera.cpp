@@ -28,7 +28,7 @@ Camera::~Camera()
 void Camera::Draw(void)
 {
 #ifndef _DEBUG
-	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", end, pos.x);
+	DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", pos);
 	DrawFormatString(250, 275, GetColor(255, 0, 0), "カメラ目標：%d,%d", target);
 #endif
 }
