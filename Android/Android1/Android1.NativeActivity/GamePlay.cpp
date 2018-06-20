@@ -20,7 +20,7 @@
 #define LOAD_SIZE_Y 116
 
 // コンストラクタ
-GamePlay::GamePlay() : speed(60), blend(false), flam(0)
+GamePlay::GamePlay() : blend(false), flam(0)
 {
 	Reset();
 	Create();
@@ -130,6 +130,10 @@ void GamePlay::Load(void)
 			item.push_back(ItemMane::Get()->CreateApple(tmp, cam, st, pl));
 		}
 		else if (s_item[i] == 2)
+		{
+			item.push_back(ItemMane::Get()->CreateGreenApple(tmp, cam, st, pl));
+		}
+		else if (s_item[i] == 3)
 		{
 			item.push_back(ItemMane::Get()->CreateTree(tmp, cam, st, pl));
 		}

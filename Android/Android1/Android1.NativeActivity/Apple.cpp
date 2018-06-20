@@ -59,4 +59,9 @@ void Apple::UpData(void)
 			pl.lock()->SetPower(100);
 		}
 	}
+
+	if (lpos.y > WINDOW_Y + size.y / 2)
+	{
+		hit = true;
+	}
 }

@@ -44,8 +44,5 @@ private:
 
 	// スコア
 	int score;
-
-	// 座標
-	Pos pos;
 };
 

@@ -1,5 +1,6 @@
 ﻿#include "ItemMane.h"
 #include "Apple.h"
+#include "GreenApple.h"
 #include "Tree.h"
 
 ItemMane* ItemMane::instance = nullptr;
@@ -38,6 +39,13 @@ std::shared_ptr<Item> ItemMane::CreateApple(Pos pos, std::shared_ptr<Camera>cam,
 {
 	std::shared_ptr<Apple>ap = std::make_shared<Apple>(pos, cam, st, pl);
 	return ap;
+}
+
+// グリーンアップルの生成
+std::shared_ptr<Item> ItemMane::CreateGreenApple(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+{
+	std::shared_ptr<GreenApple>gap = std::make_shared<GreenApple>(pos, cam, st, pl);
+	return gap;
 }
 
 // 木の生成

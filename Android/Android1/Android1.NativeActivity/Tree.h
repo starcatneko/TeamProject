@@ -16,8 +16,10 @@ public:
 	void UpData(void);
 
 private:
-
+	// プレイヤーの向き
 	DIR dir;
+
+	// プレイヤーの反転
 	bool reverse;
 };
 

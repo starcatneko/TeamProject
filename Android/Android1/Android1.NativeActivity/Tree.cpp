@@ -1,7 +1,6 @@
 ﻿#include "Tree.h"
 #include "LoadMane.h"
 #include "GameMane.h"
-#include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"
@@ -85,5 +84,10 @@ void Tree::UpData(void)
 	{
 		dir = pl.lock()->GetTmp();
 		reverse = pl.lock()->GetReverse();
+	}
+
+	if (lpos.y > WINDOW_Y + size.y / 2)
+	{
+		hit = true;
 	}
 }

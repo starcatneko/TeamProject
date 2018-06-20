@@ -91,9 +91,6 @@ private:
 	// 画像座標
 	std::map<std::string, Box>box;
 
-	// 移動速度
-	int speed;
-
 	// 読み込み位置
 	int read[2];
 

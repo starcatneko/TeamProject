@@ -45,9 +45,6 @@ std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 
 // 無敵時間
 const int invincible = 10;
 
-// HP画像のサイズ
-const Pos hpSize = { 128,128 };
-
 // プレイヤーの拡大率
 const int large = 1;
 
