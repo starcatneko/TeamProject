@@ -27,13 +27,14 @@ public:
 	// リセット
 	void Reset(void);
 
+	// スコアの取得
+	int GetScore(void);
+	// スコアのセット
+	void SetScore(int id);
 	// スコアの加算
 	void Up(int i);
 	// スコアの減算
 	void Down(int i);
-
-	// スコアの取得
-	int GetScore(void);
 
 private:
 	// コンストラクタ

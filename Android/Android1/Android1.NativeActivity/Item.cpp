@@ -9,6 +9,7 @@ Item::Item()
 	large = 1;
 	index = 0;
 	flam = 0;
+	effectiv = 0;
 	hit = false;
 }
 
