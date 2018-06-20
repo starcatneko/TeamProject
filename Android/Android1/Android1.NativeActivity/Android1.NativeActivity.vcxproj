@@ -229,6 +229,7 @@
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Touch.cpp" />
+    <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -254,6 +255,7 @@
     <ClInclude Include="StageData.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Touch.h" />
+    <ClInclude Include="Tree.h" />
     <ClInclude Include="Typedef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

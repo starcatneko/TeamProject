@@ -559,26 +559,26 @@ void Player::Dash(void)
 
 	if (reverse == false)
 	{
-		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed + 2)) : 0;
+		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
 		if (Touch::Get()->GetTri((int)Touch::Get()->GetUnsignedAngle()).cos > 0)
 		{
-			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
 		else
 		{
-			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
 	}
 	else
 	{
-		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed + 2)) : 0;
+		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
 		if (Touch::Get()->GetTri((int)dash).cos > 0)
 		{
-			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
 		else
 		{
-			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed + 2)) : 0;
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
 		}
 	}
 
@@ -893,6 +893,18 @@ std::string Player::GetMode(void)
 void Player::SetMode(std::string mode)
 {
 	this->mode = mode;
+}
+
+// 移動速度のセット
+void Player::SetSpeed(int id)
+{
+	speed = id;
+}
+
+// 反転フラグの取得
+bool Player::GetReverse(void)
+{
+	return reverse;
 }
 
 // 死亡フラグの取得

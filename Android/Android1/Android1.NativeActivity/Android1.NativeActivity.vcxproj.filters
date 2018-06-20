@@ -70,6 +70,9 @@
     <ClCompile Include="Interface.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -142,6 +145,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Interface.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>
