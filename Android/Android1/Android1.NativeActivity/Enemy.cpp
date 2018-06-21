@@ -50,6 +50,29 @@ void Enemy::Animator(int flam)
 	}
 }
 
+// エフェクト管理
+void Enemy::Effector(void)
+{
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			++itr->second.nowflam;
+		}
+		else
+		{
+			itr->second.index = 0;
+			itr->second.nowflam = 0;
+		}
+
+		if (itr->second.nowflam > itr->second.flam)
+		{
+			itr->second.index = (itr->second.index + 1 < itr->second.max) ? ++itr->second.index : 0;
+			itr->second.nowflam = 0;
+		}
+	}
+}
+
 // アニメーションのセット
 void Enemy::SetAnim(std::string mode, Pos pos, Pos size)
 {
@@ -60,6 +83,12 @@ void Enemy::SetAnim(std::string mode, Pos pos, Pos size)
 void Enemy::SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
 	rect[mode][index].push_back({ offset, size, rtype });
+}
+
+// エフェクトのセット
+void Enemy::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
+{
+	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
 }
 
 // 状態の取得
@@ -175,6 +204,8 @@ bool Enemy::GetDie(void)
 void Enemy::Reset(void)
 {
 	image.clear();
+	effect.clear();
 	anim.clear();
 	rect.clear();
+	effe.clear();
 }

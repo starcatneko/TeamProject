@@ -35,9 +35,6 @@ private:
 	void Die(void);
 
 
-	//攻撃判定
-	bool attackFlag;
-	
 	// 攻撃移行エリア
 	int area;
 

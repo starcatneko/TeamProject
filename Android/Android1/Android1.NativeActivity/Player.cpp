@@ -146,7 +146,7 @@ void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansio
 // 通常描画
 void Player::NormalDraw(void)
 {
-	if (hp < HP_MAX / 2)
+	if (type == PlType::pinch)
 	{
 		draw = &Player::PinchDraw;
 		return;
@@ -176,7 +176,7 @@ void Player::NormalDraw(void)
 // ピンチ描画
 void Player::PinchDraw(void)
 {
-	if (hp >= HP_MAX / 2)
+	if (type == PlType::normal)
 	{
 		draw = &Player::NormalDraw;
 		return;
@@ -766,7 +766,7 @@ void Player::Die(void)
 // 処理
 void Player::UpData(void)
 {
-	type = (hp >= HP_MAX / 2) ? PlType::normal : PlType::pinch;
+	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
 	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
 
@@ -973,6 +973,30 @@ void Player::SetMode(std::string mode)
 	this->mode = mode;
 }
 
+// 向きの取得
+DIR Player::GetDir(void)
+{
+	return dir;
+}
+
+// 向きのセット
+void Player::SetDir(DIR dir)
+{
+	this->dir = dir;
+}
+
+// 前の向きの取得
+DIR Player::GetOldDir(void)
+{
+	return old_dir;
+}
+
+// 前の向きのセット
+void Player::SetOldDir(DIR dir)
+{
+	old_dir = dir;
+}
+
 // 移動速度のセット
 void Player::SetSpeed(int id)
 {
@@ -983,6 +1007,12 @@ void Player::SetSpeed(int id)
 bool Player::GetReverse(void)
 {
 	return reverse;
+}
+
+// 反転フラグのセット
+void Player::SetReverse(bool flag)
+{
+	reverse = flag;
 }
 
 // 緊急の取得
