@@ -26,10 +26,18 @@
 // ファニングスの拡大率
 const int large = 1;
 
+// 待機時間
+const int waitTime = 60;
+
+// 移動時間
+const int walkTime = 900;
+
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(120), color(0x00ffff), wait(0), dirwait(0)
+	attackFlag(false), area(150), wait(0), walking(0)
 {
+	Reset();
+	speed = 0;
 	image["wait"] = LoadMane::Get()->Load("FAwait.png");
 	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
 	image["attack"] = LoadMane::Get()->Load("FAattack.png");
@@ -40,7 +48,6 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 	this->pos = pos;
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipEneSize();
-	speed = 6;
 	hp = 10;
 	func = &Fannings::Neutral;
 
@@ -51,6 +58,7 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 //デストラクタ
 Fannings::~Fannings()
 {
+	Reset();
 }
 
 //描画
@@ -78,19 +86,21 @@ void Fannings::Draw(void)
 	}
 #ifndef _DEBUG
 	auto d = GetRect();
-
+	int color = 0;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	for (auto& r : d)
 	{
 		if (r.type == RectType::Damage)
 		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0x00ff00, true);
+			color = GetColor(0, 225, 0);
 		}
 		else
 		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0xff0000, true);
+			color = GetColor(255, 0, 0);
 		}
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
+	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	switch (state)
@@ -115,30 +125,18 @@ void Fannings::Draw(void)
 	}
 
 	DrawFormatString(200, 1200, GetColor(255, 0, 0), _T("ファニングスの座標：%d, %d"), pos);
+
+	DrawFormatString(100, 1500, GetColor(255, 0, 0), "%d", index);
 #endif
 }
 
-void Fannings::Animator(int flam)
-{
-	++this->flam;
-	if (this->flam > flam)
-	{
-		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
-		this->flam = 0;
-	}
-}
-
-void Fannings::SetAnim(std::string mode, Pos pos, Pos size)
-{
-	anim[mode].push_back({ pos, size });
-}
-
+// アニメーションのセット
 void Fannings::AnimInit(void)
 {
 	//待機
 	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
 	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
 	}
 
 	//歩き
@@ -146,6 +144,7 @@ void Fannings::AnimInit(void)
 	{
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
+
 	//攻撃
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
@@ -153,56 +152,36 @@ void Fannings::AnimInit(void)
 	}
 }
 
-Pos Fannings::GetCenter(void)
-{
-	return center;
-}
-
-void Fannings::SetCenter(Pos center)
-{
-	this->center = center;
-}
-
-void Fannings::SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype)
-{
-	rect[mode][index][flam].push_back({ offset, size, rtype });
-}
-
+// あたり矩形のセット
 void Fannings::RectInit(void)
 {
 	//待機
 	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["wait"]; ++i)
+		if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
 		{
-			if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
-			{
-				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-			}
-			else
-			{
-				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-			}
+			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
+		}
+		else
+		{
+			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 		}
 	}
 
 	//移動
 	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["walk"]; ++i)
+		if (5 <= in && in <= 10)
 		{
-			if (5 <= in && in <= 10)
-			{
-				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-			}
-			else if (20 <= in && in <= 27)
-			{
-				SetRect("walk", in, i, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
-			}
-			else
-			{
-				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-			}
+			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
+		}
+		else if (20 <= in && in <= 27)
+		{
+			SetRect("walk", in, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
+		}
+		else
+		{
+			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 		}
 	}
 }
@@ -216,11 +195,12 @@ void Fannings::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
-	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
-	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
+	Pos dis = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
+
+	if ((dis.x <= area && dis.y <= area))
 	{
 		SetState(ST_ATTACK);
+		SetMode("attack");
 		func = &Fannings::Attack;
 	}
 	else
@@ -229,19 +209,25 @@ void Fannings::Neutral(void)
 		if (wait <= 0)
 		{
 			SetState(ST_WALK);
+			SetMode("walk");
 			target = pl.lock()->GetCenter();
+
+			//移動方向更新
+			if (center.x < target.x)
+			{
+				dir = DIR_RIGHT;
+				reverse = true;
+			}
+			else
+			{
+				dir = DIR_LEFT;
+				reverse = false;
+			}
+
+			walking = walkTime;
 			func = &Fannings::Walk;
 		}
 	}
-
-	//プレイヤーの攻撃矩形を用いて当たり判定を求める
-	if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true
-		&& pl.lock()->GetState() == ST_ATTACK)
-	{
-		SetState(ST_DAMAGE);
-		func = &Fannings::Damage;
-	}
-
 }
 
 // 移動時の処理
@@ -251,54 +237,51 @@ void Fannings::Walk(void)
 	{
 		return;
 	}
-	color = 0x00ffff;
+	
+	//プレイヤーとの距離を求める
+	Pos dis = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
 
-	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
-	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
-	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
+	if ((dis.x <= area && dis.y <= area))
 	{
 		SetState(ST_ATTACK);
+		SetMode("attack");
 		func = &Fannings::Attack;
 	}
 	else
 	{
-		// 目標座標の更新
-		target = { pl.lock()->GetCenter().x, pl.lock()->GetCenter().y };
-		if (dirwait == 0)
+		if (walking == 0)
 		{
-			dir = (center.x > target.x ? DIR_LEFT : DIR_RIGHT);
-			dirwait = 30;
+			SetState(ST_NUETRAL);
+			SetMode("wait");
+			wait = waitTime;
+			func = &Fannings::Neutral;
 		}
 		else
 		{
-			dirwait--;
-		}
+			--walking;
 
-		if (dir == DIR_LEFT)
-		{
-			pos.x -= speed;
-			if (center.y != target.y)
+			//移動
+			if (dir == DIR_RIGHT)
 			{
-				pos.y += (pos.y > target.y ? -speed : speed);
+				pos.x += (pos.x + size.x + 1 < WINDOW_X) ? speed : 0;
+			}
+			else if (dir == DIR_LEFT)
+			{
+				pos.x -= (pos.x - 1 > 0) ? speed : 0;
+			}
+			else
+			{
+			}
+
+			if (center.y < target.y)
+			{
+				pos.y += (pos.y + size.y + 1 < WINDOW_Y) ? speed : 0;
+			}
+			else
+			{
+				pos.y -= (pos.y - 1 > 0) ? speed : 0;
 			}
 		}
-		else if (dir == DIR_RIGHT)
-		{
-			pos.x += speed;
-			if (center.y != target.y)
-			{
-				pos.y += (pos.y > target.y ? -speed : speed);
-			}
-		}
-		else
-		{
-			if (center.y != target.y)
-			{
-				pos.y += (pos.y > target.y ? -speed : speed);
-			}
-		}
-		SetState(ST_NUETRAL);
-		func = &Fannings::Neutral;
 	}
 }
 
@@ -309,12 +292,46 @@ void Fannings::Attack(void)
 	{
 		return;
 	}
-	color = 0xffff00;
+
+	auto prect = pl.lock()->GetRect();
+
+	bool hit = false;
+
+	for (auto& p : prect)
+	{
+		for (auto& r : GetRect())
+		{
+			if (CheckHit(r.offset, r.size, p.offset, p.size) == true)
+			{
+				if (r.type == RectType::Attack && p.type == RectType::Damage)
+				{
+					hit = true;
+					break;
+				}
+			}
+		}
+
+		if (hit == true)
+		{
+			break;
+		}
+	}
+
+	if (hit == true && pl.lock()->CheckInvincible() == false)
+	{
+		pl.lock()->SetState(ST_DAMAGE);
+		pl.lock()->DownHp(power);
+	}
+	
 
 	//攻撃アニメーションが終わったら
-	SetState(ST_NUETRAL);
-	wait = 60;
-	func = &Fannings::Neutral;
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	{
+		SetState(ST_NUETRAL);
+		SetMode("wait");
+		wait = waitTime;
+		func = &Fannings::Neutral;
+	}
 }
 
 //　ダメージ時の処理
@@ -324,7 +341,7 @@ void Fannings::Damage(void)
 	{
 		return;
 	}
-	color = 0xff0000;
+	
 	if (hp <= 0)
 	{
 		state = ST_DIE;
@@ -345,7 +362,6 @@ void Fannings::Die(void)
 	{
 		return;
 	}
-	color = 0xffffff;
 
 	//死亡アニメーションが終わったら
 	GameMane::Get()->Kill();
@@ -360,15 +376,34 @@ void Fannings::UpData(void)
 
 	Animator(animTime[mode]);
 
-	std::vector<Rect>p = pl.lock()->GetRect();
-	for (unsigned int i = 0; i < p.size(); ++i)
+	auto prect = pl.lock()->GetRect();
+
+	bool hit = false;
+
+	for (auto& p : prect)
 	{
-		if (CheckHit(lpos, size, p[i].offset, p[i].size) == true
-			&& p[i].type == RectType::Attack)
+		for (auto& r : GetRect())
 		{
-			color = (0xff00ff);
+			if (CheckHit(r.offset, r.size, p.offset, p.size) == true)
+			{
+				if (r.type == RectType::Damage && p.type == RectType::Attack)
+				{
+					hit = true;
+					break;
+				}
+			}
+		}
+
+		if (hit == true)
+		{
 			break;
 		}
 	}
+
+	if (hit == true)
+	{
+		SetState(ST_DAMAGE);
+	}
+
 	(this->*func)();
 }
