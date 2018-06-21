@@ -90,6 +90,9 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\GreenApple.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Apple.h">
@@ -168,6 +171,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\GreenApple.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Sound.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

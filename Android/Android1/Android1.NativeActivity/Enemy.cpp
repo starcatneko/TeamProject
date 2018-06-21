@@ -1,6 +1,7 @@
 ﻿#include "Enemy.h"
 #include "GameMane.h"
 
+
 // コンストラクタ
 Enemy::Enemy() : speed(3), target({ 0,0 }), die(false), reverse(false), flam(0), index(0), power(10)
 {

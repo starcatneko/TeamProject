@@ -88,6 +88,32 @@ int LoadMane::LoadMask(std::string fileName)
 }
 
 
+int LoadMane::LoadSound(std::string fileName)
+{
+	if (data.find(fileName) != data.end())
+	{
+		return data[fileName];
+	}
+	else
+	{
+		//ダミー宣言
+		std::string path;
+
+#ifndef __ANDROID__
+		path = "../../Android/Android1/Android1.Packaging/assets/" + fileName;
+#else
+		path = fileName;
+#endif
+
+		//画像読み込み
+		data[fileName] = DxLib::LoadSoundMem(path.c_str());
+
+	}
+
+	return data[fileName];
+}
+
+
 // CSV読み込み
 std::vector<int> LoadMane::LoadCsv(std::string fileName)
 {
