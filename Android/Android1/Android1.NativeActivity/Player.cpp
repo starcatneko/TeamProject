@@ -5,8 +5,10 @@
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
-#include "DxLib.h"
 #include <algorithm>
+#include "DxLib.h"
+
+using namespace std;
 
 // 体力最大値
 #define HP_MAX 100
@@ -698,28 +700,28 @@ void Player::Damage(void)
 		switch (dir)
 		{
 		case DIR_DOWN:
-			m = std::max(0, (target.y - point));
+			m = max(0, (target.y - point));
 			if (m < lpos.y)
 			{
 				pos.y -= (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_LEFT:
-			m = std::min(WINDOW_X - size.x, (target.x + point));
+			m = min(WINDOW_X - size.x, (target.x + point));
 			if (m > lpos.x)
 			{
 				pos.x += (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_RIGHT:
-			m = std::max(0, (target.x - point));
+			m = max(0, (target.x - point));
 			if (m < lpos.x)
 			{
 				pos.x -= (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_UP:
-			m = std::min((WINDOW_Y - size.y), (target.y + point));
+			m = min((WINDOW_Y - size.y), (target.y + point));
 			if (m > lpos.y)
 			{
 				pos.y += (type == PlType::normal) ? baseSpeed : baseSpeed * 2;

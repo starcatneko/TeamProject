@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "DxLib.h"
+#include <math.h>
 
 // 画像データ関係
 #define APPLE_CNT 1
@@ -54,7 +55,7 @@ void GreenApple::UpData(void)
 	
 	if (effect_cnt > 0)
 	{
- 		pos.y += cos(RAD(effect_cnt * 6)) * 15;
+ 		pos.y += cosf(RAD(effect_cnt * 6)) * 15;
 		//pos.y++;
 		effect_cnt--;
 	}
