@@ -11,21 +11,28 @@ Camera.cpp(7,11): warning : unused variable 'offset' [-Wunused-const-variable]
   1 warning generated.
   Debug.cpp
   Dust.cpp
-Dust.cpp(23,82): warning : suggest braces around initialization of subobject [-Wmissing-braces]
+Dust.cpp(1,21): warning : missing terminating '"' character [-Winvalid-pp-token]
+  <U+FEFF>#include "Dust.h""
+                           ^
+Dust.cpp(1,21): warning : extra tokens at end of #include directive [-Wextra-tokens]
+  <U+FEFF>#include "Dust.h""
+                           ^
+                           //
+Dust.cpp(32,82): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
                                                                                           ^~~~
                                                                                           {   }
-Dust.cpp(149,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
+Dust.cpp(184,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
                           if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
                                ~ ^  ~~
   In file included from Dust.cpp:1:
-./Dust.h(52,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
+./Dust.h(54,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
           bool attackFlag;
                ^
-./Dust.h(62,6): warning : private field 'box' is not used [-Wunused-private-field]
+./Dust.h(64,6): warning : private field 'box' is not used [-Wunused-private-field]
           Box box;
               ^
-  4 warnings generated.
+  6 warnings generated.
   Enemy.cpp
 Enemy.cpp(5,46): warning : field 'speed' will be initialized after field 'state' [-Wreorder]
   Enemy::Enemy() : mode("wait"), dir(DIR_NON), speed(0), state(ST_NUETRAL), target({ 0,0 }), die(false), reverse(false), animTime({ { "wait", 5 },{ "walk", 1 } }), flam(0), index(0)
@@ -39,11 +46,11 @@ Enemy.cpp(5,120): warning : field 'animTime' will be initialized after field 'fl
   3 warnings generated.
   EnemyMane.cpp
   Fannings.cpp
-Fannings.cpp(143,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
+Fannings.cpp(178,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
                           if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
                                ~ ^  ~~
   In file included from Fannings.cpp:1:
-./Fannings.h(51,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
+./Fannings.h(53,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
           bool attackFlag;
                ^
   2 warnings generated.
