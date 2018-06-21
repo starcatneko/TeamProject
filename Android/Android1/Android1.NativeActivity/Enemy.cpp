@@ -3,10 +3,11 @@
 
 
 // コンストラクタ
-Enemy::Enemy() : speed(3), target({ 0,0 }), die(false), reverse(false), flam(0), index(0), power(10)
+Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(10)
 {
 	state = ST_NUETRAL;
 	mode = "wait";
+	target = { 0,0 };
 	dir = DIR_NON;
 	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1} };
 }

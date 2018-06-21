@@ -3,9 +3,6 @@
 #include "DxLib.h"
 #include <algorithm>
 
-// 画面移行時の座標のオフセット
-const int offset = 120;
-
 // 揺らし座標のオフセット
 const Pos off = { 30, 0 };
 

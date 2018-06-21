@@ -1,23 +1,23 @@
-#include "Sound.h"
+ï»¿#include "Sound.h"
 #include "LoadMane.h"
 #include "DxLib.h"
 
 Sound* Sound::instance = nullptr;
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Sound::Sound()
 {
 	Reset();
 	SoundInit();
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Sound::~Sound()
 {
 	Reset();
 }
 
-// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
 void Sound::Create(void)
 {
 	if (instance == nullptr)
@@ -26,7 +26,7 @@ void Sound::Create(void)
 	}
 }
 
-// ”jŠü
+// ç ´æ£„
 void Sound::Destroy(void)
 {
 	if (instance != nullptr)
@@ -36,13 +36,13 @@ void Sound::Destroy(void)
 	}
 }
 
-// “Ç‚İ‚İ
+// èª­ã¿è¾¼ã¿
 void Sound::Load(std::string fileName, SOUND type)
 {
 	sound[type] = LoadMane::Get()->LoadSound(fileName);
 }
 
-// “Ç‚İ‚İ
+// èª­ã¿è¾¼ã¿
 void Sound::SoundInit(void)
 {
 	Load("hit1.mp3", SE_HIT1);
@@ -55,7 +55,7 @@ void Sound::SoundInit(void)
 	Load("heal.mp3", SE_HEAL);
 }
 
-// ƒTƒEƒ“ƒh‚ÌÄ¶
+// ã‚µã‚¦ãƒ³ãƒ‰ã®å†ç”Ÿ
 void Sound::Play(SOUND handle)
 {
 	if (CheckSoundMem(sound[handle]) == false)
@@ -64,7 +64,7 @@ void Sound::Play(SOUND handle)
 	}
 }
 
-// ƒŠƒZƒbƒg
+// ãƒªã‚»ãƒƒãƒˆ
 void Sound::Reset(void)
 {
 	sound.clear();

@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <map>
 #include <string>
 
-// ƒTƒEƒ“ƒhƒ^ƒCƒv
+// ã‚µã‚¦ãƒ³ãƒ‰ã‚¿ã‚¤ãƒ—
 enum SOUND
 {
 	SE_HIT1,
@@ -19,40 +19,40 @@ enum SOUND
 class Sound
 {
 public:
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Sound();
 
-	// ƒCƒ“ƒXƒ^ƒ“•Ï”‚Ìæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³å¤‰æ•°ã®å–å¾—
 	static Sound* Get(void)
 	{
 		return instance;
 	}
 
-	// ƒCƒ“ƒXƒ^ƒ“‰»
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³åŒ–
 	static void Create(void);
-	// ”jŠü
+	// ç ´æ£„
 	static void Destroy(void);
 
-	// ƒTƒEƒ“ƒhÄ¶
+	// ã‚µã‚¦ãƒ³ãƒ‰å†ç”Ÿ
 	void Play(SOUND handle);
 
 private:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Sound();
 
-	// “Ç‚İ‚İ
+	// èª­ã¿è¾¼ã¿
 	void Load(std::string fileName, SOUND type);
-	// “Ç‚İ‚İ
+	// èª­ã¿è¾¼ã¿
 	void SoundInit(void);
 
-	// ƒŠƒZƒbƒg
+	// ãƒªã‚»ãƒƒãƒˆ
 	void Reset(void);
 
 
-	// ƒCƒ“ƒXƒ^ƒ“•Ï”
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³å¤‰æ•°
 	static Sound* instance;
 
-	// ƒTƒEƒ“ƒhƒnƒ“ƒhƒ‹
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒ³ãƒ‰ãƒ«
 	std::map<SOUND, int>sound;
 };
 

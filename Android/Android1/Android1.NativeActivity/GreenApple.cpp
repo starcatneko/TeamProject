@@ -56,8 +56,8 @@ void GreenApple::UpData(void)
 	
 	if (effect_cnt > 0)
 	{
- 		pos.y += cosf(RAD(effect_cnt * 6)) * 15;
-		//pos.y++;
+ 		pos.y += (int)(cosf(RAD(effect_cnt * 6)) * 15);
+		
 		effect_cnt--;
 	}
 
@@ -72,7 +72,6 @@ void GreenApple::UpData(void)
 			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
 			{
 				Sound::Get()->Play(SE_HEAL);
-
 			}
 		}
 	}
@@ -81,5 +80,4 @@ void GreenApple::UpData(void)
 	{
 		hit = true;
 	}
-
 }

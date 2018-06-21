@@ -29,7 +29,7 @@ const int large = 1;
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
+	attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ {0,0}, {0,0} }
 {
 	image["wait"] = LoadMane::Get()->Load("DUwait.png");
 	image["walk"] = LoadMane::Get()->Load("DUwalk.png");

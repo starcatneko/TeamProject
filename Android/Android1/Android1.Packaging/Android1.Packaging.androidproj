@@ -120,19 +120,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Content Include="assets\apple.png" />
+    <Content Include="assets\BGM1.mp3" />
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
     <Content Include="assets\Ddead.png" />
+    <Content Include="assets\dead.mp3" />
     <Content Include="assets\Dpunch.png" />
     <Content Include="assets\Dpunch2.png" />
+    <Content Include="assets\DUattack.png" />
+    <Content Include="assets\DUwait.png" />
+    <Content Include="assets\DUwalk.png" />
     <Content Include="assets\Dwait.png" />
     <Content Include="assets\Dwalk.png" />
     <Content Include="assets\effect1.png" />
     <Content Include="assets\effect2.png" />
+    <Content Include="assets\FAattack.png" />
+    <Content Include="assets\FAwait.png" />
+    <Content Include="assets\FAwalk.png" />
     <Content Include="assets\flick.png" />
     <Content Include="assets\gameback.png" />
     <Content Include="assets\gameback_layer.png" />
     <Content Include="assets\greenapple.png" />
+    <Content Include="assets\heal.mp3" />
+    <Content Include="assets\hit1.mp3" />
+    <Content Include="assets\hit2.mp3" />
+    <Content Include="assets\ko1.mp3" />
     <Content Include="assets\load.png" />
     <Content Include="assets\Ndamage.png" />
     <Content Include="assets\Ndash.png" />
@@ -142,8 +154,11 @@
     <Content Include="assets\Nwalk.png" />
     <Content Include="assets\over.png" />
     <Content Include="assets\overback.png" />
+    <Content Include="assets\step.mp3" />
     <Content Include="assets\titleback.png" />
     <Content Include="assets\tree.png" />
+    <Content Include="assets\voice1.mp3" />
+    <Content Include="assets\voice2.mp3" />
     <Content Include="assets\yazirusi.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">

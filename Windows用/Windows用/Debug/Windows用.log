@@ -1,24 +1,4 @@
 ﻿  Apple.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\apple.cpp(58): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  BackGround.cpp
-  Debug.cpp
-  Dust.cpp
-  Enemy.cpp
-  EnemyMane.cpp
-  Fannings.cpp
-  Game.cpp
-  GamePlay.cpp
   GreenApple.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\greenapple.cpp(59): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Interface.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(62): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(74): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-  LoadMane.cpp
-  Over.cpp
-  Player.cpp
-  Sound.cpp
-  Stage.cpp
-  Title.cpp
-  Tree.cpp
   コードを生成中...
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
