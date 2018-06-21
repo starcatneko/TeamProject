@@ -8,9 +8,6 @@
 #include "DxLib.h"
 #include <algorithm>
 
-int red = GetColor(255, 0, 0);
-int green = GetColor(0, 255, 0);
-
 // 体力最大値
 #define HP_MAX 100
 
@@ -37,17 +34,27 @@ int green = GetColor(0, 255, 0);
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
+// ダメージアニメーション関係
+#define DAMAGE_ANIM_CNT 12
+#define DAMAGE_ANIM_X 4
+#define DAMAGE_ANIM_Y 3
+
+// 死亡アニメーション関係
+#define DIE_ANIM_CNT 32
+#define DIE_ANIM_X 4
+#define DIE_ANIM_Y 8
+
 // モードの種類
 /* wait, walk, dash, attack, attack2, damage, die*/
 
 // ノックバック
-const int nock = 30;
+const int nock = 50;
 
 // アニメーション速度
-std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 1}, {"attack1", 1}, {"attack2", 1} };
+std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 1}, {"attack1", 1}, {"attack2", 1}, {"damage", 1}, {"die", 1} };
 
 // 無敵時間
-const int invincible = 10;
+const int invincible = 60;
 
 // 移動速度
 const int baseSpeed = 5;
@@ -65,12 +72,15 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Ndash.png");
 	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Npunch.png");
 	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Npunch2.png");
+	image[PlType::normal]["damage"] = LoadMane::Get()->Load("Ndamage.png");
 
 	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Dwait.png");
 	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Dwalk.png");
 	image[PlType::pinch]["dash"] = LoadMane::Get()->Load("Ddash.png");
 	image[PlType::pinch]["attack1"] = LoadMane::Get()->Load("Dpunch.png");
 	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Dpunch2.png");
+	image[PlType::pinch]["damage"] = LoadMane::Get()->Load("Ddamage.png");
+	image[PlType::pinch]["die"] = LoadMane::Get()->Load("Ddead.png");
 
 	effect["effect1"] = LoadMane::Get()->Load("effect1.png");
 	effect["effect2"] = LoadMane::Get()->Load("effect2.png");
@@ -96,6 +106,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	dash = 0.0f;
 	tmp = DIR_NON;
 	w_flam = 0;
+	offset = 0;
 	
 	AnimInit();
 	RectInit();
@@ -151,14 +162,12 @@ void Player::NormalDraw(void)
 	}
 	else
 	{
-		static int x = 0;
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x + x, anim[mode][index].pos.y,
-			anim[mode][index].size.x - x, anim[mode][index].size.y,
-			(anim[mode][index].size.x - x) / 2, anim[mode][index].size.y / 2,
+			anim[mode][index].pos.x + offset, anim[mode][index].pos.y,
+			anim[mode][index].size.x - offset, anim[mode][index].size.y,
+			(anim[mode][index].size.x - offset) / 2, anim[mode][index].size.y / 2,
 			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
-		x += 5;
 	}
 }
 
@@ -182,14 +191,12 @@ void Player::PinchDraw(void)
 	}
 	else
 	{
-		static int x = 0;
 		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x + x, anim[mode][index].pos.y,
-			anim[mode][index].size.x - x, anim[mode][index].size.y,
-			(anim[mode][index].size.x - x) / 2, anim[mode][index].size.y / 2,
+			lpos.x + ((anim[mode][index].size.x + offset) * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+			(anim[mode][index].pos.x + offset), anim[mode][index].pos.y,
+			(anim[mode][index].size.x - offset), anim[mode][index].size.y,
+			(anim[mode][index].size.x - offset) / 2, anim[mode][index].size.y / 2,
 			(double)large, 0.0, image[PlType::pinch][mode], true, reverse, false);
-		x += 5;
 	}
 }
 
@@ -213,6 +220,25 @@ void Player::Draw(void)
 				1.0, 0.0, effect[itr->first], true, reverse, false);
 		}
 	}
+
+#ifndef _DEBUG
+	auto p = GetRect();
+	int color = 0;
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	for (auto& r : p)
+	{
+		if (r.type == RectType::Damage)
+		{
+			color = GetColor(0, 255, 0);
+		}
+		else
+		{
+			color = GetColor(255, 0, 0);
+		}
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+#endif
 }
 
 // アニメーション管理
@@ -225,7 +251,14 @@ void Player::Animator(int flam)
 
 	if (this->flam > flam)
 	{
-		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
+		if (state != ST_DIE)
+		{
+			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
+		}
+		else
+		{
+			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : index;
+		}
 		this->flam = 0;
 	}
 }
@@ -290,6 +323,18 @@ void Player::AnimInit(void)
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
 		SetAnim("attack2", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+	}
+
+	//ダメージ
+	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
+	{
+		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_X) }, size);
+	}
+
+	//死亡
+	for (int i = 0; i < DIE_ANIM_CNT; ++i)
+	{
+		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
 	}
 }
 
@@ -509,6 +554,23 @@ void Player::Dash(void)
 
 	reverse = (dash < 180.0f) ? false : true;
 
+	if (45.0f <= dash && dash < 135.0f)
+	{
+		old_dir = DIR_RIGHT;
+	}
+	else if (135.0f <= dash && dash < 225.0f)
+	{
+		old_dir = DIR_UP;
+	}
+	else if (225.0f <= dash && dash < 315.0f)
+	{
+		old_dir = DIR_LEFT;
+	}
+	else
+	{
+		old_dir = DIR_DOWN;
+	}
+
 	if (type == PlType::normal)
 	{
 		effe["effect2"].flag = true;
@@ -628,31 +690,39 @@ void Player::Damage(void)
 	}
 	else
 	{
+		int point = (type == PlType::normal) ? nock : nock * 3;
+		int m = 0;
+
 		dir = (dir == DIR_NON) ? old_dir : dir;
+
 		switch (dir)
 		{
 		case DIR_DOWN:
-			if (target.y - nock < lpos.y)
+			m = std::max(0, (target.y - point));
+			if (m < lpos.y)
 			{
-				pos.y -= speed;
+				pos.y -= (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_LEFT:
-			if (target.x + nock > lpos.x)
+			m = std::min(WINDOW_X - size.x, (target.x + point));
+			if (m > lpos.x)
 			{
-				pos.x += speed;
+				pos.x += (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_RIGHT:
-			if (target.x - nock < lpos.x)
+			m = std::max(0, (target.x - point));
+			if (m < lpos.x)
 			{
-				pos.x -= speed;
+				pos.x -= (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		case DIR_UP:
-			if (target.y + nock > lpos.y)
+			m = std::min((WINDOW_Y - size.y), (target.y + point));
+			if (m > lpos.y)
 			{
-				pos.y += speed;
+				pos.y += (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 			}
 			break;
 		default:
@@ -664,6 +734,7 @@ void Player::Damage(void)
 		{
 			SetState(ST_NUETRAL);
 			SetMode("wait");
+			m_flam = 0;
 			func = &Player::Nuetral;
 		}
 	}
@@ -678,10 +749,15 @@ void Player::Die(void)
 	}
 
 	dir = (dir == DIR_NON) ? old_dir : dir;
+
 	//アニメーションが終わったとき
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
-		die = true;
+		offset += 5;
+		if (offset >= size.x)
+		{
+			die = true;
+		}
 	}
 }
 
@@ -728,11 +804,12 @@ void Player::UpData(void)
 
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-		DownHp(10);
+		if(state != ST_DAMAGE)
+		SetState(ST_DAMAGE);
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
-		UpHp(10);
+		DownHp(10);
 	}
 }
 
@@ -861,6 +938,14 @@ STATES Player::GetState(void)
 // 状態のセット
 void Player::SetState(STATES state)
 {
+	if (state == ST_DAMAGE)
+	{
+		if (m_flam != -1 || this->state == ST_DIE)
+		{
+			return;
+		}
+	}
+
 	this->state = state;
 	dir = DIR_NON;
 	flam = 0;
@@ -871,7 +956,6 @@ void Player::SetState(STATES state)
 		SetMode("damage");
 		--hp;
 		target = lpos;
-		m_flam = 0;
 	}
 }
 
