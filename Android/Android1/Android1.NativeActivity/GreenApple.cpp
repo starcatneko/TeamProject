@@ -45,19 +45,35 @@ void GreenApple::Draw(void)
 // 処理
 void GreenApple::UpData(void)
 {
+	
 	lpos = cam.lock()->Correction(pos);
 
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 
 	Animator(APPLE_CNT, timer);
-
-	if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()) == true)
+	
+	if (effect_cnt > 0)
 	{
-		pl.lock()->UpHp(effectiv);
+ 		pos.y += cos(RAD(effect_cnt * 6)) * 15;
+		//pos.y++;
+		effect_cnt--;
+	}
+
+	if (effect_cnt <= 0)
+	{
+		if (hit == true)
+		{
+			pl.lock()->UpHp(effectiv);
+		}
+		else
+		{
+			CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize());		
+		}
 	}
 
 	if (lpos.y > WINDOW_Y + size.y / 2)
 	{
 		hit = true;
 	}
+
 }
