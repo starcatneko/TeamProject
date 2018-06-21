@@ -73,15 +73,7 @@ void Touch::SetState(State i)
 // 描画
 void Touch::Draw(void)
 {
-	DrawFormatString(0, 0, GetColor(255, 0, 0), "基準座標%d:%d", pos[ST_NON]);
-	DrawFormatString(0, 50, GetColor(255, 0, 0), "今の座標%d:%d", pos[ST_TOUCH]);
-	DrawFormatString(0, 100, GetColor(255, 0, 0), "前の座標%d:%d", old_pos);
-	DrawFormatString(0, 150, GetColor(255, 0, 0), "押下時間:%d", flam);
-	DrawFormatString(0, 200, GetColor(255, 0, 0), "移動向き:%d", (int)d);
-
 	float angle = GetUnsignedAngle();
-	DrawFormatString(0, 250, GetColor(255, 0, 0), "角度:%d", (int)angle);
-	
 
 	if (pos[ST_TOUCH] != -1 && pos[ST_NON] != -1)
 	{
@@ -120,26 +112,27 @@ void Touch::Draw(void)
 
 	}
 
+#ifndef _DEBUG
 	if (Tap() == true)
 	{
-		DrawString(500, 50, "タップ", GetColor(255, 0, 0), false);
+		DrawString(50, 50, "タップ", GetColor(255, 0, 0), false);
 	}
 
 	if (Press() == true)
 	{
-		DrawString(500, 100, "プレス", GetColor(255, 0, 0), false);
+		DrawString(50, 50, "プレス", GetColor(255, 0, 0), false);
 	}
 
 	if (Flick(d) == true)
 	{
-		DrawString(500, 150, "フリック", GetColor(255, 0, 0), false);
+		DrawString(50, 50, "フリック", GetColor(255, 0, 0), false);
 	}
 
 	if (Swipe(d) == true)
 	{
-		DrawString(500, 200, "スワイプ", GetColor(255, 0, 0), false);
+		DrawString(50, 50, "スワイプ", GetColor(255, 0, 0), false);
 	}
-
+#endif
 }
 
 // 処理

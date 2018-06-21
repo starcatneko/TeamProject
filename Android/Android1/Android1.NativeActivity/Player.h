@@ -71,11 +71,23 @@ public:
 	// モードのセット
 	void SetMode(std::string mode);
 
+	// 向きの取得
+	DIR GetDir(void);
+	// 向きのセット
+	void SetDir(DIR dir);
+
+	// 前の向きの取得
+	DIR GetOldDir(void);
+	// 前の向きのセット
+	void SetOldDir(DIR dir);
+
 	// 移動速度のセット
 	void SetSpeed(int id);
 
 	// 反転フラグの取得
 	bool GetReverse(void);
+	// 反転フラグのセット
+	void SetReverse(bool flag);
 
 	// 緊急の取得
 	DIR GetTmp(void);

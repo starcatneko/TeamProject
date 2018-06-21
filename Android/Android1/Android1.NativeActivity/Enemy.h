@@ -28,11 +28,17 @@ public:
 	// アニメーション管理
 	void Animator(int flam);
 
+	// エフェクト管理
+	void Effector(void);
+
 	// アニメーションのセット
 	void SetAnim(std::string mode, Pos pos, Pos size);
 	
 	// あたり矩形のセット
 	void SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype);
+
+	// エフェクトのセット
+	void SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam);
 
 	// 状態の取得
 	STATES GetState(void);
@@ -129,6 +135,9 @@ protected:
 	// 画像データ
 	std::map<std::string, int>image;
 
+	// エフェクト画像データ
+	std::map<std::string, int>effect;
+
 	// アニメーション速度
 	std::map<std::string, const int>animTime;
 
@@ -137,5 +146,8 @@ protected:
 
 	// あたり矩形
 	std::map<std::string, std::map<int, std::vector<Rect>>>rect;
+
+	// エフェクト
+	std::map<std::string, Effect>effe;
 };
 

@@ -34,7 +34,7 @@ const int walkTime = 90;
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), area(200), wait(0), walking(0)
+	area(200), wait(0), walking(0)
 {
 	Reset();
 
@@ -102,31 +102,6 @@ void Fannings::Draw(void)
 	}
 	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-	switch (state)
-	{
-	case ST_NUETRAL:
-		DrawString(0, 1200, _T("待機中"), GetColor(255, 0, 0), false);
-		break;
-	case ST_WALK:
-		DrawString(0, 1200, _T("移動中"), GetColor(255, 0, 0), false);
-		break;
-	case ST_ATTACK:
-		DrawString(0, 1200, _T("攻撃中"), GetColor(255, 0, 0), false);
-		break;
-	case ST_DAMAGE:
-		DrawString(0, 1200, _T("ダメージ中"), GetColor(255, 0, 0), false);
-		break;
-	case ST_DIE:
-		DrawString(0, 1200, _T("死亡中"), GetColor(255, 0, 0), false);
-		break;
-	default:
-		break;
-	}
-
-	DrawFormatString(200, 1200, GetColor(255, 0, 0), _T("ファニングスの座標：%d, %d"), pos);
-
-	DrawFormatString(100, 1500, GetColor(255, 0, 0), "%d", index);
 #endif
 }
 
@@ -326,6 +301,17 @@ void Fannings::Attack(void)
 
 	if (hit == true && pl.lock()->CheckInvincible() == false)
 	{
+		if (reverse == false)
+		{
+			pl.lock()->SetReverse(false);
+			pl.lock()->SetOldDir(DIR_RIGHT);
+		}
+		else
+		{
+			pl.lock()->SetReverse(true);
+			pl.lock()->SetOldDir(DIR_LEFT);
+		}
+
 		pl.lock()->SetState(ST_DAMAGE);
 		pl.lock()->DownHp(power);
 	}
@@ -354,9 +340,12 @@ void Fannings::Damage(void)
 		state = ST_DIE;
 		func = &Fannings::Die;
 	}
-	else if(pl.lock()->GetState() != ST_ATTACK)
+	else
 	{
-		state = ST_NUETRAL;
+		//ダメージアニメーションが終わったとき
+		SetState(ST_NUETRAL);
+		SetMode("wait");
+		wait = waitTime;
 		func = &Fannings::Neutral;
 	}
 }
@@ -382,6 +371,7 @@ void Fannings::UpData(void)
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
 	Animator(animTime[mode]);
+	Effector();
 
 	auto prect = pl.lock()->GetRect();
 
