@@ -70,4 +70,9 @@ void Sound::Reset(void)
 	sound.clear();
 }
 
+void Sound::Draw()
+{
+	DrawFormatString(800, 400, 0xffffff, "%d", sound[SE_HIT1]);
+}
+
 
