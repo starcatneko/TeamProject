@@ -120,7 +120,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Content Include="assets\apple.png" />
+    <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
+    <Content Include="assets\Ddead.png" />
     <Content Include="assets\Dpunch.png" />
     <Content Include="assets\Dpunch2.png" />
     <Content Include="assets\Dwait.png" />
@@ -131,6 +133,7 @@
     <Content Include="assets\gameback.png" />
     <Content Include="assets\greenapple.png" />
     <Content Include="assets\load.png" />
+    <Content Include="assets\Ndamage.png" />
     <Content Include="assets\Ndash.png" />
     <Content Include="assets\Npunch.png" />
     <Content Include="assets\Npunch2.png" />

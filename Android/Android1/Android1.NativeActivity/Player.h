@@ -223,6 +223,9 @@ private:
 	// ワールドフレーム
 	int w_flam;
 
+	// オフセット
+	int offset;
+
 	// アニメーション
 	std::map<std::string, std::vector<Box>>anim;
 

@@ -4,6 +4,12 @@
   NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   BackGround.cpp
+  Camera.cpp
+Camera.cpp(7,11): warning : unused variable 'offset' [-Wunused-const-variable]
+  const int offset = 120;
+            ^
+  1 warning generated.
+  Debug.cpp
   Dust.cpp
 Dust.cpp(23,82): warning : suggest braces around initialization of subobject [-Wmissing-braces]
           attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
@@ -43,6 +49,7 @@ Fannings.cpp(143,11): warning : comparison of 0 <= unsigned expression is always
   2 warnings generated.
   Game.cpp
   GamePlay.cpp
+  GreenApple.cpp
   Interface.cpp
   Item.cpp
   ItemMane.cpp
