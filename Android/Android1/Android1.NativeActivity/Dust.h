@@ -17,6 +17,9 @@ public:
 	// 処理
 	void UpData(void);
 	
+	// リセット
+	void Reset(void);
+	
 private:
 	// アニメーション管理
 	void Animator(int flam);
