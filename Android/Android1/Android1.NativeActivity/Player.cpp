@@ -223,7 +223,7 @@ void Player::Draw(void)
 		}
 	}
 
-#ifndef _DEBUG
+#ifndef __ANDROID__
 	auto p = GetRect();
 	int color = 0;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);

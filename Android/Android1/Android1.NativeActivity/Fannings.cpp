@@ -84,7 +84,8 @@ void Fannings::Draw(void)
 			(double)large, 0.0, image[mode], true, reverse, false);
 		x += 5;
 	}
-#ifndef _DEBUG
+
+#ifndef __ANDROID__
 	auto d = GetRect();
 	int color = 0;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
