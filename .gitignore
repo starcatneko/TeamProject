@@ -345,3 +345,10 @@ Windows用/.vs/Windows用/v15/ipch/AutoPCH/f51166fe7d5a66e7/DUST.ipch
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+*.db
+*.obj
+*.obj
+*.obj
+*.pdb
+*.tlog
+*.lastbuildstate
