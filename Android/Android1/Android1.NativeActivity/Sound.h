@@ -1,5 +1,8 @@
-
 #pragma once
+#include <map>
+#include <string>
+
+// サウンドタイプ
 enum SOUND
 {
 	SE_HIT1,
@@ -10,31 +13,46 @@ enum SOUND
 	SE_DEAD,
 	SE_VOICE1,
 	SE_VOICE2,
-	SE_NUM
+	SE_MAX
 };
 
 class Sound
 {
 public:
+	// デストラクタ
+	~Sound();
+
+	// インスタン変数の取得
 	static Sound* Get(void)
 	{
 		return instance;
 	}
 
+	// インスタン化
 	static void Create(void);
+	// 破棄
 	static void Destroy(void);
+
+	// サウンド再生
 	void Play(SOUND handle);
 
 private:
-
+	// コンストラクタ
 	Sound();
-	~Sound();
 
+	// 読み込み
+	void Load(std::string fileName, SOUND type);
+	// 読み込み
+	void SoundInit(void);
+
+	// リセット
+	void Reset(void);
+
+
+	// インスタン変数
 	static Sound* instance;
 
-
-	
-	int sound[SE_NUM];
-	//フェードアウトさせる
+	// サウンドハンドル
+	std::map<SOUND, int>sound;
 };
 

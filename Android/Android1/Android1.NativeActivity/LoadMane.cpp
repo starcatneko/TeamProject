@@ -10,6 +10,8 @@ LoadMane* LoadMane::instance = nullptr;
 LoadMane::LoadMane()
 {
 	data.clear();
+	mask.clear();
+	sound.clear();
 }
 
 // デストラクタ
@@ -37,7 +39,7 @@ void LoadMane::Destroy(void)
 	}
 }
 
-// 読み込み
+// 画像の読み込み
 int LoadMane::Load(std::string fileName)
 {
 	if (data.find(fileName) != data.end())
@@ -62,11 +64,13 @@ int LoadMane::Load(std::string fileName)
 
 	return data[fileName];
 }
+
+// マスクの読み込み
 int LoadMane::LoadMask(std::string fileName)
 {
-	if (data.find(fileName) != data.end())
+	if (mask.find(fileName) != mask.end())
 	{
-		return data[fileName];
+		return mask[fileName];
 	}
 	else
 	{
@@ -79,20 +83,20 @@ int LoadMane::LoadMask(std::string fileName)
 		path = fileName;
 #endif
 
-		//画像読み込み
-		data[fileName] = DxLib::LoadMask(path.c_str());
+		//マスク読み込み
+		mask[fileName] = DxLib::LoadMask(path.c_str());
 
 	}
 
-	return data[fileName];
+	return mask[fileName];
 }
 
-
+// サウンドの読み込み
 int LoadMane::LoadSound(std::string fileName)
 {
-	if (data.find(fileName) != data.end())
+	if (sound.find(fileName) != sound.end())
 	{
-		return data[fileName];
+		return sound[fileName];
 	}
 	else
 	{
@@ -105,12 +109,12 @@ int LoadMane::LoadSound(std::string fileName)
 		path = fileName;
 #endif
 
-		//画像読み込み
-		data[fileName] = DxLib::LoadSoundMem(path.c_str());
+		//サウンド読み込み
+		sound[fileName] = DxLib::LoadSoundMem(path.c_str());
 
 	}
 
-	return data[fileName];
+	return sound[fileName];
 }
 
 
@@ -165,4 +169,16 @@ void LoadMane::Clear(void)
 		DeleteGraph(itr->second);
 	}
 	data.clear();
+
+	for (auto itr = mask.begin(); itr != mask.end(); ++itr)
+	{
+		DeleteMask(itr->second);
+	}
+	mask.clear();
+
+	for (auto itr = sound.begin(); itr != sound.end(); ++itr)
+	{
+		DeleteSoundMem(itr->second);
+	}
+	sound.clear();
 }

@@ -1,24 +1,20 @@
 #include "Sound.h"
 #include "LoadMane.h"
-#include "Sound.h"
 #include "DxLib.h"
 
 Sound* Sound::instance = nullptr;
 
+// コンストラクタ
 Sound::Sound()
 {
-
-	sound[SE_HIT1] = LoadMane::Get()->LoadSound("hit1.mp3");
-	sound[SE_HIT2] = LoadMane::Get()->LoadSound("hit2.mp3");
-	sound[SE_VOICE1] = LoadMane::Get()->LoadSound("voice1.mp3");
-	sound[SE_VOICE2] = LoadMane::Get()->LoadSound("voice2.mp3");
-	sound[SE_KO] = LoadMane::Get()->LoadSound("ko.mp3");
-	sound[SE_DEAD] = LoadMane::Get()->LoadSound("dead.mp3");
-	sound[SE_STEP] = LoadMane::Get()->LoadSound("step.mp3");
-	sound[SE_HEAL] = LoadMane::Get()->LoadSound("heal.mp3");
+	Reset();
+	SoundInit();
 }
+
+// デストラクタ
 Sound::~Sound()
 {
+	Reset();
 }
 
 // インスタンス化
@@ -40,12 +36,38 @@ void Sound::Destroy(void)
 	}
 }
 
+// 読み込み
+void Sound::Load(std::string fileName, SOUND type)
+{
+	sound[type] = LoadMane::Get()->LoadSound(fileName);
+}
+
+// 読み込み
+void Sound::SoundInit(void)
+{
+	Load("hit1.mp3", SE_HIT1);
+	Load("hit2.mp3", SE_HIT2);
+	Load("voice1.mp3", SE_VOICE1);
+	Load("voice2.mp3", SE_VOICE2);
+	Load("ko.mp3", SE_KO);
+	Load("dead.mp3", SE_DEAD);
+	Load("step.mp3", SE_STEP);
+	Load("heal.mp3", SE_HEAL);
+}
+
+// サウンドの再生
 void Sound::Play(SOUND handle)
 {
 	if (CheckSoundMem(sound[handle]) == false)
 	{
 		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
 	}
+}
+
+// リセット
+void Sound::Reset(void)
+{
+	sound.clear();
 }
 
 
