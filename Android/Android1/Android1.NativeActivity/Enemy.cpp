@@ -39,6 +39,16 @@ void Enemy::SetState(STATES state)
 	}
 }
 
+std::string Enemy::GetMode(void)
+{
+	return mode;
+}
+
+void Enemy::SetMode(std::string mode)
+{
+	this->mode = mode;
+}
+
 // 座標の取得
 Pos Enemy::GetPos(void)
 {

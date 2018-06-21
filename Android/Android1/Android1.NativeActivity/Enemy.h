@@ -30,6 +30,11 @@ public:
 	// 状態のセット
 	void SetState(STATES state);
 
+	// モードの取得
+	std::string GetMode(void);
+	// モードのセット
+	void SetMode(std::string mode);
+
 	// 座標の取得
 	Pos GetPos(void);
 	// 座標のセット
