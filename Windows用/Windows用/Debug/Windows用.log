@@ -1,11 +1,5 @@
-﻿  Apple.cpp
-  BackGround.cpp
-  Camera.cpp
-  Dust.cpp
+﻿  Dust.cpp
+c:\github\teamproject\android\android1\android1.nativeactivity\dust.cpp(1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
   Fannings.cpp
-  GamePlay.cpp
-  GreenApple.cpp
-  Player.cpp
-  Tree.cpp
   コードを生成中...
-  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+  Windows用.vcxproj -> C:\GitHub\TeamProject\Windows用\Debug\Windows用.exe

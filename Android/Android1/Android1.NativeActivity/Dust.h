@@ -47,6 +47,8 @@ private:
 	//死亡時の処理
 	void Die(void);
 
+	// 画像データ
+	std::map<std::string, int>image;
 
 	//攻撃判定
 	bool attackFlag;

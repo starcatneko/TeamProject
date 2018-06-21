@@ -1,8 +1,9 @@
-﻿#include "Dust.h"
+﻿#include "Dust.h""
+#include "GameMane.h"
+#include "LoadMane.h"
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"
-#include "GameMane.h"
 #include "Touch.h"
 #include "Debug.h"
 #include "DxLib.h"
@@ -18,10 +19,22 @@
 #define WALK_ANIM_X 4
 #define WALK_ANIM_Y 8
 
+// 攻撃アニメーション関係
+#define ATTACK_ANIM_CNT 12
+#define ATTACK_ANIM_X 4
+#define ATTACK_ANIM_Y 3
+
+// ダストの拡大率
+const int large = 1;
+
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
 	attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ 0, 0 }
 {
+	image["wait"] = LoadMane::Get()->Load("DUwait.png");
+	image["walk"] = LoadMane::Get()->Load("DUwalk.png");
+	image["attack"] = LoadMane::Get()->Load("DUattack.png");
+
 	this->cam = cam;
 	this->st = st;
 	this->pl = pl;
@@ -44,10 +57,28 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-#ifndef _DEBUG
-	//DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, color, true);
-	//DrawBox(lpos.x, lpos.y, lpos.x + size.x, lpos.y + size.y, 0xff0000, false);
+	if (state != ST_DIE)
+	{
+		DrawRectRotaGraph2(
+			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+			anim[mode][index].pos.x, anim[mode][index].pos.y,
+			anim[mode][index].size.x, anim[mode][index].size.y,
+			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
+			(double)large, 0.0, image[mode], true, reverse, false);
+	}
+	else
+	{
+		static int x = 0;
+		DrawRectRotaGraph2(
+			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
+			anim[mode][index].pos.x + x, anim[mode][index].pos.y,
+			anim[mode][index].size.x + x, anim[mode][index].size.y,
+			(anim[mode][index].size.x + x) / 2, anim[mode][index].size.y / 2,
+			(double)large, 0.0, image[mode], true, reverse, false);
+		x += 5;
+	}
 
+#ifndef _DEBUG
 	auto d = GetRect();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
@@ -114,11 +145,15 @@ void Dust::AnimInit(void)
 	{
 		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
 	}
-
 	//歩き
 	for (int i = 0; i < WALK_ANIM_CNT; ++i)
 	{
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
+	}
+	//攻撃
+	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
+	{
+		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
 	}
 }
 
@@ -148,11 +183,11 @@ void Dust::RectInit(void)
 		{
 			if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
 			{
-				SetRect("wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 			}
 			else
 			{
-				SetRect("wait", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 			}
 		}
 	}
@@ -164,15 +199,15 @@ void Dust::RectInit(void)
 		{
 			if (5 <= in && in <= 10)
 			{
-				SetRect("walk", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 			}
 			else if (20 <= in && in <= 27)
 			{
-				SetRect("walk", in, i, { (-size.x / 4) - 10, ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, i, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
 			}
 			else
 			{
-				SetRect("walk", in, i, { (-size.x / 4), ((-size.y + 60) / 2) }, { (size.x / 2), size.y - 60 / 2 }, RectType::Damage);
+				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 			}
 		}
 	}
