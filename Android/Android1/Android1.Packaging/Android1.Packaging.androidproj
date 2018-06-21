@@ -129,6 +129,7 @@
     <Content Include="assets\effect2.png" />
     <Content Include="assets\flick.png" />
     <Content Include="assets\gameback.png" />
+    <Content Include="assets\gameback_layer.png" />
     <Content Include="assets\greenapple.png" />
     <Content Include="assets\load.png" />
     <Content Include="assets\Ndash.png" />
