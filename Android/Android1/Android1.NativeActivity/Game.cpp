@@ -1,6 +1,7 @@
 ﻿#include "Game.h"
 #include "GameMane.h"
 #include "LoadMane.h"
+#include "Sound.h"
 #include "Touch.h"
 #include "ItemMane.h"
 #include "EnemyMane.h"
@@ -54,6 +55,7 @@ void Game::Create(void)
 {
 	GameMane::Create();
 	LoadMane::Create();
+	Sound::Create();
 	Touch::Create();
 	ItemMane::Create();
 	EnemyMane::Create();

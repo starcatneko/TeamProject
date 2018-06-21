@@ -1,5 +1,6 @@
 ﻿#include "GreenApple.h"
 #include "LoadMane.h"
+#include "Sound.h"
 #include "GameMane.h"
 #include "Camera.h"
 #include "Stage.h"
@@ -67,7 +68,11 @@ void GreenApple::UpData(void)
 		}
 		else
 		{
-			CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize());		
+			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
+			{
+				Sound::Get()->Play(SE_HEAL);
+
+			}
 		}
 	}
 

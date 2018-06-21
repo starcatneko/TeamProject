@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "DxLib.h"
+#include "Sound.h"
 #include <algorithm>
 
 // 画像データ関係
@@ -67,7 +68,12 @@ void Apple::UpData(void)
 		}
 		else
 		{
-			CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize());
+			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
+			{
+				Sound::Get()->Play(SE_HEAL);
+
+			}
+
 		}
 	}
 

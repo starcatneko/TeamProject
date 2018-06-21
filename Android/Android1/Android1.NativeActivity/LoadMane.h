@@ -25,6 +25,7 @@ public:
 	int Load(std::string fileName);
 	// マスクファイルの読み込み
 	int LoadMask(std::string fileName);
+	int LoadSound(std::string fileName);
 	// CSV読み込み
 	std::vector<int>LoadCsv(std::string fileName);
 

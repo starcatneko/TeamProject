@@ -1,6 +1,7 @@
 ﻿#include "Enemy.h"
 #include "Stage.h"
 
+
 // コンストラクタ
 Enemy::Enemy() : mode("wait"), dir(DIR_NON), speed(0), state(ST_NUETRAL), target({ 0,0 }), die(false), reverse(false), animTime({ { "wait", 5 },{ "walk", 1 } }), flam(0), index(0)
 {
