@@ -31,6 +31,7 @@ Dust.cpp(184,11): warning : comparison of 0 <= unsigned expression is always tru
   Over.cpp
   Scene.cpp
   Score.cpp
+  Sound.cpp
   Stage.cpp
   Title.cpp
   Touch.cpp
