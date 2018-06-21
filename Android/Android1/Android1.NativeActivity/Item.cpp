@@ -48,6 +48,10 @@ bool Item::GetHit(void)
 {
 	return hit;
 }
+int Item::GetEffectTimer(void)
+{
+	return effect_cnt;
+}
 
 // アニメーション管理
 void Item::Animator(int cnt, int flam)

@@ -32,6 +32,8 @@ public:
 	// あたりフラグの取得d
 	bool GetHit(void);
 
+	int GetEffectTimer(void);
+
 	// アニメーション管理
 	void Animator(int cnt, int flam);
 
