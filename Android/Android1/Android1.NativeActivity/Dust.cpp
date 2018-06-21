@@ -1,4 +1,4 @@
-﻿#include "Dust.h""
+﻿#include "Dust.h"
 #include "GameMane.h"
 #include "LoadMane.h"
 #include "Camera.h"
@@ -57,7 +57,7 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-	if (state != ST_DIE)
+	/*if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
@@ -117,7 +117,7 @@ void Dust::Draw(void)
 	}
 
 	DrawFormatString(200, 1000, GetColor(255, 0, 0), _T("ダストの座標：%d, %d"), pos);
-#endif
+#endif*/
 }
 
 // アニメーション管理
@@ -170,7 +170,7 @@ void Dust::SetCenter(Pos center)
 //あたり矩形のセット
 void Dust::SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype)
 {
-	rect[mode][index][flam].push_back({ offset, size, rtype });
+	//rect[mode][index][flam].push_back({ offset, size, rtype });
 }
 
 //あたり矩形のセット
