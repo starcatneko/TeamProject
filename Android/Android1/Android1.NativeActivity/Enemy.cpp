@@ -7,7 +7,7 @@ Enemy::Enemy() : speed(3), target({ 0,0 }), die(false), reverse(false), flam(0),
 	state = ST_NUETRAL;
 	mode = "wait";
 	dir = DIR_NON;
-	animTime = { { "wait", 5 },{ "walk", 10 }, {"attack", 1} };
+	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1} };
 }
 
 // デストラクタ

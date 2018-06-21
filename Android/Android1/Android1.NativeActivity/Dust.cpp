@@ -57,7 +57,7 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
-	/*if (state != ST_DIE)
+	if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
@@ -117,7 +117,7 @@ void Dust::Draw(void)
 	}
 
 	DrawFormatString(200, 1000, GetColor(255, 0, 0), _T("ダストの座標：%d, %d"), pos);
-#endif*/
+#endif
 }
 
 // アニメーション管理

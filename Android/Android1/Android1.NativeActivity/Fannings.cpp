@@ -30,14 +30,14 @@ const int large = 1;
 const int waitTime = 60;
 
 // 移動時間
-const int walkTime = 900;
+const int walkTime = 90;
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), area(150), wait(0), walking(0)
+	attackFlag(false), area(200), wait(0), walking(0)
 {
 	Reset();
-	speed = 0;
+
 	image["wait"] = LoadMane::Get()->Load("FAwait.png");
 	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
 	image["attack"] = LoadMane::Get()->Load("FAattack.png");
@@ -158,30 +158,37 @@ void Fannings::RectInit(void)
 	//待機
 	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
 	{
-		if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
-		{
-			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-		}
-		else
-		{
-			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
-		}
+		SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 	}
 
 	//移動
 	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
 	{
-		if (5 <= in && in <= 10)
+		if (4 <= in && in <= 10)
 		{
-			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
+			SetRect("walk", in, { (-size.x / 3) - 20, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
 		}
-		else if (20 <= in && in <= 27)
+		else if (20 <= in && in <= 26)
 		{
-			SetRect("walk", in, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
+			SetRect("walk", in, { (-size.x / 3) - 20, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, (size.y) }, RectType::Damage);
 		}
 		else
 		{
 			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
+		}
+	}
+
+	//攻撃
+	for (unsigned int in = 0; in < anim["attack"].size(); ++in)
+	{
+		if (5 <= in && in <= 11)
+		{
+			SetRect("attack", in, { (-size.x / 2) + 20, (-size.y / 2) }, { (size.x - 100), (size.y) }, RectType::Damage);
+			SetRect("attack", in, { (-size.x / 2) - 40, (-size.y / 2) + 80 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+		}
+		else
+		{
+			SetRect("attack", in, { (-size.x / 2) + 50, (-size.y / 2) }, { (size.x - 80), (size.y) }, RectType::Damage);
 		}
 	}
 }
