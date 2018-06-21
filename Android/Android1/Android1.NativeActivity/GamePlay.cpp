@@ -200,7 +200,7 @@ void GamePlay::ItemUpData(void)
 	{
 		(*itr)->UpData();
 
-		if ((*itr)->GetHit() == true && (*itr)->GetEffectTimer() <=0)
+		if ((*itr)->GetHit() == true)
 		{
 			itr = item.erase(itr);
 		}

@@ -52,23 +52,9 @@ void Apple::UpData(void)
 
 	Animator(APPLE_CNT, timer);
 
-	if (effect_cnt > 0)
+	if (CheckHit(center, {1,1}, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()) == true)
 	{
-		pos.y += cos(RAD(effect_cnt*6))*15;
-		//pos.y++;
-		effect_cnt--;
-	}
-
-	if (effect_cnt <= 0)
-	{
-		if (hit == true)
-		{
-			pl.lock()->UpPower(effectiv);
-		}
-		else
-		{
-			CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize());
-		}
+		pl.lock()->UpPower(effectiv);
 	}
 
 	if (lpos.y > WINDOW_Y + size.y / 2)
