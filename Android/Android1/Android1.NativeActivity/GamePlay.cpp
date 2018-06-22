@@ -5,6 +5,7 @@
 #include "EnemyMane.h"
 #include "Game.h"
 #include "Over.h"
+#include "Clear.h"
 #include "Camera.h"
 #include "BackGround.h"
 #include "Stage.h"
@@ -275,7 +276,7 @@ void GamePlay::Start(void)
 
 	if (cam->GetEnd() == true && enemy.size() <= 0)
 	{
-		Game::Get().ChangeScene(new Over());
+		Game::Get().ChangeScene(new Clear());
 	}
 
 	//ゲームオーバー移行
