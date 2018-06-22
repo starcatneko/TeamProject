@@ -12,7 +12,6 @@
 #include "Fannings.h"
 #include "Item.h"
 #include "Interface.h"
-#include "Sound.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -58,7 +57,6 @@ void GamePlay::LoadDraw(void)
 	pl->Draw();
 	cam->Draw();
 	ui->Draw();
-	
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
@@ -80,7 +78,7 @@ void GamePlay::NormalDraw(void)
 	pl->Draw();
 	cam->Draw();
 	ui->Draw();
-	Sound::Get()->Draw();
+	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["pinch"]);
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xff00ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
