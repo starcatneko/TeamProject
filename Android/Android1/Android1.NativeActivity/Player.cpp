@@ -5,6 +5,7 @@
 #include "Touch.h"
 #include "Camera.h"
 #include "Stage.h"
+#include "Sound.h"
 #include <algorithm>
 #include "DxLib.h"
 
@@ -217,6 +218,10 @@ void Player::Draw(void)
 	}
 	else
 	{
+		if (change == 0)
+		{
+			Sound::Get()->Play(SE_CRY);
+		}
 		++change;
 		if (change % 3 == 0)
 		{
@@ -536,6 +541,7 @@ void Player::Nuetral(void)
 
 	if (Touch::Get()->Check(FLICK, tmp) == true)
 	{
+		Sound::Get()->Play(SE_STEP);
 		SetState(ST_WALK);
 		SetMode("dash");
 		dash = Touch::Get()->GetAngel();
@@ -544,6 +550,7 @@ void Player::Nuetral(void)
 
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
+		Sound::Get()->Play(SE_PUNCH);
 		SetState(ST_ATTACK);
 		SetMode("attack1");
 		func = &Player::Attack1;
@@ -703,6 +710,7 @@ void Player::Attack1(void)
 		}
 		else
 		{
+			Sound::Get()->Play(SE_PUNCH);
 			SetState(ST_ATTACK);
 			SetMode("attack2");
 			func = &Player::Attack2;
@@ -743,6 +751,8 @@ void Player::Damage(void)
 
 	if (hp <= 0)
 	{
+		Sound::Get()->Stop();
+		Sound::Get()->Play(SE_DEAD);
 		SetState(ST_DIE);
 		SetMode("die");
 		func = &Player::Die;
@@ -1036,6 +1046,7 @@ void Player::SetState(STATES state)
 	attack2 = false;
 	if (this->state == ST_DAMAGE)
 	{
+		Sound::Get()->Play(SE_HIT2);
 		SetMode("damage");
 		--hp;
 		target = lpos;

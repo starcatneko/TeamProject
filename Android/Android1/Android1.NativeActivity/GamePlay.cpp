@@ -13,6 +13,7 @@
 #include "Fannings.h"
 #include "Item.h"
 #include "Interface.h"
+#include "Sound.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -280,6 +281,8 @@ void GamePlay::Start(void)
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)
 	{
+		Sound::Get()->Stop();
+		Sound::Get()->Play(MU_BGM2);
 		Game::Get().ChangeScene(new Over());
 	}
 

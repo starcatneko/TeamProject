@@ -9,6 +9,7 @@ Sound::Sound()
 {
 	Reset();
 	SoundInit();
+	nowplay = MU_MAX;
 }
 
 // デストラクタ
@@ -51,22 +52,55 @@ void Sound::SoundInit(void)
 	Load("voice2.ogg", SE_VOICE2);
 	Load("ko.ogg", SE_KO);
 	Load("dead.ogg", SE_DEAD);
+	Load("cry.ogg", SE_CRY);
 	Load("step.ogg", SE_STEP);
 	Load("heal.ogg", SE_HEAL);
-}
+	Load("punch.ogg", SE_PUNCH);
+	Load("light.ogg", SE_LIGHT);
 
+	Load("bgm1.ogg", MU_BGM1);
+	Load("over.ogg", MU_BGM2);
+}
 // サウンドの再生
 void Sound::Play(SOUND handle)
 {
+	//音楽の再生
+	if (handle > SE_MAX)
+	{
+		Stop();
+		PlaySoundMem(sound[handle], DX_PLAYTYPE_LOOP, true);
+		nowplay = handle;
+		return;
+	}
+
+	// 連続再生可能な音声
+	if(handle == SE_PUNCH||
+		handle == SE_STEP)
+		{
+			PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
+		}
+
 	if (CheckSoundMem(sound[handle]) == false)
 	{
 		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
 	}
 }
 
+
+// サウンドの停止
+void Sound::Stop(void)
+{
+	if (nowplay != MU_MAX && CheckSoundMem(sound[nowplay]) == true)
+	{
+		StopSoundMem(sound[nowplay]);
+		nowplay = MU_MAX;
+	}
+}
+
 // リセット
 void Sound::Reset(void)
 {
+
 	sound.clear();
 }
 

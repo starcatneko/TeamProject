@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Touch.h"
 #include "Title.h"
+#include "Sound.h"
 #include "DxLib.h"
 
 // 文字画像データ
@@ -84,6 +85,7 @@ void Over::Start(void)
 
 		if (alpha <= 0)
 		{
+			Sound::Get()->Stop();
 			Game::Get().ChangeScene(new Title());
 		}
 	}
