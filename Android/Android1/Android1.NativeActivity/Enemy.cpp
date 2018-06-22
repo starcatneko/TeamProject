@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 #include "GameMane.h"
+#include "Sound.h"
 
 
 // コンストラクタ
@@ -113,6 +114,7 @@ void Enemy::SetState(STATES state)
 	index = 0;
 	if (this->state == ST_DAMAGE)
 	{
+		Sound::Get()->Play(SE_HIT1);
 		SetMode("damage");
 		--hp;
 	}
