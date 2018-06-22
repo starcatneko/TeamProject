@@ -23,6 +23,16 @@
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
+//ダメージアニメーション関係
+#define DAMAGE_ANIM_CNT 12
+#define DAMAGE_ANIM_X 4
+#define DAMAGE_ANIM_Y 3
+
+//死亡アニメーション関係
+#define DIE_ANIM_CNT 16
+#define DIE_ANIM_X 4
+#define DIE_ANIM_Y 4
+
 // ファニングスの拡大率
 const int large = 1;
 
@@ -41,6 +51,8 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 	image["wait"] = LoadMane::Get()->Load("FAwait.png");
 	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
 	image["attack"] = LoadMane::Get()->Load("FAattack.png");
+	image["damage"] = LoadMane::Get()->Load("FAdamage.png");
+	image["die"] = LoadMane::Get()->Load("FAdead.png");
 
 	this->cam = cam;
 	this->st = st;
@@ -125,6 +137,18 @@ void Fannings::AnimInit(void)
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
 		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+	}
+
+	//ダメージ
+	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
+	{
+		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_Y) }, size);
+	}
+
+	//死亡
+	for (int i = 0; i < DIE_ANIM_CNT; ++i)
+	{
+		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_Y) }, size);
 	}
 }
 
