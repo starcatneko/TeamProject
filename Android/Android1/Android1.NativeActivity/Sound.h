@@ -35,6 +35,7 @@ public:
 
 	// サウンド再生
 	void Play(SOUND handle);
+	void SetPitch(int pitch, SOUND handle);
 	void Draw();
 
 
