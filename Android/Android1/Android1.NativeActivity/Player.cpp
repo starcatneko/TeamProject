@@ -294,12 +294,14 @@ void Player::Draw(void)
 			}
 			else
 			{
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 				DrawRectRotaGraph2(
 					0 + WINDOW_X / 2, 0 + WINDOW_Y / 2,
 					0, 0,
 					WINDOW_X, WINDOW_Y,
 					WINDOW_X / 2, WINDOW_Y / 2,
 					1.0, 0.0, effect[itr->first], true, ppp[0], ppp[1]);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				if (itr->second.nowflam >= itr->second.flam)
 				{
 					ppp[0] = (ppp[1] == false) ? true : false;
