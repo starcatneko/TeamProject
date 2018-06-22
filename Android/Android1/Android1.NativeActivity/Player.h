@@ -101,6 +101,9 @@ public:
 	// 無敵状態かの確認
 	bool CheckInvincible(void);
 
+	// 変化確認
+	bool CheckChange(void);
+
 	// あたり矩形の取得
 	std::vector<Rect> GetRect(void);
 
@@ -237,6 +240,8 @@ private:
 
 	// オフセット
 	int offset;
+
+	int change;
 
 	// アニメーション
 	std::map<std::string, std::vector<Box>>anim;

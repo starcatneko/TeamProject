@@ -105,6 +105,9 @@ private:
 	// フレーム
 	int flam;
 
+	// ヒットストップ
+	int stop;
+
 	// 関数ポインタ
 	void (GamePlay::*draw)();
 

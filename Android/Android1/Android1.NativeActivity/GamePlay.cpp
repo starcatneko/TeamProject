@@ -1,6 +1,7 @@
 ﻿#include "GamePlay.h"
 #include "LoadMane.h"
 #include "ItemMane.h"
+#include "GameMane.h"
 #include "EnemyMane.h"
 #include "Game.h"
 #include "Over.h"
@@ -20,7 +21,7 @@
 #define LOAD_SIZE_Y 116
 
 // コンストラクタ
-GamePlay::GamePlay() : blend(false), flam(0)
+GamePlay::GamePlay() : blend(false), flam(0), stop(0)
 {
 	Reset();
 	Create();
@@ -117,7 +118,7 @@ void GamePlay::Load(void)
 
 		if (s_enemy[i] == 1)
 		{
-			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
+			//enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
 		}
 		else if (s_enemy[i] == 2)
 		{
@@ -271,6 +272,11 @@ void GamePlay::Start(void)
 
 	Pinch();
 
+	if (cam->GetEnd() == true && enemy.size() <= 0)
+	{
+		Game::Get().ChangeScene(new Over());
+	}
+
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)
 	{
@@ -293,7 +299,19 @@ void GamePlay::UpData(void)
 
 	Load();
 
-	(this->*func)();
+	if (GameMane::Get()->GetHit() == true)
+	{
+		++stop;
+		if (stop >= 5)
+		{
+			GameMane::Get()->SetHit(false);
+			stop = 0;
+		}
+	}
+	else
+	{
+		(this->*func)();
+	}
 }
 
 // リセット

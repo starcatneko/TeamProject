@@ -146,9 +146,9 @@ void Fannings::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
-	//DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
+	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(500, 1000, GetColor(255, 0, 0), "%d", index);
@@ -407,9 +407,17 @@ void Fannings::Damage(void)
 	
 	if (hp <= 0)
 	{
-		SetState(ST_DIE);
-		SetMode("die");
-		func = &Fannings::Die;
+		index = 0;
+
+		pos.x += (target.x > lpos.x) ? speed * 10 : -speed * 10;
+
+		int m = std::abs(target.x - lpos.x);
+		if (m <= 20)
+		{
+			SetState(ST_DIE);
+			SetMode("die");
+			func = &Fannings::Die;
+		}
 	}
 	else
 	{
@@ -439,7 +447,7 @@ void Fannings::Die(void)
 		effe["effect1"].flag = true;
 		effe["effect2"].flag = true;
 		effe["effect3"].flag = true;
-		offset += 5;
+		offset += 10;
 		if (offset >= size.y)
 		{
 			effe["effect1"].flag = false;
@@ -454,6 +462,11 @@ void Fannings::Die(void)
 // 処理
 void Fannings::UpData(void)
 {
+	if (pl.lock()->CheckChange() == true || pl.lock()->GetState() == ST_DIE)
+	{
+		return;
+	}
+
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
@@ -487,6 +500,8 @@ void Fannings::UpData(void)
 	if (hit == true)
 	{
 		SetState(ST_DAMAGE);
+		GameMane::Get()->SetHit(true);
+		target.x = (pl.lock()->GetReverse() == false) ? WINDOW_X - size.x - 1 : 0 + 1;
 		func = &Fannings::Damage;
 	}
 

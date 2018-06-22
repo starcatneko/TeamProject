@@ -109,6 +109,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	tmp = DIR_NON;
 	w_flam = 0;
 	offset = 0;
+	change = -1;
 	
 	AnimInit();
 	RectInit();
@@ -148,6 +149,7 @@ void Player::NormalDraw(void)
 {
 	if (type == PlType::pinch)
 	{
+		change = 0;
 		draw = &Player::PinchDraw;
 		return;
 	}
@@ -178,6 +180,7 @@ void Player::PinchDraw(void)
 {
 	if (type == PlType::normal)
 	{
+		change = 0;
 		draw = &Player::NormalDraw;
 		return;
 	}
@@ -205,9 +208,63 @@ void Player::PinchDraw(void)
 // 描画
 void Player::Draw(void)
 {
-	if (m_flam % 2 != 0)
+	if (change == -1)
 	{
-		(this->*draw)();
+		if (m_flam % 2 != 0)
+		{
+			(this->*draw)();
+		}
+	}
+	else
+	{
+		++change;
+		if (change % 3 == 0)
+		{
+			if (type == PlType::normal)
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
+					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
+					anim["wait"][0].size.x, anim["wait"][0].size.y,
+					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
+					(double)large, 0.0, image[PlType::normal]["wait"], true, reverse, false);
+			}
+			else
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
+					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
+					anim["wait"][0].size.x, anim["wait"][0].size.y,
+					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
+					(double)large, 0.0, image[PlType::pinch]["wait"], true, reverse, false);
+			}
+		}
+		else
+		{
+			if (type == PlType::normal)
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
+					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
+					anim["wait"][0].size.x, anim["wait"][0].size.y,
+					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
+					(double)large, 0.0, image[PlType::pinch]["wait"], true, reverse, false);
+			}
+			else
+			{
+				DrawRectRotaGraph2(
+					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
+					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
+					anim["wait"][0].size.x, anim["wait"][0].size.y,
+					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
+					(double)large, 0.0, image[PlType::normal]["wait"], true, reverse, false);
+			}
+		}
+
+		if (change >= 60)
+		{
+			change = -1;
+		}
 	}
 
 	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
@@ -771,9 +828,25 @@ void Player::Die(void)
 	}
 }
 
+// 変化確認
+bool Player::CheckChange(void)
+{
+	if (change != -1)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // 処理
 void Player::UpData(void)
 {
+	if (change != -1)
+	{
+		return;
+	}
+
 	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
 	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
@@ -818,6 +891,10 @@ void Player::UpData(void)
 		SetState(ST_DAMAGE);
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
+	{
+		UpHp(10);
+	}
+	if (CheckHitKey(KEY_INPUT_LCONTROL))
 	{
 		DownHp(10);
 	}
