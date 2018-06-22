@@ -137,6 +137,8 @@
     <Content Include="assets\Dwalk.png" />
     <Content Include="assets\effect1.png" />
     <Content Include="assets\effect2.png" />
+    <Content Include="assets\effect3.png" />
+    <Content Include="assets\effect4.png" />
     <Content Include="assets\FAattack.png" />
     <Content Include="assets\FAdamage.png" />
     <Content Include="assets\FAdead.png" />

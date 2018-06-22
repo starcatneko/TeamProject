@@ -241,7 +241,11 @@ private:
 	// オフセット
 	int offset;
 
+	// 変化確認
 	int change;
+
+	// 裏技
+	int skill;
 
 	// アニメーション
 	std::map<std::string, std::vector<Box>>anim;

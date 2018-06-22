@@ -64,6 +64,9 @@ const int baseSpeed = 5;
 // プレイヤーの拡大率
 const int large = 1;
 
+// 反転フラグ
+bool ppp[2] = { false, false };
+
 // コンストラクタ
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam(cam), st(st), pos(pos)
 {
@@ -86,6 +89,9 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 
 	effect["effect1"] = LoadMane::Get()->Load("effect1.png");
 	effect["effect2"] = LoadMane::Get()->Load("effect2.png");
+	effect["effect3"] = LoadMane::Get()->Load("effect3.png");
+	effect["effect4"] = LoadMane::Get()->Load("effect4.png");
+	
 
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
@@ -110,6 +116,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	w_flam = 0;
 	offset = 0;
 	change = -1;
+	skill = 0;
 	
 	AnimInit();
 	RectInit();
@@ -271,12 +278,29 @@ void Player::Draw(void)
 	{
 		if (itr->second.flag == true)
 		{
-			DrawRectRotaGraph2(
-				GetEffect(itr->first).x, GetEffect(itr->first).y,
-				itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
-				itr->second.size.x, itr->second.size.y,
-				itr->second.size.x / 2, itr->second.size.y / 2,
-				1.0, 0.0, effect[itr->first], true, reverse, false);
+			if (itr->first != "effect4")
+			{
+				DrawRectRotaGraph2(
+					GetEffect(itr->first).x, GetEffect(itr->first).y,
+					itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+					itr->second.size.x, itr->second.size.y,
+					itr->second.size.x / 2, itr->second.size.y / 2,
+					1.0, 0.0, effect[itr->first], true, reverse, false);
+			}
+			else
+			{
+				DrawRectRotaGraph2(
+					0 + WINDOW_X / 2, 0 + WINDOW_Y / 2,
+					0, 0,
+					WINDOW_X, WINDOW_Y,
+					WINDOW_X / 2, WINDOW_Y / 2,
+					1.0, 0.0, effect[itr->first], true, ppp[0], ppp[1]);
+				if (itr->second.nowflam >= itr->second.flam)
+				{
+					ppp[0] = (ppp[1] == false) ? true : false;
+					ppp[1] = (ppp[1] == false) ? true : false;
+				}
+			}
 		}
 	}
 
@@ -294,7 +318,7 @@ void Player::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 #endif
@@ -517,6 +541,8 @@ void Player::EffectInit(void)
 {
 	SetEffect("effect1", 6, 3, 2, { -50,-80 }, { 240, 240 }, 5);
 	SetEffect("effect2", 5, 5, 1, { -160,-10 }, { 240, 240 }, 4);
+	SetEffect("effect3", 21, 7, 3, { -120,-100 }, { 240, 240 }, 4);
+	SetEffect("effect4", 1, 1, 1, { 0,0 }, { WINDOW_X, WINDOW_Y }, 4);
 }
 
 // 待機時の処理
@@ -547,6 +573,41 @@ void Player::Nuetral(void)
 		SetState(ST_ATTACK);
 		SetMode("attack1");
 		func = &Player::Attack1;
+	}
+
+	if (Touch::Get()->Check(PRESS, tmp) == true)
+	{
+		++skill;
+		effe["effect3"].flag = true;
+		if (skill >= 60 * 15)
+		{
+			effe["effect3"].flag = false;
+			effe["effect4"].flag = true;
+			if (rect[type][mode][index].size() < 2)
+			{
+				if (reverse == false)
+				{
+					rect[type][mode][index].push_back({ { -(WINDOW_X - (WINDOW_X - center.x)), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
+				}
+				else
+				{
+					rect[type][mode][index].push_back({ { -(WINDOW_X - center.x), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
+				}
+			}
+		}
+	}
+	else
+	{
+		effe["effect3"].flag = false;
+		effe["effect4"].flag = false;
+		for (int i = 0; i < WAIT_ANIM_CNT; ++i)
+		{
+			if (rect[type]["wait"][i].size() >= 2)
+			{
+				rect[type]["wait"][i].pop_back();
+			}
+		}
+		skill = 0;
 	}
 }
 
@@ -1034,6 +1095,7 @@ void Player::SetState(STATES state)
 	flam = 0;
 	index = 0;
 	attack2 = false;
+	skill = 0;
 	if (this->state == ST_DAMAGE)
 	{
 		SetMode("damage");
