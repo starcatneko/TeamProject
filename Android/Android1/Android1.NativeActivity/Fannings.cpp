@@ -23,6 +23,11 @@
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
+// ダメージアニメーション関係
+#define DAMAGE_ANIM_CNT 12
+#define DAMAGE_ANIM_X 4
+#define DAMAGE_ANIM_Y 3
+
 // 死亡アニメーション関係
 #define DIE_ANIM_CNT 16
 #define DIE_ANIM_X 4
@@ -46,10 +51,12 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 	image["wait"] = LoadMane::Get()->Load("FAwait.png");
 	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
 	image["attack"] = LoadMane::Get()->Load("FAattack.png");
-	image["damage"] = LoadMane::Get()->Load("FAwait.png");
+	image["damage"] = LoadMane::Get()->Load("FAdamage.png");
 	image["die"] = LoadMane::Get()->Load("FAdead.png");
 
 	effect["effect1"] = LoadMane::Get()->Load("fa_effect1.png");
+	effect["effect2"] = LoadMane::Get()->Load("fa_effect2.png");
+	effect["effect3"] = LoadMane::Get()->Load("fa_effect2.png");
 
 	this->cam = cam;
 	this->st = st;
@@ -57,7 +64,7 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 	this->pos = pos;
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipEneSize();
-	hp = 1;
+	hp = 10;
 	func = &Fannings::Neutral;
 
 	AnimInit();
@@ -78,12 +85,31 @@ void Fannings::Draw(void)
 	{
 		if (itr->second.flag == true)
 		{
-			DrawRectRotaGraph2(
-				GetEffect(itr->first).x, GetEffect(itr->first).y,
-				itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
-				itr->second.size.x, itr->second.size.y,
-				itr->second.size.x / 2, itr->second.size.y / 2,
-				1.0, 0.0, effect[itr->first], true, reverse, false);
+			if (itr->first != "effect1")
+			{
+				bool flag = false;
+				if (itr->first != "effect2")
+				{
+					flag = true;
+				}
+				DrawRectRotaGraph2(
+					GetEffect(itr->first).x, GetEffect(itr->first).y,
+					itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+					itr->second.size.x, itr->second.size.y,
+					itr->second.size.x / 2, itr->second.size.y / 2,
+					1.0, 0.0, effect[itr->first], true, flag, false);
+			}
+			else
+			{
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+				DrawRectRotaGraph2(
+					GetEffect(itr->first).x, GetEffect(itr->first).y,
+					itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+					itr->second.size.x, itr->second.size.y,
+					itr->second.size.x / 2, itr->second.size.y / 2,
+					1.0, 0.0, effect[itr->first], true, reverse, false);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
 		}
 	}
 
@@ -120,9 +146,9 @@ void Fannings::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
-	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
+	//DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(500, 1000, GetColor(255, 0, 0), "%d", index);
@@ -151,9 +177,9 @@ void Fannings::AnimInit(void)
 	}
 
 	//ダメージ
-	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
+	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
 	{
-		SetAnim("damage", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
+		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_X) }, size);
 	}
 
 	// 死亡
@@ -207,7 +233,9 @@ void Fannings::RectInit(void)
 // エフェクトのセット
 void Fannings::EffectInit(void)
 {
-	SetEffect("effect1", 1, 1, 1, { -50,-80 }, { 480, 480 }, 5);
+	SetEffect("effect1", 1, 1, 1, { -240,-260 }, { 480, 480 }, 5);
+	SetEffect("effect2", 1, 1, 1,  { 30,-260 }, { 160, 160 }, 5);
+	SetEffect("effect3", 1, 1, 1, { -180,-260 }, { 160, 160 }, 5);
 }
 
 // 待機時の処理
@@ -409,10 +437,14 @@ void Fannings::Die(void)
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
 		effe["effect1"].flag = true;
+		effe["effect2"].flag = true;
+		effe["effect3"].flag = true;
 		offset += 5;
 		if (offset >= size.y)
 		{
-			effe["effect"].flag = false;
+			effe["effect1"].flag = false;
+			effe["effect2"].flag = false;
+			effe["effect3"].flag = false;
 			GameMane::Get()->Kill();
 			die = true;
 		}
