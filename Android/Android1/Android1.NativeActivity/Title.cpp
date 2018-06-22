@@ -4,6 +4,7 @@
 #include "Score.h"
 #include "Game.h"
 #include "GamePlay.h"
+#include "Sound.h"
 #include "DxLib.h"
 #include "Debug.h"
 
@@ -100,6 +101,8 @@ void Title::NotStart(void)
 	if(Touch::Get()->Check(FLICK,dir) == true
 		&& dir == DIR_UP)
 	{
+		Sound::Get()->Play(SE_LIGHT);
+		Sound::Get()->Play(MU_BGM1);
 		func = &Title::Start;
 	}
 }

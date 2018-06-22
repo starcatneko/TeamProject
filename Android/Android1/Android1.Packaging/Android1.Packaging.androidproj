@@ -121,6 +121,7 @@
   <ItemGroup>
     <Content Include="assets\apple.png" />
     <Content Include="assets\bgm1.ogg" />
+    <Content Include="assets\cry.ogg" />
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
     <Content Include="assets\Ddead.png" />
@@ -159,6 +160,7 @@
     <Content Include="assets\hp_gage.png" />
     <Content Include="assets\hp_mask.png" />
     <Content Include="assets\ko1.ogg" />
+    <Content Include="assets\light.ogg" />
     <Content Include="assets\load.png" />
     <Content Include="assets\Ndamage.png" />
     <Content Include="assets\Ndash.png" />
@@ -166,6 +168,7 @@
     <Content Include="assets\Npunch2.png" />
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
+    <Content Include="assets\over.ogg" />
     <Content Include="assets\over.png" />
     <Content Include="assets\overback.png" />
     <Content Include="assets\punch.ogg" />

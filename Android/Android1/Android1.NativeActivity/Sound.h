@@ -13,8 +13,17 @@ enum SOUND
 	SE_DEAD,
 	SE_VOICE1,
 	SE_VOICE2,
-	SE_MAX
+	SE_PUNCH,
+	SE_CRY,
+	SE_LIGHT,
+	SE_MAX,
+
+	MU_BGM1 = 1000,
+	MU_BGM2,
+	MU_MAX
+
 };
+
 
 class Sound
 {
@@ -36,6 +45,8 @@ public:
 	// サウンド再生
 	void Play(SOUND handle);
 
+	void Stop(void);
+
 private:
 	// コンストラクタ
 	Sound();
@@ -54,5 +65,8 @@ private:
 
 	// サウンドハンドル
 	std::map<SOUND, int>sound;
+
+	// 現在再生中の"BGM"
+	SOUND nowplay;
 };
 
