@@ -519,7 +519,7 @@ void Fannings::UpData(void)
 		{
 			hp -= 4;
 		}
-		else
+		else if (pl.lock()->GetPower() >= 100)
 		{
 			hp -= 9;
 		}
