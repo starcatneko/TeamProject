@@ -1,2 +1,6 @@
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v141:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=10.0.16299.0
-Debug|Win32|C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\|
+<<<<<<< HEAD
+Debug|Win32|C:\Users\1601291\Documents\GitHub\TeamProject\Windows用\|
+=======
+Debug|Win32|C:\GitHub\TeamProject\Windows用\|
+>>>>>>> 1aa0de514113224e01e789685e6b489854b30d2a

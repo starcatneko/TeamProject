@@ -46,6 +46,8 @@ public:
 	//particle
 	int ptcnt;
 
+	int caution_img;
+
 	int FpsTime_i;
 	int FpsTime[2];
 	double Fps;

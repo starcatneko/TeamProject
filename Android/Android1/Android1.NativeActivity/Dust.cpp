@@ -24,18 +24,36 @@
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
+//ダメージアニメーション関係
+#define DAMAGE_ANIM_CNT 12
+#define DAMAGE_ANIM_X 4
+#define DAMAGE_ANIM_Y 3
+
+//死亡アニメーション関係
+#define DIE_ANIM_CNT 16
+#define DIE_ANIM_X 4
+#define DIE_ANIM_Y 4
+
 // ダストの拡大率
 const int large = 1;
 
+//待機時間
+const int waitTime = 60;
+
+//移動時間
+const int walkTime = 120;
+
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(100), color(0x00ffff), wait(0), dirwait(0), box{ {0,0}, {0,0} }
+	attackFlag(false), attackRange(100), wait(0), box{ {0,0}, {0,0} }, walking(0)
 {
 	Reset();
 
 	image["wait"] = LoadMane::Get()->Load("DUwait.png");
 	image["walk"] = LoadMane::Get()->Load("DUwalk.png");
 	image["attack"] = LoadMane::Get()->Load("DUattack.png");
+	image["damage"] = LoadMane::Get()->Load("DUdamage.png");
+	image["die"] = LoadMane::Get()->Load("DUdead.png");
 
 	this->cam = cam;
 	this->st = st;
@@ -123,59 +141,38 @@ void Dust::Draw(void)
 #endif
 }
 
-// アニメーション管理
-void Dust::Animator(int flam)
-{
-	++this->flam;
-	if (this->flam > flam)
-	{
-		index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
-		this->flam = 0;
-	}
-}
-
-// アニメーションのセット
-void Dust::SetAnim(std::string mode, Pos pos, Pos size)
-{
-	anim[mode].push_back({ pos, size });
-}
-
 // アニメーションのセット
 void Dust::AnimInit(void)
 {
 	//待機
 	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
 	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
+		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
 	}
+
 	//歩き
 	for (int i = 0; i < WALK_ANIM_CNT; ++i)
 	{
 		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
 	}
+
 	//攻撃
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
 		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
 	}
-}
 
-// 中心座標の取得
-Pos Dust::GetCenter(void)
-{
-	return center;
-}
+	//ダメージ
+	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
+	{
+		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_Y) }, size);
+	}
 
-//中心座標のセット
-void Dust::SetCenter(Pos center)
-{
-	this->center = center;
-}
-
-//あたり矩形のセット
-void Dust::SetRect(std::string mode, int index, int flam, Pos offset, Pos size, RectType rtype)
-{
-	//rect[mode][index][flam].push_back({ offset, size, rtype });
+	//死亡
+	for (int i = 0; i < DIE_ANIM_CNT; ++i)
+	{
+		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_Y) }, size);
+	}
 }
 
 //あたり矩形のセット
@@ -184,36 +181,47 @@ void Dust::RectInit(void)
 	//待機
 	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["wait"]; ++i)
+		if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
 		{
-			if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
-			{
-				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
-			}
-			else
-			{
-				SetRect("wait", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
-			}
+			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
+		}
+		else
+		{
+			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
 		}
 	}
 
 	//移動
 	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
 	{
-		for (int i = 0; i < animTime["walk"]; ++i)
+		if (4 <= in && in <= 10)
 		{
-			if (5 <= in && in <= 10)
-			{
-				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
-			}
-			else if (20 <= in && in <= 27)
-			{
-				SetRect("walk", in, i, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, size.y }, RectType::Damage);
-			}
-			else
-			{
-				SetRect("walk", in, i, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
-			}
+			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
+		}
+		else if (20 <= in && in <= 27)
+		{
+			SetRect("walk", in, { (-size.x / 3) - 10, (-size.y / 2) }, { ((size.x * 2) / 3) + 20, size.y }, RectType::Damage);
+		}
+		else
+		{
+			SetRect("walk", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
+		}
+	}
+
+	for (unsigned int in = 0; in < anim["attack"].size(); ++in)
+	{
+		if (3 <= in && in <= 6)
+		{
+			SetRect("attack", in, { (-size.x / 3) + 20, (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
+		}
+		else if (7 <= in && in <= 10)
+		{
+			SetRect("attack", in, { (-size.x / 3) - 20, (-size.y / 2) + 10 }, { ((size.x * 2) / 3) - 20, size.y - 10 }, RectType::Damage);
+			SetRect("attack", in, { (-size.x / 3) - 80, (-size.y / 2) + 80 }, { (size.x / 4), size.y / 2 }, RectType::Attack);
+		}
+		else
+		{
+			SetRect("attack", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
 		}
 	}
 }
@@ -227,9 +235,8 @@ void Dust::Neutral(void)
 	}
 
 	//プレイヤーとの距離を求める
-	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
-	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
-	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
+	Pos tmp = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
+	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
 		SetMode("attack");
@@ -243,17 +250,23 @@ void Dust::Neutral(void)
 			SetState(ST_WALK);
 			SetMode("walk");
 			target = pl.lock()->GetCenter();
+
+			//移動方向更新
+			if (center.x < target.x)
+			{
+				dir = DIR_RIGHT;
+				reverse = true;
+			}
+			else
+			{
+				dir = DIR_LEFT;
+				reverse = false;
+			}
+			walking = walkTime;
 			func = &Dust::Walk;
 		}
 	}
 
-	//プレイヤーの攻撃矩形を用いて当たり判定を求める
-	if (CheckHit(lpos, size, pl.lock()->GetLocalPos(), pl.lock()->GetSize()) == true
-		&& pl.lock()->GetState() == ST_ATTACK)
-	{
-		SetState(ST_DAMAGE);
-		func = &Dust::Damage;
-	}
 }
 
 // 移動時の処理
@@ -264,11 +277,9 @@ void Dust::Walk(void)
 		return;
 	}
 
-	reverse = (Touch::Get()->GetUnsignedAngle() < 180.0f) ? true : false;
+	Pos tmp = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
 
-	Pos tmp1 = { std::abs(center.x - pl.lock()->GetCenter().x), std::abs(center.y - pl.lock()->GetCenter().y) };
-	Pos tmp2 = { std::abs(pl.lock()->GetCenter().x - center.x), std::abs(pl.lock()->GetCenter().y - center.y) };
-	if ((tmp1.x <= attackRange && tmp1.y <= attackRange) || (tmp2.x <= attackRange && tmp2.y <= attackRange))
+	if (tmp.x <= attackRange && tmp.y <= attackRange)
 	{
 		SetState(ST_ATTACK);
 		SetMode("attack");
@@ -276,44 +287,38 @@ void Dust::Walk(void)
 	}
 	else
 	{
-		// 目標座標の更新
-		target = { pl.lock()->GetCenter().x, pl.lock()->GetCenter().y };
-		if (dirwait == 0)
+		if (walking == 0)
 		{
-			dir = (center.x > target.x ? DIR_LEFT : DIR_RIGHT);
-			dirwait = 30;
+			SetState(ST_NUETRAL);
+			SetMode("wait");
+			wait = waitTime;
+			func = &Dust::Neutral;
 		}
 		else
 		{
-			dirwait--;
-		}
+			--walking;
 
-		if (dir == DIR_LEFT)
-		{
-			pos.x -= speed;
-			if (center.y != target.y)
+			if (dir == DIR_LEFT)
 			{
-				pos.y += (center.y > target.y ? -speed : speed);
+				pos.x -= (pos.x - 1 > 0) ? speed : 0;
+			}
+			else if (dir == DIR_RIGHT)
+			{
+				pos.x += (pos.x + size.x + 1 < WINDOW_X) ? speed : 0;
+			}
+			else
+			{
+			}
+
+			if (center.y > target.y)
+			{
+				pos.y -= (pos.y - 1 > 0) ? speed : 0;
+			}
+			else
+			{
+				pos.y += (pos.y + size.y + 1 < WINDOW_Y) ? speed : 0;
 			}
 		}
-		else if (dir == DIR_RIGHT)
-		{
-			pos.x += speed;
-			if (center.y != target.y)
-			{
-				pos.y += (center.y > target.y ? -speed : speed);
-			}
-		}
-		else
-		{
-			if (center.y != target.y)
-			{
-				pos.y += (center.y > target.y ? -speed : speed);
-			}
-		}
-		//SetState(ST_NUETRAL);
-		//SetMode("wait");
-		//func = &Dust::Neutral;
 	}
 }
 
@@ -324,14 +329,54 @@ void Dust::Attack(void)
 	{
 		return;
 	}
-	color = 0xffff00;
+
+	auto prect = pl.lock()->GetRect();
+
+	bool hit = false;
+
+	for (auto& p : prect)
+	{
+		for (auto& r : GetRect())
+		{
+			if (CheckHit(r.offset, r.size, p.offset, p.size) == true)
+			{
+				if (r.type == RectType::Attack && p.type == RectType::Damage)
+				{
+					hit = true;
+					break;
+				}
+			}
+		}
+
+		if (hit == true)
+		{
+			break;
+		}
+	}
+
+	if (hit == true && pl.lock()->CheckInvincible() == false)
+	{
+		if (reverse == false)
+		{
+			pl.lock()->SetReverse(false);
+			pl.lock()->SetOldDir(DIR_RIGHT);
+		}
+		else
+		{
+			pl.lock()->SetReverse(true);
+			pl.lock()->SetOldDir(DIR_LEFT);
+		}
+
+		pl.lock()->SetState(ST_DAMAGE);
+		pl.lock()->DownHp(power);
+	}
 
 	//攻撃アニメーションが終わったら
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
 		SetState(ST_NUETRAL);
 		SetMode("wait");
-		wait = 60;
+		wait = waitTime;
 		func = &Dust::Neutral;
 	}
 }
@@ -343,15 +388,27 @@ void Dust::Damage(void)
 	{
 		return;
 	}
-	color = 0xff0000;
+
+	if (pl.lock()->GetOldDir() == DIR_RIGHT)
+	{
+		pos.x += (pos.x + size.x + 1 < WINDOW_X) ? 10 : 0;
+	}
+	else if (pl.lock()->GetOldDir() == DIR_LEFT)
+	{
+		pos.x -= (pos.x - 1 > 0) ? 10 : 0;
+	}
+	
 	if (hp <= 0)
 	{
 		state = ST_DIE;
+		SetMode("die");
 		func = &Dust::Die;
 	}
 	else if (pl.lock()->GetState() != ST_ATTACK)
 	{
 		state = ST_NUETRAL;
+		SetMode("wait");
+		wait = waitTime;
 		func = &Dust::Neutral;
 	}
 }
@@ -363,8 +420,7 @@ void Dust::Die(void)
 	{
 		return;
 	}
-	color = 0xffffff;
-	
+
 	//死亡アニメーションが終わったら
 	GameMane::Get()->Kill();
 	die = true;
@@ -378,15 +434,35 @@ void Dust::UpData(void)
 
 	Animator(animTime[mode]);
 
-	std::vector<Rect>p = pl.lock()->GetRect();
-	for (unsigned int i = 0; i < p.size(); ++i)
+	auto prect = pl.lock()->GetRect();
+
+	bool hit = false;
+
+	for (auto& p : prect)
 	{
-		if (CheckHit(lpos, size, p[i].offset, p[i].size) == true
-			&& p[i].type == RectType::Attack)
+		for (auto& r : GetRect())
 		{
-			color = (0xff00ff);
+			if (CheckHit(r.offset, r.size, p.offset, p.size) == true)
+			{
+				if (r.type == RectType::Damage && p.type == RectType::Attack)
+				{
+					hit = true;
+					break;
+				}
+			}
+		}
+
+		if (hit == true)
+		{
 			break;
 		}
+	}
+
+	if (hit == true)
+	{
+		SetState(ST_DAMAGE);
+		SetMode("damage");
+		func = &Dust::Damage;
 	}
 
 	(this->*func)();
