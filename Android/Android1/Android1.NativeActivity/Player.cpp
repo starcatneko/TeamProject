@@ -692,6 +692,14 @@ void Player::Damage(void)
 	}
 	else
 	{
+		for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+		{
+			if (itr->second.flag == true)
+			{
+				itr->second.flag = false;
+			}
+		}
+
 		int point = (type == PlType::normal) ? nock : nock * 3;
 		int m = 0;
 

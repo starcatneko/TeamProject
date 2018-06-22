@@ -9,7 +9,7 @@ Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(
 	mode = "wait";
 	target = { 0,0 };
 	dir = DIR_NON;
-	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1} };
+	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1}, {"damage", 1}, {"die", 1} };
 }
 
 // デストラクタ
@@ -193,6 +193,24 @@ std::vector<Rect> Enemy::GetRect(void)
 	}
 
 	return box;
+}
+
+// エフェクト座標の取得
+Pos Enemy::GetEffect(std::string name, int large)
+{
+	Pos tmp;
+	if (reverse == false)
+	{
+		tmp.x = (center.x + effe[name].offset.x) + effe[name].size.x * large / 2;
+		tmp.y = (center.y + effe[name].offset.y) + effe[name].size.y * large / 2;
+	}
+	else
+	{
+		tmp.x = (center.x - effe[name].offset.x) - effe[name].size.x * large / 2;
+		tmp.y = (center.y + effe[name].offset.y) + effe[name].size.y * large / 2;
+	}
+
+	return tmp;
 }
 
 // 死亡フラグの取得

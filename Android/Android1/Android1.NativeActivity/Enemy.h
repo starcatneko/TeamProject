@@ -70,6 +70,9 @@ public:
 
 	// あたり矩形の取得
 	std::vector<Rect> GetRect(void);
+
+	// エフェクト座標の取得
+	Pos GetEffect(std::string name, int large = 1);
 	
 	// 死亡フラグの取得
 	bool GetDie(void);

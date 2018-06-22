@@ -23,6 +23,11 @@
 #define ATTACK_ANIM_X 4
 #define ATTACK_ANIM_Y 3
 
+// 死亡アニメーション関係
+#define DIE_ANIM_CNT 16
+#define DIE_ANIM_X 4
+#define DIE_ANIM_Y 4
+
 // ファニングスの拡大率
 const int large = 1;
 
@@ -34,13 +39,17 @@ const int walkTime = 90;
 
 //コンストラクタ
 Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	area(200), wait(0), walking(0)
+	area(200), wait(0), walking(0), offset(0)
 {
 	Reset();
 
 	image["wait"] = LoadMane::Get()->Load("FAwait.png");
 	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
 	image["attack"] = LoadMane::Get()->Load("FAattack.png");
+	image["damage"] = LoadMane::Get()->Load("FAwait.png");
+	image["die"] = LoadMane::Get()->Load("FAdead.png");
+
+	effect["effect1"] = LoadMane::Get()->Load("fa_effect1.png");
 
 	this->cam = cam;
 	this->st = st;
@@ -48,11 +57,12 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 	this->pos = pos;
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipEneSize();
-	hp = 10;
+	hp = 1;
 	func = &Fannings::Neutral;
 
 	AnimInit();
 	RectInit();
+	EffectInit();
 }
 
 //デストラクタ
@@ -64,6 +74,19 @@ Fannings::~Fannings()
 //描画
 void Fannings::Draw(void)
 {
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			DrawRectRotaGraph2(
+				GetEffect(itr->first).x, GetEffect(itr->first).y,
+				itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+				itr->second.size.x, itr->second.size.y,
+				itr->second.size.x / 2, itr->second.size.y / 2,
+				1.0, 0.0, effect[itr->first], true, reverse, false);
+		}
+	}
+
 	if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
@@ -75,14 +98,12 @@ void Fannings::Draw(void)
 	}
 	else
 	{
-		static int x = 0;
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x + x, anim[mode][index].pos.y,
-			anim[mode][index].size.x + x, anim[mode][index].size.y,
-			(anim[mode][index].size.x + x) / 2, anim[mode][index].size.y / 2,
+			anim[mode][index].pos.x, anim[mode][index].pos.y + offset,
+			anim[mode][index].size.x, anim[mode][index].size.y - offset,
+			anim[mode][index].size.x / 2, (anim[mode][index].size.y - offset) / 2,
 			(double)large, 0.0, image[mode], true, reverse, false);
-		x += 5;
 	}
 
 #ifndef __ANDROID__
@@ -103,6 +124,8 @@ void Fannings::Draw(void)
 	}
 	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawFormatString(500, 1000, GetColor(255, 0, 0), "%d", index);
 #endif
 }
 
@@ -125,6 +148,18 @@ void Fannings::AnimInit(void)
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
 		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+	}
+
+	//ダメージ
+	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
+	{
+		SetAnim("damage", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
+	}
+
+	// 死亡
+	for (int i = 0; i < DIE_ANIM_CNT; ++i)
+	{
+		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
 	}
 }
 
@@ -167,6 +202,12 @@ void Fannings::RectInit(void)
 			SetRect("attack", in, { (-size.x / 2) + 50, (-size.y / 2) }, { (size.x - 80), (size.y) }, RectType::Damage);
 		}
 	}
+}
+
+// エフェクトのセット
+void Fannings::EffectInit(void)
+{
+	SetEffect("effect1", 1, 1, 1, { -50,-80 }, { 480, 480 }, 5);
 }
 
 // 待機時の処理
@@ -338,16 +379,20 @@ void Fannings::Damage(void)
 	
 	if (hp <= 0)
 	{
-		state = ST_DIE;
+		SetState(ST_DIE);
+		SetMode("die");
 		func = &Fannings::Die;
 	}
 	else
 	{
 		//ダメージアニメーションが終わったとき
-		SetState(ST_NUETRAL);
-		SetMode("wait");
-		wait = waitTime;
-		func = &Fannings::Neutral;
+		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+		{
+			SetState(ST_NUETRAL);
+			SetMode("wait");
+			wait = waitTime;
+			func = &Fannings::Neutral;
+		}
 	}
 }
 
@@ -361,8 +406,17 @@ void Fannings::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	GameMane::Get()->Kill();
-	die = true;
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	{
+		effe["effect1"].flag = true;
+		offset += 5;
+		if (offset >= size.y)
+		{
+			effe["effect"].flag = false;
+			GameMane::Get()->Kill();
+			die = true;
+		}
+	}
 }
 
 // 処理
@@ -401,6 +455,7 @@ void Fannings::UpData(void)
 	if (hit == true)
 	{
 		SetState(ST_DAMAGE);
+		func = &Fannings::Damage;
 	}
 
 	(this->*func)();
