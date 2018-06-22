@@ -117,7 +117,7 @@ void GamePlay::Load(void)
 
 		if (s_enemy[i] == 1)
 		{
-			enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
+			//enemy.push_back(EnemyMane::Get()->CreateDust(tmp, cam, st, pl));
 		}
 		else if (s_enemy[i] == 2)
 		{
