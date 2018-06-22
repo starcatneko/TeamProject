@@ -77,6 +77,9 @@ void Title::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawBox(0,0,WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	Debug::Get()->DrawParticle();
+
 }
 
 // 処理
@@ -105,6 +108,7 @@ void Title::NotStart(void)
 		Sound::Get()->Play(MU_BGM1);
 		func = &Title::Start;
 	}
+
 }
 
 // スタート

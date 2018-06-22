@@ -121,6 +121,7 @@
   <ItemGroup>
     <Content Include="assets\apple.png" />
     <Content Include="assets\bgm1.ogg" />
+    <Content Include="assets\caution.png" />
     <Content Include="assets\cry.ogg" />
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />

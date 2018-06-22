@@ -26,6 +26,7 @@ Debug::Debug()
 	FpsTime[0] = 0;
 	FpsTime[1] = 0;
 	Fps = 0;
+	caution_img = LoadMane::Get()->Load("caution.png");
 
 }
 
@@ -46,6 +47,10 @@ void Debug::DebugText(std::string s,int i,int offset_x,int offset_y,int color)
 
 void Debug::DrawParticle()
 {
+	cnt++;
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - (int)((cnt * 4) % 128));
+	DrawGraph(0, 120, caution_img, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	/*
 	//(*itr)->Draw();
 	//SetDrawBright(255, 255,255);
@@ -72,6 +77,7 @@ void Debug::Update()
 }
 void Debug::ParticleUpdate()
 {
+	
 	Box Boxx = { {50,0}, {256,256} };
 
 	//パーティクルを追加する処理を行うフレーム数(cnt)
