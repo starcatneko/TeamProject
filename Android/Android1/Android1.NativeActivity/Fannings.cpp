@@ -462,7 +462,7 @@ void Fannings::Die(void)
 // 処理
 void Fannings::UpData(void)
 {
-	if (pl.lock()->CheckChange() == true || pl.lock()->GetState() == ST_DIE)
+	if (pl.lock()->GetState() == ST_DIE)
 	{
 		return;
 	}
@@ -502,6 +502,28 @@ void Fannings::UpData(void)
 		SetState(ST_DAMAGE);
 		GameMane::Get()->SetHit(true);
 		target.x = (pl.lock()->GetReverse() == false) ? WINDOW_X - size.x - 1 : 0 + 1;
+
+		if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
+		{
+			hp -= 1;
+		}
+		else if (60 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 70)
+		{
+			hp -= 2;
+		}
+		else if (70 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 80)
+		{
+			hp -= 3;
+		}
+		else if (80 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 100)
+		{
+			hp -= 4;
+		}
+		else
+		{
+			hp -= 9;
+		}
+
 		func = &Fannings::Damage;
 	}
 

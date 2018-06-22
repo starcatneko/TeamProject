@@ -842,11 +842,6 @@ bool Player::CheckChange(void)
 // 処理
 void Player::UpData(void)
 {
-	if (change != -1)
-	{
-		return;
-	}
-
 	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
 	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
@@ -893,6 +888,7 @@ void Player::UpData(void)
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
 		UpHp(10);
+		//UpPower(10);
 	}
 	if (CheckHitKey(KEY_INPUT_LCONTROL))
 	{

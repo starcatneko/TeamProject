@@ -310,7 +310,10 @@ void GamePlay::UpData(void)
 	}
 	else
 	{
-		(this->*func)();
+		if (pl->CheckChange() == false)
+		{
+			(this->*func)();
+		}
 	}
 }
 
