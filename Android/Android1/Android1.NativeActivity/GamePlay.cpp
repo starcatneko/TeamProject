@@ -126,6 +126,10 @@ void GamePlay::Load(void)
 		{
 			enemy.push_back(EnemyMane::Get()->CreateFannings(tmp, cam, st, pl));
 		}
+		else if (s_enemy[i] == 3)
+		{
+			enemy.push_back(EnemyMane::Get()->CreateBoss(tmp, cam, st, pl));
+		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)
 		{

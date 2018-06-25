@@ -29,6 +29,8 @@ public:
 
 	// 敵チップサイズの取得
 	Pos GetChipEneSize(void);
+	// ボスチップサイズの取得
+	Pos GetChipBossSize(void);
 	// アイテムチップサイズの取得
 	Pos GetChipItemSize(void);
 

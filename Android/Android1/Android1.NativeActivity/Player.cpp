@@ -961,11 +961,15 @@ void Player::UpData(void)
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
 		UpHp(10);
-		//UpPower(10);
 	}
 	if (CheckHitKey(KEY_INPUT_LCONTROL))
 	{
 		DownHp(10);
+	}
+
+	if (CheckHitKey(KEY_INPUT_LSHIFT) && CheckHitKey(KEY_INPUT_LCONTROL))
+	{
+		UpPower(10);
 	}
 }
 

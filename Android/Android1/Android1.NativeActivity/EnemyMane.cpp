@@ -2,6 +2,7 @@
 #include "GameMane.h"
 #include "Dust.h"
 #include "Fannings.h"
+#include "Boss.h"
 
 
 EnemyMane* EnemyMane::instance = nullptr;
@@ -50,4 +51,15 @@ std::shared_ptr<Enemy> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera
 	GameMane::Get()->Target();
 
 	return fannings;
+}
+
+//ボスの生成
+std::shared_ptr<Enemy> EnemyMane::CreateBoss(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+{
+	std::shared_ptr<Enemy>boss = std::make_shared<Boss>(pos, cam, st, pl);
+
+	//目標撃退数の上昇
+	GameMane::Get()->Target();
+
+	return boss;
 }

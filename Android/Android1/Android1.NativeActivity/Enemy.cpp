@@ -9,7 +9,7 @@ Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(
 	mode = "wait";
 	target = { 0,0 };
 	dir = DIR_NON;
-	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1}, {"damage", 1}, {"die", 1} };
+	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1}, /*{"attack1", 1}, {"attack2", 1}, {"attack3", 1},*/  {"damage", 1}, {"die", 1} };
 }
 
 // デストラクタ

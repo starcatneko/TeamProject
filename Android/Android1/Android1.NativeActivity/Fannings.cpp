@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"
-#include "Touch.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -150,8 +149,6 @@ void Fannings::Draw(void)
 	}
 	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-	DrawFormatString(500, 1000, GetColor(255, 0, 0), "%d", index);
 #endif
 }
 

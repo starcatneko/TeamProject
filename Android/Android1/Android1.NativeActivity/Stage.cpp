@@ -9,6 +9,9 @@ std::string ite = "item.csv";
 // 敵のサイズ
 const Pos eneSize = { 240, 270 };
 
+// ボスのサイズ
+const Pos bossSize = { 480, 540 };
+
 // 敵のチップ数
 const Pos eneCnt = { 4, 29 };
 
@@ -195,6 +198,12 @@ Pos Stage::GetStageSize(void)
 Pos Stage::GetChipEneSize(void)
 {
 	return eneSize;
+}
+
+// ボスチップサイズの取得
+Pos Stage::GetChipBossSize(void)
+{
+	return bossSize;
 }
 
 // アイテムチップサイズの取得
