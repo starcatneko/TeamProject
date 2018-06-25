@@ -157,6 +157,11 @@ void GamePlay::Load(void)
 			++read[1];
 			x = 0;
 		}
+
+		//サウンド読み込み
+		Sound::Get()->SoundInit2();
+		Sound::Get()->Play(MU_BGM1);
+
 	}
 }
 

@@ -46,6 +46,9 @@ public:
 	void Play(SOUND handle);
 
 	void Stop(void);
+	// 初期読み込みの負荷分散
+	void SoundInit2(void);
+
 
 private:
 	// コンストラクタ
@@ -53,8 +56,9 @@ private:
 
 	// 読み込み
 	void Load(std::string fileName, SOUND type);
-	// 読み込み
+	// 初期読み込み
 	void SoundInit(void);
+
 
 	// リセット
 	void Reset(void);
