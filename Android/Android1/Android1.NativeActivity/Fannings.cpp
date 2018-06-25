@@ -161,31 +161,31 @@ void Fannings::AnimInit(void)
 	//待機
 	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
 	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
+		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
 	}
 
 	//歩き
 	for (int i = 0; i < WALK_ANIM_CNT; ++i)
 	{
-		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
+		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_Y) }, size);
 	}
 
 	//攻撃
 	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
 	{
-		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
+		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_Y) }, size);
 	}
 
 	//ダメージ
 	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
 	{
-		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_X) }, size);
+		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_Y) }, size);
 	}
 
 	// 死亡
 	for (int i = 0; i < DIE_ANIM_CNT; ++i)
 	{
-		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
+		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_Y) }, size);
 	}
 }
 
