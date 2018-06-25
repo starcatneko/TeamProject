@@ -120,8 +120,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Content Include="assets\apple.png" />
+    <Content Include="assets\Battack_1.png" />
+    <Content Include="assets\Battack_2.png" />
+    <Content Include="assets\Battack_3.png" />
+    <Content Include="assets\Bdamage.png" />
+    <Content Include="assets\Bdead.png" />
     <Content Include="assets\bgm1.ogg" />
+    <Content Include="assets\Bwait.png" />
+    <Content Include="assets\Bwalk.png" />
     <Content Include="assets\caution.png" />
+    <Content Include="assets\Clear背景.png" />
     <Content Include="assets\cry.ogg" />
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
@@ -167,6 +175,7 @@
     <Content Include="assets\Ndash.png" />
     <Content Include="assets\Npunch.png" />
     <Content Include="assets\Npunch2.png" />
+    <Content Include="assets\number.png" />
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
     <Content Include="assets\over.ogg" />
@@ -179,6 +188,8 @@
     <Content Include="assets\voice1.ogg" />
     <Content Include="assets\voice2.ogg" />
     <Content Include="assets\yazirusi.png" />
+    <Content Include="assets\ひとことボード.png" />
+    <Content Include="assets\フォント集.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">
       <SubType>Designer</SubType>

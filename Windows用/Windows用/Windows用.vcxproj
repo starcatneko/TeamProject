@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Apple.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\BackGround.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Boss.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Camera.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Clear.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Debug.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Apple.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\BackGround.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Boss.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Camera.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Clear.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Debug.h" />
