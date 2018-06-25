@@ -78,7 +78,7 @@ void Title::Draw(void)
 	DrawBox(0,0,WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	Debug::Get()->DrawParticle();
+	//Debug::Get()->DrawParticle();
 
 }
 

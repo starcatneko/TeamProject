@@ -17,6 +17,8 @@ Interface::Interface(std::weak_ptr<Player>pl)
 	cnt = 0;
 	gage_mater = 0;
 	gage_mater_temp = pl.lock()->GetPower();
+	gage_mater_hp = 0;
+	gage_mater_temp_hp = pl.lock()->GetHp();
 	subscreen_ap = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	subscreen_hp = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
@@ -116,9 +118,11 @@ void Interface::DrawGage()
 		(gage_mater < gage_mater_temp ? gage_mater++ : gage_mater--);
 	}
 
-	gage_mater_temp_hp = pl.lock()->GetHp();
+	gage_mater_temp_hp = (int)pl.lock()->GetHp();
+
 	if (gage_mater_hp != gage_mater_temp_hp)
 	{
 		(gage_mater_hp < gage_mater_temp_hp ? gage_mater_hp++ : gage_mater_hp--);
 	}
+
 }
