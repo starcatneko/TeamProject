@@ -46,20 +46,29 @@ void Sound::Load(std::string fileName, SOUND type)
 // 読み込み
 void Sound::SoundInit(void)
 {
+	Load("light.ogg", SE_LIGHT);
+
 	Load("hit1.ogg", SE_HIT1);
 	Load("hit2.ogg", SE_HIT2);
 	Load("voice1.ogg", SE_VOICE1);
 	Load("voice2.ogg", SE_VOICE2);
 	Load("ko.ogg", SE_KO);
-	Load("dead.ogg", SE_DEAD);
-	Load("cry.ogg", SE_CRY);
+
+}
+
+
+void Sound::SoundInit2(void)
+{
 	Load("step.ogg", SE_STEP);
 	Load("heal.ogg", SE_HEAL);
 	Load("punch.ogg", SE_PUNCH);
-	Load("light.ogg", SE_LIGHT);
+	Load("dead.wav", SE_DEAD);
+	Load("cry.ogg", SE_CRY);
 
-	Load("bgm1.ogg", MU_BGM1);
-	Load("over.ogg", MU_BGM2);
+
+	Load("bgm1.wav", MU_BGM1);
+	Load("over.wav", MU_BGM2);
+
 }
 // サウンドの再生
 void Sound::Play(SOUND handle)

@@ -99,10 +99,9 @@ void Title::NotStart(void)
 {
 	DIR dir = DIR_NON;
 	if(Touch::Get()->Check(FLICK,dir) == true
-		&& dir == DIR_UP)
+		&& dir== DIR_UP)
 	{
 		Sound::Get()->Play(SE_LIGHT);
-		Sound::Get()->Play(MU_BGM1);
 		func = &Title::Start;
 	}
 
@@ -128,3 +127,4 @@ void Title::Reset(void)
 	large.clear();
 	pos.clear();
 }
+

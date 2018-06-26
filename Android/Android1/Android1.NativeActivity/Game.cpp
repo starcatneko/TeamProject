@@ -14,11 +14,13 @@
 // コンストラクタ
 Game::Game()
 {
+
 }
 
 // デストラクタ
 Game::~Game()
 {
+
 }
 
 // システムの初期化
@@ -53,6 +55,7 @@ void Game::Init(void)
 // インスタンス化
 void Game::Create(void)
 {
+	
 	GameMane::Create();
 	LoadMane::Create();
 	Sound::Create();
@@ -61,6 +64,7 @@ void Game::Create(void)
 	EnemyMane::Create();
 	Score::Create();
 	Debug::Create();
+	
 }
 
 // シーンの移行
@@ -74,13 +78,14 @@ void Game::Draw(void)
 {
 	//画面消去
 		ClsDrawScreen();
-	
+
 
 	scene->Draw();
 	Touch::Get()->Draw();
 
 
 	Debug::Get()->FpsTimeFanction();
+
 	//裏画面を表画面に瞬間コピー
 	ScreenFlip();
 }
