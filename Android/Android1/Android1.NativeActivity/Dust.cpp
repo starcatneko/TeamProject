@@ -70,6 +70,7 @@ Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 
 	AnimInit();
 	RectInit();
+	EffectInit();
 }
 
 // デストラクタ
@@ -81,6 +82,22 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			if (itr->first == "effect1")
+			{
+				DrawRectRotaGraph2(
+					GetEffect(itr->first).x, GetEffect(itr->first).y,
+					itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+					itr->second.size.x, itr->second.size.y,
+					itr->second.size.x / 2, itr->second.size.y / 2,
+					1.0, 0.0, effect[itr->first], true, reverse, false);
+			}
+		}
+	}
+
 	if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
@@ -94,9 +111,9 @@ void Dust::Draw(void)
 	{
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y + offset,
-			anim[mode][index].size.x, anim[mode][index].size.y - offset,
-			anim[mode][index].size.x / 2, (anim[mode][index].size.y - offset) / 2,
+			anim[mode][index].pos.x, anim[mode][index].pos.y,
+			anim[mode][index].size.x, anim[mode][index].size.y + offset/2,
+			anim[mode][index].size.x / 2, (anim[mode][index].size.y + offset) / 2,
 			(double)large, 0.0, image[mode], true, reverse, false);
 	}
 
@@ -230,7 +247,7 @@ void Dust::RectInit(void)
 
 void Dust::EffectInit(void)
 {
-	SetEffect("effect1", 1, 1, 1, { -240,-260 }, { 240, 270 }, 5);
+	SetEffect("effect1", 16, 4, 4, { -110, -110 }, { 240, 270 }, 4);
 }
 
 // 待機時の処理
@@ -437,8 +454,8 @@ void Dust::Die(void)
 	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
 		effe["effect1"].flag = true;
-		offset += 10;
-		if (offset >= 0)
+		offset -= 10;
+		if (offset <= -size.y)
 		{
 			effe["effect1"].flag = false;
 			GameMane::Get()->Kill();
@@ -510,6 +527,7 @@ void Dust::Reset(void)
 	image.clear();
 	anim.clear();
 	rect.clear();
+	effect.clear();
 }
 
 
