@@ -45,7 +45,7 @@ const int walkTime = 120;
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(100), wait(0), box{ {0,0}, {0,0} }, walking(0)
+	attackFlag(false), attackRange(100), wait(0), box{ {0,0}, {0,0} }, walking(0), offset(0)
 {
 	Reset();
 
@@ -54,6 +54,9 @@ Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 	image["attack"] = LoadMane::Get()->Load("DUattack.png");
 	image["damage"] = LoadMane::Get()->Load("DUdamage.png");
 	image["die"] = LoadMane::Get()->Load("DUdead.png");
+
+	effect["effect1"] = LoadMane::Get()->Load("du_effect1.png");
+
 
 	this->cam = cam;
 	this->st = st;
@@ -67,6 +70,7 @@ Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 
 	AnimInit();
 	RectInit();
+	EffectInit();
 }
 
 // デストラクタ
@@ -78,6 +82,22 @@ Dust::~Dust()
 // 描画
 void Dust::Draw(void)
 {
+	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
+	{
+		if (itr->second.flag == true)
+		{
+			if (itr->first == "effect1")
+			{
+				DrawRectRotaGraph2(
+					GetEffect(itr->first).x, GetEffect(itr->first).y,
+					itr->second.size.x * (itr->second.index % itr->second.x), itr->second.size.y * (itr->second.index / itr->second.x),
+					itr->second.size.x, itr->second.size.y,
+					itr->second.size.x / 2, itr->second.size.y / 2,
+					1.0, 0.0, effect[itr->first], true, reverse, false);
+			}
+		}
+	}
+
 	if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
@@ -89,14 +109,12 @@ void Dust::Draw(void)
 	}
 	else
 	{
-		static int x = 0;
 		DrawRectRotaGraph2(
 			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x + x, anim[mode][index].pos.y,
-			anim[mode][index].size.x + x, anim[mode][index].size.y,
-			(anim[mode][index].size.x + x) / 2, anim[mode][index].size.y / 2,
+			anim[mode][index].pos.x, anim[mode][index].pos.y,
+			anim[mode][index].size.x, anim[mode][index].size.y + offset/2,
+			anim[mode][index].size.x / 2, (anim[mode][index].size.y + offset) / 2,
 			(double)large, 0.0, image[mode], true, reverse, false);
-		x += 5;
 	}
 
 #ifndef _DEBUG
@@ -208,6 +226,7 @@ void Dust::RectInit(void)
 		}
 	}
 
+	//攻撃
 	for (unsigned int in = 0; in < anim["attack"].size(); ++in)
 	{
 		if (3 <= in && in <= 6)
@@ -224,6 +243,11 @@ void Dust::RectInit(void)
 			SetRect("attack", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
 		}
 	}
+}
+
+void Dust::EffectInit(void)
+{
+	SetEffect("effect1", 16, 4, 4, { -110, -110 }, { 240, 270 }, 4);
 }
 
 // 待機時の処理
@@ -310,13 +334,13 @@ void Dust::Walk(void)
 			{
 			}
 
-			if (center.y > target.y)
+			if (center.y < target.y)
 			{
-				pos.y -= (pos.y - 1 > 0) ? speed : 0;
+				pos.y += (pos.y + size.y + 1 < WINDOW_Y) ? speed : 0;
 			}
 			else
 			{
-				pos.y += (pos.y + size.y + 1 < WINDOW_Y) ? speed : 0;
+				pos.y -= (pos.y - 1 > 0) ? speed : 0;
 			}
 		}
 	}
@@ -400,16 +424,21 @@ void Dust::Damage(void)
 	
 	if (hp <= 0)
 	{
+		index = 0;
 		state = ST_DIE;
 		SetMode("die");
 		func = &Dust::Die;
 	}
-	else if (pl.lock()->GetState() != ST_ATTACK)
+	else
 	{
-		state = ST_NUETRAL;
-		SetMode("wait");
-		wait = waitTime;
-		func = &Dust::Neutral;
+		//ダメージアニメーションが終わったとき
+		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+		{
+			state = ST_NUETRAL;
+			SetMode("wait");
+			wait = waitTime;
+			func = &Dust::Neutral;
+		}
 	}
 }
 
@@ -422,8 +451,17 @@ void Dust::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	GameMane::Get()->Kill();
-	die = true;
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	{
+		effe["effect1"].flag = true;
+		offset -= 10;
+		if (offset <= -size.y)
+		{
+			effe["effect1"].flag = false;
+			GameMane::Get()->Kill();
+			die = true;
+		}
+	}
 }
 
 // 処理
@@ -433,6 +471,7 @@ void Dust::UpData(void)
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
 	Animator(animTime[mode]);
+	Effector();
 
 	auto prect = pl.lock()->GetRect();
 
@@ -461,7 +500,21 @@ void Dust::UpData(void)
 	if (hit == true)
 	{
 		SetState(ST_DAMAGE);
-		SetMode("damage");
+		GameMane::Get()->SetHit(true);
+
+		if (30 < pl.lock()->GetPower() && pl.lock()->GetPower() < 50)
+		{
+			hp -= 1;
+		}
+		else if (50 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 80)
+		{
+			hp -= 3;
+		}
+		else if (pl.lock()->GetPower() >= 80)
+		{
+			hp -= 5;
+		}
+
 		func = &Dust::Damage;
 	}
 
@@ -474,6 +527,7 @@ void Dust::Reset(void)
 	image.clear();
 	anim.clear();
 	rect.clear();
+	effect.clear();
 }
 
 

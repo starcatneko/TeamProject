@@ -27,6 +27,9 @@ private:
 	//あたり矩形のセット
 	void RectInit(void);
 
+	//エフェクトのセット
+	void EffectInit(void);
+
 	// 待機時の処理
 	void Neutral(void);
 	// 移動時の処理
@@ -48,7 +51,8 @@ private:
 	Box box;
 	//移動時間
 	int walking;
-
+	//オフセット
+	int offset;
 
 	// 関数ポインタ
 	void (Dust::*func)(void);
