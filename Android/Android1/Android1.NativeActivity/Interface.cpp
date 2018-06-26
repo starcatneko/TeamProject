@@ -14,6 +14,8 @@ Interface::Interface(std::weak_ptr<Player>pl)
 	hp_mask = LoadMane::Get()->Load("hp_mask.png");
 	mask = LoadMane::Get()->Load("gage_mask3.png");
 	gage_red = LoadMane::Get()->Load("gage_red.png");
+	startbossimg = LoadMane::Get()->Load("op_spawn.png");
+
 	cnt = 0;
 	gage_mater = 0;
 	gage_mater_temp = pl.lock()->GetPower();
@@ -23,6 +25,7 @@ Interface::Interface(std::weak_ptr<Player>pl)
 	subscreen_hp = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	filterscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+	spawn_cnt = 0;
 
 	pos_ap = {850,100};
 	pos_hp = {480,0};
@@ -47,6 +50,63 @@ void Interface::UpData()
 void Interface::Draw()
 {
 	DrawGage();
+	if (spawn_cnt > 0)
+	{
+		DrawStartBoss();
+	}
+}
+void Interface::DrawStartBoss()
+{
+	if (spawn_cnt < 165 && spawn_cnt >30)
+	{
+		float temp_alpha = (165-spawn_cnt) * 4;
+		if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
+
+		float tempsize = 3-((140-spawn_cnt)*0.18);
+		tempsize = (tempsize > 1 ? tempsize : 1);
+		DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, ((spawn_cnt * 12) % 255) - 24);
+
+		//DrawRotaGraph(WINDOW_X / 2, 600, (2.0f - (0.1 *spawn_cnt - 2)>1 ? 2.0f - (0.1 *spawn_cnt) : 1), 0, image["spawn_text"], true, 0, 0);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+		for (int lagtime = 5 ; lagtime < 15 ; lagtime += 5)
+		{
+			if (spawn_cnt < 165 - lagtime && spawn_cnt >0)
+			{
+				temp_alpha = (165 - (spawn_cnt + lagtime)) * 4;
+				if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
+
+				tempsize = 3 - ((140 - (spawn_cnt + lagtime))*0.18);
+				tempsize = (tempsize > 1 ? tempsize : 1);
+				DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
+
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
+		}
+	}
+	else  if (spawn_cnt>30)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ADD,255-((255/15) *(180-spawn_cnt)));
+		DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	}
+	else
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ADD,255 - (30-spawn_cnt)*25);
+		DrawRotaGraph(WINDOW_X / 2, 600, 1, 0, startbossimg, true, 0, 0);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	}
+	spawn_cnt--;
+
+}
+void Interface::StartBoss()
+{
+	spawn_cnt = 180;
 }
 
 void Interface::DrawGage()

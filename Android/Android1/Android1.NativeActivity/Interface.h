@@ -9,7 +9,8 @@ public:
 
 	void UpData();
 	void Draw();
-
+	void DrawStartBoss();
+	void StartBoss();
 
 private:
 
@@ -35,9 +36,11 @@ private:
 	int mask;
 
 	int cnt;
+	int startbossimg;
 
 	int subscreen_ap;		//マスクと波でリンゴ型の波を作り、裏画面と合成する
 	int subscreen_hp;		
+	int spawn_cnt;
 
 	int tempscreen;		//描画していたスクリーンを一時的に退避させる
 

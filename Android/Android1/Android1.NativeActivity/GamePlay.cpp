@@ -132,6 +132,7 @@ void GamePlay::Load(void)
 		else if (s_enemy[i] == 3)
 		{
 			enemy.push_back(EnemyMane::Get()->CreateBoss(tmp, cam, st, pl));
+			ui->StartBoss();
 		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)

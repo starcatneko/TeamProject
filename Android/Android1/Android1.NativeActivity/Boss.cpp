@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "sound.h"
 #include "DxLib.h"
+#include "Interface.h"
 #include <algorithm>
 
 // 待機アニメーション関係
@@ -584,6 +585,7 @@ void Boss::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawFormatString(500, 1000, GetColor(255, 255, 0), "%d", index);
 #endif
+
 }
 
 // 処理

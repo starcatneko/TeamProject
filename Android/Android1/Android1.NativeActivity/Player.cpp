@@ -952,11 +952,12 @@ void Player::UpData(void)
 	}
 
 	Score::Get()->SetScore(power);
-
 	if (CheckHitKey(KEY_INPUT_Q))
 	{
 		pos.y = -5400;
 	}
+
+
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		if(state != ST_DAMAGE)
