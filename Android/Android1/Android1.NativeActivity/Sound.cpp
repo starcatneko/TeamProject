@@ -65,8 +65,10 @@ void Sound::SoundInit2(void)
 	Load("dead.wav", SE_DEAD);
 	Load("cry.ogg", SE_CRY);
 
+	Load("spawn.wav", SE_SPAWN);
 
 	Load("bgm1.wav", MU_BGM1);
+	Load("bgm2.wav", MU_BGM_BOSS);
 	Load("over.wav", MU_BGM2);
 
 }

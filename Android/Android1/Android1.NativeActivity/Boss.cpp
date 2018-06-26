@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "Player.h"
+#include "sound.h"
 #include "DxLib.h"
 #include <algorithm>
 
@@ -62,6 +63,7 @@ Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 	image["attack3"] = LoadMane::Get()->Load("Battack_3.png");
 	image["damage"] = LoadMane::Get()->Load("Bdamage.png");
 	image["die"] = LoadMane::Get()->Load("Bdead.png");
+	image["die_eff1"] = LoadMane::Get()->Load("Battack_5.png");
 
 	this->cam = cam;
 	this->st = st;
@@ -72,6 +74,8 @@ Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 	hp = 30;
 	func = &Boss::Wait;
 
+	Sound::Get()->Play(MU_BGM_BOSS);
+	Sound::Get()->Play(SE_SPAWN);
 
 	AnimInit();
 	RectInit();
@@ -119,9 +123,20 @@ void Boss::AnimInit(void)
 	}
 
 	// 死亡
-	for (int i = 0; i < DIE_ANIM_CNT; ++i)
+	for (int i = 0; i < DIE_ANIM_CNT+60; ++i)
 	{
-		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
+		if (i < DIE_ANIM_CNT)
+		{
+			SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
+		}
+		else
+		{
+			SetAnim("die", { size.x * ( DIE_ANIM_X), size.y * (DIE_ANIM_X) }, size);
+
+			SetAnim("die_eff1", { size.x * ((i-DIE_ANIM_CNT) % 4), size.y * ((i - DIE_ANIM_CNT) % 2) }, size);
+
+			//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
+		}
 	}
 }
 
@@ -532,7 +547,7 @@ void Boss::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if ((unsigned)index + 1 >= anim[mode].size() && flam-60 >= animTime[mode])
 	{
 		GameMane::Get()->Kill();
 		die = true;

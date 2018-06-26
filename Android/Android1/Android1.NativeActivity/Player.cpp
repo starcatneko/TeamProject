@@ -72,7 +72,6 @@ bool ppp[2] = { false, false };
 Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam(cam), st(st), pos(pos)
 {
 	Reset();
-
 	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Nwait.png");
 	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Nwalk.png");
 	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Ndash.png");
@@ -125,6 +124,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 
 	draw = &Player::NormalDraw;
 	func = &Player::Nuetral;
+
 }
 
 // デストラクタ
@@ -953,6 +953,10 @@ void Player::UpData(void)
 
 	Score::Get()->SetScore(power);
 
+	if (CheckHitKey(KEY_INPUT_Q))
+	{
+		pos.y = -5400;
+	}
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		if(state != ST_DAMAGE)

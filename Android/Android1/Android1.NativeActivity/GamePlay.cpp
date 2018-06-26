@@ -65,6 +65,9 @@ void GamePlay::LoadDraw(void)
 	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	Sound::Get()->SoundInit2();
+	Sound::Get()->Play(MU_BGM1);
+
 
 	if (alpha["image"] <= 0)
 	{
@@ -164,9 +167,6 @@ void GamePlay::Load(void)
 		}
 
 		//サウンド読み込み
-		Sound::Get()->SoundInit2();
-		Sound::Get()->Play(MU_BGM1);
-
 	}
 }
 
