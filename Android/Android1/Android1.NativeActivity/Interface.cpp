@@ -133,7 +133,7 @@ void Interface::DrawGage()
 
 	DrawGraph(0, 0,hp_mask, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255);
-	DrawBox(0, 0, gage_mater_hp*4.8, 256, 0x00ff00, true);
+	DrawBox(0, 0, (double)gage_mater_hp*4.8, 256, 0x00ff00, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	// ï`âÊêÊïœçX
