@@ -247,7 +247,7 @@ void Dust::RectInit(void)
 
 void Dust::EffectInit(void)
 {
-	SetEffect("effect1", 16, 4, 4, { -110, -110 }, { 240, 270 }, 4);
+	SetEffect("effect1", 16, 4, 4, { -130, -110 }, { 240, 270 }, 4);
 }
 
 // 待機時の処理
