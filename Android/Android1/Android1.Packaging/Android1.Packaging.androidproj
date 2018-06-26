@@ -125,7 +125,8 @@
     <Content Include="assets\Battack_3.png" />
     <Content Include="assets\Bdamage.png" />
     <Content Include="assets\Bdead.png" />
-    <Content Include="assets\bgm1.ogg" />
+    <Content Include="assets\bgm1.wav" />
+    <Content Include="assets\bgm2.wav" />
     <Content Include="assets\Bwait.png" />
     <Content Include="assets\Bwalk.png" />
     <Content Include="assets\caution.png" />
@@ -134,7 +135,7 @@
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
     <Content Include="assets\Ddead.png" />
-    <Content Include="assets\dead.ogg" />
+    <Content Include="assets\dead.wav" />
     <Content Include="assets\deathapple.png" />
     <Content Include="assets\Dpunch.png" />
     <Content Include="assets\Dpunch2.png" />
@@ -149,6 +150,7 @@
     <Content Include="assets\effect2.png" />
     <Content Include="assets\effect3.png" />
     <Content Include="assets\effect4.png" />
+    <Content Include="assets\effect5.png" />
     <Content Include="assets\FAattack.png" />
     <Content Include="assets\FAdamage.png" />
     <Content Include="assets\FAdead.png" />
@@ -178,10 +180,12 @@
     <Content Include="assets\number.png" />
     <Content Include="assets\Nwait.png" />
     <Content Include="assets\Nwalk.png" />
-    <Content Include="assets\over.ogg" />
+    <Content Include="assets\op_spawn.png" />
     <Content Include="assets\over.png" />
+    <Content Include="assets\over.wav" />
     <Content Include="assets\overback.png" />
     <Content Include="assets\punch.ogg" />
+    <Content Include="assets\spawn.wav" />
     <Content Include="assets\step.ogg" />
     <Content Include="assets\titleback.png" />
     <Content Include="assets\tree.png" />
@@ -194,7 +198,9 @@
     <AntBuildXml Include="build.xml">
       <SubType>Designer</SubType>
     </AntBuildXml>
-    <AndroidManifest Include="AndroidManifest.xml" />
+    <AndroidManifest Include="AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </AndroidManifest>
     <AntProjectPropertiesFile Include="project.properties" />
   </ItemGroup>
   <ItemGroup>
