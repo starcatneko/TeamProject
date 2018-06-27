@@ -155,6 +155,11 @@ void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansio
 // 通常描画
 void Player::NormalDraw(void)
 {
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
+	DrawOval(lpos.x , lpos.y + size.y - 10,
+		60, 40, 0x666666, 1, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+
 	if (type == PlType::pinch)
 	{
 		change = 0;
