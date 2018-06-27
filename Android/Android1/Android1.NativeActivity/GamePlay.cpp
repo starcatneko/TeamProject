@@ -289,6 +289,9 @@ void GamePlay::Start(void)
 		Game::Get().ChangeScene(new Clear());
 	}
 
+	// デバッグ用
+	if (CheckHitKey(KEY_INPUT_Z)) Game::Get().ChangeScene(new Clear());
+
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)
 	{
