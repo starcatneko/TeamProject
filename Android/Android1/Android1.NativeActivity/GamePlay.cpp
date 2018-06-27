@@ -209,11 +209,15 @@ void GamePlay::ItemDraw(void)
 // アイテムの処理
 void GamePlay::ItemUpData(void)
 {
+	if (pl->dropflag == true)
+	{
+		item.push_back(ItemMane::Get()->CreateApple({ pl->GetPos().x + 200, pl->GetPos().y + 500 }, cam, st, pl));
+	}
 	for (auto itr = item.begin(); itr != item.end();)
 	{
 		(*itr)->UpData();
 
-		if ((*itr)->GetHit() == true && (*itr)->GetEffectTimer() <=0)
+		if ((*itr)->GetHit() == true && (*itr)->GetEffectTimer() <= 0)
 		{
 			itr = item.erase(itr);
 		}

@@ -1123,14 +1123,18 @@ void Player::SetState(STATES state)
 	index = 0;
 	attack2 = false;
 	skill = 0;
+	dropflag = false;
 	if (this->state == ST_DAMAGE)
 	{
 		Sound::Get()->Play(SE_HIT2);
 		SetMode("damage");
 		--hp;
 		target = lpos;
-		DownPower(10);
-		dropflag = true;
+		if (this->power > 0)
+		{
+			DownPower(10);
+			dropflag = true;
+		}
 	}
 }
 
