@@ -53,7 +53,7 @@ const int walkTime = 90;
 
 // コンストラクタ
 Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	area(300), wait(0), walking(0)
+	wait(0), area(300), walking(0)
 {
 	Reset();
 

@@ -45,7 +45,7 @@ const int walkTime = 120;
 
 // コンストラクタ
 Dust::Dust(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl) :
-	attackFlag(false), attackRange(100), wait(0), box{ {0,0}, {0,0} }, walking(0), offset(0)
+	 attackRange(100), wait(0), walking(0), offset(0)
 {
 	Reset();
 
@@ -204,7 +204,7 @@ void Dust::RectInit(void)
 	//待機
 	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
 	{
-		if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
+		if ((in <= 4) || (12 <= in && in <= 15))
 		{
 			SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), size.y }, RectType::Damage);
 		}

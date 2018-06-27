@@ -41,14 +41,10 @@ private:
 	//死亡時の処理
 	void Die(void);
 
-	//攻撃判定
-	bool attackFlag;
 	//敵が攻撃に移る範囲
 	int attackRange;
 	//移動判定のための待ち時間
 	int wait;
-	//プレイヤーに渡す被攻撃矩形
-	Box box;
 	//移動時間
 	int walking;
 	//オフセット

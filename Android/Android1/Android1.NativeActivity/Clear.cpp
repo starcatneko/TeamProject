@@ -100,9 +100,9 @@ int Clear::CheckTarget(void)
 // 読み込み
 int Clear::Load(void)
 {
-	image[0] = LOAD_IMAGE("Clear背景.png");
-	image[1] = LOAD_IMAGE("ひとことボード.png");
-	image[2] = LOAD_IMAGE("フォント集.png");
+	image[0] = LOAD_IMAGE("clearback.png");
+	image[1] = LOAD_IMAGE("comment.png");
+	image[2] = LOAD_IMAGE("font.png");
 	numImage = LOAD_IMAGE("number.png");
 	return true;
 }

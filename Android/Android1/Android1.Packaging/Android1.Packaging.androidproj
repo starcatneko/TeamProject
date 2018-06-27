@@ -130,7 +130,7 @@
     <Content Include="assets\Bwait.png" />
     <Content Include="assets\Bwalk.png" />
     <Content Include="assets\caution.png" />
-    <Content Include="assets\Clear背景.png" />
+    <Content Include="assets\clearback.png" />
     <Content Include="assets\cry.ogg" />
     <Content Include="assets\Ddamage.png" />
     <Content Include="assets\Ddash.png" />
@@ -192,8 +192,8 @@
     <Content Include="assets\voice1.ogg" />
     <Content Include="assets\voice2.ogg" />
     <Content Include="assets\yazirusi.png" />
-    <Content Include="assets\ひとことボード.png" />
-    <Content Include="assets\フォント集.png" />
+    <Content Include="assets\comment.png" />
+    <Content Include="assets\font.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml">
       <SubType>Designer</SubType>
