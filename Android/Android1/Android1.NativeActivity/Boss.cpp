@@ -192,10 +192,10 @@ void Boss::RectInit(void)
 	}
 
 	//ダメージ
-	for (unsigned int in = 0; in < anim["damage"].size(); ++in)
+	/*for (unsigned int in = 0; in < anim["damage"].size(); ++in)
 	{
 		SetRect("damage", in, { (-size.x / 12), (-size.y / 3) - 20 }, { (size.x / 2), (size.y - 60) }, RectType::Damage);
-	}
+	}*/
 }
 
 // 待機時の処理
