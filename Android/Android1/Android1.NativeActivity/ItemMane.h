@@ -32,6 +32,7 @@ public:
 	// 木の生成
 	std::shared_ptr<Item> CreateTree(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage>st, std::shared_ptr<Player>pl);
 
+	void DropApple(void);
 private:
 	// コンストラクタ
 	ItemMane();
