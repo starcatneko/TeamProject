@@ -117,6 +117,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam
 	offset = 0;
 	change = -1;
 	skill = 0;
+	dropflag = false;
 	
 	AnimInit();
 	RectInit();
@@ -1128,6 +1129,8 @@ void Player::SetState(STATES state)
 		SetMode("damage");
 		--hp;
 		target = lpos;
+		DownPower(10);
+		dropflag = true;
 	}
 }
 

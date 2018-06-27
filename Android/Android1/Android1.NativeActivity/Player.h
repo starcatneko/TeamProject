@@ -110,6 +110,8 @@ public:
 	// エフェクト座標の取得
 	Pos GetEffect(std::string name, int large = 1);
 
+	//リンゴをドロップする際の管理フラグ
+	int dropflag;
 private:
 	// 通常描画
 	void NormalDraw(void);
