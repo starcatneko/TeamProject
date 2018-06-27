@@ -80,6 +80,11 @@ Fannings::~Fannings()
 //描画
 void Fannings::Draw(void)
 {
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
+	DrawOval(size.x / 2 + lpos.x, lpos.y + size.y - 10,
+		60, 30, 0x666666, 1, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+
 	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
 	{
 		if (itr->second.flag == true)

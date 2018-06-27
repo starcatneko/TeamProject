@@ -38,6 +38,15 @@ GreenApple::~GreenApple()
 // 描画
 void GreenApple::Draw(void)
 {
+	if (effect_cnt <= 0)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
+		DrawOval(lpos.x + size.x / 2 - 12, lpos.y + size.y - 10,
+			60, 30, 0x6666666, 1, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+
+	}
+
 	DrawRectRotaGraph2(lpos.x + (size.x * large) / 2, lpos.y + (size.y * large) / 2,
 		size.x * (index % APPLE_X), size.y * (index / APPLE_X),
 		size.x, size.y, size.x * large / 2, size.y * large / 2,

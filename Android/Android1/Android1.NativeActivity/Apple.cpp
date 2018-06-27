@@ -41,8 +41,8 @@ void Apple::Draw(void)
 	if (effect_cnt <= 0)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
-		DrawOval(lpos.x+44, lpos.y +size.y - 10,
-			60,40, 0x6666666, 1, true);
+		DrawOval(lpos.x+size.x/2-12, lpos.y +size.y - 10,
+			60,30, 0x6666666, 1, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
 
 	}

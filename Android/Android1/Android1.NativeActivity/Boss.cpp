@@ -558,6 +558,11 @@ void Boss::Die(void)
 // 描画
 void Boss::Draw(void)
 {
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
+	DrawOval(size.x / 2 + lpos.x + (reverse == true ? -32 : 32), lpos.y + size.y - 18,
+		size.x / 2 - 72, 48, 0x666666, 1, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+
 	DrawRectRotaGraph2(
 		lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
 		anim[mode][index].pos.x, anim[mode][index].pos.y,
