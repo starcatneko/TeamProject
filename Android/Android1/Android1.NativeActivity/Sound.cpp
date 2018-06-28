@@ -52,6 +52,7 @@ void Sound::SoundInit(void)
 	Load("hit2.ogg", SE_HIT2);
 	Load("voice1.ogg", SE_VOICE1);
 	Load("voice2.ogg", SE_VOICE2);
+	Load("encount1.wav", SE_ENCOUNT);
 	Load("ko.ogg", SE_KO);
 
 }

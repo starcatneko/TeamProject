@@ -113,5 +113,8 @@ private:
 
 	// 関数ポインタ
 	void (GamePlay::*func)();
+
+	//ボスがスポーンするかどうかのフラグ
+	bool boss_flg;
 };
 

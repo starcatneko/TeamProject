@@ -9,7 +9,9 @@ enum SOUND
 	SE_HIT2,
 	SE_STEP,
 	SE_HEAL,
-	SE_KO,
+	SE_KO, 
+	SE_ENCOUNT,
+
 	SE_DEAD,
 	SE_VOICE1,
 	SE_VOICE2,

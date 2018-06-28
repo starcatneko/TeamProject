@@ -33,6 +33,7 @@ GamePlay::GamePlay() : blend(false), flam(0), stop(0)
 	memset(read, 0, sizeof(read));
 	draw = &GamePlay::LoadDraw;
 	func = &GamePlay::NotStart;
+	boss_flg = false;
 }
 
 // デストラクタ
@@ -131,8 +132,11 @@ void GamePlay::Load(void)
 		}
 		else if (s_enemy[i] == 3)
 		{
-			enemy.push_back(EnemyMane::Get()->CreateBoss(tmp, cam, st, pl));
+			Sound::Get()->Stop();
+			Sound::Get()->Play(SE_ENCOUNT);
 			ui->StartBoss();
+			boss_flg = true;
+
 		}
 		++x;
 		if (x >= st->GetStageSize().x / st->GetChipEneSize().x)
@@ -140,6 +144,7 @@ void GamePlay::Load(void)
 			++read[0];
 			x = 0;
 		}
+
 	}
 
 	x = 0;
@@ -167,7 +172,6 @@ void GamePlay::Load(void)
 			x = 0;
 		}
 
-		//サウンド読み込み
 	}
 }
 
@@ -194,6 +198,11 @@ void GamePlay::EnemyUpData(void)
 		{
 			++itr;
 		}
+	}
+	if (boss_flg == true && ui->GetBossSpawnCnt() == 180)
+	{
+		enemy.push_back(EnemyMane::Get()->CreateBoss({ WINDOW_X / 2-200,-800 }, cam, st, pl));
+		boss_flg = false;
 	}
 }
 

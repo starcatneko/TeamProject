@@ -151,6 +151,7 @@
     <Content Include="assets\effect3.png" />
     <Content Include="assets\effect4.png" />
     <Content Include="assets\effect5.png" />
+    <Content Include="assets\encount1.wav" />
     <Content Include="assets\FAattack.png" />
     <Content Include="assets\FAdamage.png" />
     <Content Include="assets\FAdead.png" />

@@ -1,6 +1,10 @@
 #pragma once
 #include "Player.h"
 
+#define SPAWN_ALL_FRAME 240
+#define SPAWN_START 180
+#define SPAWN_DELEY 165
+
 class Interface
 {
 public:
@@ -11,6 +15,7 @@ public:
 	void Draw();
 	void DrawStartBoss();
 	void StartBoss();
+	int GetBossSpawnCnt();
 
 private:
 
@@ -43,6 +48,7 @@ private:
 	int spawn_cnt;
 
 	int tempscreen;		//描画していたスクリーンを一時的に退避させる
+	int temp2screen;		//描画していたスクリーンを一時的に退避させる
 
 	int filterscreen;		//subscreenと合成する
 

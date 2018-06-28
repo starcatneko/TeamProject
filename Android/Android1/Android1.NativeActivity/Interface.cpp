@@ -1,6 +1,7 @@
 #include "Interface.h"
 #include "LoadMane.h"
 #include "DxLib.h"
+#include "Enemy.h"
 
 
 
@@ -24,6 +25,7 @@ Interface::Interface(std::weak_ptr<Player>pl)
 	subscreen_ap = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	subscreen_hp = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	tempscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
+	temp2screen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	filterscreen = MakeScreen(WINDOW_X, WINDOW_Y, 1);
 	spawn_cnt = 0;
 
@@ -57,11 +59,21 @@ void Interface::Draw()
 }
 void Interface::DrawStartBoss()
 {
-	if (spawn_cnt < 165 && spawn_cnt >30)
+	if (spawn_cnt >SPAWN_START)
+	{
+		GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, (240 - spawn_cnt) * 2);
+		DrawRotaGraph(WINDOW_X/2, WINDOW_Y/2,1+ (240 - spawn_cnt)*0.05, RAD(((240 - spawn_cnt)/4)), tempscreen, true, 0, 0);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+	}
+	else if (spawn_cnt < SPAWN_DELEY && spawn_cnt >30)
 	{
 		float temp_alpha = (165-spawn_cnt) * 4;
-		if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
-
+		if (temp_alpha < 255)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
+		}
 		float tempsize = 3-((140-spawn_cnt)*0.18);
 		tempsize = (tempsize > 1 ? tempsize : 1);
 		DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
@@ -74,12 +86,12 @@ void Interface::DrawStartBoss()
 
 		for (int lagtime = 5 ; lagtime < 15 ; lagtime += 5)
 		{
-			if (spawn_cnt < 165 - lagtime && spawn_cnt >0)
+			if (spawn_cnt < SPAWN_DELEY - lagtime && spawn_cnt >0)
 			{
-				temp_alpha = (165 - (spawn_cnt + lagtime)) * 4;
+				temp_alpha = (SPAWN_DELEY - (spawn_cnt + lagtime)) * 4;
 				if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
 
-				tempsize = 3 - ((140 - (spawn_cnt + lagtime))*0.18);
+				tempsize = 3 - (((SPAWN_DELEY -5*5) - (spawn_cnt + lagtime))*0.18);
 				tempsize = (tempsize > 1 ? tempsize : 1);
 				DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
 
@@ -87,9 +99,9 @@ void Interface::DrawStartBoss()
 			}
 		}
 	}
-	else  if (spawn_cnt>30)
+	else  if (spawn_cnt>30&&spawn_cnt<SPAWN_START)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ADD,255-((255/15) *(180-spawn_cnt)));
+		SetDrawBlendMode(DX_BLENDMODE_ADD,255-((255/15) *(SPAWN_START-spawn_cnt)));
 		DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -106,7 +118,12 @@ void Interface::DrawStartBoss()
 }
 void Interface::StartBoss()
 {
-	spawn_cnt = 180;
+	spawn_cnt = SPAWN_ALL_FRAME;
+}
+
+int Interface::GetBossSpawnCnt()
+{
+	return spawn_cnt;
 }
 
 void Interface::DrawGage()
