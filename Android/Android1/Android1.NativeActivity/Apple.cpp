@@ -72,12 +72,13 @@ void Apple::UpData(void)
 	{
 		if (hit == true)
 		{
-			pl.lock()->UpPower(effectiv);
+
 		}
 		else
 		{
 			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
 			{
+				pl.lock()->UpPower(effectiv);
 				Sound::Get()->Play(SE_HEAL);
 			}
 		}

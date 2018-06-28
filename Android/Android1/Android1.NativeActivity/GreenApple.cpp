@@ -74,12 +74,12 @@ void GreenApple::UpData(void)
 	{
 		if (hit == true)
 		{
-			pl.lock()->UpHp(effectiv);
 		}
 		else
 		{
 			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
 			{
+				pl.lock()->UpHp(effectiv);
 				Sound::Get()->Play(SE_HEAL);
 			}
 		}
