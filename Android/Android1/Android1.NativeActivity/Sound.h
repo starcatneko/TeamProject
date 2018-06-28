@@ -25,6 +25,7 @@ enum SOUND
 	MU_BGM2,
 	MU_BGM_BOSS,
 	MU_BGM_CLEAR,
+	MU_BGM_WIN,
 	MU_MAX
 
 };

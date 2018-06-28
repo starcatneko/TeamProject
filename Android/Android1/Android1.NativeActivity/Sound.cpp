@@ -64,38 +64,41 @@ void Sound::SoundInit2(void)
 	Load("heal.ogg", SE_HEAL);
 	Load("punch.ogg", SE_PUNCH);
 	Load("dead.wav", SE_DEAD);
-	Load("cry.ogg", SE_CRY);
+	Load("yeah.wav", SE_CRY);
 
 	Load("spawn.wav", SE_SPAWN);
 
 	Load("bgm1.wav", MU_BGM1);
 	Load("bgm2.wav", MU_BGM_BOSS);
 	Load("over.wav", MU_BGM2);
+	Load("win.wav", MU_BGM_WIN);
+	Load("clear.wav", MU_BGM_CLEAR);
 
 }
 // サウンドの再生
 void Sound::Play(SOUND handle)
 {
 	//音楽の再生
-	//if (handle > SE_MAX)
-	//{
-	//	Stop();
-	//	PlaySoundMem(sound[handle], DX_PLAYTYPE_LOOP, true);
-	//	nowplay = handle;
-	//	return;
-	//}
+	if (handle > SE_MAX)
+	{
+		Stop();
+		PlaySoundMem(sound[handle], DX_PLAYTYPE_LOOP, true);
+		nowplay = handle;
+		return;
+	}
 
-	//// 連続再生可能な音声
-	//if(handle == SE_PUNCH||
-	//	handle == SE_STEP)
-	//	{
-	//		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
-	//	}
+	// 連続再生可能な音声
+	if(handle == SE_PUNCH ||
+		handle == SE_STEP ||
+		handle == SE_CRY)
+		{
+			PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
+		}
 
-	//if (CheckSoundMem(sound[handle]) == false)
-	//{
-	//	PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
-	//}
+	if (CheckSoundMem(sound[handle]) == false)
+	{
+		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
+	}
 }
 
 

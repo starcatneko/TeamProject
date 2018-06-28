@@ -5,6 +5,7 @@
 #include "Touch.h"
 #include "GameMane.h"
 #include "LoadMane.h"
+#include "Sound.h"
 #include "DxLib.h"
 
 // コンストラクタ
@@ -49,6 +50,8 @@ Clear::Clear()
 	Load();
 	// 関数ポインタ
 	func = &Clear::ClearScene;
+
+	Sound::Get()->Play(MU_BGM_CLEAR);
 }
 // デストラクタ
 Clear::~Clear()

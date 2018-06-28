@@ -23,8 +23,7 @@ public:
 
 	// 画像の読み込み
 	int Load(std::string fileName);
-	// マスクファイルの読み込み
-	int LoadMask(std::string fileName);
+
 	// サウンドの読み込み
 	int LoadSound(std::string fileName);
 	// CSV読み込み
