@@ -570,7 +570,7 @@ void Boss::Draw(void)
 		anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
 		(double)large, 0.0, image[mode], true, reverse, false);
 
-#ifndef __ANDROID__
+/*#ifndef __ANDROID__
 	auto d = GetRect();
 	int color = 0;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
@@ -589,7 +589,7 @@ void Boss::Draw(void)
 	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawFormatString(500, 1000, GetColor(255, 255, 0), "%d", index);
-#endif
+#endif*/
 
 }
 
