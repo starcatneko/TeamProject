@@ -124,20 +124,22 @@ void Boss::AnimInit(void)
 	}
 
 	// 死亡
-	for (int i = 0; i < DIE_ANIM_CNT+60; ++i)
+	for (int i = 0; i < DIE_ANIM_CNT; ++i)
 	{
 		if (i < DIE_ANIM_CNT)
 		{
 			SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
 		}
+		
 		else
 		{
-			SetAnim("die", { size.x * ( DIE_ANIM_X), size.y * (DIE_ANIM_X) }, size);
 
-			SetAnim("die_eff1", { size.x * ((i-DIE_ANIM_CNT) % 4), size.y * ((i - DIE_ANIM_CNT) % 2) }, size);
+			SetAnim("die", { size.x * (DIE_ANIM_X), size.y * (DIE_ANIM_X) }, size);
+
+			SetAnim("die_eff1", { size.x * ((i - DIE_ANIM_CNT) % 4), size.y * ((i - DIE_ANIM_CNT) % 2) }, size);
+		}
 
 			//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
-		}
 	}
 }
 
@@ -548,8 +550,9 @@ void Boss::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam-60 >= animTime[mode])
+	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
 	{
+		Sound::Get()->Play(MU_BGM_WIN);
 		GameMane::Get()->Kill();
 		die = true;
 	}
