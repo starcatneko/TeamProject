@@ -76,25 +76,25 @@ void Sound::SoundInit2(void)
 void Sound::Play(SOUND handle)
 {
 	//音楽の再生
-	if (handle > SE_MAX)
-	{
-		Stop();
-		PlaySoundMem(sound[handle], DX_PLAYTYPE_LOOP, true);
-		nowplay = handle;
-		return;
-	}
+	//if (handle > SE_MAX)
+	//{
+	//	Stop();
+	//	PlaySoundMem(sound[handle], DX_PLAYTYPE_LOOP, true);
+	//	nowplay = handle;
+	//	return;
+	//}
 
-	// 連続再生可能な音声
-	if(handle == SE_PUNCH||
-		handle == SE_STEP)
-		{
-			PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
-		}
+	//// 連続再生可能な音声
+	//if(handle == SE_PUNCH||
+	//	handle == SE_STEP)
+	//	{
+	//		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
+	//	}
 
-	if (CheckSoundMem(sound[handle]) == false)
-	{
-		PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
-	}
+	//if (CheckSoundMem(sound[handle]) == false)
+	//{
+	//	PlaySoundMem(sound[handle], DX_PLAYTYPE_BACK, true);
+	//}
 }
 
 
