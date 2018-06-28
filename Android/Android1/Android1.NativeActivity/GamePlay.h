@@ -46,6 +46,8 @@ private:
 
 	// 読み込み描画
 	void LoadDraw(void);
+	void PlayerDraw(void);
+	void EnemysDraw(void);
 	// 通常描画
 	void NormalDraw(void);
 
@@ -110,6 +112,9 @@ private:
 
 	// 関数ポインタ
 	void (GamePlay::*draw)();
+
+	// 関数ポインタ
+	void (GamePlay::*ppp)();
 
 	// 関数ポインタ
 	void (GamePlay::*func)();

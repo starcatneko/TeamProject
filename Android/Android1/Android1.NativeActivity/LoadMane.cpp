@@ -65,32 +65,6 @@ int LoadMane::Load(std::string fileName)
 	return data[fileName];
 }
 
-// マスクの読み込み
-int LoadMane::LoadMask(std::string fileName)
-{
-	if (mask.find(fileName) != mask.end())
-	{
-		return mask[fileName];
-	}
-	else
-	{
-		//ダミー宣言
-		std::string path;
-
-#ifndef __ANDROID__
-		path = "../../Android/Android1/Android1.Packaging/assets/" + fileName;
-#else
-		path = fileName;
-#endif
-
-		//マスク読み込み
-		mask[fileName] = DxLib::LoadMask(path.c_str());
-
-	}
-
-	return mask[fileName];
-}
-
 // サウンドの読み込み
 int LoadMane::LoadSound(std::string fileName)
 {

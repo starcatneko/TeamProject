@@ -32,6 +32,7 @@ GamePlay::GamePlay() : blend(false), flam(0), stop(0)
 	alpha["pinch"] = 0;
 	memset(read, 0, sizeof(read));
 	draw = &GamePlay::LoadDraw;
+	ppp = &GamePlay::PlayerDraw;
 	func = &GamePlay::NotStart;
 	boss_flg = false;
 }
@@ -76,13 +77,42 @@ void GamePlay::LoadDraw(void)
 	}
 }
 
+void GamePlay::PlayerDraw(void)
+{
+	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
+	{
+		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 > pl->GetCenter().y + pl->GetSize().y / 2)
+		{
+			ppp = &GamePlay::EnemysDraw;
+			break;
+		}
+	}
+	EnemyDraw();
+	pl->Draw();
+}
+
+void GamePlay::EnemysDraw(void)
+{
+	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
+	{
+		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 < pl->GetCenter().y + pl->GetSize().y / 2)
+		{
+			ppp = &GamePlay::PlayerDraw;
+			break;
+		}
+	}
+	pl->Draw();
+	EnemyDraw();
+}
+
 // 通常描画
 void GamePlay::NormalDraw(void)
 {
 	back->Draw();
 	ItemDraw();
-	EnemyDraw();
-	pl->Draw();
+
+	
+	(this->*ppp)();
 	cam->Draw();
 	ui->Draw();
 	

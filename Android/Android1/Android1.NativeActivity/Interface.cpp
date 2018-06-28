@@ -62,10 +62,13 @@ void Interface::DrawStartBoss()
 	if (spawn_cnt >SPAWN_START)
 	{
 		GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
+		//DrawGraph(0, 0, temp2screen,true);*/
 		SetDrawBlendMode(DX_BLENDMODE_ADD, (240 - spawn_cnt) * 2);
 		DrawRotaGraph(WINDOW_X/2, WINDOW_Y/2,1+ (240 - spawn_cnt)*0.05, RAD(((240 - spawn_cnt)/4)), tempscreen, true, 0, 0);
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, temp2screen);
+
 	}
 	else if (spawn_cnt < SPAWN_DELEY && spawn_cnt >30)
 	{

@@ -41,6 +41,7 @@ Title::Title() : alpha(0)
 
 	Score::Get()->Reset();
 	func = &Title::NotStart;
+	Sound::Get()->Stop();
 }
 
 // デストラクタ
