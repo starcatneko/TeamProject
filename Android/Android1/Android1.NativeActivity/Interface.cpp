@@ -1,7 +1,7 @@
 #include "Interface.h"
 #include "LoadMane.h"
 #include "DxLib.h"
-#include "Enemy.h"
+#include "Obj.h"
 
 
 

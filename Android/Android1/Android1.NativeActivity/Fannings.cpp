@@ -324,7 +324,7 @@ void Fannings::Attack(void)
 			pl.lock()->SetOldDir(DIR_LEFT);
 		}
 
-		pl.lock()->SetState(ST_DAMAGE);
+		pl.lock()->SetState(ST_DAMAGE, "damage");
 		pl.lock()->DownHp(power);
 	}
 	

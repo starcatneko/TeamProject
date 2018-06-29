@@ -17,44 +17,11 @@ using namespace std;
 // パワー最大値
 #define POWER_MAX 100
 
-// 待機アニメーション関係
-#define WAIT_ANIM_CNT 16
-#define WAIT_ANIM_X 4
-#define WAIT_ANIM_Y 4
-
-// 移動アニメーション関係
-#define WALK_ANIM_CNT 32
-#define WALK_ANIM_X 4
-#define WALK_ANIM_Y 8
-
-//ダッシュアニメーション関係
-#define DASH_ANIM_CNT 12
-#define DASH_ANIM_X 4
-#define DASH_ANIM_Y 3
-
-// 攻撃アニメーション関係
-#define ATTACK_ANIM_CNT 12
-#define ATTACK_ANIM_X 4
-#define ATTACK_ANIM_Y 3
-
-// ダメージアニメーション関係
-#define DAMAGE_ANIM_CNT 12
-#define DAMAGE_ANIM_X 4
-#define DAMAGE_ANIM_Y 3
-
-// 死亡アニメーション関係
-#define DIE_ANIM_CNT 32
-#define DIE_ANIM_X 4
-#define DIE_ANIM_Y 8
-
 // モードの種類
 /* wait, walk, dash, attack, attack2, damage, die*/
 
 // ノックバック
 const int nock = 50;
-
-// アニメーション速度
-std::map<std::string, const int>animTime = { {"wait", 5}, {"walk", 1}, {"dash", 1}, {"attack1", 1}, {"attack2", 1}, {"damage", 1}, {"die", 1} };
 
 // 無敵時間
 const int invincible = 60;
@@ -62,53 +29,34 @@ const int invincible = 60;
 // 移動速度
 const int baseSpeed = 5;
 
-// プレイヤーの拡大率
-const int large = 1;
-
 // 反転フラグ
 bool ppp[2] = { false, false };
 
 // コンストラクタ
-Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st) :cam(cam), st(st), pos(pos)
+Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 {
 	Reset();
-	image[PlType::normal]["wait"] = LoadMane::Get()->Load("Nwait.png");
-	image[PlType::normal]["walk"] = LoadMane::Get()->Load("Nwalk.png");
-	image[PlType::normal]["dash"] = LoadMane::Get()->Load("Ndash.png");
-	image[PlType::normal]["attack1"] = LoadMane::Get()->Load("Npunch.png");
-	image[PlType::normal]["attack2"] = LoadMane::Get()->Load("Npunch2.png");
-	image[PlType::normal]["damage"] = LoadMane::Get()->Load("Ndamage.png");
 
-	image[PlType::pinch]["wait"] = LoadMane::Get()->Load("Dwait.png");
-	image[PlType::pinch]["walk"] = LoadMane::Get()->Load("Dwalk.png");
-	image[PlType::pinch]["dash"] = LoadMane::Get()->Load("Ddash.png");
-	image[PlType::pinch]["attack1"] = LoadMane::Get()->Load("Dpunch.png");
-	image[PlType::pinch]["attack2"] = LoadMane::Get()->Load("Dpunch2.png");
-	image[PlType::pinch]["damage"] = LoadMane::Get()->Load("Ddamage.png");
-	image[PlType::pinch]["die"] = LoadMane::Get()->Load("Ddead.png");
-
+	this->pos = pos;
+	this->cam = cam;
+	this->st = st;
+	
 	effect["effect1"] = LoadMane::Get()->Load("effect1.png");
 	effect["effect2"] = LoadMane::Get()->Load("effect2.png");
 	effect["effect3"] = LoadMane::Get()->Load("effect3.png");
 	effect["effect4"] = LoadMane::Get()->Load("effect4.png");
-	
 
 	lpos = this->cam.lock()->Correction(this->pos);
 	size = this->st.lock()->GetChipPlSize();
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 	target = lpos;
 	type = PlType::normal;
-	state = ST_NUETRAL;
-	mode = "wait";
 	dir = DIR_UP;
 	old_dir = dir;
 	reverse = false;
 	hp = HP_MAX;
 	power = 0;
 	speed = baseSpeed;
-	die = false;
-	flam = 0;
-	index = 0;
 	m_flam = -1;
 	attack2 = false;
 	dash = 0.0f;
@@ -153,6 +101,31 @@ void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansio
 	++correction;
 }
 
+// アニメーションのセット
+void Player::SetAnim(PlType type, std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
+{
+	anim[type][mode].image = LoadMane::Get()->Load(fileName.c_str());
+	anim[type][mode].x = x;
+	anim[type][mode].y = y;
+	anim[type][mode].max = x * y;
+	for (int i = 0; i < anim[type][mode].max; ++i)
+	{
+		anim[type][mode].animData.push_back({ { size.x * (i % x), size.y * (i / x) }, size });
+	}
+	anim[type][mode].animTime = animTime;
+}
+
+// アニメーション終了
+bool Player::CheckAnimEnd(void)
+{
+	if ((index + 1) >= anim[type][mode].max && flam >= anim[type][mode].animTime)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // 通常描画
 void Player::NormalDraw(void)
 {
@@ -168,25 +141,12 @@ void Player::NormalDraw(void)
 		return;
 	}
 	
-	if (state != ST_DIE)
-	{
-		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y,
-			anim[mode][index].size.x, anim[mode][index].size.y,
-			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
-		
-	}
-	else
-	{
-		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x + offset, anim[mode][index].pos.y,
-			anim[mode][index].size.x - offset, anim[mode][index].size.y,
-			(anim[mode][index].size.x - offset) / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[PlType::normal][mode], true, reverse, false);
-	}
+	DrawRectRotaGraph2(
+		lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+		anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+		anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+		anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+		(double)large, 0.0, anim[type][mode].image, true, reverse, false);
 }
 
 // ピンチ描画
@@ -202,20 +162,20 @@ void Player::PinchDraw(void)
 	if (state != ST_DIE)
 	{
 		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y,
-			anim[mode][index].size.x, anim[mode][index].size.y,
-			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[PlType::pinch][mode], true, reverse, false);
+			lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+			anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+			anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+			anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+			(double)large, 0.0, anim[type][mode].image, true, reverse, false);
 	}
 	else
 	{
 		DrawRectRotaGraph2(
-			lpos.x + ((anim[mode][index].size.x + offset) * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			(anim[mode][index].pos.x + offset), anim[mode][index].pos.y,
-			(anim[mode][index].size.x - offset), anim[mode][index].size.y,
-			(anim[mode][index].size.x - offset) / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[PlType::pinch][mode], true, reverse, false);
+			lpos.x + ((anim[type][mode].animData[index].size.x + offset) * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+			(anim[type][mode].animData[index].pos.x + offset), anim[type][mode].animData[index].pos.y,
+			(anim[type][mode].animData[index].size.x - offset), anim[type][mode].animData[index].size.y,
+			(anim[type][mode].animData[index].size.x - offset) / 2, anim[type][mode].animData[index].size.y / 2,
+			(double)large, 0.0, anim[type][mode].image, true, reverse, false);
 	}
 }
 
@@ -241,20 +201,20 @@ void Player::Draw(void)
 			if (type == PlType::normal)
 			{
 				DrawRectRotaGraph2(
-					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
-					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
-					anim["wait"][0].size.x, anim["wait"][0].size.y,
-					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
-					(double)large, 0.0, image[PlType::normal]["wait"], true, reverse, false);
+					lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+					anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+					anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+					anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+					(double)large, 0.0, anim[PlType::normal][mode].image, true, reverse, false);
 			}
 			else
 			{
 				DrawRectRotaGraph2(
-					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
-					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
-					anim["wait"][0].size.x, anim["wait"][0].size.y,
-					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
-					(double)large, 0.0, image[PlType::pinch]["wait"], true, reverse, false);
+					lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+					anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+					anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+					anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+					(double)large, 0.0, anim[PlType::pinch][mode].image, true, reverse, false);
 			}
 		}
 		else
@@ -262,20 +222,20 @@ void Player::Draw(void)
 			if (type == PlType::normal)
 			{
 				DrawRectRotaGraph2(
-					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
-					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
-					anim["wait"][0].size.x, anim["wait"][0].size.y,
-					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
-					(double)large, 0.0, image[PlType::pinch]["wait"], true, reverse, false);
+					lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+					anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+					anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+					anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+					(double)large, 0.0, anim[PlType::normal][mode].image, true, reverse, false);
 			}
 			else
 			{
 				DrawRectRotaGraph2(
-					lpos.x + (anim["wait"][0].size.x * large) / 2, lpos.y + (anim["wait"][0].size.y * large) / 2,
-					anim["wait"][0].pos.x, anim["wait"][0].pos.y,
-					anim["wait"][0].size.x, anim["wait"][0].size.y,
-					anim["wait"][0].size.x / 2, anim["wait"][0].size.y / 2,
-					(double)large, 0.0, image[PlType::normal]["wait"], true, reverse, false);
+					lpos.x + (anim[type][mode].animData[index].size.x * large) / 2, lpos.y + (anim[type][mode].animData[index].size.y * large) / 2,
+					anim[type][mode].animData[index].pos.x, anim[type][mode].animData[index].pos.y,
+					anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
+					anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
+					(double)large, 0.0, anim[PlType::pinch][mode].image, true, reverse, false);
 			}
 		}
 
@@ -338,22 +298,22 @@ void Player::Draw(void)
 }
 
 // アニメーション管理
-void Player::Animator(int flam)
+void Player::Animator(void)
 {
 	if (GameMane::Get()->GetHit() == false)
 	{
 		++this->flam;
 	}
 
-	if (this->flam > flam)
+	if (this->flam > anim[type][mode].animTime)
 	{
 		if (state != ST_DIE)
 		{
-			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
+			index = ((index + 1) < anim[type][mode].max) ? ++index : 0;
 		}
 		else
 		{
-			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : index;
+			index = ((index + 1) < anim[type][mode].max) ? ++index : index;
 		}
 		this->flam = 0;
 	}
@@ -383,68 +343,35 @@ void Player::Effector(void)
 }
 
 // アニメーションのセット
-void Player::SetAnim(std::string mode, Pos pos, Pos size)
-{
-	anim[mode].push_back({pos, size});
-}
-
-// アニメーションのセット
 void Player::AnimInit(void)
 {
-	//待機
-	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
-	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
-	}
+	SetAnim(PlType::normal, "Nwait.png", "wait", 4, 4, size, 5);
+	SetAnim(PlType::normal, "Nwalk.png", "walk", 4, 8, size);
+	SetAnim(PlType::normal, "Ndash.png", "dash", 4, 3, size);
+	SetAnim(PlType::normal, "Npunch.png", "attack1", 4, 3, size);
+	SetAnim(PlType::normal, "Npunch2.png", "attack2", 4, 3, size);
+	SetAnim(PlType::normal, "Ndamage.png", "damage", 4, 3, size);
 
-	//歩き
-	for (int i = 0; i < WALK_ANIM_CNT; ++i)
-	{
-		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
-	}
-
-	//ダッシュ
-	for (int i = 0; i < DASH_ANIM_CNT; ++i)
-	{
-		SetAnim("dash", { size.x * (i % DASH_ANIM_X), size.y * (i / DASH_ANIM_X) }, size);
-	}
-
-	//攻撃1
-	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
-	{
-		SetAnim("attack1", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
-	}
-
-	//攻撃2
-	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
-	{
-		SetAnim("attack2", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_X) }, size);
-	}
-
-	//ダメージ
-	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
-	{
-		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_X) }, size);
-	}
-
-	//死亡
-	for (int i = 0; i < DIE_ANIM_CNT; ++i)
-	{
-		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
-	}
+	SetAnim(PlType::pinch, "Dwait.png", "wait", 4, 4, size, 5);
+	SetAnim(PlType::pinch, "Dwalk.png", "walk", 4, 8, size);
+	SetAnim(PlType::pinch, "Ddash.png", "dash", 4, 3, size);
+	SetAnim(PlType::pinch, "Dpunch.png", "attack1", 4, 3, size);
+	SetAnim(PlType::pinch, "Dpunch2.png", "attack2", 4, 3, size);
+	SetAnim(PlType::pinch, "Ddamage.png", "damage", 4, 3, size);
+	SetAnim(PlType::pinch, "Ddead.png", "die", 4, 8, size);
 }
 
 // あたり矩形のセット
 void Player::SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
-	rect[ptype][mode][index].push_back({ offset, size, rtype });
+	anim[type][mode].rect[index].push_back({ offset, size, rtype });
 }
 
 // あたり矩形のセット
 void Player::RectInit(void)
 {
 	//待機
-	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
+	for (int in = 0; in < anim[type]["wait"].max; ++in)
 	{
 		if ((in <= 4) || (12 <= in && in <= 15))
 		{
@@ -463,7 +390,7 @@ void Player::RectInit(void)
 	}
 
 	//移動
-	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
+	for (int in = 0; in < anim[type]["walk"].max; ++in)
 	{
 		if (5 <= in && in <= 10)
 		{
@@ -489,7 +416,7 @@ void Player::RectInit(void)
 	}
 
 	//攻撃1
-	for (unsigned int in = 0; in < anim["attack1"].size(); ++in)
+	for (int in = 0; in < anim[type]["attack1"].max; ++in)
 	{
 		//通常
 		if (in > 5)
@@ -518,7 +445,7 @@ void Player::RectInit(void)
 	}
 
 	//攻撃2
-	for (unsigned int in = 0; in < anim["attack2"].size(); ++in)
+	for (int in = 0; in < anim[type]["attack2"].max; ++in)
 	{
 		//通常
 		if (in > 5)
@@ -568,16 +495,14 @@ void Player::Nuetral(void)
 
 	if (Touch::Get()->Check(SWIPE, tmp) == true)
 	{
-		SetState(ST_WALK);
-		SetMode("walk");
+		SetState(ST_WALK, "walk");
 		func = &Player::Walk;
 	}
 
 	if (Touch::Get()->Check(FLICK, tmp) == true)
 	{
 		Sound::Get()->Play(SE_STEP);
-		SetState(ST_WALK);
-		SetMode("dash");
+		SetState(ST_WALK, "dash");
 		dash = Touch::Get()->GetAngel();
 		func = &Player::Dash;
 	}
@@ -585,8 +510,7 @@ void Player::Nuetral(void)
 	if (Touch::Get()->Check(TAP, tmp) == true)
 	{
 		Sound::Get()->Play(SE_PUNCH);
-		SetState(ST_ATTACK);
-		SetMode("attack1");
+		SetState(ST_ATTACK, "attack1");
 		func = &Player::Attack1;
 	}
 
@@ -598,15 +522,15 @@ void Player::Nuetral(void)
 		{
 			effe["effect3"].flag = false;
 			effe["effect4"].flag = true;
-			if (rect[type][mode][index].size() < 2)
+			if (anim[type][mode].rect[index].size() < 2)
 			{
 				if (reverse == false)
 				{
-					rect[type][mode][index].push_back({ { -(WINDOW_X - (WINDOW_X - center.x)), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
+					anim[type][mode].rect[index].push_back({ { -(WINDOW_X - (WINDOW_X - center.x)), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
 				}
 				else
 				{
-					rect[type][mode][index].push_back({ { -(WINDOW_X - center.x), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
+					anim[type][mode].rect[index].push_back({ { -(WINDOW_X - center.x), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
 				}
 			}
 		}
@@ -615,11 +539,11 @@ void Player::Nuetral(void)
 	{
 		effe["effect3"].flag = false;
 		effe["effect4"].flag = false;
-		for (int i = 0; i < WAIT_ANIM_CNT; ++i)
+		for (int i = 0; i < anim[type]["wait"].max; ++i)
 		{
-			if (rect[type]["wait"][i].size() >= 2)
+			if (anim[type]["wait"].rect[i].size() >= 2)
 			{
-				rect[type]["wait"][i].pop_back();
+				anim[type]["wait"].rect[i].pop_back();
 			}
 		}
 		skill = 0;
@@ -636,8 +560,7 @@ void Player::Walk(void)
 
 	if (Touch::Get()->Check(SWIPE, tmp) != true)
 	{
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		func = &Player::Nuetral;
 		return;
 	}
@@ -736,11 +659,10 @@ void Player::Dash(void)
 		}
 	}
 
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		effe["effect2"].flag = false;
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		func = &Player::Nuetral;
 	}
 }
@@ -767,21 +689,19 @@ void Player::Attack1(void)
 	}
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		effe["effect1"].flag = false;
 
 		if (attack2 == false)
 		{
-			SetState(ST_NUETRAL);
-			SetMode("wait");
+			SetState(ST_NUETRAL, "wait");
 			func = &Player::Nuetral;
 		}
 		else
 		{
 			Sound::Get()->Play(SE_PUNCH);
-			SetState(ST_ATTACK);
-			SetMode("attack2");
+			SetState(ST_ATTACK, "attack2");
 			func = &Player::Attack2;
 		}
 	}
@@ -801,11 +721,10 @@ void Player::Attack2(void)
 	}
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		effe["effect1"].flag = false;
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		func = &Player::Nuetral;
 	}
 }
@@ -822,8 +741,7 @@ void Player::Damage(void)
 	{
 		Sound::Get()->Stop();
 		Sound::Get()->Play(SE_DEAD);
-		SetState(ST_DIE);
-		SetMode("die");
+		SetState(ST_DIE, "die");
 		func = &Player::Die;
 	}
 	else
@@ -876,10 +794,9 @@ void Player::Damage(void)
 		}
 
 		//アニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+		if (CheckAnimEnd() == true)
 		{
-			SetState(ST_NUETRAL);
-			SetMode("wait");
+			SetState(ST_NUETRAL, "wait");
 			m_flam = 0;
 			func = &Player::Nuetral;
 		}
@@ -897,7 +814,7 @@ void Player::Die(void)
 	dir = (dir == DIR_NON) ? old_dir : dir;
 
 	//アニメーションが終わったとき
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		offset += 5;
 		if (offset >= size.x)
@@ -928,7 +845,7 @@ void Player::UpData(void)
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
-	Animator(animTime[mode]);
+	Animator();
 	Effector();
 
 	if (state == ST_DAMAGE)
@@ -967,7 +884,7 @@ void Player::UpData(void)
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		if(state != ST_DAMAGE)
-		SetState(ST_DAMAGE);
+		SetState(ST_DAMAGE, "damage");
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
@@ -987,53 +904,9 @@ void Player::UpData(void)
 // リセット
 void Player::Reset(void)
 {
-	image.clear();
-	effect.clear();
 	anim.clear();
-	rect.clear();
+	effect.clear();
 	effe.clear();
-}
-
-// 座標の取得
-Pos Player::GetPos(void)
-{
-	return pos;
-}
-
-// 座標のセット
-void Player::SetPos(Pos pos)
-{
-	this->pos = pos;
-}
-
-// ローカル座標の取得
-Pos Player::GetLocalPos(void)
-{
-	return lpos;
-}
-
-// ローカル座標のセット
-void Player::SetLocalPos(Pos pos)
-{
-	lpos = pos;
-}
-
-// サイズの取得
-Pos Player::GetSize(void)
-{
-	return size;
-}
-
-// 中心座標の取得
-Pos Player::GetCenter(void)
-{
-	return center;
-}
-
-// 中心座標のセット
-void Player::SetCenter(Pos center)
-{
-	this->center = center;
 }
 
 // 体力の取得
@@ -1100,14 +973,8 @@ void Player::DownPower(int pw)
 	}
 }
 
-// 状態の取得
-STATES Player::GetState(void)
-{
-	return state;
-}
-
 // 状態のセット
-void Player::SetState(STATES state)
+void Player::SetState(STATES state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{
@@ -1118,6 +985,7 @@ void Player::SetState(STATES state)
 	}
 
 	this->state = state;
+	this->mode = mode;
 	dir = DIR_NON;
 	flam = 0;
 	index = 0;
@@ -1127,7 +995,6 @@ void Player::SetState(STATES state)
 	if (this->state == ST_DAMAGE)
 	{
 		Sound::Get()->Play(SE_HIT2);
-		SetMode("damage");
 		--hp;
 		target = lpos;
 		if (this->power > 0)
@@ -1136,30 +1003,6 @@ void Player::SetState(STATES state)
 			dropflag = true;
 		}
 	}
-}
-
-// モードの取得
-std::string Player::GetMode(void)
-{
-	return mode;
-}
-
-// モードのセット
-void Player::SetMode(std::string mode)
-{
-	this->mode = mode;
-}
-
-// 向きの取得
-DIR Player::GetDir(void)
-{
-	return dir;
-}
-
-// 向きのセット
-void Player::SetDir(DIR dir)
-{
-	this->dir = dir;
 }
 
 // 前の向きの取得
@@ -1178,18 +1021,6 @@ void Player::SetOldDir(DIR dir)
 void Player::SetSpeed(int id)
 {
 	speed = id;
-}
-
-// 反転フラグの取得
-bool Player::GetReverse(void)
-{
-	return reverse;
-}
-
-// 反転フラグのセット
-void Player::SetReverse(bool flag)
-{
-	reverse = flag;
 }
 
 // 緊急の取得
@@ -1228,14 +1059,14 @@ std::vector<Rect> Player::GetRect(void)
 
 	if (reverse == false)
 	{
-		for (auto& r : rect[type][mode][index])
+		for (auto& r : anim[type][mode].rect[index])
 		{
 			box.push_back({ { center.x + r.offset.x, center.y + r.offset.y }, r.size, r.type });
 		}
 	}
 	else
 	{
-		for (auto& r : rect[type][mode][index])
+		for (auto& r : anim[type][mode].rect[index])
 		{
 			box.push_back({ { center.x - r.offset.x - r.size.x, center.y + r.offset.y }, { r.size.x, r.size.y }, r.type });
 		}

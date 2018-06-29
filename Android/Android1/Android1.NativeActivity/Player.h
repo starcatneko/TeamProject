@@ -1,15 +1,26 @@
 ﻿#pragma once
-#include "Typedef.h"
-#include <memory>
-#include <map>
-#include <vector>
-#include <string>
+#include "Obj.h"
 
 class Camera;
 class Stage;
 
-class Player
+class Player :
+	public Obj
 {
+	struct Anim {
+		//画像データ
+		int image;
+		int x;
+		int y;
+		int max;
+		//アニメーション情報
+		std::vector<Box>animData;
+		//アニメーション時間
+		int animTime;
+		//あたり矩形
+		std::map<int, std::vector<Rect>>rect;
+	};
+
 public:
 	// コンストラクタ
 	Player(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st);
@@ -24,24 +35,6 @@ public:
 
 	// 処理
 	void UpData(void);
-
-	// 座標の取得
-	Pos GetPos(void);
-	// 座標のセット
-	void SetPos(Pos pos);
-
-	// ローカル座標の取得
-	Pos GetLocalPos(void);
-	// ローカル座標のセット
-	void SetLocalPos(Pos pos);
-
-	// サイズの取得
-	Pos GetSize(void);
-
-	// 中心座標の取得
-	Pos GetCenter(void);
-	// 中心座標のセット
-	void SetCenter(Pos center);
 
 	// 体力の取得
 	int GetHp(void);
@@ -61,20 +54,8 @@ public:
 	// アップルパワーの減少
 	void DownPower(int pw);
 
-	// 状態の取得
-	STATES GetState(void);
 	// 状態のセット
-	void SetState(STATES state);
-
-	// モードの取得
-	std::string GetMode(void);
-	// モードのセット
-	void SetMode(std::string mode);
-
-	// 向きの取得
-	DIR GetDir(void);
-	// 向きのセット
-	void SetDir(DIR dir);
+	void SetState(STATES state, std::string mode);
 
 	// 前の向きの取得
 	DIR GetOldDir(void);
@@ -83,11 +64,6 @@ public:
 
 	// 移動速度のセット
 	void SetSpeed(int id);
-
-	// 反転フラグの取得
-	bool GetReverse(void);
-	// 反転フラグのセット
-	void SetReverse(bool flag);
 
 	// 緊急の取得
 	DIR GetTmp(void);
@@ -110,22 +86,31 @@ public:
 	// エフェクト座標の取得
 	Pos GetEffect(std::string name, int large = 1);
 
+	// サイズの取得
+	constexpr Pos GetSize(void) const {
+		return pos;
+	}
+
 	//リンゴをドロップする際の管理フラグ
 	int dropflag;
 private:
+	// アニメーションのセット
+	void SetAnim(PlType type, std::string fileName, std::string mode, int x, int y, Pos size, int animTime = 1);
+
+	// アニメーション終了
+	bool CheckAnimEnd(void);
+
 	// 通常描画
 	void NormalDraw(void);
 	// ピンチ描画
 	void PinchDraw(void);
 
 	// アニメーション管理
-	void Animator(int flam);
+	void Animator(void);
 
 	// エフェクト管理
 	void Effector(void);
 
-	// アニメーションのセット
-	void SetAnim(std::string mode, Pos pos, Pos size);
 	// アニメーションのセット
 	void AnimInit(void);
 
@@ -161,33 +146,8 @@ private:
 	// リセット
 	void Reset(void);
 
-
-	// カメラクラス
-	std::weak_ptr<Camera>cam;
-
-	// ステージクラス
-	std::weak_ptr<Stage>st;
-
-	// 画像データ
-	std::map<PlType, std::map<std::string, int>>image;
-
 	// エフェクト画像データ
 	std::map<std::string, int>effect;
-
-	// 座標
-	Pos pos;
-
-	// ローカル座標
-	Pos lpos;
-
-	// サイズ
-	Pos size;
-
-	// 中心座標
-	Pos center;
-
-	// ターゲット座標
-	Pos target;
 
 	// タイプ
 	PlType type;
@@ -195,35 +155,11 @@ private:
 	// ステータス
 	STATES state;
 
-	// モード
-	std::string mode;
-
-	// 移動向き
-	DIR dir;
-
 	// 前の移動向き
 	DIR old_dir;
 
-	// 反転フラグ
-	bool reverse;
-
-	// 体力
-	int hp;
-
 	// アップルパワー
 	int power;
-
-	// 移動速度
-	int speed;
-
-	// 死亡フラグ
-	bool die;
-
-	// フレーム
-	int flam;
-
-	// 配列の番号
-	int index;
 
 	// 無敵フレーム
 	int m_flam;
@@ -249,11 +185,8 @@ private:
 	// 裏技
 	int skill;
 
-	// アニメーション
-	std::map<std::string, std::vector<Box>>anim;
-
-	// あたり矩形
-	std::map<PlType, std::map<std::string, std::map<int, std::vector<Rect>>>>rect;
+	// 
+	std::map<PlType, std::map<std::string, Anim>>anim;
 
 	// エフェクト
 	std::map<std::string, Effect>effe;

@@ -80,9 +80,27 @@ public:
 	void SetCenter(const Pos& pos) {
 		center = pos;
 	}
+	// 向きの取得
+	constexpr DIR GetDir(void) const {
+		return dir;
+	}
+	// 向きのセット
+	void SetDir(const DIR& dir)
+	{
+		this->dir = dir;
+	}
 	// サイズの取得
 	constexpr Pos Getsize(void) const {
 		return size;
+	}
+	// 反転フラグの取得
+	constexpr bool GetReverse(void) const {
+		return reverse;
+	}
+	// 反転フラグのセット
+	void SetReverse(bool flag)
+	{
+		reverse = flag;
 	}
 	// 死亡フラグの取得
 	constexpr bool GetDie(void) const {

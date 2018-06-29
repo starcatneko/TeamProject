@@ -12,7 +12,6 @@ class Camera;
 class Stage;
 class BackGround;
 class Ground;
-class Player;
 class Obj;
 class Item;
 
