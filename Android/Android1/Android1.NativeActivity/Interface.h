@@ -1,5 +1,8 @@
 #pragma once
-#include "Player.h"
+#include "Typedef.h"
+#include <memory>
+
+class Player;
 
 #define SPAWN_ALL_FRAME 240
 #define SPAWN_START 180

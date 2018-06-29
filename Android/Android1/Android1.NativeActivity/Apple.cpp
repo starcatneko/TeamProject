@@ -90,7 +90,7 @@ void Apple::UpData(void)
 	else
 	{
 		pos.y += (int)(cosf(RAD(angle)) * 4) + (int)(cosf(RAD(effect_cnt * 6)) * 15);
-		pos.x += (int)(sinf(RAD(angle)) * 8)*1.3;
+		pos.x += (int)((sinf(RAD(angle)) * 8)*1.3f);
 		effect_cnt--;
 
 		if (effect_cnt <= 0)
@@ -103,7 +103,7 @@ void Apple::UpData(void)
 			else
 			{
 				pos.y += (int)(cosf(RAD(angle)) * 4) + (int)(cosf(RAD(effect_cnt * 6)) * 15);
-				pos.x += (int)(sinf(RAD(angle)) * 8)*1.3;
+				pos.x += (int)((sinf(RAD(angle)) * 8)*1.3f);
 
 			}
 		}

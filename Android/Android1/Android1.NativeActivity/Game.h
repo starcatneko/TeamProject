@@ -10,8 +10,7 @@ public:
 	~Game();
 
 	// インスタンスの取得
-	static Game& Get(void)
-	{
+	static Game& Get(void){
 		// インスタンス変数
 		static Game instance;
 		return instance;

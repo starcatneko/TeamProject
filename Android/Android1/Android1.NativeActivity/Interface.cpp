@@ -1,7 +1,8 @@
 #include "Interface.h"
+#include "Obj.h"
+#include "Player.h"
 #include "LoadMane.h"
 #include "DxLib.h"
-#include "Obj.h"
 
 
 

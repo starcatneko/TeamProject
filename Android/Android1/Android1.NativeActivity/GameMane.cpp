@@ -33,52 +33,10 @@ void GameMane::Destroy(void)
 	}
 }
 
-// キル数の上昇
-void GameMane::Kill(void)
-{
-	++kill;
-}
-
-// 目標数の上昇
-void GameMane::Target(void)
-{
-	++target;
-}
-
-// 目標数のセット
-void GameMane::SetTarget(unsigned int cnt)
-{
-	target = cnt;
-}
-
-// ヒットフラグのセット
-void GameMane::SetHit(bool flag)
-{
-	hit = flag;
-}
-
 // リセット
 void GameMane::Reset(void)
 {
 	kill = 0;
 	target = 0;
 	hit = false;
-}
-
-// キル数の取得
-int GameMane::GetKillCnt(void)
-{
-	return kill;
-}
-
-// 目標数の取得
-int GameMane::GetTargetNum(void)
-{
-	return target;
-}
-
-// ヒットフラグの取得
-bool GameMane::GetHit(void)
-{
-	return hit;
 }

@@ -10,6 +10,7 @@
 #include "BackGround.h"
 #include "Stage.h"
 #include "Obj.h"
+#include "Player.h"
 #include "Item.h"
 #include "Interface.h"
 #include "Sound.h"
@@ -108,8 +109,6 @@ void GamePlay::NormalDraw(void)
 {
 	back->Draw();
 	ItemDraw();
-
-	
 	(this->*ppp)();
 	cam->Draw();
 	ui->Draw();
@@ -253,11 +252,11 @@ void GamePlay::ItemUpData(void)
 
 	}
 
-	if (pl->dropflag == true)
+	if (pl->dropflag == 1)
 	{
 		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x/2, pl->GetPos().y+pl->GetSize().y / 2 }, cam, st, pl));
 		
-		pl->dropflag = false;
+		pl->dropflag = 0;
 	}
 	for (auto itr = item.begin(); itr != item.end();)
 	{

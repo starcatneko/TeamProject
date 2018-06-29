@@ -11,8 +11,7 @@ class EnemyMane
 public:
 	~EnemyMane();
 	//インスタンス変数の取得
-	static EnemyMane* Get(void)
-	{
+	constexpr static EnemyMane* Get(void){
 		return instance;
 	}
 	//インスタンス化

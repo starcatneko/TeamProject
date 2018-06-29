@@ -7,8 +7,7 @@ public:
 	~GameMane();
 
 	// インスタン変数の取得
-	static GameMane* Get(void)
-	{
+	constexpr static GameMane* Get(void) {
 		return instance;
 	}
 
@@ -18,28 +17,42 @@ public:
 	static void Destroy(void);
 
 	// キル数の上昇
-	void Kill(void);
+	constexpr void Kill(void) {
+		++kill;
+	}
 
 	// 目標数の上昇
-	void Target(void);
+	constexpr void Target(void) {
+		++target;
+	}
 
 	// 目標数のセット
-	void SetTarget(unsigned int cnt);
+	constexpr void SetTarget(unsigned int cnt) {
+		target = cnt;
+	}
 
 	// ヒットフラグのセット
-	void SetHit(bool flag);
+	constexpr void SetHit(bool flag) {
+		hit = flag;
+	}
 
 	// リセット
 	void Reset(void);
 
 	// キル数の取得
-	int GetKillCnt(void);
+	constexpr int GetKillCnt(void) const {
+		return kill;
+	}
 
 	// 目標数の取得
-	int GetTargetNum(void);
+	constexpr int GetTargetNum(void) const {
+		return target;
+	}
 
 	// ヒットフラグの取得
-	bool GetHit(void);
+	constexpr bool GetHit(void) const {
+		return hit;
+	}
 
 private:
 	// コンストラクタ

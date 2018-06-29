@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 #include <string>
-using namespace std;
 
 #define GET_SCORE Score::Get()->GetScore()		// Score合計取得
 #define GET_KILL GameMane::Get()->GetKillCnt()	//	Kill合計取得
@@ -87,9 +86,9 @@ private:
 	// キャラ画像の数
 	Pos chipCnt;
 	// オブジェクト画像
-	map<string, int> Image;
+	std::map<std::string, int> Image;
 	// キャラクター画像
-	map<string, map<string, int>>charImage;
+	std::map<std::string, std::map<std::string, int>>charImage;
 	// キャラクター座標
-	map<string, map<string, Pos>>pos;
+	std::map<std::string, std::map<std::string, Pos>>pos;
 };
