@@ -21,8 +21,6 @@ Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 {
 	Reset();
 
-	
-
 	this->cam = cam;
 	this->st = st;
 	this->pl = pl;
@@ -475,7 +473,7 @@ void Boss::Draw(void)
 		anim[mode].animData[index].size.x / 2, anim[mode].animData[index].size.y / 2,
 		(double)large, 0.0, anim[mode].image, true, reverse, false);
 
-/*#ifndef __ANDROID__
+#ifndef __ANDROID__
 	auto d = GetRect();
 	int color = 0;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
@@ -494,8 +492,7 @@ void Boss::Draw(void)
 	DrawBox(center.x - area, center.y - area, center.x + area, center.y + area, GetColor(0, 0, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawFormatString(500, 1000, GetColor(255, 255, 0), "%d", index);
-#endif*/
-
+#endif
 }
 
 // 処理
@@ -539,6 +536,7 @@ void Boss::UpData(void)
 	if (hit == true)
 	{
 		SetState(ST_DAMAGE, "damage");
+		reverse = (pl.lock()->GetReverse() == false) ? false : true;
 		GameMane::Get()->SetHit(true);
 
 		if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
