@@ -130,7 +130,7 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Clear.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Debug.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Dust.cpp" />
-    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.cpp" />
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Obj.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\EnemyMane.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.cpp" />
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Game.cpp" />
@@ -160,7 +160,7 @@
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Clear.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Debug.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Dust.h" />
-    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.h" />
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Obj.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\EnemyMane.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.h" />
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Game.h" />

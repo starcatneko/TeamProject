@@ -1,11 +1,11 @@
-﻿#include "Enemy.h"
+﻿#include "Obj.h"
 #include "LoadMane.h"
 #include "GameMane.h"
 #include "Sound.h"
 
 
 // コンストラクタ
-Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(10)
+Obj::Obj() : speed(3), die(false), reverse(false), flam(0), index(0), power(10)
 {
 	Reset();
 
@@ -18,12 +18,12 @@ Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(
 }
 
 // デストラクタ
-Enemy::~Enemy()
+Obj::~Obj()
 {
 }
 
 // あたり判定
-bool Enemy::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
+bool Obj::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 {
 	if (pos1.x < pos2.x + size2.x && pos1.x + size1.x > pos2.x
 		&& pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y)
@@ -35,7 +35,7 @@ bool Enemy::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 }
 
 // アニメーション管理
-void Enemy::Animator(void)
+void Obj::Animator(void)
 {
 	if (GameMane::Get()->GetHit() == false)
 	{
@@ -57,7 +57,7 @@ void Enemy::Animator(void)
 }
 
 // エフェクト管理
-void Enemy::Effector(void)
+void Obj::Effector(void)
 {
 	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
 	{
@@ -80,7 +80,7 @@ void Enemy::Effector(void)
 }
 
 // アニメーションの終了
-bool Enemy::CheckAnimEnd(void)
+bool Obj::CheckAnimEnd(void)
 {
 	if (index + 1 >= anim[mode].max && flam >= anim[mode].animTime)
 	{
@@ -91,7 +91,7 @@ bool Enemy::CheckAnimEnd(void)
 }
 
 // アニメーションのセット
-void Enemy::SetAnim(std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
+void Obj::SetAnim(std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
 {
 	anim[mode].image = LoadMane::Get()->Load(fileName.c_str());
 	anim[mode].x = x;
@@ -105,19 +105,19 @@ void Enemy::SetAnim(std::string fileName, std::string mode, int x, int y, Pos si
 }
 
 // あたり矩形のセット
-void Enemy::SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype)
+void Obj::SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
 	anim[mode].rect[index].push_back({ offset, size, rtype });
 }
 
 // エフェクトのセット
-void Enemy::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
+void Obj::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
 {
 	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
 }
 
 // 状態のセット
-void Enemy::SetState(STATES state, std::string mode)
+void Obj::SetState(STATES state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{
@@ -138,7 +138,7 @@ void Enemy::SetState(STATES state, std::string mode)
 }
 
 //あたり矩形の取得
-std::vector<Rect> Enemy::GetRect(void)
+std::vector<Rect> Obj::GetRect(void)
 {
 	std::vector<Rect>box;
 
@@ -161,7 +161,7 @@ std::vector<Rect> Enemy::GetRect(void)
 }
 
 // エフェクト座標の取得
-Pos Enemy::GetEffect(std::string name, int large)
+Pos Obj::GetEffect(std::string name, int large)
 {
 	Pos tmp;
 	if (reverse == false)
@@ -179,7 +179,7 @@ Pos Enemy::GetEffect(std::string name, int large)
 }
 
 // リセット
-void Enemy::Reset(void)
+void Obj::Reset(void)
 {
 	anim.clear();
 	effect.clear();

@@ -10,8 +10,6 @@
 #include "BackGround.h"
 #include "Stage.h"
 #include "Player.h"
-#include "Dust.h"
-#include "Fannings.h"
 #include "Item.h"
 #include "Interface.h"
 #include "Sound.h"

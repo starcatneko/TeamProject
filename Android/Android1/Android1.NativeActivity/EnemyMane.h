@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "Obj.h"
 #include <memory>
 
 class Camera;
@@ -20,11 +20,11 @@ public:
 	//破棄
 	static void Destroy(void);
 	//ダストの生成
-	std::shared_ptr<Enemy> CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
+	std::shared_ptr<Obj> CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
 	//ファニングスの生成
-	std::shared_ptr<Enemy> CreateFannings(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
+	std::shared_ptr<Obj> CreateFannings(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
 	//ボスの生成
-	std::shared_ptr<Enemy> CreateBoss(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
+	std::shared_ptr<Obj> CreateBoss(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl);
 private:
 	EnemyMane();
 	//インスタンス変数

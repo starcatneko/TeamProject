@@ -33,9 +33,9 @@ void EnemyMane::Destroy(void)
 	}
 }
 
-std::shared_ptr<Enemy> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
-	std::shared_ptr<Enemy>dust = std::make_shared<Dust>(pos, cam, st, pl);
+	std::shared_ptr<Obj>dust = std::make_shared<Dust>(pos, cam, st, pl);
 
 	//目標撃退数の上昇
 	GameMane::Get()->Target();
@@ -43,9 +43,9 @@ std::shared_ptr<Enemy> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam
 	return dust;
 }
 
-std::shared_ptr<Enemy> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
-	std::shared_ptr<Enemy>fannings = std::make_shared<Fannings>(pos, cam, st, pl);
+	std::shared_ptr<Obj>fannings = std::make_shared<Fannings>(pos, cam, st, pl);
 
 	//目標撃退数の上昇
 	GameMane::Get()->Target();
@@ -54,9 +54,9 @@ std::shared_ptr<Enemy> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera
 }
 
 //ボスの生成
-std::shared_ptr<Enemy> EnemyMane::CreateBoss(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateBoss(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
-	std::shared_ptr<Enemy>boss = std::make_shared<Boss>(pos, cam, st, pl);
+	std::shared_ptr<Obj>boss = std::make_shared<Boss>(pos, cam, st, pl);
 
 	//目標撃退数の上昇
 	GameMane::Get()->Target();

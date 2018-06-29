@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "Obj.h"
 
 class Fannings :
-	public Enemy
+	public Obj
 {
 public:
 	// コンストラクタ

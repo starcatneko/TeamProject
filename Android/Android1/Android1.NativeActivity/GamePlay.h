@@ -13,9 +13,7 @@ class Stage;
 class BackGround;
 class Ground;
 class Player;
-class Enemy;
-class Dust;
-class Fannings;
+class Obj;
 class Item;
 
 class GamePlay :
@@ -87,7 +85,7 @@ private:
 	std::list<std::shared_ptr<Item>>item;
 
 	//敵のリスト
-	std::list<std::shared_ptr<Enemy>>enemy;
+	std::list<std::shared_ptr<Obj>>enemy;
 
 	// 画像データ
 	std::map<std::string, int>image;

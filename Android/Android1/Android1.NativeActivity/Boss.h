@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Enemy.h"
+#include "Obj.h"
 class Boss :
-	public Enemy
+	public Obj
 {
 public:
 	// コンストラクタ

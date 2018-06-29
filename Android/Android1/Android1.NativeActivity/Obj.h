@@ -9,7 +9,7 @@ class Camera;
 class Stage;
 class Player;
 
-class Enemy
+class Obj
 {
 	struct Anim {
 		//画像データ
@@ -27,9 +27,9 @@ class Enemy
 
 public:
 	// コンストラクタ
-	Enemy();
+	Obj();
 	// デストラクタ
-	~Enemy();
+	~Obj();
 
 	// 描画
 	virtual void Draw() = 0;

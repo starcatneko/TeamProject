@@ -27,9 +27,6 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Dust.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -99,6 +96,9 @@
     <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Boss.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Android\Android1\Android1.NativeActivity\Obj.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Apple.h">
@@ -111,9 +111,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Dust.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Fannings.h">
@@ -186,6 +183,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Boss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Android\Android1\Android1.NativeActivity\Obj.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
