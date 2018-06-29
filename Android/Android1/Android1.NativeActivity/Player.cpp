@@ -903,18 +903,6 @@ void Player::Reset(void)
 	effe.clear();
 }
 
-// 体力の取得
-int Player::GetHp(void)
-{
-	return hp;
-}
-
-// 体力のセット
-void Player::SetHp(int hp)
-{
-	this->hp = hp;
-}
-
 // 体力の上昇
 void Player::UpHp(int i)
 {
@@ -933,18 +921,6 @@ void Player::DownHp(int i)
 	{
 		SetHp(0);
 	}
-}
-
-// アップルパワーの取得
-int Player::GetPower(void)
-{
-	return power;
-}
-
-// アップルパワーのセット
-void Player::SetPower(int pw)
-{
-	power = pw;
 }
 
 // アップルパワーの上昇
@@ -999,41 +975,6 @@ void Player::SetState(STATES state, std::string mode)
 	}
 }
 
-// 前の向きの取得
-DIR Player::GetOldDir(void)
-{
-	return old_dir;
-}
-
-// 前の向きのセット
-void Player::SetOldDir(DIR dir)
-{
-	old_dir = dir;
-}
-
-// 移動速度のセット
-void Player::SetSpeed(int id)
-{
-	speed = id;
-}
-
-// 緊急の取得
-DIR Player::GetTmp(void)
-{
-	return tmp;
-}
-
-// ダッシュの取得
-float Player::GetDash(void)
-{
-	return dash;
-}
-
-// 死亡フラグの取得
-bool Player::GetDie(void)
-{
-	return die;
-}
 
 // 無敵状態かの確認
 bool Player::CheckInvincible(void)

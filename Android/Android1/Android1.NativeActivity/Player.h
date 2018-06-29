@@ -1,9 +1,6 @@
 ﻿#pragma once
 #include "Obj.h"
 
-class Camera;
-class Stage;
-
 class Player :
 	public Obj
 {
@@ -36,19 +33,19 @@ public:
 	// 処理
 	void UpData(void);
 
-	// 体力の取得
-	int GetHp(void);
-	// 体力のセット
-	void SetHp(int hp);
 	// 体力の上昇
 	void UpHp(int i);
 	// 体力の減少
 	void DownHp(int i);
 
 	// アップルパワーの取得
-	int GetPower(void);
+	constexpr int GetPower(void) const {
+		return power;
+	}
 	// アップルパワーのセット
-	void SetPower(int pw);
+	void SetPower(int pw) {
+		power = pw;
+	}
 	// アップルパワーの上昇
 	void UpPower(int pw);
 	// アップルパワーの減少
@@ -58,21 +55,28 @@ public:
 	void SetState(STATES state, std::string mode);
 
 	// 前の向きの取得
-	DIR GetOldDir(void);
+	constexpr DIR GetOldDir(void) const {
+		return old_dir;
+	}
 	// 前の向きのセット
-	void SetOldDir(DIR dir);
+	void SetOldDir(const DIR& dir) {
+		old_dir = dir;
+	}
 
 	// 移動速度のセット
-	void SetSpeed(int id);
+	void SetSpeed(int id) {
+		speed = id;
+	}
 
 	// 緊急の取得
-	DIR GetTmp(void);
+	constexpr DIR GetTmp(void) const {
+		return tmp;
+	}
 
 	// ダッシュの取得
-	float GetDash(void);
-
-	// 死亡フラグの取得
-	bool GetDie(void);
+	constexpr float GetDash(void) const {
+		return dash;
+	}
 
 	// 無敵状態かの確認
 	bool CheckInvincible(void);

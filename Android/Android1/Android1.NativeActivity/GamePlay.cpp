@@ -10,7 +10,6 @@
 #include "BackGround.h"
 #include "Stage.h"
 #include "Obj.h"
-#include "Player.h"
 #include "Item.h"
 #include "Interface.h"
 #include "Sound.h"

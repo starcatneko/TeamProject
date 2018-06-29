@@ -102,6 +102,14 @@ public:
 	{
 		reverse = flag;
 	}
+	// 体力の取得
+	constexpr int GetHp(void) const {
+		return hp;
+	}
+	// 体力のセット
+	void SetHp(int i) {
+		hp = i;
+	}
 	// 死亡フラグの取得
 	constexpr bool GetDie(void) const {
 		return die;
