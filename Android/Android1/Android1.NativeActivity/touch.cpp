@@ -62,7 +62,7 @@ void Touch::Destroy(void)
 }
 
 // 状態のセット
-void Touch::SetState(State i)
+void Touch::SetState(const State& i)
 {
 	state = i;
 	flam = 0;
@@ -377,7 +377,7 @@ bool Touch::Swipe(DIR& dir)
 }
 
 // タッチの確認
-bool Touch::Check(Type type, DIR & dir)
+bool Touch::Check(const Type& type, DIR & dir)
 {
 	bool flag = false;
 
@@ -402,12 +402,6 @@ bool Touch::Check(Type type, DIR & dir)
 	}
 
 	return flag;
-}
-
-// リセット
-void Touch::Reset(void)
-{
-	tri.clear();
 }
 
 // 角度確認(サインド)
@@ -459,24 +453,6 @@ float Touch::GetUnsignedAngle(bool flag)
 	return tmp;
 }
 
-// 支点座標の取得
-Pos Touch::GetPos(void)
-{
-	return pos[ST_NON];
-}
-
-// 現在座標の取得
-Pos Touch::GetNowPos(void)
-{
-	return pos[ST_TOUCH];
-}
-
-// 前座標の取得
-Pos Touch::GetOldPos(void)
-{
-	return old_pos;
-}
-
 // 支点と現在座標との距離の取得
 Pos Touch::GetDistance(bool flag)
 {
@@ -491,16 +467,4 @@ Pos Touch::GetDistance(bool flag)
 	}
 
 	return tmp;
-}
-
-// 三角関数の取得
-Trigono Touch::GetTri(int index)
-{
-	return tri[index];
-}
-
-// 緊急
-float Touch::GetAngel(void)
-{
-	return angle;
 }

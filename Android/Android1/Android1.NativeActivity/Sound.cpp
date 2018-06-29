@@ -38,7 +38,7 @@ void Sound::Destroy(void)
 }
 
 // 読み込み
-void Sound::Load(std::string fileName, SOUND type)
+void Sound::Load(std::string fileName, const SOUND& type)
 {
 	sound[type] = LoadMane::Get()->LoadSound(fileName);
 }
@@ -76,7 +76,7 @@ void Sound::SoundInit2(void)
 
 }
 // サウンドの再生
-void Sound::Play(SOUND handle)
+void Sound::Play(const SOUND& handle)
 {
 	//音楽の再生
 	if (handle > SE_MAX)
@@ -105,7 +105,7 @@ void Sound::Play(SOUND handle)
 // サウンドの停止
 void Sound::Stop(void)
 {
-	if (nowplay != MU_MAX && CheckSoundMem(sound[nowplay]) == true)
+	if (nowplay != MU_MAX && CheckSoundMem(sound[nowplay]))
 	{
 		StopSoundMem(sound[nowplay]);
 		nowplay = MU_MAX;
@@ -115,7 +115,6 @@ void Sound::Stop(void)
 // リセット
 void Sound::Reset(void)
 {
-
 	sound.clear();
 }
 

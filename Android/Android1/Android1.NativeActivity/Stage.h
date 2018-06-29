@@ -25,26 +25,41 @@ public:
 	std::vector<int> GetItem(int minx, int maxx);
 
 	// ステージのサイズの取得
-	Pos GetStageSize(void);
-
+	constexpr Pos GetStageSize(void) const {
+		return { WINDOW_X, WINDOW_Y * 4 };
+	}
 	// 敵チップサイズの取得
-	Pos GetChipEneSize(void);
+	constexpr Pos GetChipEneSize(void) const {
+		return eneSize;
+	}
 	// ボスチップサイズの取得
-	Pos GetChipBossSize(void);
+	constexpr Pos GetChipBossSize(void) const {
+		return bossSize;
+	}
 	// アイテムチップサイズの取得
-	Pos GetChipItemSize(void);
+	constexpr  Pos GetChipItemSize(void) const {
+		return iteSize;
+	}
 
 	// 敵のチップ数の取得
-	Pos GetChipEneCnt(void);
+	constexpr Pos GetChipEneCnt(void) const {
+		return eneCnt;
+	}
 	// アイテムのチップ数の取得
-	Pos GetChipItemCnt(void);
+	constexpr Pos GetChipItemCnt(void) const {
+		return iteCnt;
+	}
 
 	// プレイヤーのサイズの取得
-	Pos GetChipPlSize(void);
+	constexpr Pos GetChipPlSize(void) const {
+		return plSize;
+	}
 
 private:
 	// クリア
-	void Clear(void);
+	void Clear(void) {
+		data.clear();
+	}
 
 	// CSVデータ
 	std::map<std::string, std::vector<int>>data;
@@ -54,5 +69,23 @@ private:
 
 	// 読み込み位置
 	int read[2];
+
+	// 敵のサイズ
+	Pos eneSize;
+
+	// ボスのサイズ
+	Pos bossSize;
+
+	// 敵のチップ数
+	Pos eneCnt;
+
+	// アイテムのサイズ
+	Pos iteSize;
+
+	// アイテムのチップ数
+	Pos iteCnt;
+
+	// プレイヤーのサイズ
+	Pos plSize;
 };
 
