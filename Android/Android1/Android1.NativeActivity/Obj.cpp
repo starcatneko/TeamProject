@@ -133,7 +133,7 @@ void Obj::SetState(const STATES& state, std::string mode)
 	if (this->state == ST_DAMAGE)
 	{
 		Sound::Get()->Play(SE_HIT1);
-		--hp;
+		//--hp;
 	}
 }
 

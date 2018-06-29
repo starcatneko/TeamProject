@@ -29,6 +29,9 @@ Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 	size = this->st.lock()->GetChipBossSize();
 	hp = 30;
 	func = &Boss::Wait;
+	d_time = 0;
+	d_cnt = 0;
+	oldhp = hp;
 
 	Sound::Get()->Play(MU_BGM_BOSS);
 	Sound::Get()->Play(SE_SPAWN);
@@ -52,6 +55,7 @@ void Boss::AnimInit(void)
 	SetAnim("Battack_2.png", "attack2", 4, 8, size);
 	SetAnim("Battack_3.png", "attack3", 4, 8, size);
 	SetAnim("Bdamage.png", "damage", 4, 4, size);
+	SetAnim("Bbigdamage.png", "bigdamage", 4, 4, size);
 	SetAnim("Bdead.png", "die", 4, 8, size);
 }
 
@@ -464,13 +468,15 @@ void Boss::Draw(void)
 		size.x / 2 - 72, 48, 0x666666, 1, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
 
-	DrawRectRotaGraph2(
-		lpos.x + (anim[mode].animData[index].size.x * large) / 2, lpos.y + (anim[mode].animData[index].size.y * large) / 2,
-		anim[mode].animData[index].pos.x, anim[mode].animData[index].pos.y,
-		anim[mode].animData[index].size.x, anim[mode].animData[index].size.y,
-		anim[mode].animData[index].size.x / 2, anim[mode].animData[index].size.y / 2,
-		(double)large, 0.0, anim[mode].image, true, reverse, false);
-
+	if (d_cnt % 3 == 0)
+	{
+		DrawRectRotaGraph2(
+			lpos.x + (anim[mode].animData[index].size.x * large) / 2, lpos.y + (anim[mode].animData[index].size.y * large) / 2,
+			anim[mode].animData[index].pos.x, anim[mode].animData[index].pos.y,
+			anim[mode].animData[index].size.x, anim[mode].animData[index].size.y,
+			anim[mode].animData[index].size.x / 2, anim[mode].animData[index].size.y / 2,
+			(double)large, 0.0, anim[mode].image, true, reverse, false);
+	}
 #ifndef __ANDROID__
 	auto d = GetRect();
 	int color = 0;
@@ -531,36 +537,55 @@ void Boss::UpData(void)
 		}
 	}
 
-	if (hit == true)
-	{		
-		cam.lock()->SetShakeFlag(true);
-		SetState(ST_DAMAGE, "damage");
-		reverse = (pl.lock()->GetReverse() == false) ? false : true;
-		GameMane::Get()->SetHit(true);
-
-		if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
+	if(oldhp - hp >6 || d_cnt >0)
+	{
+		if (d_cnt <= 0)
 		{
-			hp -= 1;
+			d_cnt = 180;
 		}
-		else if (60 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 70)
+		else
 		{
-			hp -= 2;
+			oldhp = hp;
 		}
-		else if (70 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 80)
-		{
-			hp -= 3;
-		}
-		else if (80 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 100)
-		{
-			hp -= 4;
-		}
-		else if (pl.lock()->GetPower() >= 100)
-		{
-			hp -= 9;
-		}
-
-		func = &Boss::Damage;
+		d_cnt--;
 	}
+	else
+	{
+		if (hit == true)
+		{
+			cam.lock()->SetShakeFlag(true);
+			SetState(ST_DAMAGE, "damage");
+			reverse = (pl.lock()->GetReverse() == false) ? false : true;
+			GameMane::Get()->SetHit(true);
+			if (d_time <= 0)
+			{
+				oldhp = hp;
+			}
 
+			if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
+			{
+				hp -= 1;
+			}
+			else if (60 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 70)
+			{
+				hp -= 2;
+			}
+			else if (70 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 80)
+			{
+				hp -= 3;
+			}
+			else if (80 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 100)
+			{
+				hp -= 4;
+			}
+			else if (pl.lock()->GetPower() >= 100)
+			{
+				hp -= 9;
+			}
+			d_time = 60;
+
+			func = &Boss::Damage;
+		}
+	}
 	(this->*func)();
 }
