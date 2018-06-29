@@ -1,6 +1,7 @@
 ﻿#include "Over.h"
 #include "LoadMane.h"
 #include "Game.h"
+#include "GameMane.h"
 #include "Touch.h"
 #include "Title.h"
 #include "Sound.h"
@@ -27,6 +28,7 @@ Over::Over() : alpha(0), flam(0)
 	pos["over"] = { WINDOW_X / 2 - OVER_SIZE_X, WINDOW_Y / 2 };
 	pos["back"] = { 0, -WINDOW_Y };
 	func = &Over::NotStart;
+	GameMane::Get()->SetTarget(0);
 }
 
 // デストラクタ
