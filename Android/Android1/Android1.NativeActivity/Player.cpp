@@ -83,7 +83,7 @@ Player::~Player()
 }
 
 // ラスタースクロール
-void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansion, float rotation, float period, float vibration, bool trans, bool xturn, bool yturn)
+void Player::RasterScroll(int image, const Pos& pos, const Pos& rect, const Pos& size, float expansion, float rotation, float period, float vibration, bool trans, bool xturn, bool yturn)
 {
 	static float  correction = 0.0f;
 
@@ -102,7 +102,7 @@ void Player::RasterScroll(int image, Pos pos, Pos rect, Pos size, float expansio
 }
 
 // アニメーションのセット
-void Player::SetAnim(PlType type, std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
+void Player::SetAnim(const PlType& type, std::string fileName, std::string mode, int x, int y, const Pos& size, int animTime)
 {
 	anim[type][mode].image = LoadMane::Get()->Load(fileName.c_str());
 	anim[type][mode].x = x;
@@ -362,7 +362,7 @@ void Player::AnimInit(void)
 }
 
 // あたり矩形のセット
-void Player::SetRect(PlType type, std::string mode, int index, Pos offset, Pos size, RectType rtype)
+void Player::SetRect(const PlType& type, std::string mode, int index, const Pos& offset, const Pos& size, const RectType& rtype)
 {
 	anim[type][mode].rect[index].push_back({ offset, size, rtype });
 }
@@ -471,7 +471,7 @@ void Player::RectInit(void)
 }
 
 // エフェクトのセット
-void Player::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
+void Player::SetEffect(std::string name, int max, int x, int y, const Pos& pos, const Pos& size, int flam)
 {
 	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
 }
@@ -944,7 +944,7 @@ void Player::DownPower(int pw)
 }
 
 // 状態のセット
-void Player::SetState(STATES state, std::string mode)
+void Player::SetState(const STATES& state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{

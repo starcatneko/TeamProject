@@ -37,10 +37,10 @@ public:
 	virtual void UpData() = 0;
 
 	// あたり判定
-	bool CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2);
+	bool CheckHit(const Pos& pos1, const Pos& size1, const Pos& pos2, const Pos& size2);
 
 	// 状態のセット
-	void SetState(STATES state, std::string mode);
+	void SetState(const STATES& state, std::string mode);
 
 	// あたり矩形の取得
 	std::vector<Rect> GetRect(void);
@@ -85,8 +85,7 @@ public:
 		return dir;
 	}
 	// 向きのセット
-	void SetDir(const DIR& dir)
-	{
+	void SetDir(const DIR& dir) {
 		this->dir = dir;
 	}
 	// サイズの取得
@@ -98,8 +97,7 @@ public:
 		return reverse;
 	}
 	// 反転フラグのセット
-	void SetReverse(bool flag)
-	{
+	void SetReverse(bool flag) {
 		reverse = flag;
 	}
 	// 体力の取得
@@ -130,13 +128,13 @@ protected:
 	bool CheckAnimEnd(void);
 
 	// アニメーションのセット
-	void SetAnim(std::string fileName, std::string mode, int x, int y, Pos size, int animTime = 1);
+	void SetAnim(std::string fileName, std::string mode, int x, int y, const Pos& size, int animTime = 1);
 
 	// あたり矩形のセット
-	void SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype);
+	void SetRect(std::string mode, int index, const Pos& offset, const Pos& size, const RectType& rtype);
 
 	// エフェクトのセット
-	void SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam);
+	void SetEffect(std::string name, int max, int x, int y, const Pos& pos, const Pos& size, int flam);
 
 	// リセット
 	void Reset(void);

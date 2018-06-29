@@ -25,7 +25,7 @@ public:
 	~Player();
 
 	// ラスタースクロール
-	void RasterScroll(int image, Pos pos, Pos rect,  Pos size, float expansion = 1.0f,float rotation = 0.0f, float period = 5.0f, float vibration = 5.0f, bool trans = true, bool xturn = false, bool yturn = false);
+	void RasterScroll(int image, const Pos& pos, const Pos& rect,  const Pos& size, float expansion = 1.0f, float rotation = 0.0f, float period = 5.0f, float vibration = 5.0f, bool trans = true, bool xturn = false, bool yturn = false);
 
 	// 描画
 	void Draw(void);
@@ -52,7 +52,7 @@ public:
 	void DownPower(int pw);
 
 	// 状態のセット
-	void SetState(STATES state, std::string mode);
+	void SetState(const STATES& state, std::string mode);
 
 	// 前の向きの取得
 	constexpr DIR GetOldDir(void) const {
@@ -99,7 +99,7 @@ public:
 	int dropflag;
 private:
 	// アニメーションのセット
-	void SetAnim(PlType type, std::string fileName, std::string mode, int x, int y, Pos size, int animTime = 1);
+	void SetAnim(const PlType& type, std::string fileName, std::string mode, int x, int y, const Pos& size, int animTime = 1);
 
 	// アニメーション終了
 	bool CheckAnimEnd(void);
@@ -119,12 +119,12 @@ private:
 	void AnimInit(void);
 
 	// あたり矩形のセット
-	void SetRect(PlType type, std::string mode, int index, Pos offset, Pos size, RectType rtype);
+	void SetRect(const PlType& type, std::string mode, int index, const Pos& offset, const Pos& size, const RectType& rtype);
 	// あたり矩形のセット
 	void RectInit(void);
 
 	// エフェクトのセット
-	void SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam);
+	void SetEffect(std::string name, int max, int x, int y, const Pos& pos, const Pos& size, int flam);
 	// エフェクトのセット
 	void EffectInit(void);
 

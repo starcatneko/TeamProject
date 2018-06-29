@@ -8,8 +8,7 @@ public:
 	~Score();
 
 	// インスタン変数の取得
-	static Score* Get(void)
-	{
+	constexpr static Score* Get(void){
 		return instance;
 	}
 
@@ -25,16 +24,26 @@ public:
 	void UpData(void);
 
 	// リセット
-	void Reset(void);
+	constexpr void Reset(void) {
+		score = 0;
+	}
 
 	// スコアの取得
-	int GetScore(void);
+	constexpr int GetScore(void) const {
+		return score;
+	}
 	// スコアのセット
-	void SetScore(int id);
+	constexpr void SetScore(int id) {
+		score = id;
+	}
 	// スコアの加算
-	void Up(int i);
+	constexpr void Up(int i) {
+		score += i;
+	}
 	// スコアの減算
-	void Down(int i);
+	constexpr void Down(int i) {
+		score -= i;
+	}
 
 private:
 	// コンストラクタ

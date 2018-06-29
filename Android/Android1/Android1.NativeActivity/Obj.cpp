@@ -23,7 +23,7 @@ Obj::~Obj()
 }
 
 // あたり判定
-bool Obj::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
+bool Obj::CheckHit(const Pos& pos1, const Pos& size1, const Pos& pos2, const Pos& size2)
 {
 	if (pos1.x < pos2.x + size2.x && pos1.x + size1.x > pos2.x
 		&& pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y)
@@ -91,7 +91,7 @@ bool Obj::CheckAnimEnd(void)
 }
 
 // アニメーションのセット
-void Obj::SetAnim(std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
+void Obj::SetAnim(std::string fileName, std::string mode, int x, int y, const Pos& size, int animTime)
 {
 	anim[mode].image = LoadMane::Get()->Load(fileName.c_str());
 	anim[mode].x = x;
@@ -105,19 +105,19 @@ void Obj::SetAnim(std::string fileName, std::string mode, int x, int y, Pos size
 }
 
 // あたり矩形のセット
-void Obj::SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype)
+void Obj::SetRect(std::string mode, int index, const Pos& offset, const Pos& size, const RectType& rtype)
 {
 	anim[mode].rect[index].push_back({ offset, size, rtype });
 }
 
 // エフェクトのセット
-void Obj::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size, int flam)
+void Obj::SetEffect(std::string name, int max, int x, int y, const Pos& pos, const Pos& size, int flam)
 {
 	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
 }
 
 // 状態のセット
-void Obj::SetState(STATES state, std::string mode)
+void Obj::SetState(const STATES& state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{

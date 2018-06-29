@@ -41,33 +41,3 @@ void Score::Draw(void)
 void Score::UpData(void)
 {
 }
-
-// リセット
-void Score::Reset(void)
-{
-	score = 0;
-}
-
-// スコアの取得
-int Score::GetScore(void)
-{
-	return score;
-}
-
-// スコアのセット
-void Score::SetScore(int id)
-{
-	score = id;
-}
-
-// スコアの加算
-void Score::Up(int i)
-{
-	score += i;
-}
-
-// スコアの減算
-void Score::Down(int i)
-{
-	score -= i;
-}
