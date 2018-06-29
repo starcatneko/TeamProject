@@ -22,6 +22,8 @@ Clear::Clear()
 	pos["chara"]["orangePeko"] = { WINDOW_X - (chipSize.x / 2), (WINDOW_Y - (chipSize.x * 4))};
 	// オブジェクト
 	pos["object"]["clearBG"] = { 0, 0};
+	pos["object"]["resultBG"] = { 0, 0};
+	pos["object"]["resultBG2"] = { 0, -WINDOW_Y};
 	pos["object"]["thankBG"] = { 0, 0};
 	pos["object"]["clearBoard"] = { 0, ( WINDOW_Y / 3)};
 	pos["object"]["number"] = { ( WINDOW_X / 2), 464};
@@ -34,6 +36,19 @@ Clear::Clear()
 	pos["font"]["good"] = { 0, WINDOW_X};
 	pos["font"]["okay"] = { 0, WINDOW_X};
 	pos["font"]["goodLuck"] = { 0, WINDOW_X};
+	// アニメーション
+	animCnt = 0;
+	// 拡大率
+	allmag["number"] = 0.7f;
+	mag["number"]["100"] = 0.7f;
+	mag["number"]["10"] = 0.7f;
+	mag["number"]["1"] = 0.7f;
+	magCnt = 0.01f;
+	magflame = 0;
+	magFlag = true;
+	// 背景スクロール
+	scroll = 5;
+	
 	// フォント関連
 	brightCnt = BRIGHT_NULL;	// (ぶっちゃけ消しても問題ない)
 	brightness = BRIGHT_NULL;
@@ -56,6 +71,7 @@ Clear::Clear()
 // デストラクタ
 Clear::~Clear()
 {
+	Reset();
 }
 // 描画管理
 void Clear::Draw(void)
@@ -64,7 +80,12 @@ void Clear::Draw(void)
 	brightCnt++;
 	if (func != &Clear::TFPScene) {
 		// 背景
-		DrawGraph( pos["object"]["clearBG"].x, pos["object"]["clearBG"].y, Image["clearBG"], true);
+		pos["object"]["resultBG"].y += scroll;
+		pos["object"]["resultBG2"].y += scroll;
+		DrawGraph( pos["object"]["resultBG"].x, pos["object"]["resultBG"].y, Image["resultBG"], true);
+		DrawGraph( pos["object"]["resultBG2"].x, pos["object"]["resultBG2"].y, Image["resultBG2"], true);
+		if (pos["object"]["resultBG"].y >= WINDOW_Y) pos["object"]["resultBG"].y = -WINDOW_Y;
+		if (pos["object"]["resultBG2"].y >= WINDOW_Y) pos["object"]["resultBG2"].y = -WINDOW_Y;
 		// αブレンドはここから
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, brightness);
 		// 暗転用
@@ -80,7 +101,7 @@ void Clear::Draw(void)
 	// Thankyou
 	if (func == &Clear::TFPScene) ThankyouDraw();
 	// この cnt 消してもイイっすよ！！
-	DrawFormatString(0, 0, 0x00ff00, "Cnt = %d", cnt);
+	//DrawFormatString(0, 0, 0x00ff00, "Cnt = %d", cnt);
 }
 // クリア描画
 void Clear::ClearDraw()
@@ -216,6 +237,8 @@ int Clear::Load(void)
 	// オブジェクト
 	Image["clearBG"] = LOAD_IMAGE("clearback.png");				// Clear
 	Image["clearBoard"] = LOAD_IMAGE("comment.png");			// Result
+	Image["resultBG"] = LOAD_IMAGE("resultBG.png");				// Result
+	Image["resultBG2"] = LOAD_IMAGE("resultBG.png");			// Result
 	Image["fontSet"] = LOAD_IMAGE("font.png");					// Result, Clear
 	Image["thankBG"] = LOAD_IMAGE("ThankyouBG.png");			// Thankyou
 	Image["appleBox"] = LOAD_IMAGE("ThankYouForPlaying.png");	// ThankYou
@@ -225,21 +248,38 @@ int Clear::Load(void)
 	charImage["dust"]["damage"] = LOAD_IMAGE("DUdamage.png");		// dust
 	charImage["fannings"]["damage"] = LOAD_IMAGE("FAdamage.png");	// fannings
 	charImage["orangePeko"]["death"] = LOAD_IMAGE("Bdead.png");		// orangePeko
+
 	return true;
 }
 // 桁割り当て
 int Clear::Allocator(void)
 {
-	//割り当て
+	// 拡大率変動
+	if (magFlag == true) {
+		allmag["number"] += magCnt;
+		if (allmag["number"] >= 0.9f) {
+			magFlag = false;
+		}
+	}
+	else if (magFlag == false) {
+		allmag["number"] -= magCnt;
+		if (allmag["number"] <= 0.7f) {
+			magFlag = true;
+		}
+	}
+	// 割り当て
 	num[2] = GET_SCORE / 100;			// 100の位
 	num[1] = GET_SCORE / 10;			//  10の位
 	num[0] = GET_SCORE - (num[1] * 10);	//   1の位
+	if (num[1] == 10) num[1] = 0;		//10の修正
+
 	// 比較して描画
 	for (int i = 0; i < 10; i++) {
-		if (num[2] == i) DrawRectRotaGraph2(pos["object"]["number"].x +  50, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE/2, NUM_CHIP_SIZE/2, 0.7, 0, Image["number"], true, false);	// 100の位
-		if (num[1] == i) DrawRectRotaGraph2(pos["object"]["number"].x + 230, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE/2, NUM_CHIP_SIZE/2, 0.7, 0, Image["number"], true, false);	//  10の位
-		if (num[0] == i) DrawRectRotaGraph2(pos["object"]["number"].x + 400, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE/2, NUM_CHIP_SIZE/2, 0.7, 0, Image["number"], true, false);	//   1の位
+		if (num[2] == i) DrawRectRotaGraph2(pos["object"]["number"].x + 50, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE / 2, NUM_CHIP_SIZE / 2, allmag["number"], 0, Image["number"], true, false);	// 100の位
+		if (num[1] == i) DrawRectRotaGraph2(pos["object"]["number"].x + 230, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE/2, NUM_CHIP_SIZE/2, allmag["number"], 0, Image["number"], true, false);		//  10の位
+		if (num[0] == i) DrawRectRotaGraph2(pos["object"]["number"].x + 400, pos["object"]["number"].y, 0 + (NUM_CHIP_SIZE * i), 0, NUM_CHIP_SIZE, NUM_CHIP_SIZE, NUM_CHIP_SIZE/2, NUM_CHIP_SIZE/2, allmag["number"], 0, Image["number"], true, false);		//   1の位
 	}
+
 	return true;
 }
 // クリア画面
@@ -343,4 +383,7 @@ void Clear::Reset(void)
 	charImage.clear();
 	// 座標総削除
 	pos.clear();
+	// 拡大率
+	allmag.clear();
+	mag.clear();
 }

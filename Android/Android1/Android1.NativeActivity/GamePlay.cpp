@@ -340,7 +340,6 @@ void GamePlay::Start(void)
 			break;
 		}
 	}
-	
 
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)

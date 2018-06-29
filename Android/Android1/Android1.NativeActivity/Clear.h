@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+using namespace std;
 
 #define GET_SCORE Score::Get()->GetScore()		// Score合計取得
 #define GET_KILL GameMane::Get()->GetKillCnt()	//	Kill合計取得
@@ -14,7 +15,7 @@
 #define CHAR_SIZE_Y 270
 // キャラクターの基本分割数
 #define CHIP_CNT_X 4
-#define CHIP_CNT_Y 8
+#define CHIP_CNT_Y 4
 // フォントのサイズ
 #define FONT_SIZE_X 1080
 #define FONT_SIZE_Y 180
@@ -86,9 +87,20 @@ private:
 	// キャラ画像の数
 	Pos chipCnt;
 	// オブジェクト画像
-	std::map<std::string, int> Image;
+	map<string, int> Image;
 	// キャラクター画像
-	std::map<std::string, std::map<std::string, int>>charImage;
+	map<string, map<string, int>>charImage;
+	int image[4][12];
+	// キャラクターのアニメーション
+	int animCnt;
 	// キャラクター座標
-	std::map<std::string, std::map<std::string, Pos>>pos;
+	map<string, map<string, Pos>>pos;
+	// 拡大率
+	map<string, float>allmag;
+	map<string, map<string, float>>mag;
+	float magCnt;
+	int magflame;
+	bool magFlag;
+	// 背景スクロール
+	int scroll;
 };
