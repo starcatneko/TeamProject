@@ -1,3 +1,2 @@
-﻿  GamePlay.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\gameplay.cpp(251): warning C4805: '==': 演算中の 'int' 型と 'bool' 型の混用は安全ではありません
+﻿  Boss.cpp
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

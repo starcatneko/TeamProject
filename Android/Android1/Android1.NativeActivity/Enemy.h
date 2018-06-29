@@ -80,6 +80,11 @@ public:
 	// リセット
 	void Reset(void);
 
+	// クリアフラグの取得
+	constexpr bool GetClearFlag(void) const {
+		return clear;
+	}
+
 protected:
 	// カメラ
 	std::weak_ptr<Camera>cam;
@@ -134,6 +139,9 @@ protected:
 
 	// 与えるダメージ量
 	int power;
+
+	// クリアフラグ
+	bool clear;
 
 	// 画像データ
 	std::map<std::string, int>image;

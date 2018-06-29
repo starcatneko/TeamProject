@@ -164,6 +164,7 @@ void GamePlay::Load(void)
 		{
 			Sound::Get()->Stop();
 			Sound::Get()->Play(SE_ENCOUNT);
+			enemy.push_back(EnemyMane::Get()->CreateBoss(tmp, cam, st, pl));
 			ui->StartBoss();
 			boss_flg = true;
 
@@ -231,7 +232,7 @@ void GamePlay::EnemyUpData(void)
 	}
 	if (boss_flg == true && ui->GetBossSpawnCnt() == 180)
 	{
-		enemy.push_back(EnemyMane::Get()->CreateBoss({ WINDOW_X / 2-200,-800 }, cam, st, pl));
+		
 		boss_flg = false;
 	}
 }
@@ -329,10 +330,15 @@ void GamePlay::Start(void)
 
 	Pinch();
 
-	if (cam->GetEnd() == true && enemy.size() <= 0)
+	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
 	{
-		Game::Get().ChangeScene(new Clear());
+		if ((*itr)->GetClearFlag() == true)
+		{
+			Game::Get().ChangeScene(new Clear());
+			break;
+		}
 	}
+	
 
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)

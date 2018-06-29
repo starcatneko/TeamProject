@@ -554,7 +554,8 @@ void Boss::Die(void)
 	{
 		Sound::Get()->Play(MU_BGM_WIN);
 		GameMane::Get()->Kill();
-		die = true;
+		//die = true;
+		clear = true;
 	}
 }
 
