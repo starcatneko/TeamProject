@@ -46,6 +46,15 @@ private:
 	// 移動時間
 	int walking;
 
+	// ダメージ種類判定用時間
+	int d_time;
+
+	// ダメージ種類判定用カウント
+	int d_cnt;
+
+	// 直前のHP
+	int oldhp;
+
 	// 関数ポインタ
 	void (Boss::*func)(void);
 };
