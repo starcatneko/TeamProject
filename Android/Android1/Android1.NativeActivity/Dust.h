@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "Enemy.h"
-#include "Debug.h"
 
 class Dust :
 	public Enemy
@@ -16,9 +15,6 @@ public:
 
 	// 処理
 	void UpData(void);
-	
-	// リセット
-	void Reset(void);
 	
 private:
 	// アニメーションのセット
