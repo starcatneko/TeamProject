@@ -362,7 +362,7 @@ void Player::AnimInit(void)
 }
 
 // あたり矩形のセット
-void Player::SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype)
+void Player::SetRect(PlType type, std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
 	anim[type][mode].rect[index].push_back({ offset, size, rtype });
 }
