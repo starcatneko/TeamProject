@@ -73,7 +73,6 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 
 	draw = &Player::NormalDraw;
 	func = &Player::Nuetral;
-
 }
 
 // デストラクタ
@@ -362,7 +361,7 @@ void Player::AnimInit(void)
 }
 
 // あたり矩形のセット
-void Player::SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype)
+void Player::SetRect(PlType type, std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
 	anim[type][mode].rect[index].push_back({ offset, size, rtype });
 }
@@ -633,6 +632,10 @@ void Player::Dash(void)
 	{
 		effe["effect2"].flag = true;
 	}
+	else
+	{
+		effe["effect2"].flag = false;
+	}
 
 	if (reverse == false)
 	{
@@ -840,7 +843,7 @@ void Player::UpData(void)
 {
 	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
-	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
+	speed = (type == PlType::normal) ? baseSpeed : baseSpeed * 2;
 
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
