@@ -43,15 +43,3 @@ void BackGround::UpData(void)
 		lpos[i] = cam.lock()->Correction(pos[i]);
 	}
 }
-
-// 座標の取得
-Pos BackGround::GetPos(int index)
-{
-	return pos[index];
-}
-
-// 座標の格納
-void BackGround::SetPos(int index, Pos pos)
-{
-	this->pos[index] = pos;
-}

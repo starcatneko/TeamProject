@@ -19,8 +19,5 @@ public:
 	void Drop(void);
 
 private:
-	// dropflgがオンの時に、ドロップ処理を行う
-	void DropMove();
-	
 	bool dropflg;
 };

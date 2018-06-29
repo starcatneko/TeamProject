@@ -20,17 +20,27 @@ public:
 	Pos Correction(Pos pos);
 
 	// 座標の取得
-	Pos GetPos(void);
+	constexpr Pos GetPos(void) const {
+		return pos;
+	}
 	// 座標のセット
-	void SetPos(Pos& pos);
+	void SetPos(Pos& pos) {
+		this->pos = pos;
+	}
 
 	// 揺らしフラグの取得
-	bool GetShakeFlag(void);
+	constexpr bool GetShakeFlag(void) const {
+		return shake;
+	}
 	// 揺らしフラグのセット
-	void SetShakeFlag(bool flag);
+	constexpr void SetShakeFlag(bool flag) {
+		shake = flag;
+	}
 
 	// 移動終了フラグの取得
-	bool GetEnd(void);
+	constexpr bool GetEnd(void)const {
+		return end;
+	}
 
 private:
 	// 動いていないときの処理

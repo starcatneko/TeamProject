@@ -22,9 +22,13 @@ public:
 	void UpData(void);
 
 	// 座標の取得
-	Pos GetPos(int index);
+	Pos GetPos(int index) const {
+		pos[index];
+	}
 	// 座標のセット
-	void SetPos(int index, Pos pos);
+	constexpr void SetPos(int index, Pos pos) {
+		this->pos[index] = pos;
+	}
 
 private:
 	// カメラ

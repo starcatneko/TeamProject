@@ -119,9 +119,3 @@ void Apple::Drop(void)
 
 	effect_cnt = 30;
 }
-/*
-void Apple::DropMove();
-{
-
-
-}*/

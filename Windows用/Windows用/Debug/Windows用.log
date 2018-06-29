@@ -1,26 +1,15 @@
 ﻿  Apple.cpp
 c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\apple.cpp(93): warning C4244: '+=': 'double' から 'int' への変換です。データが失われる可能性があります。
 c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\apple.cpp(106): warning C4244: '+=': 'double' から 'int' への変換です。データが失われる可能性があります。
+  BackGround.cpp
   Boss.cpp
+  Camera.cpp
   Dust.cpp
-  EnemyMane.cpp
   Fannings.cpp
-  Game.cpp
   GamePlay.cpp
 c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\gameplay.cpp(256): warning C4805: '==': 演算中の 'int' 型と 'bool' 型の混用は安全ではありません
   GreenApple.cpp
-  Interface.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(75): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(78): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(80): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(94): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(95): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(97): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(144): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(156): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-  Obj.cpp
   Player.cpp
-  Title.cpp
   Tree.cpp
   コードを生成中...
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

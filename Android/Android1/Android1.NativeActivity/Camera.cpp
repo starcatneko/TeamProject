@@ -135,33 +135,3 @@ Pos Camera::Correction(Pos pos)
 
 	return tmp;
 }
-
-// 座標の取得
-Pos Camera::GetPos(void)
-{
-	return pos;
-}
-
-// 座標のセット
-void Camera::SetPos(Pos & pos)
-{
-	this->pos = pos;
-}
-
-// 揺らしフラグの取得
-bool Camera::GetShakeFlag(void)
-{
-	return shake;
-}
-
-// 揺らしフラグのセット
-void Camera::SetShakeFlag(bool flag)
-{
-	shake = flag;
-}
-
-// 移動終了フラグの取得
-bool Camera::GetEnd(void)
-{
-	return end;
-}
