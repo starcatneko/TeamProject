@@ -251,7 +251,7 @@ void GamePlay::ItemUpData(void)
 {
 	if (pl->dropflag == true)
 	{
-		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + 200, pl->GetPos().y + 300 }, cam, st, pl));
+		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x/2, pl->GetPos().y+pl->GetSize().y / 2 }, cam, st, pl));
 		
 		pl->dropflag = false;
 	}

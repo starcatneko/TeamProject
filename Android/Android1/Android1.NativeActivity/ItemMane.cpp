@@ -59,5 +59,7 @@ std::shared_ptr<Item> ItemMane::CreateTree(Pos pos, std::shared_ptr<Camera> cam,
 std::shared_ptr<Item> ItemMane::DropApple(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
 	std::shared_ptr<Apple>dap = std::make_shared<Apple>(pos, cam, st, pl);
+
+	dap->Drop();
 	return dap;
 }

@@ -61,31 +61,67 @@ void Apple::UpData(void)
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 
 	Animator(APPLE_CNT, timer);
-
-	if (effect_cnt > 0)
+	if (dropflg != true)
 	{
-		pos.y += (int)(cosf(RAD(effect_cnt * 6)) * 15);
-		effect_cnt--;
-	}
-
-	if (effect_cnt <= 0)
-	{
-		if (hit == true)
+		if (effect_cnt > 0)
 		{
-
+			pos.y += (int)(cosf(RAD(effect_cnt * 6)) * 15);
+			effect_cnt--;
 		}
-		else
+
+		if (effect_cnt <= 0)
 		{
-			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
+			if (hit != true)
 			{
-				pl.lock()->UpPower(effectiv);
-				Sound::Get()->Play(SE_HEAL);
+				if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
+				{
+					pl.lock()->UpPower(effectiv);
+					Sound::Get()->Play(SE_HEAL);
+				}
 			}
 		}
-	}
 
-	if (lpos.y > WINDOW_Y + size.y / 2)
+		if (lpos.y > WINDOW_Y + size.y / 2)
+		{
+			hit = true;
+		}
+	}
+	// ドロップしたアイテムはココを通る
+	else
 	{
-		hit = true;
+		pos.y += (int)(cosf(RAD(angle)) * 4) + (int)(cosf(RAD(effect_cnt * 6)) * 15);
+		pos.x += (int)(sinf(RAD(angle)) * 8)*1.3;
+		effect_cnt--;
+
+		if (effect_cnt <= 0)
+		{
+			if (hit == false)
+			{
+				effect_cnt = 0;
+				dropflg = false;
+			}
+			else
+			{
+				pos.y += (int)(cosf(RAD(angle)) * 4) + (int)(cosf(RAD(effect_cnt * 6)) * 15);
+				pos.x += (int)(sinf(RAD(angle)) * 8)*1.3;
+
+			}
+		}
+		hit = false;
 	}
 }
+
+void Apple::Drop(void)
+{
+	dropflg = true;
+	angle = (pl.lock()->GetPos().x <( WINDOW_X / 2 )? GetRand(180) : GetRand(180) + 180);
+	//(WINDOW_X / 2 ? GetRand(180) : GetRand(180) + 180));
+
+	effect_cnt = 30;
+}
+/*
+void Apple::DropMove();
+{
+
+
+}*/

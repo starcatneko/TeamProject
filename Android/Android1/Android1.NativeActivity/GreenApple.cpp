@@ -72,10 +72,7 @@ void GreenApple::UpData(void)
 
 	if (effect_cnt <= 0)
 	{
-		if (hit == true)
-		{
-		}
-		else
+		if (hit != true)
 		{
 			if (CheckHit(center, { 1,1 }, pl.lock()->GetLocalPos(), st.lock()->GetChipPlSize()))
 			{

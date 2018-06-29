@@ -53,6 +53,9 @@ protected:
 	// 画像データ
 	int image;
 
+	// 角度
+	int angle;
+
 	// 座標
 	Pos pos;
 
