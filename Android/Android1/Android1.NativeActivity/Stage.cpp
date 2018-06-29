@@ -6,24 +6,6 @@
 std::string ene = "stage.csv";
 std::string ite = "item.csv";
 
-// 敵のサイズ
-const Pos eneSize = { 240, 270 };
-
-// ボスのサイズ
-const Pos bossSize = { 480, 540 };
-
-// 敵のチップ数
-const Pos eneCnt = { 4, 29 };
-
-// アイテムのサイズ
-const Pos iteSize = { 128, 128 };
-
-// アイテムのチップ数
-const Pos iteCnt = { 8, 61 };
-
-// プレイヤーのサイズ
-const Pos plSize = { 240, 270 };
-
 // コンストラクタ
 Stage::Stage()
 {
@@ -31,6 +13,12 @@ Stage::Stage()
 	size.clear();
 	memset(read, 0, sizeof(read));
 
+	eneSize = { 240, 270 };
+	bossSize = { 480, 540 };
+	eneCnt = { 4, 29 };
+	iteSize = { 128, 128 };
+	iteCnt = { 8, 61 };
+	plSize = { 240, 270 };
 
 	LoadEnemy();
 	LoadItem();
@@ -186,52 +174,4 @@ std::vector<int> Stage::GetItem(int minx, int maxx)
 	}
 
 	return std::vector<int>(begin, end);
-}
-
-// ステージのサイズの取得
-Pos Stage::GetStageSize(void)
-{
-	return { WINDOW_X, WINDOW_Y * 4 };
-}
-
-// 敵チップサイズの取得
-Pos Stage::GetChipEneSize(void)
-{
-	return eneSize;
-}
-
-// ボスチップサイズの取得
-Pos Stage::GetChipBossSize(void)
-{
-	return bossSize;
-}
-
-// アイテムチップサイズの取得
-Pos Stage::GetChipItemSize(void)
-{
-	return iteSize;
-}
-
-// 敵のチップ数の取得
-Pos Stage::GetChipEneCnt(void)
-{
-	return eneCnt;
-}
-
-// アイテムのチップ数の取得
-Pos Stage::GetChipItemCnt(void)
-{
-	return iteCnt;
-}
-
-// プレイヤーのサイズの取得
-Pos Stage::GetChipPlSize(void)
-{
-	return plSize;
-}
-
-// クリア
-void Stage::Clear(void)
-{
-	data.clear();
 }

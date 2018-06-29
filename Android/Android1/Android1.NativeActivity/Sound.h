@@ -38,8 +38,7 @@ public:
 	~Sound();
 
 	// インスタン変数の取得
-	static Sound* Get(void)
-	{
+	constexpr static Sound* Get(void) {
 		return instance;
 	}
 
@@ -49,7 +48,7 @@ public:
 	static void Destroy(void);
 
 	// サウンド再生
-	void Play(SOUND handle);
+	void Play(const SOUND& handle);
 
 	void Stop(void);
 	// 初期読み込みの負荷分散
@@ -61,7 +60,7 @@ private:
 	Sound();
 
 	// 読み込み
-	void Load(std::string fileName, SOUND type);
+	void Load(std::string fileName, const SOUND& type);
 	// 初期読み込み
 	void SoundInit(void);
 

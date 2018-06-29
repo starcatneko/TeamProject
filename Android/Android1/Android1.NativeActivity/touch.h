@@ -33,8 +33,7 @@ public:
 	~Touch();
 
 	// インスタン変数の取得
-	static Touch* Get(void)
-	{
+	constexpr static Touch* Get(void){
 		return instance;
 	}
 
@@ -50,7 +49,7 @@ public:
 	void UpData(void);
 
 	// タッチの確認
-	bool Check(Type type, DIR& dir);
+	bool Check(const Type& type, DIR& dir);
 
 	// 角度確認(サインド)
 	float GetAngle(bool flag = false);
@@ -60,25 +59,35 @@ public:
 
 
 	// 支点座標の取得
-	Pos GetPos(void);
+	constexpr Pos GetPos(void) const {
+		return pos[ST_NON];
+	}
 	// 現在座標の取得
-	Pos GetNowPos(void);
+	constexpr Pos GetNowPos(void) const {
+		return pos[ST_TOUCH];
+	}
 	// 前座標の取得
-	Pos GetOldPos(void);
+	constexpr Pos GetOldPos(void) const {
+		return old_pos;
+	}
 	// 支点と現在座標との距離の取得
 	Pos GetDistance(bool flag = false);
 	// 三角関数の取得
-	Trigono GetTri(int index);
+	Trigono GetTri(int index) const {
+		return tri[index];
+	}
 
 	// 緊急
-	float GetAngel(void);
+	constexpr float GetAngel(void) const {
+		return angle;
+	}
 
 private:
 	// コンストラクタ
 	Touch();
 
 	// 状態のセット
-	void SetState(State i);
+	void SetState(const State& i);
 
 	// タップ確認
 	bool Tap(void);
@@ -93,7 +102,9 @@ private:
 	bool Swipe(DIR& dir);
 
 	// リセット
-	void Reset(void);
+	void Reset(void) {
+		tri.clear();
+	}
 
 
 	// インスタン変数
