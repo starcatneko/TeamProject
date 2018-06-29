@@ -285,7 +285,6 @@ void Boss::Attack1(void)
 			pl.lock()->SetReverse(true);
 			pl.lock()->SetOldDir(DIR_LEFT);
 		}
-
 		pl.lock()->SetState(ST_DAMAGE, "damage");
 		pl.lock()->DownHp(power);
 	}
@@ -401,7 +400,6 @@ void Boss::Attack3(void)
 			pl.lock()->SetReverse(true);
 			pl.lock()->SetOldDir(DIR_LEFT);
 		}
-
 		pl.lock()->SetState(ST_DAMAGE, "damage");
 		pl.lock()->DownHp(power * 3);
 	}
@@ -534,7 +532,8 @@ void Boss::UpData(void)
 	}
 
 	if (hit == true)
-	{
+	{		
+		cam.lock()->SetShakeFlag(true);
 		SetState(ST_DAMAGE, "damage");
 		reverse = (pl.lock()->GetReverse() == false) ? false : true;
 		GameMane::Get()->SetHit(true);

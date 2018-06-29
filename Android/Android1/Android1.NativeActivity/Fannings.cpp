@@ -437,7 +437,8 @@ void Fannings::UpData(void)
 	}
 
 	if (hit == true)
-	{
+	{		
+		cam.lock()->SetShakeFlag(true);
 		SetState(ST_DAMAGE, "damage");
 		GameMane::Get()->SetHit(true);
 		target.x = (pl.lock()->GetReverse() == false) ? WINDOW_X - size.x - 1 : 0 + 1;

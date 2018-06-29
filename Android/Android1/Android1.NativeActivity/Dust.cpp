@@ -308,6 +308,7 @@ void Dust::Attack(void)
 			pl.lock()->SetOldDir(DIR_LEFT);
 		}
 
+		cam.lock()->SetShakeFlag(true);
 		pl.lock()->SetState(ST_DAMAGE,"damage");
 		pl.lock()->DownHp(power);
 	}
@@ -417,6 +418,8 @@ void Dust::UpData(void)
 
 	if (hit == true)
 	{
+
+		cam.lock()->SetShakeFlag(true);
 		SetState(ST_DAMAGE, "damage");
 		GameMane::Get()->SetHit(true);
 

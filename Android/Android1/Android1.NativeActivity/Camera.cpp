@@ -4,7 +4,7 @@
 #include <algorithm>
 
 // 揺らし座標のオフセット
-const Pos off = { 30, 0 };
+const Pos off = { 0, -12 };
 
 // 揺らし時間
 const int timer = 10;
@@ -89,6 +89,7 @@ void Camera::Move(const Pos& pos)
 // 画面揺らし
 void Camera::Shake(const Pos& pos)
 {
+	static int tmp;
 	if (shake_frame == 0)
 	{
 		shake_frame = frame;
@@ -97,8 +98,10 @@ void Camera::Shake(const Pos& pos)
 	//カメラ座標を移動
 	if (frame % 2 == 0)
 	{
-		this->pos.x += (this->pos.x <= off.x ? off.x : -off.x);
+		this->pos.y -= (frame % 4 == 0 ? off.y : -off.y);
 	}
+	//this->pos.y -= (frame % 2 == 0 ? off.y : -off.y);
+
 
 	//フレームが規定時間を超えたとき
 	if (frame >= shake_frame + timer)
@@ -107,7 +110,7 @@ void Camera::Shake(const Pos& pos)
 		SetShakeFlag(false);
 		//画面座標の修正
 		this->pos = refuge;
-		func = &Camera::NotMove;
+		func = &Camera::Move;
 		shake_frame = 0;
 	}
 }

@@ -948,6 +948,7 @@ void Player::SetState(const STATES& state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{
+		cam.lock()->SetShakeFlag(true);
 		if (m_flam != -1 || this->state == ST_DIE)
 		{
 			return;

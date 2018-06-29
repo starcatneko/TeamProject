@@ -248,15 +248,14 @@ void GamePlay::ItemUpData(void)
 {
 	if (CheckHitKey(KEY_INPUT_A))
 	{
-		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x / 2, pl->GetPos().y + pl->GetSize().y / 2 }, cam, st, pl));
-
+		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x , pl->GetPos().y }, cam, st, pl));
+		cam->SetShakeFlag(true);
 	}
 
 	if (pl->dropflag == 1)
-	{
-		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x/2, pl->GetPos().y+pl->GetSize().y / 2 }, cam, st, pl));
-		
+	{		
 		pl->dropflag = 0;
+		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x , pl->GetPos().y }, cam, st, pl));
 	}
 	for (auto itr = item.begin(); itr != item.end();)
 	{
