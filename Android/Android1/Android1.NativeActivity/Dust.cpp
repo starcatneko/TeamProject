@@ -380,6 +380,11 @@ void Dust::Die(void)
 // 処理
 void Dust::UpData(void)
 {
+	if (pl.lock()->GetState() == ST_DIE)
+	{
+		return;
+	}
+
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 

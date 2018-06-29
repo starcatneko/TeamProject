@@ -5,12 +5,23 @@
   Clear.cpp
   Debug.cpp
   Dust.cpp
+  EnemyMane.cpp
   Fannings.cpp
   Game.cpp
   GamePlay.cpp
   GreenApple.cpp
+  Interface.cpp
+  Item.cpp
+  ItemMane.cpp
+  LoadMane.cpp
+  Obj.cpp
   Over.cpp
   Player.cpp
+  Score.cpp
+  コードを生成中...
+  コンパイル中...
+  Sound.cpp
+  Stage.cpp
   Title.cpp
   Touch.cpp
   Tree.cpp

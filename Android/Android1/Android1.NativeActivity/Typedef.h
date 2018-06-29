@@ -58,55 +58,55 @@ struct Position
 	T x;
 	T y;
 
-	void operator+(T i) {
+	inline constexpr void operator+(T i) {
 		this->x += i; this->y += i;
 	}
 
-	void operator-(T i) {
+	inline constexpr void operator-(T i) {
 		this->x -= i; this->y -= i;
 	}
 
-	Position operator+(Position pos) {
+	inline constexpr Position operator+(const Position& pos) const  {
 		return { x + pos.x , y + pos.y };
 	}
 
-	Position operator-(Position pos) {
+	inline constexpr Position operator-(const Position& pos) const  {
 		return { x - pos.x , y - pos.y };
 	}
 
-	Position operator*(Position pos) {
+	inline constexpr Position operator*(const Position& pos) const  {
 		return { x * pos.x , y * pos.y };
 	}
 
-	Position operator/(Position pos) {
+	inline constexpr Position operator/(const Position& pos) const  {
 		return { x / pos.x , y / pos.y };
 	}
 
-	void operator=(T i){
+	inline constexpr  void operator=(T i){
 		x = i; y = i;
 	}
 
-	void operator-=(Position pos) {
+	inline constexpr  void operator-=(const Position& pos) {
 		x -= pos.x; y -= pos.y;
 	}
 
-	void operator+=(Position pos) {
+	inline constexpr void operator+=(const Position& pos) {
 		x += pos.x; y += pos.y;
 	}
 
-	bool operator!=(T i){
+	inline constexpr bool operator!=(T i) const {
 		return !(x == i && y == i);
 	}
 
-	bool operator!=(Position pos){
+	inline constexpr bool operator!=(const Position& pos) const {
 		return !(x == pos.x && y == pos.y);
 	}
 
-	bool operator==(T i){
+	inline constexpr bool operator==(T i) const {
 		return (x == i && y == i);
 	}
 
-	bool operator==(Position pos){
+	inline constexpr bool operator==(const Position& pos) const {
 		return (x == pos.x && y == pos.y);
 	}
 };
