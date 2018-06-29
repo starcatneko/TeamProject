@@ -115,7 +115,7 @@ private:
 	void AnimInit(void);
 
 	// あたり矩形のセット
-	void SetRect(PlType ptype, std::string mode, int index, Pos offset, Pos size, RectType rtype);
+	void SetRect(PlType type, std::string mode, int index, Pos offset, Pos size, RectType rtype);
 	// あたり矩形のセット
 	void RectInit(void);
 
