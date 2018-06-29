@@ -923,7 +923,7 @@ void Player::UpData(void)
 {
 	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
-	speed = (type == PlType::normal) ? baseSpeed : baseSpeed / 2;
+	speed = (type == PlType::normal) ? baseSpeed+2 : baseSpeed * 2;
 
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
@@ -958,12 +958,6 @@ void Player::UpData(void)
 	}
 
 	Score::Get()->SetScore(power);
-	if (CheckHitKey(KEY_INPUT_Q))
-	{
-		pos.y = -5400;
-	}
-
-
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		if(state != ST_DAMAGE)

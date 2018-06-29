@@ -249,6 +249,12 @@ void GamePlay::ItemDraw(void)
 // アイテムの処理
 void GamePlay::ItemUpData(void)
 {
+	if (CheckHitKey(KEY_INPUT_A))
+	{
+		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x / 2, pl->GetPos().y + pl->GetSize().y / 2 }, cam, st, pl));
+
+	}
+
 	if (pl->dropflag == true)
 	{
 		item.push_back(ItemMane::Get()->DropApple({ pl->GetPos().x + pl->GetSize().x/2, pl->GetPos().y+pl->GetSize().y / 2 }, cam, st, pl));
