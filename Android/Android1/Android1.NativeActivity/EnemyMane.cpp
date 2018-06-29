@@ -33,7 +33,7 @@ void EnemyMane::Destroy(void)
 	}
 }
 
-std::shared_ptr<Obj> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateDust(const Pos& pos, std::shared_ptr<Camera>cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
 	std::shared_ptr<Obj>dust = std::make_shared<Dust>(pos, cam, st, pl);
 
@@ -43,7 +43,7 @@ std::shared_ptr<Obj> EnemyMane::CreateDust(Pos pos, std::shared_ptr<Camera>cam, 
 	return dust;
 }
 
-std::shared_ptr<Obj> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateFannings(const Pos& pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
 	std::shared_ptr<Obj>fannings = std::make_shared<Fannings>(pos, cam, st, pl);
 
@@ -54,7 +54,7 @@ std::shared_ptr<Obj> EnemyMane::CreateFannings(Pos pos, std::shared_ptr<Camera> 
 }
 
 //ボスの生成
-std::shared_ptr<Obj> EnemyMane::CreateBoss(Pos pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
+std::shared_ptr<Obj> EnemyMane::CreateBoss(const Pos& pos, std::shared_ptr<Camera> cam, std::shared_ptr<Stage> st, std::shared_ptr<Player> pl)
 {
 	std::shared_ptr<Obj>boss = std::make_shared<Boss>(pos, cam, st, pl);
 

@@ -14,10 +14,10 @@ public:
 	void Draw(void);
 
 	// 処理
-	void UpData(Pos pos);
+	void UpData(const Pos& pos);
 
 	// 座標の修正
-	Pos Correction(Pos pos);
+	Pos Correction(const Pos& pos);
 
 	// 座標の取得
 	constexpr Pos GetPos(void) const {
@@ -44,13 +44,13 @@ public:
 
 private:
 	// 動いていないときの処理
-	void NotMove(Pos pos);
+	void NotMove(const Pos& pos);
 
 	// 動いているときの処理
-	void Move(Pos pos);
+	void Move(const Pos& pos);
 
 	// 画面揺らし
-	void Shake(Pos pos);
+	void Shake(const Pos& pos);
 
 
 	// 座標
@@ -76,6 +76,6 @@ private:
 	bool end;
 
 	// 関数ポインタ
-	void (Camera::*func)(Pos);
+	void (Camera::*func)(const Pos&);
 };
 

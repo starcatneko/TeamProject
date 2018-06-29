@@ -31,7 +31,7 @@ void Camera::Draw(void)
 }
 
 // 動いていないときの処理
-void Camera::NotMove(Pos pos)
+void Camera::NotMove(const Pos& pos)
 {
 	
 	if (this->pos.y < -(WINDOW_Y * 3))
@@ -62,7 +62,7 @@ void Camera::NotMove(Pos pos)
 }
 
 // 動いているときの処理
-void Camera::Move(Pos pos)
+void Camera::Move(const Pos& pos)
 {
 	//目標座標が大きいとき
 	if (target.y < this->pos.y)
@@ -80,14 +80,14 @@ void Camera::Move(Pos pos)
 	else
 	{
 		// カメラの座標の修正
-		//this->pos.y = target.y;
+		this->pos.y = target.y;
 		refuge = this->pos;
 		func = &Camera::NotMove;
 	}
 }
 
 // 画面揺らし
-void Camera::Shake(Pos pos)
+void Camera::Shake(const Pos& pos)
 {
 	if (shake_frame == 0)
 	{
@@ -113,7 +113,7 @@ void Camera::Shake(Pos pos)
 }
 
 // 処理
-void Camera::UpData(Pos pos)
+void Camera::UpData(const Pos& pos)
 {
 	++frame;
 	//揺らしフラグがtrueのとき
@@ -126,7 +126,7 @@ void Camera::UpData(Pos pos)
 }
 
 // 座標の修正
-Pos Camera::Correction(Pos pos)
+Pos Camera::Correction(const Pos& pos)
 {
 	Pos tmp = pos;
 
