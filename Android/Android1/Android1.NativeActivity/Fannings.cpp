@@ -7,34 +7,6 @@
 #include "DxLib.h"
 #include <algorithm>
 
-// 待機アニメーション関係
-#define WAIT_ANIM_CNT 16
-#define WAIT_ANIM_X 4
-#define WAIT_ANIM_Y 4
-
-// 移動アニメーション関係
-#define WALK_ANIM_CNT 32
-#define WALK_ANIM_X 4
-#define WALK_ANIM_Y 8
-
-// 攻撃アニメーション関係
-#define ATTACK_ANIM_CNT 12
-#define ATTACK_ANIM_X 4
-#define ATTACK_ANIM_Y 3
-
-// ダメージアニメーション関係
-#define DAMAGE_ANIM_CNT 12
-#define DAMAGE_ANIM_X 4
-#define DAMAGE_ANIM_Y 3
-
-// 死亡アニメーション関係
-#define DIE_ANIM_CNT 16
-#define DIE_ANIM_X 4
-#define DIE_ANIM_Y 4
-
-// ファニングスの拡大率
-const int large = 1;
-
 // 待機時間
 const int waitTime = 60;
 
@@ -47,11 +19,7 @@ Fannings::Fannings(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, st
 {
 	Reset();
 
-	image["wait"] = LoadMane::Get()->Load("FAwait.png");
-	image["walk"] = LoadMane::Get()->Load("FAwalk.png");
-	image["attack"] = LoadMane::Get()->Load("FAattack.png");
-	image["damage"] = LoadMane::Get()->Load("FAdamage.png");
-	image["die"] = LoadMane::Get()->Load("FAdead.png");
+	
 
 	effect["effect1"] = LoadMane::Get()->Load("fa_effect1.png");
 	effect["effect2"] = LoadMane::Get()->Load("fa_effect2.png");
@@ -80,11 +48,6 @@ Fannings::~Fannings()
 //描画
 void Fannings::Draw(void)
 {
-	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
-	DrawOval(size.x / 2 + lpos.x, lpos.y + size.y - 10,
-		60, 30, 0x666666, 1, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
-
 	for (auto itr = effe.begin(); itr != effe.end(); ++itr)
 	{
 		if (itr->second.flag == true)
@@ -119,21 +82,26 @@ void Fannings::Draw(void)
 
 	if (state != ST_DIE)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
+		DrawOval(size.x / 2 + lpos.x, lpos.y + size.y - 10,
+			60, 30, 0x666666, 1, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+
 		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y,
-			anim[mode][index].size.x, anim[mode][index].size.y,
-			anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-			(double)large, 0.0, image[mode], true, reverse, false);
+			lpos.x + (anim[mode].animData[index].size.x * large) / 2, lpos.y + (anim[mode].animData[index].size.y * large) / 2,
+			anim[mode].animData[index].pos.x, anim[mode].animData[index].pos.y,
+			anim[mode].animData[index].size.x, anim[mode].animData[index].size.y,
+			anim[mode].animData[index].size.x / 2, anim[mode].animData[index].size.y / 2,
+			(double)large, 0.0, anim[mode].image, true, reverse, false);
 	}
 	else
 	{
 		DrawRectRotaGraph2(
-			lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-			anim[mode][index].pos.x, anim[mode][index].pos.y + offset,
-			anim[mode][index].size.x, anim[mode][index].size.y - offset,
-			anim[mode][index].size.x / 2, (anim[mode][index].size.y - offset) / 2,
-			(double)large, 0.0, image[mode], true, reverse, false);
+			lpos.x + (anim[mode].animData[index].size.x * large) / 2, lpos.y + (anim[mode].animData[index].size.y * large) / 2,
+			anim[mode].animData[index].pos.x, anim[mode].animData[index].pos.y + offset,
+			anim[mode].animData[index].size.x, anim[mode].animData[index].size.y - offset,
+			anim[mode].animData[index].size.x / 2, (anim[mode].animData[index].size.y - offset) / 2,
+			(double)large, 0.0, anim[mode].image, true, reverse, false);
 	}
 
 #ifndef __ANDROID__
@@ -160,48 +128,24 @@ void Fannings::Draw(void)
 // アニメーションのセット
 void Fannings::AnimInit(void)
 {
-	//待機
-	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
-	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_Y) }, size);
-	}
-
-	//歩き
-	for (int i = 0; i < WALK_ANIM_CNT; ++i)
-	{
-		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_Y) }, size);
-	}
-
-	//攻撃
-	for (int i = 0; i < ATTACK_ANIM_CNT; ++i)
-	{
-		SetAnim("attack", { size.x * (i % ATTACK_ANIM_X), size.y * (i / ATTACK_ANIM_Y) }, size);
-	}
-
-	//ダメージ
-	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
-	{
-		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_Y) }, size);
-	}
-
-	// 死亡
-	for (int i = 0; i < DIE_ANIM_CNT; ++i)
-	{
-		SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_Y) }, size);
-	}
+	SetAnim("FAwait.png", "wait", 4, 4, size, 5);
+	SetAnim("FAwalk.png", "walk", 4, 8, size);
+	SetAnim("FAattack.png", "attack", 4, 3, size);
+	SetAnim("FAdamage.png", "damage", 4, 3, size);
+	SetAnim("FAdead.png", "die", 4, 4, size);
 }
 
 // あたり矩形のセット
 void Fannings::RectInit(void)
 {
 	//待機
-	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
+	for (int in = 0; in < anim["wait"].max; ++in)
 	{
 		SetRect("wait", in, { (-size.x / 3), (-size.y / 2) }, { ((size.x * 2) / 3), (size.y) }, RectType::Damage);
 	}
 
 	//移動
-	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
+	for (int in = 0; in < anim["walk"].max; ++in)
 	{
 		if (4 <= in && in <= 10)
 		{
@@ -218,7 +162,7 @@ void Fannings::RectInit(void)
 	}
 
 	//攻撃
-	for (unsigned int in = 0; in < anim["attack"].size(); ++in)
+	for (int in = 0; in < anim["attack"].max; ++in)
 	{
 		if (5 <= in && in <= 11)
 		{
@@ -253,8 +197,7 @@ void Fannings::Neutral(void)
 
 	if ((dis.x <= area && dis.y <= area))
 	{
-		SetState(ST_ATTACK);
-		SetMode("attack");
+		SetState(ST_ATTACK, "attack");
 		func = &Fannings::Attack;
 	}
 	else
@@ -262,8 +205,7 @@ void Fannings::Neutral(void)
 		--wait;
 		if (wait <= 0)
 		{
-			SetState(ST_WALK);
-			SetMode("walk");
+			SetState(ST_WALK, "walk");
 			target = pl.lock()->GetCenter();
 
 			//移動方向更新
@@ -297,16 +239,14 @@ void Fannings::Walk(void)
 
 	if ((dis.x <= area && dis.y <= area))
 	{
-		SetState(ST_ATTACK);
-		SetMode("attack");
+		SetState(ST_ATTACK, "attack");
 		func = &Fannings::Attack;
 	}
 	else
 	{
 		if (walking == 0)
 		{
-			SetState(ST_NUETRAL);
-			SetMode("wait");
+			SetState(ST_NUETRAL, "wait");
 			wait = waitTime;
 			func = &Fannings::Neutral;
 		}
@@ -390,10 +330,9 @@ void Fannings::Attack(void)
 	
 
 	//攻撃アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		wait = waitTime;
 		func = &Fannings::Neutral;
 	}
@@ -416,18 +355,16 @@ void Fannings::Damage(void)
 		int m = std::abs(target.x - lpos.x);
 		if (m <= 20)
 		{
-			SetState(ST_DIE);
-			SetMode("die");
+			SetState(ST_DIE, "die");
 			func = &Fannings::Die;
 		}
 	}
 	else
 	{
 		//ダメージアニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+		if (CheckAnimEnd() == true)
 		{
-			SetState(ST_NUETRAL);
-			SetMode("wait");
+			SetState(ST_NUETRAL, "wait");
 			wait = waitTime;
 			func = &Fannings::Neutral;
 		}
@@ -444,7 +381,7 @@ void Fannings::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		effe["effect1"].flag = true;
 		effe["effect2"].flag = true;
@@ -472,7 +409,7 @@ void Fannings::UpData(void)
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
-	Animator(animTime[mode]);
+	Animator();
 	Effector();
 
 	auto prect = pl.lock()->GetRect();
@@ -501,7 +438,7 @@ void Fannings::UpData(void)
 
 	if (hit == true)
 	{
-		SetState(ST_DAMAGE);
+		SetState(ST_DAMAGE, "damage");
 		GameMane::Get()->SetHit(true);
 		target.x = (pl.lock()->GetReverse() == false) ? WINDOW_X - size.x - 1 : 0 + 1;
 

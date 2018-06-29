@@ -9,42 +9,6 @@
 #include "Interface.h"
 #include <algorithm>
 
-// 待機アニメーション関係
-#define WAIT_ANIM_CNT 16
-#define WAIT_ANIM_X 4
-#define WAIT_ANIM_Y 4
-
-// 移動アニメーション関係
-#define WALK_ANIM_CNT 32
-#define WALK_ANIM_X 4
-#define WALK_ANIM_Y 8
-
-// 攻撃アニメーション関係
-#define ATTACK1_ANIM_CNT 16
-#define ATTACK1_ANIM_X 4
-#define ATTACK1_ANIM_Y 4
-
-#define ATTACK2_ANIM_CNT 32
-#define ATTACK2_ANIM_X 4
-#define ATTACK2_ANIM_Y 8
-
-#define ATTACK3_ANIM_CNT 32
-#define ATTACK3_ANIM_X 4
-#define ATTACK3_ANIM_Y 8
-
-// ダメージアニメーション関係
-#define DAMAGE_ANIM_CNT 16
-#define DAMAGE_ANIM_X 4
-#define DAMAGE_ANIM_Y 4
-
-// 死亡アニメーション関係
-#define DIE_ANIM_CNT 32
-#define DIE_ANIM_X 4
-#define DIE_ANIM_Y 8
-
-// ファニングスの拡大率
-const int large = 1;
-
 // 待機時間
 const int waitTime = 60;
 
@@ -57,14 +21,7 @@ Boss::Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_
 {
 	Reset();
 
-	image["wait"] = LoadMane::Get()->Load("Bwait.png");
-	image["walk"] = LoadMane::Get()->Load("Bwalk.png");
-	image["attack1"] = LoadMane::Get()->Load("Battack_1.png");
-	image["attack2"] = LoadMane::Get()->Load("Battack_2.png");
-	image["attack3"] = LoadMane::Get()->Load("Battack_3.png");
-	image["damage"] = LoadMane::Get()->Load("Bdamage.png");
-	image["die"] = LoadMane::Get()->Load("Bdead.png");
-	image["die_eff1"] = LoadMane::Get()->Load("Battack_5.png");
+	
 
 	this->cam = cam;
 	this->st = st;
@@ -91,76 +48,33 @@ Boss::~Boss()
 // アニメーションのセット
 void Boss::AnimInit(void)
 {
-	//待機
-	for (int i = 0; i < WAIT_ANIM_CNT; ++i)
-	{
-		SetAnim("wait", { size.x * (i % WAIT_ANIM_X), size.y * (i / WAIT_ANIM_X) }, size);
-	}
-
-	//歩き
-	for (int i = 0; i < WALK_ANIM_CNT; ++i)
-	{
-		SetAnim("walk", { size.x * (i % WALK_ANIM_X), size.y * (i / WALK_ANIM_X) }, size);
-	}
-
-	//攻撃
-	for (int i = 0; i < ATTACK1_ANIM_CNT; ++i)
-	{
-		SetAnim("attack1", { size.x * (i % ATTACK1_ANIM_X), size.y * (i / ATTACK1_ANIM_X) }, size);
-	}
-	for (int i = 0; i < ATTACK2_ANIM_CNT; ++i)
-	{
-		SetAnim("attack2", { size.x * (i % ATTACK2_ANIM_X), size.y * (i / ATTACK2_ANIM_X) }, size);
-	}
-	for (int i = 0; i < ATTACK3_ANIM_CNT; ++i)
-	{
-		SetAnim("attack3", { size.x * (i % ATTACK3_ANIM_X), size.y * (i / ATTACK3_ANIM_X) }, size);
-	}
-
-	//ダメージ
-	for (int i = 0; i < DAMAGE_ANIM_CNT; ++i)
-	{
-		SetAnim("damage", { size.x * (i % DAMAGE_ANIM_X), size.y * (i / DAMAGE_ANIM_X) }, size);
-	}
-
-	// 死亡
-	for (int i = 0; i < DIE_ANIM_CNT; ++i)
-	{
-		if (i < DIE_ANIM_CNT)
-		{
-			SetAnim("die", { size.x * (i % DIE_ANIM_X), size.y * (i / DIE_ANIM_X) }, size);
-		}
-		
-		else
-		{
-
-			SetAnim("die", { size.x * (DIE_ANIM_X), size.y * (DIE_ANIM_X) }, size);
-
-			SetAnim("die_eff1", { size.x * ((i - DIE_ANIM_CNT) % 4), size.y * ((i - DIE_ANIM_CNT) % 2) }, size);
-		}
-
-			//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
-	}
+	SetAnim("Bwait.png", "wait", 4, 4, size, 5);
+	SetAnim("Bwalk.png", "walk", 4, 8, size);
+	SetAnim("Battack_1.png", "attack1", 4, 4, size);
+	SetAnim("Battack_2.png", "attack2", 4, 8, size);
+	SetAnim("Battack_3.png", "attack3", 4, 8, size);
+	SetAnim("Bdamage.png", "damage", 4, 4, size);
+	SetAnim("Bdead.png", "die", 4, 8, size);
 }
 
 // あたり矩形のセット
 void Boss::RectInit(void)
 {
 	//待機
-	for (unsigned int in = 0; in < anim["wait"].size(); ++in)
+	for (int in = 0; in < anim["wait"].max; ++in)
 	{
 		SetRect("wait", in, { (-size.x / 5) - 20, (-size.y / 2) + 70 }, { ((size.x * 2) / 3) - 50, (size.y) - 70 }, RectType::Damage);
 	}
 
 	//歩き
-	for (unsigned int in = 0; in < anim["walk"].size(); ++in)
+	for (int in = 0; in < anim["walk"].max; ++in)
 	{
 		SetRect("walk", in, { (-size.x / 5) - 20, (-size.y / 2) + 70 }, { ((size.x * 2) / 3) - 50, (size.y) - 70 }, RectType::Damage);
 	}
 
 	//攻撃
 	int tmp = 0;
-	for (unsigned int in = 0; in < anim["attack1"].size(); ++in)
+	for (int in = 0; in < anim["attack1"].max; ++in)
 	{
 		SetRect("attack1", in, { 0, (-size.y / 2) + 70 }, { ((size.x * 2) / 5), (size.y) - 70 }, RectType::Damage);
 		if (11 <= in && in <= 14)
@@ -175,7 +89,7 @@ void Boss::RectInit(void)
 		}
 	}
 	tmp = 0;
-	for (unsigned int in = 0; in < anim["attack2"].size(); ++in)
+	for (int in = 0; in < anim["attack2"].max; ++in)
 	{
 		SetRect("attack2", in, { (-size.x / 3), (-size.y / 3) + 30 }, { ((size.x) - 150), (size.y) - 120 }, RectType::Damage);
 		if (15 <= in && in <= 29)
@@ -184,7 +98,7 @@ void Boss::RectInit(void)
 		}
 	}
 	tmp = 0;
-	for (unsigned int in = 0; in < anim["attack3"].size(); ++in)
+	for (int in = 0; in < anim["attack3"].max; ++in)
 	{
 		SetRect("attack3", in, { (-size.x / 6), (-size.y / 3) + 20 }, { (size.x / 2) , (size.y - 100) }, RectType::Damage);
 		if (18 <= in && in <= 26)
@@ -215,14 +129,12 @@ void Boss::Wait(void)
 	{
 		if (pl.lock()->GetCenter().y > center.y + 20)
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack1");
+			SetState(ST_ATTACK, "attack1");
 			func = &Boss::Attack1;
 		}
 		else
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack2");
+			SetState(ST_ATTACK, "attack2");
 			func = &Boss::Attack2;
 		}
 	}
@@ -231,8 +143,7 @@ void Boss::Wait(void)
 		int random = GetRand(100);
 		if (random == 3)
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack3");
+			SetState(ST_ATTACK, "attack3");
 			func = &Boss::Attack3;
 		}
 		else
@@ -240,8 +151,7 @@ void Boss::Wait(void)
 			--wait;
 			if (wait <= 0)
 			{
-				SetState(ST_WALK);
-				SetMode("walk");
+				SetState(ST_WALK, "walk");
 				target = pl.lock()->GetCenter();
 
 				//移動方向更新
@@ -278,14 +188,12 @@ void Boss::Walk(void)
 	{
 		if (pl.lock()->GetCenter().y > center.y + 20)
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack1");
+			SetState(ST_ATTACK, "attack1");
 			func = &Boss::Attack1;
 		}
 		else
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack2");
+			SetState(ST_ATTACK, "attack2");
 			func = &Boss::Attack2;
 		}
 	}
@@ -294,16 +202,14 @@ void Boss::Walk(void)
 		int random = GetRand(100);
 		if (random == 3)
 		{
-			SetState(ST_ATTACK);
-			SetMode("attack3");
+			SetState(ST_ATTACK, "attack3");
 			func = &Boss::Attack3;
 		}
 		else
 		{
 			if (walking == 0)
 			{
-				SetState(ST_NUETRAL);
-				SetMode("wait");
+				SetState(ST_NUETRAL, "wait");
 				wait = waitTime;
 				func = &Boss::Wait;
 			}
@@ -387,10 +293,9 @@ void Boss::Attack1(void)
 	}
 
 	//攻撃アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		wait = waitTime;
 		func = &Boss::Wait;
 	}
@@ -446,10 +351,9 @@ void Boss::Attack2(void)
 	}
 
 	//攻撃アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		wait = waitTime;
 		func = &Boss::Wait;
 	}
@@ -505,10 +409,9 @@ void Boss::Attack3(void)
 	}
 
 	//攻撃アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
-		SetState(ST_NUETRAL);
-		SetMode("wait");
+		SetState(ST_NUETRAL, "wait");
 		wait = waitTime;
 		func = &Boss::Wait;
 	}
@@ -524,17 +427,15 @@ void Boss::Damage(void)
 
 	if (hp <= 0)
 	{
-		SetState(ST_DIE);
-		SetMode("die");
+		SetState(ST_DIE, "die");
 		func = &Boss::Die;
 	}
 	else
 	{
 		//ダメージアニメーションが終わったとき
-		if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+		if (CheckAnimEnd() == true)
 		{
-			SetState(ST_NUETRAL);
-			SetMode("wait");
+			SetState(ST_NUETRAL, "wait");
 			wait = waitTime;
 			func = &Boss::Wait;
 		}
@@ -550,7 +451,7 @@ void Boss::Die(void)
 	}
 
 	//死亡アニメーションが終わったら
-	if ((unsigned)index + 1 >= anim[mode].size() && flam >= animTime[mode])
+	if (CheckAnimEnd() == true)
 	{
 		Sound::Get()->Play(MU_BGM_WIN);
 		GameMane::Get()->Kill();
@@ -568,11 +469,11 @@ void Boss::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
 
 	DrawRectRotaGraph2(
-		lpos.x + (anim[mode][index].size.x * large) / 2, lpos.y + (anim[mode][index].size.y * large) / 2,
-		anim[mode][index].pos.x, anim[mode][index].pos.y,
-		anim[mode][index].size.x, anim[mode][index].size.y,
-		anim[mode][index].size.x / 2, anim[mode][index].size.y / 2,
-		(double)large, 0.0, image[mode], true, reverse, false);
+		lpos.x + (anim[mode].animData[index].size.x * large) / 2, lpos.y + (anim[mode].animData[index].size.y * large) / 2,
+		anim[mode].animData[index].pos.x, anim[mode].animData[index].pos.y,
+		anim[mode].animData[index].size.x, anim[mode].animData[index].size.y,
+		anim[mode].animData[index].size.x / 2, anim[mode].animData[index].size.y / 2,
+		(double)large, 0.0, anim[mode].image, true, reverse, false);
 
 /*#ifndef __ANDROID__
 	auto d = GetRect();
@@ -608,7 +509,7 @@ void Boss::UpData(void)
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
 
-	Animator(animTime[mode]);
+	Animator();
 	Effector();
 
 	auto prect = pl.lock()->GetRect();
@@ -637,7 +538,7 @@ void Boss::UpData(void)
 
 	if (hit == true)
 	{
-		SetState(ST_DAMAGE);
+		SetState(ST_DAMAGE, "damage");
 		GameMane::Get()->SetHit(true);
 
 		if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)

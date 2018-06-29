@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include "LoadMane.h"
 #include "GameMane.h"
 #include "Sound.h"
 
@@ -6,11 +7,13 @@
 // コンストラクタ
 Enemy::Enemy() : speed(3), die(false), reverse(false), flam(0), index(0), power(10)
 {
+	Reset();
+
 	state = ST_NUETRAL;
 	mode = "wait";
+	large = 1;
 	target = { 0,0 };
 	dir = DIR_NON;
-	animTime = { { "wait", 5 },{ "walk", 1 }, {"attack", 1}, {"attack1", 3}, {"attack2", 3}, {"attack3", 1},  {"damage", 1}, {"die", 1} };
 	clear = false;
 }
 
@@ -32,22 +35,22 @@ bool Enemy::CheckHit(Pos pos1, Pos size1, Pos pos2, Pos size2)
 }
 
 // アニメーション管理
-void Enemy::Animator(int flam)
+void Enemy::Animator(void)
 {
 	if (GameMane::Get()->GetHit() == false)
 	{
 		++this->flam;
 	}
 
-	if (this->flam > flam)
+	if (this->flam > anim[mode].animTime)
 	{
 		if (state != ST_DIE)
 		{
-			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : 0;
+			index = ((index + 1) < anim[mode].max) ? ++index : 0;
 		}
 		else
 		{
-			index = ((unsigned)(index + 1) < anim[mode].size()) ? ++index : index;
+			index = ((index + 1) < anim[mode].max) ? ++index : index;
 		}
 		this->flam = 0;
 	}
@@ -76,16 +79,35 @@ void Enemy::Effector(void)
 	}
 }
 
-// アニメーションのセット
-void Enemy::SetAnim(std::string mode, Pos pos, Pos size)
+// アニメーションの終了
+bool Enemy::CheckAnimEnd(void)
 {
-	anim[mode].push_back({ pos, size });
+	if (index + 1 >= anim[mode].max && flam >= anim[mode].animTime)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// アニメーションのセット
+void Enemy::SetAnim(std::string fileName, std::string mode, int x, int y, Pos size, int animTime)
+{
+	anim[mode].image = LoadMane::Get()->Load(fileName.c_str());
+	anim[mode].x = x;
+	anim[mode].y = y;
+	anim[mode].max = x * y;
+	for (int i = 0; i < anim[mode].max; ++i)
+	{
+		anim[mode].animData.push_back({ { size.x * (i % x), size.y * (i / x) }, size });
+	}
+	anim[mode].animTime = animTime;
 }
 
 // あたり矩形のセット
 void Enemy::SetRect(std::string mode, int index, Pos offset, Pos size, RectType rtype)
 {
-	rect[mode][index].push_back({ offset, size, rtype });
+	anim[mode].rect[index].push_back({ offset, size, rtype });
 }
 
 // エフェクトのセット
@@ -94,14 +116,8 @@ void Enemy::SetEffect(std::string name, int max, int x, int y, Pos pos, Pos size
 	effe[name] = { max, x, y, pos, size, false, 0, 0, flam };
 }
 
-// 状態の取得
-STATES Enemy::GetState(void)
-{
-	return state;
-}
-
 // 状態のセット
-void Enemy::SetState(STATES state)
+void Enemy::SetState(STATES state, std::string mode)
 {
 	if (state == ST_DAMAGE)
 	{
@@ -111,68 +127,14 @@ void Enemy::SetState(STATES state)
 		}
 	}
 	this->state = state;
+	this->mode = mode;
 	flam = 0;
 	index = 0;
 	if (this->state == ST_DAMAGE)
 	{
 		Sound::Get()->Play(SE_HIT1);
-		SetMode("damage");
 		--hp;
 	}
-}
-
-// モードの取得
-std::string Enemy::GetMode(void)
-{
-	return mode;
-}
-
-// モードのセット
-void Enemy::SetMode(std::string mode)
-{
-	this->mode = mode;
-}
-
-// 座標の取得
-Pos Enemy::GetPos(void)
-{
-	return pos;
-}
-
-// 座標のセット
-void Enemy::SetPos(Pos pos)
-{
-	this->pos = pos;
-}
-
-// ローカル座標の取得
-Pos Enemy::GetLocalPos(void)
-{
-	return lpos;
-}
-
-// ローカル座標のセット
-void Enemy::SetLocalPos(Pos pos)
-{
-	lpos = pos;
-}
-
-// 中心座標の取得
-Pos Enemy::GetCenter(void)
-{
-	return center;
-}
-
-// 中心座標のセット
-void Enemy::SetCenter(Pos pos)
-{
-	center = pos;
-}
-
-// サイズの取得
-Pos Enemy::Getsize(void)
-{
-	return size;
 }
 
 //あたり矩形の取得
@@ -182,14 +144,14 @@ std::vector<Rect> Enemy::GetRect(void)
 
 	if (reverse == false)
 	{
-		for (auto& r : rect[mode][index])
+		for (auto& r : anim[mode].rect[index])
 		{
 			box.push_back({ { center.x + r.offset.x, center.y + r.offset.y }, r.size, r.type });
 		}
 	}
 	else
 	{
-		for (auto& r : rect[mode][index])
+		for (auto& r : anim[mode].rect[index])
 		{
 			box.push_back({ { center.x - r.offset.x - r.size.x, center.y + r.offset.y },{ r.size.x, r.size.y }, r.type });
 		}
@@ -216,18 +178,10 @@ Pos Enemy::GetEffect(std::string name, int large)
 	return tmp;
 }
 
-// 死亡フラグの取得
-bool Enemy::GetDie(void)
-{
-	return die;
-}
-
 // リセット
 void Enemy::Reset(void)
 {
-	image.clear();
-	effect.clear();
 	anim.clear();
-	rect.clear();
+	effect.clear();
 	effe.clear();
 }
