@@ -1,14 +1,2 @@
-﻿  Boss.cpp
-  GamePlay.cpp
-  Interface.cpp
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(76): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(79): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(81): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(95): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(96): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(98): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(145): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\interface.cpp(157): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-  Title.cpp
-  コードを生成中...
+﻿  Interface.cpp
   Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

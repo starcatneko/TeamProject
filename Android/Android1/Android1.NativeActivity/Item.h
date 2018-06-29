@@ -20,19 +20,31 @@ public:
 	virtual void UpData(void) = 0;
 
 	// 座標の取得
-	Pos GetPos(void);
+	constexpr Pos GetPos(void) const {
+		return pos;
+	}
 	// 座標のセット
-	void SetPos(Pos pos);
+	constexpr void SetPos(Pos& pos) {
+		this->pos = pos;
+	}
 
 	// サイズの取得
-	Pos GetSize(void);
+	constexpr Pos GetSize(void) const {
+		return size;
+	}
 	// サイズのセット
-	void SetSize(Pos size);
+	constexpr void SetSize(Pos& size) {
+		this->size = size;
+	}
 
 	// あたりフラグの取得d
-	bool GetHit(void);
+	constexpr bool GetHit(void) const {
+		return hit;
+	}
 
-	int GetEffectTimer(void);
+	constexpr int GetEffectTimer(void) const {
+		return effect_cnt;
+	}
 
 	// アニメーション管理
 	void Animator(int cnt, int flam);

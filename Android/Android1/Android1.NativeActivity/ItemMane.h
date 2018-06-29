@@ -13,7 +13,7 @@ public:
 	~ItemMane();
 
 	// インスタン変数の取得
-	static ItemMane* Get(void)
+	constexpr static ItemMane* Get(void)
 	{
 		return instance;
 	}

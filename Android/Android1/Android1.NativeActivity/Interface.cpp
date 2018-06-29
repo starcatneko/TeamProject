@@ -73,12 +73,12 @@ void Interface::DrawStartBoss()
 	}
 	else if (spawn_cnt < SPAWN_DELEY && spawn_cnt >30)
 	{
-		float temp_alpha = (165-spawn_cnt) * 4;
+		float temp_alpha = (float)((165-spawn_cnt) * 4);
 		if (temp_alpha < 255)
 		{
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)temp_alpha);
 		}
-		float tempsize = 3-((140-spawn_cnt)*0.18);
+		float tempsize = 3.0f-((140-spawn_cnt)*0.18f);
 		tempsize = (tempsize > 1 ? tempsize : 1);
 		DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
 
@@ -92,10 +92,10 @@ void Interface::DrawStartBoss()
 		{
 			if (spawn_cnt < SPAWN_DELEY - lagtime && spawn_cnt >0)
 			{
-				temp_alpha = (SPAWN_DELEY - (spawn_cnt + lagtime)) * 4;
-				if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, temp_alpha);
+				temp_alpha = (float)((SPAWN_DELEY - (spawn_cnt + lagtime)) * 4);
+				if (temp_alpha < 255)SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)temp_alpha);
 
-				tempsize = 3 - (((SPAWN_DELEY -5*5) - (spawn_cnt + lagtime))*0.18);
+				tempsize = 3 - (((SPAWN_DELEY -5*5) - (spawn_cnt + lagtime))*0.18f);
 				tempsize = (tempsize > 1 ? tempsize : 1);
 				DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
 
@@ -142,7 +142,7 @@ void Interface::DrawGage()
 
 	DrawGraph(0, 0, mask, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 220);
-	DrawGraph(-(cnt % 246), 256 - gage_mater * 2.34f, gage_red, true);
+	DrawGraph(-(cnt % 246), 256 - (int)(gage_mater * 2.34f), gage_red, true);
 	//DrawGraph(-(cnt % 246), 256 - gage_mater * 2.34f, gage_red, true);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
@@ -154,7 +154,7 @@ void Interface::DrawGage()
 
 	DrawGraph(0, 0,hp_mask, true);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255);
-	DrawBox(0, 0, (double)gage_mater_hp*4.8, 256, 0x00ff00, true);
+	DrawBox(0, 0, (int)((double)gage_mater_hp*4.8), 256, 0x00ff00, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	// ï`âÊêÊïœçX

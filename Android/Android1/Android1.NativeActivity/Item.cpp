@@ -19,40 +19,6 @@ Item::~Item()
 {
 }
 
-// 座標の取得
-Pos Item::GetPos(void)
-{
-	return pos;
-}
-
-// 座標のセット
-void Item::SetPos(Pos pos)
-{
-	this->pos = pos;
-}
-
-// サイズの取得
-Pos Item::GetSize(void)
-{
-	return size;
-}
-
-// サイズのセット
-void Item::SetSize(Pos size)
-{
-	this->size = size;
-}
-
-// あたりフラグの取得
-bool Item::GetHit(void)
-{
-	return hit;
-}
-int Item::GetEffectTimer(void)
-{
-	return effect_cnt;
-}
-
 // アニメーション管理
 void Item::Animator(int cnt, int flam)
 {
