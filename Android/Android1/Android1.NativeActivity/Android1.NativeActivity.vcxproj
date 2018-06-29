@@ -222,7 +222,6 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Dust.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyMane.cpp" />
     <ClCompile Include="Fannings.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -234,6 +233,7 @@
     <ClCompile Include="ItemMane.cpp" />
     <ClCompile Include="LoadMane.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Over.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -252,7 +252,6 @@
     <ClInclude Include="Clear.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Dust.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyMane.h" />
     <ClInclude Include="Fannings.h" />
     <ClInclude Include="Game.h" />
@@ -263,6 +262,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemMane.h" />
     <ClInclude Include="LoadMane.h" />
+    <ClInclude Include="Obj.h" />
     <ClInclude Include="Over.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />

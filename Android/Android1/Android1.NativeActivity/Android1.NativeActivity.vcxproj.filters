@@ -13,9 +13,6 @@
     <ClCompile Include="Dust.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>リソース</Filter>
-    </ClCompile>
     <ClCompile Include="Fannings.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
@@ -85,6 +82,9 @@
     <ClCompile Include="Clear.cpp">
       <Filter>リソース</Filter>
     </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>リソース</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -97,9 +97,6 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Dust.h">
-      <Filter>ヘッダー</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Fannings.h">
@@ -172,6 +169,9 @@
       <Filter>ヘッダー</Filter>
     </ClInclude>
     <ClInclude Include="Clear.h">
+      <Filter>ヘッダー</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj.h">
       <Filter>ヘッダー</Filter>
     </ClInclude>
   </ItemGroup>

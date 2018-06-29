@@ -33,7 +33,7 @@ public:
 	~Touch();
 
 	// インスタン変数の取得
-	constexpr static Touch* Get(void){
+	static Touch* Get(void){
 		return instance;
 	}
 

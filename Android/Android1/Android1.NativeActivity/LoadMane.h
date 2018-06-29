@@ -11,7 +11,7 @@ public:
 	~LoadMane();
 
 	// インスタンス変数の取得
-	constexpr static LoadMane* Get(void) {
+	static LoadMane* Get(void) {
 		return instance;
 	}
 

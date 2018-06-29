@@ -38,7 +38,7 @@ public:
 	~Sound();
 
 	// インスタン変数の取得
-	constexpr static Sound* Get(void) {
+	static Sound* Get(void) {
 		return instance;
 	}
 

@@ -33,7 +33,7 @@ public:
 		return shake;
 	}
 	// 揺らしフラグのセット
-	constexpr void SetShakeFlag(bool flag) {
+	void SetShakeFlag(bool flag) {
 		shake = flag;
 	}
 

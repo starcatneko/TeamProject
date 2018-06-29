@@ -58,11 +58,11 @@ struct Position
 	T x;
 	T y;
 
-	inline constexpr void operator+(T i) {
+	inline void operator+(T i) {
 		this->x += i; this->y += i;
 	}
 
-	inline constexpr void operator-(T i) {
+	inline void operator-(T i) {
 		this->x -= i; this->y -= i;
 	}
 
@@ -82,15 +82,15 @@ struct Position
 		return { x / pos.x , y / pos.y };
 	}
 
-	inline constexpr  void operator=(T i){
+	inline void operator=(T i){
 		x = i; y = i;
 	}
 
-	inline constexpr  void operator-=(const Position& pos) {
+	inline void operator-=(const Position& pos) {
 		x -= pos.x; y -= pos.y;
 	}
 
-	inline constexpr void operator+=(const Position& pos) {
+	inline void operator+=(const Position& pos) {
 		x += pos.x; y += pos.y;
 	}
 

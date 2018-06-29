@@ -20,20 +20,20 @@ public:
 	virtual void UpData(void) = 0;
 
 	// 座標の取得
-	constexpr Pos GetPos(void) const {
+	Pos GetPos(void) const {
 		return pos;
 	}
 	// 座標のセット
-	constexpr void SetPos(Pos& pos) {
+	void SetPos(Pos& pos) {
 		this->pos = pos;
 	}
 
 	// サイズの取得
-	constexpr Pos GetSize(void) const {
+	Pos GetSize(void) const {
 		return size;
 	}
 	// サイズのセット
-	constexpr void SetSize(Pos& size) {
+	void SetSize(Pos& size) {
 		this->size = size;
 	}
 

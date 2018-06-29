@@ -26,7 +26,7 @@ public:
 		pos[index];
 	}
 	// 座標のセット
-	constexpr void SetPos(int index, Pos pos) {
+	void SetPos(int index, Pos pos) {
 		this->pos[index] = pos;
 	}
 
