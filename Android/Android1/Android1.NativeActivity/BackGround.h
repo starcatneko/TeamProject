@@ -23,7 +23,7 @@ public:
 
 	// 座標の取得
 	Pos GetPos(int index) const {
-		pos[index];
+		return pos[index];
 	}
 	// 座標のセット
 	void SetPos(int index, Pos pos) {
