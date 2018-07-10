@@ -89,7 +89,7 @@ void Clear::Draw(void)
 		// αブレンドはここから
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, brightness);
 		// 暗転用
-		DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x000000, true);
+		//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x000000, true);
 		// αブレンドはここまで
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
@@ -202,7 +202,7 @@ void Clear::ThankyouDraw()
 		// αブレンドはここから
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, brightness);
 		// 一応背景色(白)
-		DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
+		//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0xffffff, true);
 		// αブレンドはここまで
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
@@ -211,7 +211,7 @@ void Clear::ThankyouDraw()
 		// αブレンドはここから
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, brightness);
 		// 一応背景色(黒)
-		DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x000000, true);
+		//DrawBox(0, 0, WINDOW_X, WINDOW_Y, 0x000000, true);
 		// αブレンドはここまで
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}

@@ -27,7 +27,7 @@ Title::Title() : alpha(0)
 
 	image["back"] = LoadMane::Get()->Load("titleback.png");
 	image["yazirusi"] = LoadMane::Get()->Load("yazirusi.png");
-	image["flick"] = LoadMane::Get()->Load("flick.png");
+	image["title"] = LoadMane::Get()->Load("titleLogo.png");
 
 	large["back"] = 1;
 	large["yazirusi"] = 1;
@@ -62,12 +62,17 @@ void Title::Draw(void)
 		i, 0.0, image["back"], true, false, false);
 
 	//矢印
+
+	DrawGraph(0, 200, image["title"], true);
+
+	
+
 	DrawRectRotaGraph2(
 		pos["yazirusi"].x + (arrowSize.x * large["yazirusi"]) / 2, pos["yazirusi"].y + (arrowSize.y * large["yazirusi"]) / 2,
 		0,0,arrowSize.x, arrowSize.y, 
 		arrowSize.x / 2, arrowSize.y / 2,
 		(double)large["yazirusi"], 0.0, image["yazirusi"], true, false, false);
-
+	/*
 	//フリック文字
 	DrawRectRotaGraph2(
 		pos["flick"].x + (flickSize.x * large["flick"]) / 2, pos["flick"].y + (flickSize.y * large["flick"]) / 2,
@@ -75,6 +80,7 @@ void Title::Draw(void)
 		flickSize.x / 2, flickSize.y / 2,
 		(double)large["flick"], 0.0, image["flick"], true, false, false);
 
+	*/
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawBox(0,0,WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

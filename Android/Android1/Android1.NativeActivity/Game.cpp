@@ -29,7 +29,7 @@ void Game::Init(void)
 	SetGraphMode(WINDOW_X, WINDOW_Y, 32);
 #ifndef __ANDROID__
 	SetWindowSizeChangeEnableFlag(TRUE);
-	SetWindowSize(SET_GRAPH_X, SET_GRAPH_Y);
+	SetWindowSize(SET_GRAPH_X/1.5, SET_GRAPH_Y / 1.5);
 	//true:window　false:ﾌﾙｽｸﾘｰﾝ
 	ChangeWindowMode(true);
 	//windowテキストの設定

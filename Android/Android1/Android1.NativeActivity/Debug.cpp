@@ -166,6 +166,6 @@ void Debug::FpsTimeFanction() {
 	else
 		FpsTime_i++;//現在何周目かカウント
 	if (Fps != 0)
-		DrawFormatString(0, 600, 0xffffff, "FPS %.1f", Fps); //fpsを表示
+		//DrawFormatString(0, 600, 0xffffff, "FPS %.1f", Fps); //fpsを表示
 	return;
 }

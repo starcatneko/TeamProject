@@ -93,11 +93,11 @@ void Dust::Draw(void)
 	{
 		if (r.type == RectType::Damage)
 		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0x00ff00, true);
+			//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0x00ff00, true);
 		}
 		else
 		{
-			DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0xff0000, true);
+			//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, 0xff0000, true);
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

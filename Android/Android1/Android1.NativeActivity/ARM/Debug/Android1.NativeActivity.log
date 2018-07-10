@@ -1,34 +1,37 @@
-﻿  ANDROID_HOME=C:\ProgramData\Microsoft\AndroidSDK\25
+﻿  ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk
   ANT_HOME=C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Apps\apache-ant-1.9.3
   JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
-  NDK_ROOT=C:\\Microsoft\AndroidNDK64\android-ndk-r13b
+  NDK_ROOT=C:\ProgramData\Microsoft\AndroidNDK64\android-ndk-r13b
   Apple.cpp
   BackGround.cpp
+  Boss.cpp
   Camera.cpp
+Camera.cpp(92,13): warning : unused variable 'tmp' [-Wunused-variable]
+          static int tmp;
+                     ^
+  1 warning generated.
+  Clear.cpp
+  In file included from Clear.cpp:1:
+./Clear.h(93,6): warning : private field 'image' is not used [-Wunused-private-field]
+          int image[4][12];
+              ^
+  1 warning generated.
   Debug.cpp
   Dust.cpp
-Dust.cpp(184,11): warning : comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
-                          if ((0 <= in && in <= 4) || (12 <= in && in <= 15))
-                               ~ ^  ~~
-  In file included from Dust.cpp:1:
-./Dust.h(54,7): warning : private field 'attackFlag' is not used [-Wunused-private-field]
-          bool attackFlag;
-               ^
-./Dust.h(64,6): warning : private field 'box' is not used [-Wunused-private-field]
-          Box box;
-              ^
-  3 warnings generated.
-  Enemy.cpp
   EnemyMane.cpp
   Fannings.cpp
   Game.cpp
+  GameMane.cpp
   GamePlay.cpp
   GreenApple.cpp
   Interface.cpp
   Item.cpp
   ItemMane.cpp
   LoadMane.cpp
+  Main.cpp
+  Obj.cpp
   Over.cpp
+  Player.cpp
   Scene.cpp
   Score.cpp
   Sound.cpp
@@ -36,4 +39,4 @@ Dust.cpp(184,11): warning : comparison of 0 <= unsigned expression is always tru
   Title.cpp
   Touch.cpp
   Tree.cpp
-  Android1.NativeActivity.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so
+  Android1.NativeActivity.vcxproj -> C:\Users\1601291\Documents\GitHub\TeamProject\Android\ARM\Debug\libAndroid1.so

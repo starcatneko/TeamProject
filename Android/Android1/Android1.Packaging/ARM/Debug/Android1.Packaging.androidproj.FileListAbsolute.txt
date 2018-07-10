@@ -42,4 +42,3 @@ C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Battack_2.png
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Battack_3.png
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Bwalk.png
-C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\encount1.wav
