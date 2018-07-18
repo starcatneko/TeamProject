@@ -291,7 +291,7 @@ void Player::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 #endif
@@ -470,33 +470,33 @@ void Player::RectInit(void)
 			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
 		}
 	}
-	/*
+	
 	// キック
-	for (int in = 0; in < anim[type]["attack2"].max; ++in)
+	for (int in = 0; in < anim[type]["kick"].max; ++in)
 	{
 		//通常
 
 		if (in > 5)
 		{
-			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			SetRect(PlType::normal, "kick", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
-			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 		}
 		//ピンチ
 		if (in >= 2 && in <= 10)
 		{
-			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
-			SetRect(PlType::pinch, "attack2", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
-			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
 		}
 	}
-	*/
+	
 }
 
 // エフェクトのセット
