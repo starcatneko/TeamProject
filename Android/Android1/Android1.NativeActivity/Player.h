@@ -140,7 +140,7 @@ private:
 	// 攻撃時の処理
 	void Attack1(void);
 	void Attack2(void);
-
+	void Kick(void);
 	// ダメージ時の処理
 	void Damage(void);
 

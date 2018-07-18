@@ -350,13 +350,15 @@ void Player::AnimInit(void)
 	SetAnim(PlType::normal, "Ndash.png", "dash", 4, 3, size);
 	SetAnim(PlType::normal, "Npunch.png", "attack1", 4, 3, size);
 	SetAnim(PlType::normal, "Npunch2.png", "attack2", 4, 3, size);
+	SetAnim(PlType::normal, "Npunch.png", "kick", 4, 8, size);
 	SetAnim(PlType::normal, "Ndamage.png", "damage", 4, 3, size);
-
+	
 	SetAnim(PlType::pinch, "Dwait.png", "wait", 4, 4, size, 5);
 	SetAnim(PlType::pinch, "Dwalk.png", "walk", 4, 8, size);
 	SetAnim(PlType::pinch, "Ddash.png", "dash", 4, 3, size);
 	SetAnim(PlType::pinch, "Dpunch.png", "attack1", 4, 3, size);
 	SetAnim(PlType::pinch, "Dpunch2.png", "attack2", 4, 3, size);
+	SetAnim(PlType::normal, "Dkick.png", "kick", 4, 8, size);
 	SetAnim(PlType::pinch, "Ddamage.png", "damage", 4, 3, size);
 	SetAnim(PlType::pinch, "Ddead.png", "die", 4, 8, size);
 }
@@ -461,13 +463,40 @@ void Player::RectInit(void)
 		if (in >= 2 && in <= 10)
 		{
 			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
-			SetRect(PlType::pinch, "attack2", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2)  }, RectType::Attack);
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2) }, RectType::Attack);
 		}
 		else
 		{
 			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
 		}
 	}
+	/*
+	// キック
+	for (int in = 0; in < anim[type]["attack2"].max; ++in)
+	{
+		//通常
+
+		if (in > 5)
+		{
+			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+		}
+		else
+		{
+			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
+		}
+		//ピンチ
+		if (in >= 2 && in <= 10)
+		{
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2) }, RectType::Attack);
+		}
+		else
+		{
+			SetRect(PlType::pinch, "attack2", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
+		}
+	}
+	*/
 }
 
 // エフェクトのセット
@@ -609,6 +638,13 @@ void Player::Dash(void)
 	{
 		return;
 	}
+	if (Touch::Get()->Check(TAP, tmp))
+	{
+		func = &Player::Kick;
+		SetState(ST_NUETRAL, "kick");
+		return;
+		//state = kick;
+	}
 
 	reverse = (dash < 180.0f) ? false : true;
 
@@ -727,6 +763,67 @@ void Player::Attack2(void)
 		SetState(ST_NUETRAL, "wait");
 		func = &Player::Nuetral;
 	}
+}
+
+void Player::Kick(void)
+{
+
+	reverse = (dash < 180.0f) ? false : true;
+
+	if (45.0f <= dash && dash < 135.0f)
+	{
+		old_dir = DIR_RIGHT;
+	}
+	else if (135.0f <= dash && dash < 225.0f)
+	{
+		old_dir = DIR_UP;
+	}
+	else if (225.0f <= dash && dash < 315.0f)
+	{
+		old_dir = DIR_LEFT;
+	}
+	else
+	{
+		old_dir = DIR_DOWN;
+	}
+
+	if (type == PlType::normal)
+	{
+		effe["effect2"].flag = true;
+	}
+
+	if (reverse == false)
+	{
+		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
+		if (Touch::Get()->GetTri((int)dash).cos > 0)
+		{
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+		}
+		else
+		{
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+		}
+	}
+	else
+	{
+		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
+		if (Touch::Get()->GetTri((int)dash).cos > 0)
+		{
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+		}
+		else
+		{
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+		}
+	}
+
+	if (CheckAnimEnd() == true)
+	{
+		effe["effect2"].flag = false;
+		SetState(ST_NUETRAL, "wait");
+		func = &Player::Nuetral;
+	}
+
 }
 
 // ダメージ時の処理
