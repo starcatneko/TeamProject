@@ -350,7 +350,7 @@ void Player::AnimInit(void)
 	SetAnim(PlType::normal, "Ndash.png", "dash", 4, 3, size);
 	SetAnim(PlType::normal, "Npunch.png", "attack1", 4, 3, size);
 	SetAnim(PlType::normal, "Npunch2.png", "attack2", 4, 3, size);
-	SetAnim(PlType::normal, "Npunch.png", "kick", 4, 8, size);
+	SetAnim(PlType::normal, "Nkick.png", "kick", 4, 8, size);
 	SetAnim(PlType::normal, "Ndamage.png", "damage", 4, 3, size);
 	
 	SetAnim(PlType::pinch, "Dwait.png", "wait", 4, 4, size, 5);
@@ -358,7 +358,7 @@ void Player::AnimInit(void)
 	SetAnim(PlType::pinch, "Ddash.png", "dash", 4, 3, size);
 	SetAnim(PlType::pinch, "Dpunch.png", "attack1", 4, 3, size);
 	SetAnim(PlType::pinch, "Dpunch2.png", "attack2", 4, 3, size);
-	SetAnim(PlType::normal, "Dkick.png", "kick", 4, 8, size);
+	SetAnim(PlType::pinch, "Dkick.png", "kick", 4, 8, size);
 	SetAnim(PlType::pinch, "Ddamage.png", "damage", 4, 3, size);
 	SetAnim(PlType::pinch, "Ddead.png", "die", 4, 8, size);
 }
@@ -641,6 +641,8 @@ void Player::Dash(void)
 	if (Touch::Get()->Check(TAP, tmp))
 	{
 		func = &Player::Kick;
+		//SetState(ST_NUETRAL, "wait");
+
 		SetState(ST_NUETRAL, "kick");
 		return;
 		//state = kick;
@@ -794,26 +796,27 @@ void Player::Kick(void)
 
 	if (reverse == false)
 	{
-		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
+		pos.x += ((lpos.x + size.x) + 1 <= WINDOW_X) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed)) : 0;
+		
 		if (Touch::Get()->GetTri((int)dash).cos > 0)
 		{
-			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed)) : 0;
 		}
 		else
 		{
-			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed)) : 0;
 		}
 	}
 	else
 	{
-		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed * 2)) : 0;
+		pos.x += (lpos.x - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).sin * (speed)) : 0;
 		if (Touch::Get()->GetTri((int)dash).cos > 0)
 		{
-			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+			pos.y += ((lpos.y + size.y) + 1 <= WINDOW_Y) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed)) : 0;
 		}
 		else
 		{
-			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed * 2)) : 0;
+			pos.y += (lpos.y - 1 >= 0) ? (int)(Touch::Get()->GetTri((int)dash).cos * (speed)) : 0;
 		}
 	}
 
