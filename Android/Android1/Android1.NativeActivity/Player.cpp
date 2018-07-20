@@ -56,7 +56,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	reverse = false;
 	hp = HP_MAX;
 	power = 0;
-	speed = baseSpeed;
+	speed = baseSpeed+2;
 	m_flam = -1;
 	attack2 = false;
 	dash = 0.0f;
@@ -291,7 +291,7 @@ void Player::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 #endif
@@ -479,17 +479,17 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "kick", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::normal, "kick", in, { (size.x / 2) - 60, +40 }, { (size.x / 4), (size.y)/2 }, RectType::Attack);
 		}
 		else
 		{
 			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 		}
 		//ピンチ
-		if (in >= 2 && in <= 10)
+		if (in >= 2 && in <= 20)
 		{
-			SetRect(PlType::pinch, "kick", in, { (-size.x / 4) - 10, (size.y / 8) }, { (size.x / 2) + 20, (size.y / 3) + 20 }, RectType::Damage);
-			SetRect(PlType::pinch, "kick", in, { (-size.x / 10), (-size.y / 2) + 10 }, { (size.x / 2), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 2)+24, (-size.y / 2)+24 }, { (size.x)-48 , (size.y) - 48 }, RectType::Damage);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 2 )+28, (-size.y / 2) }, { (size.x)-28, (size.y) }, RectType::Attack);
 		}
 		else
 		{
@@ -940,7 +940,7 @@ void Player::UpData(void)
 {
 	type = (hp >= HP_MAX / 4) ? PlType::normal : PlType::pinch;
 	
-	speed = (type == PlType::normal) ? baseSpeed+2 : baseSpeed * 2;
+	speed = (type == PlType::normal) ? baseSpeed+3 : baseSpeed * 2;
 
 	lpos = cam.lock()->Correction(pos);
 	center = { (lpos.x + size.x / 2), (lpos.y + size.y / 2) };
