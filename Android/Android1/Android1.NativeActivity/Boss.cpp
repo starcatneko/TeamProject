@@ -290,7 +290,7 @@ void Boss::Attack1(void)
 			pl.lock()->SetOldDir(DIR_LEFT);
 		}
 		pl.lock()->SetState(ST_DAMAGE, "damage");
-		pl.lock()->DownHp(power);
+		pl.lock()->DownHp(power-5);
 	}
 
 	//攻撃アニメーションが終わったら

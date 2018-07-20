@@ -475,8 +475,11 @@ void Player::RectInit(void)
 	for (int in = 0; in < anim[type]["kick"].max; ++in)
 	{
 		//通常
-
 		if (in > 5)
+		{
+			SetRect(PlType::normal, "kick", in, { (size.x / 2) - 60, +40 }, { (size.x / 4), (size.y) / 2 }, RectType::Attack);
+		}
+		else if (in > 10)
 		{
 			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 			SetRect(PlType::normal, "kick", in, { (size.x / 2) - 60, +40 }, { (size.x / 4), (size.y)/2 }, RectType::Attack);
@@ -485,11 +488,16 @@ void Player::RectInit(void)
 		{
 			SetRect(PlType::normal, "kick", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
 		}
+
 		//ピンチ
-		if (in >= 2 && in <= 20)
+		if (in >= 0 && in <= 5)
 		{
-			SetRect(PlType::pinch, "kick", in, { (-size.x / 2)+24, (-size.y / 2)+24 }, { (size.x)-48 , (size.y) - 48 }, RectType::Damage);
-			SetRect(PlType::pinch, "kick", in, { (-size.x / 2 )+28, (-size.y / 2) }, { (size.x)-28, (size.y) }, RectType::Attack);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 2) + 28, (-size.y / 2) }, { (size.x) - 28, (size.y) }, RectType::Attack);
+		}
+		if (in >= 5 && in <= 20)
+		{
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 2) + 24, (-size.y / 2) + 24 }, { (size.x) - 48 , (size.y) - 48 }, RectType::Damage);
+			SetRect(PlType::pinch, "kick", in, { (-size.x / 2) + 28, (-size.y / 2) }, { (size.x) - 28, (size.y) }, RectType::Attack);
 		}
 		else
 		{
