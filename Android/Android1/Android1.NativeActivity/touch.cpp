@@ -113,7 +113,7 @@ void Touch::Draw(void)
 	}
 
 #ifndef _DEBUG
-	
+	/*
 	if (Tap() == true)
 	{
 		DrawString(50, 50, "タップ", GetColor(255, 0, 0), false);
@@ -133,6 +133,7 @@ void Touch::Draw(void)
 	{
 		DrawString(50, 50, "スワイプ", GetColor(255, 0, 0), false);
 	}
+	*/
 #endif
 }
 
