@@ -273,7 +273,7 @@ void Fannings::Walk(void)
 			}
 			else
 			{
-				pos.y -= (pos.y - 1 > 0) ? speed : 0;
+				pos.y -= (lpos.y - 1 > 0) ? speed : 0;
 			}
 		}
 	}
