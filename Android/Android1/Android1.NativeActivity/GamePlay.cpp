@@ -344,15 +344,6 @@ void GamePlay::Start(void)
 
 	Pinch();
 
-	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
-	{
-		if ((*itr)->GetClearFlag() == true)
-		{
-			Game::Get().ChangeScene(new Clear());
-			break;
-		}
-	}
-
 	//ゲームオーバー移行
 	if (pl->GetDie() == true)
 	{
@@ -368,6 +359,15 @@ void GamePlay::Start(void)
 	}
 #else
 #endif
+
+	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
+	{
+		if ((*itr)->GetClearFlag() == true)
+		{
+			Game::Get().ChangeScene(new Clear());
+			break;
+		}
+		}
 }
 
 // 処理
