@@ -131,6 +131,8 @@ private:
 
 	DIR d;
 
+	int timer;
+
 	// 三角関数
 	std::vector<Trigono>tri;
 };

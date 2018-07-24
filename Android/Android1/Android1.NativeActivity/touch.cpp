@@ -25,6 +25,7 @@ Touch::Touch() : flam(0)
 	memset(pos, -1, sizeof(pos));
 	old_pos = -1;
 	angle = 0.0f;
+	timer = 0;
 
 	for (float i = 0; i < circle; ++i)
 	{
@@ -174,6 +175,12 @@ void Touch::UpData(void)
 	else
 	{
 		pos[ST_TOUCH] = -1;
+		++timer;
+		if (timer >= 10)
+		{
+			SetState(ST_NON);
+			timer = 0;
+		}
 	}
 }
 

@@ -351,6 +351,17 @@ void GamePlay::Start(void)
 		Sound::Get()->Play(MU_BGM2);
 		Game::Get().ChangeScene(new Over());
 	}
+	else
+	{
+		for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
+		{
+			if ((*itr)->GetClearFlag() == true)
+			{
+				Game::Get().ChangeScene(new Clear());
+				break;
+			}
+		}
+	}
 
 #ifndef __ANDROID__
 	if (CheckHitKey(KEY_INPUT_RETURN))
@@ -360,14 +371,7 @@ void GamePlay::Start(void)
 #else
 #endif
 
-	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
-	{
-		if ((*itr)->GetClearFlag() == true)
-		{
-			Game::Get().ChangeScene(new Clear());
-			break;
-		}
-	}
+	
 }
 
 // 処理
