@@ -367,7 +367,7 @@ void GamePlay::Start(void)
 			Game::Get().ChangeScene(new Clear());
 			break;
 		}
-		}
+	}
 }
 
 // 処理
