@@ -78,28 +78,40 @@ void GamePlay::LoadDraw(void)
 
 void GamePlay::PlayerDraw(void)
 {
+	unsigned int i = 0;
 	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
 	{
 		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 > pl->GetCenter().y + pl->GetSize().y / 2)
 		{
-			ppp = &GamePlay::EnemysDraw;
-			break;
+			++i;
 		}
 	}
+
+	if (i > 0)
+	{
+		ppp = &GamePlay::EnemysDraw;
+	}
+
 	EnemyDraw();
 	pl->Draw();
 }
 
 void GamePlay::EnemysDraw(void)
 {
+	unsigned int i = 0;
 	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
 	{
 		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 < pl->GetCenter().y + pl->GetSize().y / 2)
 		{
-			ppp = &GamePlay::PlayerDraw;
-			break;
+			++i;
 		}
 	}
+
+	if (i > 0)
+	{
+		ppp = &GamePlay::PlayerDraw;
+	}
+
 	pl->Draw();
 	EnemyDraw();
 }
