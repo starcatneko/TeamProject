@@ -10,8 +10,8 @@
 // 文字画像データ
 #define OVER_X 1
 #define OVER_Y 1
-#define OVER_SIZE_X 403
-#define OVER_SIZE_Y 129
+#define OVER_SIZE_X 605
+#define OVER_SIZE_Y 194
 
 // 背景画像データ
 #define BACK_X 1
@@ -21,7 +21,7 @@
 Over::Over() : alpha(0), flam(0)
 {
 	Reset();
-	image["over"] = LoadMane::Get()->Load("over.png");
+	image["over"] = LoadMane::Get()->Load("over2.png");
 	image["back"] = LoadMane::Get()->Load("overback.png");
 	large["over"] = 2;
 	large["back"] = 1;

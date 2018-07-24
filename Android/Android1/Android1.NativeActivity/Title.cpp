@@ -27,14 +27,14 @@ Title::Title() : alpha(0)
 
 	image["back"] = LoadMane::Get()->Load("titleback.png");
 	image["yazirusi"] = LoadMane::Get()->Load("yazirusi.png");
-	image["title"] = LoadMane::Get()->Load("titleLogo.png");
+	image["title"] = LoadMane::Get()->Load("titleLogo2.png");
 
 	large["back"] = 1;
 	large["yazirusi"] = 1;
 	large["flick"] = 1;
 
 	pos["back"] = { WINDOW_X / 2, WINDOW_Y / 2 };
-	pos["yazirusi"] = { (WINDOW_X / 2) - (arrowSize.x * large["yazirusi"]) / 2, (WINDOW_Y / 2) - (arrowSize.y * large["yazirusi"]) / 2 };
+	pos["yazirusi"] = { (WINDOW_X / 2) - (arrowSize.x * large["yazirusi"]) / 2, (WINDOW_Y - (WINDOW_Y / 4)) - (arrowSize.y * large["yazirusi"]) / 2 };
 	pos["flick"] = { (WINDOW_X / 2) - (flickSize.x * large["flick"]) / 2, (WINDOW_Y / 2) - (flickSize.y * large["flick"]) / 2 };
 
 	i = 1.0;
@@ -89,13 +89,13 @@ void Title::Draw(void)
 // 処理
 void Title::UpData(void)
 {
-	if (pos["yazirusi"].y > 200)
+	if (pos["yazirusi"].y > WINDOW_Y / 2)
 	{
 		pos["yazirusi"].y -= 10;
 	}
 	else
 	{
-		pos["yazirusi"].y = (WINDOW_Y / 2) - (arrowSize.y * large["yazirusi"]) / 2;
+		pos["yazirusi"].y = (WINDOW_Y - (WINDOW_Y / 4)) - (arrowSize.y * large["yazirusi"]) / 2;
 	}
 
 	(this->*func)();
