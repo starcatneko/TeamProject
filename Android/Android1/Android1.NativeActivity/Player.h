@@ -189,6 +189,21 @@ private:
 	// 裏技
 	int skill;
 
+	// 波動拳
+	Pos bPos;
+	Pos bSize;
+	DIR Dir;
+	int speed;
+	std::map<std::string, bool> flag;
+	std::map<std::string, int> time;
+	std::map<std::string, int> Image;
+
+	void MikioInit();
+	void MikioBlaster();
+	void MikioDraw();
+	void MikioTime();
+	void MikioReset();
+
 	// 
 	std::map<PlType, std::map<std::string, Anim>>anim;
 

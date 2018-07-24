@@ -70,10 +70,10 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	AnimInit();
 	RectInit();
 	EffectInit();
+	MikioInit();
 
 	draw = &Player::NormalDraw;
 	func = &Player::Nuetral;
-
 }
 
 // デストラクタ
@@ -147,6 +147,8 @@ void Player::NormalDraw(void)
 		anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
 		anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
 		(double)large, 0.0, anim[type][mode].image, true, reverse, false);
+
+	MikioDraw();
 }
 
 // ピンチ描画
@@ -555,7 +557,7 @@ void Player::Nuetral(void)
 	{
 		++skill;
 		effe["effect3"].flag = true;
-		if (skill >= 60 * 15)
+		if (skill >= 60 * 1)
 		{
 			effe["effect3"].flag = false;
 			effe["effect4"].flag = true;
@@ -1001,6 +1003,8 @@ void Player::UpData(void)
 	{
 		UpPower(10);
 	}
+
+	MikioBlaster();
 }
 
 // リセット
@@ -1009,6 +1013,152 @@ void Player::Reset(void)
 	anim.clear();
 	effect.clear();
 	effe.clear();
+}
+
+void Player::MikioInit(void)
+{
+	bPos = { pos.x , pos.y};
+	bSize = { 256, 256};
+	speed = 20;
+	flag["right"] = false;
+	flag["left"] = false;
+	flag["shot"] = false;
+	flag["charge"] = false;
+
+	time["comma"] = 0;
+	time["charge"] = 300;
+	time["animation"] = 0;
+
+	Image["blasterBullet"] = LoadMane::Get()->Load("BlasterBall.png");
+	Image["blasterBullet2"] = LoadMane::Get()->Load("BlasterBall2.png");
+	Image["charge"] = LoadMane::Get()->Load("blasterChargeEffect.png");
+	Image["charge2"] = LoadMane::Get()->Load("blasterChargeEffect2.png");
+
+	MikioTime();
+}
+
+void Player::MikioBlaster(void)
+{
+	if (flag["shot"] == false) {
+		if (CheckHitKey(KEY_INPUT_S)) {
+			bPos = { pos.x, pos.y };
+			flag["shot"] = true;
+		}
+		else {
+			// 新航方向決定
+			// 右
+			if (tmp == DIR_RIGHT) {
+				flag["right"] = true;
+				flag["left"] = false;
+				if (tmp == DIR_UP || tmp == DIR_DOWN || tmp == DIR_NON) {
+					flag["right"] = true;
+					flag["left"] = false;
+				}
+			}
+			// 左
+			if (tmp == DIR_LEFT) {
+				flag["right"] = false;
+				flag["left"] = true;
+				if (tmp == DIR_UP || tmp == DIR_DOWN || tmp == DIR_NON) {
+					flag["right"] = false;
+					flag["left"] = true;
+				}
+			}
+		}
+	}
+	else {
+		// 発射
+		// 右
+		if (flag["right"] == true) {
+			bPos.x += speed;
+			if (bPos.x >= (WINDOW_X + bSize.x)) flag["right"] = false, flag["shot"] = false;
+		}
+		// 左
+		if (flag["left"] == true) {
+			bPos.x -= speed;
+			if (bPos.x <= -bSize.x) flag["left"] = false, flag["shot"] = false;
+		}
+	}
+
+	if (flag["charge"] == false) {
+		if (CheckHitKey(KEY_INPUT_D)) {
+			flag["charge"] = true;
+		}
+	}
+	else {
+		if (!CheckHitKey(KEY_INPUT_D)) {
+			flag["charge"] = false;
+		}
+		if (time["comma"] >= 0) time["comma"]++;
+		if (time["comma"] > 61) time["second"] += 1, time["comma"] = 0;
+	}
+}
+
+void Player::MikioDraw(void)
+{
+	if (flag["shot"] == true) {
+		DrawRectRotaGraph2(
+			(bPos.x + (bSize.x / 2)),(bPos.y + (bSize.y / 2)),
+			0,0,
+			bSize.x, bSize.y,
+			(bSize.x / 2),(bSize.y / 2),
+			1.0f, 0.0f,
+			Image["blasterBullet"],
+			true, false
+		);
+		DrawString( 0, 0, "発射中", 0xffffff);
+	}
+	else {
+		DrawString(0, 0, "未発射", 0xffffff);
+	}
+	if (flag["charge"] == true) {
+		if (time["animation"] >= 0) time["animation"]++;
+		if (time["animation"] >= 28) time["animation"] = 0;
+		if (time["second"] <= 5) {
+			DrawRectRotaGraph2(
+				((pos.x - 15) + (270 / 2)), ((pos.y + 30) + (270 / 2)),
+				(time["animation"] / 3) * 270, 0,
+				270, 270,
+				(270 / 2), (270 / 2),
+				3.0f, 0.0f,
+				Image["charge"],
+				true, false
+			);
+			DrawString(0, 30, "チャージ中", 0xffffff);
+		}
+		else if (time["second"] >= 5) {
+			DrawRectRotaGraph2(
+				((pos.x - 15) + (270 / 2)), ((pos.y + 30) + (270 / 2)),
+				(time["animation"] / 3) * 270, 0,
+				270, 270,
+				(270 / 2), (270 / 2),
+				3.0f, 0.0f,
+				Image["charge2"],
+				true, false
+			);
+			DrawString(0, 30, "チャージ中2", 0xffffff);
+		}
+	}
+	else {
+		DrawString(0, 30, "未チャージ", 0xffffff);
+		time["animation"] = 0;
+		time["second"] = 0;
+		time["comma"] = 0;
+	}
+}
+
+void Player::MikioTime()
+{
+	time["second"] = time["comma"] / 60;
+	time["minute"] = time["second"] / 60;
+	time["hour"] = time["hour"] / 60;
+}
+
+void Player::MikioReset()
+{
+	time.clear();
+	flag.clear();
+	Image.clear();
 }
 
 // 体力の上昇
