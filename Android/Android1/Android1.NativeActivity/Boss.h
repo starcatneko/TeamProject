@@ -8,13 +8,12 @@ public:
 	Boss(Pos pos, std::weak_ptr<Camera>cam, std::weak_ptr<Stage>st, std::weak_ptr<Player>pl);
 	// デストラクタ
 	~Boss();
-
 	// 描画
 	void Draw(void);
-
 	// 処理
 	void UpData(void);
-
+	//攻撃開始状態か
+	void CheckAttackStart(void);
 private:
 	// アニメーションのセット
 	void AnimInit(void);
@@ -54,6 +53,8 @@ private:
 
 	// 直前のHP
 	int oldhp;
+	// 攻撃前描画
+	bool a_start;
 
 	// 関数ポインタ
 	void (Boss::*func)(void);
