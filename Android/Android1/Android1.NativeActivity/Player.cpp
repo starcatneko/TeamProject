@@ -129,6 +129,8 @@ bool Player::CheckAnimEnd(void)
 // 通常描画
 void Player::NormalDraw(void)
 {
+	DrawFormatString(0, 1000, GetColor(255, 255, 0), "playermode::%s", mode.c_str());
+
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
 	DrawOval(size.x/2+lpos.x , lpos.y + size.y - 10,
 		60, 30, 0x666666, 1, true);
