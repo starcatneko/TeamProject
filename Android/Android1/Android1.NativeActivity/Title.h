@@ -33,6 +33,11 @@ private:
 	// 透明度
 	int alpha;
 
+	// リンゴの上下運動関連のフラグ
+	bool A1upflag;
+	bool A2upflag;
+	bool GRupflag;
+
 	// 画像データ
 	std::map<std::string, int>image;
 
