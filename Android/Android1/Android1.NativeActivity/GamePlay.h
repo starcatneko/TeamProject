@@ -57,6 +57,8 @@ private:
 	// 読み込み
 	void Load(void);
 
+	void Sousa(void);
+
 	//敵の描画
 	void EnemyDraw(void);
 	//敵の処理

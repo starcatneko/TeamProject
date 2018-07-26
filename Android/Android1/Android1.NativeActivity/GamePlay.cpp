@@ -69,6 +69,9 @@ void GamePlay::LoadDraw(void)
 	Sound::Get()->SoundInit2();
 	Sound::Get()->Play(MU_BGM1);
 
+	image["sousa1"] = LoadMane::Get()->Load("sousa1.png");
+	//image["sousa2"] = LoadMane::Get()->Load("sousa2.png");
+	//image["sousa3"] = LoadMane::Get()->Load("sousa3.png");
 
 	if (alpha["image"] <= 0)
 	{
@@ -184,7 +187,6 @@ void GamePlay::Load(void)
 			++read[0];
 			x = 0;
 		}
-
 	}
 
 	x = 0;
@@ -211,8 +213,12 @@ void GamePlay::Load(void)
 			++read[1];
 			x = 0;
 		}
-
 	}
+}
+
+void GamePlay::Sousa(void)
+{
+	//DrawGraph(0, 0, image["sousa1"], true);
 }
 
 // 敵の描画
@@ -380,6 +386,7 @@ void GamePlay::UpData(void)
 	cam->UpData(pl->GetLocalPos());
 
 	Load();
+	Sousa();
 
 	if (GameMane::Get()->GetHit() == true)
 	{
