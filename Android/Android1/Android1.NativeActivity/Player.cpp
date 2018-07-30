@@ -52,6 +52,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	target = lpos;
 	type = PlType::normal;
 	dir = DIR_UP;
+	state = ST_NUETRAL;
 	old_dir = dir;
 	reverse = false;
 	hp = HP_MAX;
