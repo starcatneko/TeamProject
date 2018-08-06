@@ -63,6 +63,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	tmp = DIR_NON;
 	w_flam = 0;
 	offset = 0;
+	power_max_wait = 0;
 	change = -1;
 	skill = 0;
 	dropflag = false;
@@ -980,7 +981,19 @@ void Player::UpData(void)
 
 		if (w_flam % (60 * 3) == 0)
 		{
-			DownPower(1);
+			if (GetPower() == 100)
+			{
+				power_max_wait++;
+				if (power_max_wait >5)
+				{
+					power_max_wait = 0;
+					DownPower(1);
+				}
+			}
+			else
+			{
+				DownPower(1);
+			}
 		}
 	}
 

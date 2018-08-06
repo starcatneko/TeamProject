@@ -189,6 +189,9 @@ private:
 	// 裏技
 	int skill;
 
+	// パワーがMAXになった後に減衰が始まるまでのウェイト
+	int power_max_wait;
+
 	// 
 	std::map<PlType, std::map<std::string, Anim>>anim;
 
