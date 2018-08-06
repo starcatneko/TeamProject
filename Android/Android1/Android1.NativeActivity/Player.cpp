@@ -71,10 +71,10 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	AnimInit();
 	RectInit();
 	EffectInit();
+	MikioInit();
 
 	draw = &Player::NormalDraw;
 	func = &Player::Nuetral;
-
 }
 
 // デストラクタ
@@ -130,8 +130,6 @@ bool Player::CheckAnimEnd(void)
 // 通常描画
 void Player::NormalDraw(void)
 {
-	DrawFormatString(0, 1000, GetColor(255, 255, 0), "playermode::%s", mode.c_str());
-
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 160);
 	DrawOval(size.x/2+lpos.x , lpos.y + size.y - 10,
 		60, 30, 0x666666, 1, true);
@@ -150,6 +148,8 @@ void Player::NormalDraw(void)
 		anim[type][mode].animData[index].size.x, anim[type][mode].animData[index].size.y,
 		anim[type][mode].animData[index].size.x / 2, anim[type][mode].animData[index].size.y / 2,
 		(double)large, 0.0, anim[type][mode].image, true, reverse, false);
+
+	MikioDraw();
 }
 
 // ピンチ描画
@@ -294,7 +294,7 @@ void Player::Draw(void)
 		{
 			color = GetColor(255, 0, 0);
 		}
-		//DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
+		DrawBox(r.offset.x, r.offset.y, r.offset.x + r.size.x, r.offset.y + r.size.y, color, true);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 #endif
@@ -554,11 +554,11 @@ void Player::Nuetral(void)
 		func = &Player::Attack1;
 	}
 
-	if (Touch::Get()->Check(PRESS, tmp) == true)
+	/*if (Touch::Get()->Check(PRESS, tmp) == true)
 	{
 		++skill;
 		effe["effect3"].flag = true;
-		if (skill >= 60 * 15)
+		if (skill >= 60 * 1)
 		{
 			effe["effect3"].flag = false;
 			effe["effect4"].flag = true;
@@ -587,7 +587,7 @@ void Player::Nuetral(void)
 			}
 		}
 		skill = 0;
-	}
+	}*/
 }
 
 // 移動時の処理
@@ -1016,6 +1016,8 @@ void Player::UpData(void)
 	{
 		UpPower(10);
 	}
+
+	MikioBlaster();
 }
 
 // リセット
@@ -1024,6 +1026,221 @@ void Player::Reset(void)
 	anim.clear();
 	effect.clear();
 	effe.clear();
+}
+
+void Player::MikioInit(void)
+{
+	bPos = pos;
+	speed = 20;
+	angle = 0;
+
+	flag["right"] = false;
+	flag["left"] = false;
+
+	flag["shot"] = false;
+	flag["shot2"] = false;
+	flag["charge"] = false;
+
+	time["flame"] = 60;
+	time["comma"] = 0;
+	time["charge"] = time["flame"] * 5;
+	time["animation"] = 0;
+	time["animBlast"] = 0;
+	time["blaster"] = 0;
+
+	Size["ball"] = { 144,144};
+	Size["effect"] = { 270, 270};
+	Size["blaster"] = { 400, 135};
+
+	Image["ball"] = LoadMane::Get()->Load("blastBalls.png");
+	Image["charge"] = LoadMane::Get()->Load("blasterChargeEffecter.png");
+	Image["blaster"] = LoadMane::Get()->Load("beam.png");
+
+	MikioTime();
+}
+
+void Player::MikioBlaster(void)
+{
+	if (CheckHitKey(KEY_INPUT_R)) flag["shot"] = false, flag["shot2"] = false;
+
+	if (flag["charge"] == false) {
+		for (int i = 0; i < anim[type]["wait"].max; ++i)
+		{
+			if (anim[type]["wait"].rect[i].size() >= 2)
+			{
+				anim[type]["wait"].rect[i].pop_back();
+			}
+		}
+		if (Touch::Get()->Check( PRESS,tmp) == true) {
+			flag["charge"] = true;
+		}
+	}
+	else {
+		if (Touch::Get()->Check( PRESS, tmp) == false) {
+			flag["charge"] = false;
+			if (time["second"] > 6) {
+				if (flag["shot"] == false) {
+					flag["shot"] = true;
+				}
+			}
+		}
+		if (time["comma"] >= 0) time["comma"]++;
+		if (time["comma"] >= time["flame"]) time["second"] += 1, time["comma"] = 0;
+	}
+	MiddleShot();
+}
+
+void Player::MiddleShot()
+{
+	// 発射していない時
+	if (flag["shot"] == false) {
+		// 新航方向決定
+		time["blaster"] = 150;
+		DrawString( 0, 60, "未発射", 0x000000);
+	}
+	// 発射した際
+	else {
+		bPos = pos;
+		DrawString( 0, 60, "発射中", 0x000000);
+		time["blaster"]--;
+		if (reverse == false) {
+			for (int in = 0; in < 90; in++) {
+				SetRect(PlType::normal, "wait", in, { 0,-50 }, { Size["blaster"].x * 3, Size["blaster"].y }, RectType::Attack);
+			}
+		}
+		else {
+			for (int in = 0; in < 90; in++) {
+				SetRect(PlType::normal, "wait", in, { 0, -50 }, { Size["blaster"].x * 3, Size["blaster"].y }, RectType::Attack);
+			}
+		}
+		if (time["blaster"] < 0) flag["shot"] = false;
+	}
+}
+
+void Player::MikioDraw(void)
+{
+	Pos tmpPos;
+	tmpPos = {bPos.x,(bPos.y + 90)};
+	// 発射した時
+	if (flag["shot"] == true) {
+		if (time["animBlast"] >= 0) time["animBlast"]++;
+		if (reverse == false)
+		{
+			if (time["animBlast"] > 192) time["animBlast"] = 0;
+			DrawRectRotaGraph2(
+				(tmpPos.x + (Size["blaster"].x / 2)) + 405, tmpPos.y + (Size["blaster"].y / 2) - cam.lock()->GetPos().y,
+				0, (time["animBlast"] / 3) * Size["blaster"].y,
+				Size["blaster"].x, Size["blaster"].y,
+				(Size["blaster"].x / 2), (Size["blaster"].y / 2),
+				3.0f, 0.0f,
+				Image["blaster"],
+				true, false
+			);
+		}
+		else
+		{
+			if (time["animBlast"] > 192) time["animBlast"] = 0;
+			DrawRectRotaGraph2(
+				((tmpPos.x - (Size["blaster"].x / 2)) - ((Size["blaster"].x / 3) + 50)), tmpPos.y + (Size["blaster"].y / 2) - cam.lock()->GetPos().y,
+				0, (time["animBlast"] / 3) * Size["blaster"].y,
+				Size["blaster"].x, Size["blaster"].y,
+				(Size["blaster"].x / 2), (Size["blaster"].y / 2),
+				3.0f, 0.0f,
+				Image["blaster"],
+				true, true
+			);
+		}
+	}
+	// そもそも発射してない時
+	else {
+		DrawString(0, 0, "未発射", 0x000000);
+	}
+
+	// チャージ中
+	if (flag["charge"] == true) {
+		if (time["animation"] >= 0) time["animation"]++;
+		if (time["animation"] >= 28) time["animation"] = 0;
+		// 5秒以下だったら
+		if (time["second"] <= 3) {
+			// チャージ1
+			DrawRectRotaGraph2(
+				((pos.x - 15) + (Size["effect"].x / 2)), ((pos.y + 30) + (Size["effect"].y / 2)) - cam.lock()->GetPos().y,
+				(time["animation"] / 3) * Size["effect"].x, Size["effect"].x * 0,
+				Size["effect"].x, Size["effect"].x,
+				(Size["effect"].x / 2), (Size["effect"].x / 2),
+				3.0f, 0.0f,
+				Image["charge"],
+				true, false
+			);
+			DrawString(0, 30, "チャージ中", 0xffffff);
+		}
+		// 5秒以上10秒以下なら
+		else if ((time["second"] >= 3) && (time["second"] <= 6)) {
+			// チャージ2
+			DrawRectRotaGraph2(
+				((pos.x - 15) + (Size["effect"].x / 2)), ((pos.y + 30) + (Size["effect"].y / 2)) - cam.lock()->GetPos().y,
+				(time["animation"] / 3) * Size["effect"].x, Size["effect"].x * 1,
+				Size["effect"].x, Size["effect"].x,
+				(Size["effect"].x / 2), (Size["effect"].x / 2),
+				3.0f, 0.0f,
+				Image["charge"],
+				true, false
+			);
+			DrawString(0, 30, "チャージ中2", 0xffffff);
+		}
+		else if (time["second"] >= 6) {
+			// チャージ3
+			DrawRectRotaGraph2(
+				((pos.x - 15) + (Size["effect"].x / 2)), ((pos.y + 30) + (Size["effect"].y / 2)) - cam.lock()->GetPos().y,
+				(time["animation"] / 3) * Size["effect"].x, Size["effect"].y * 2,
+				Size["effect"].x, Size["effect"].x,
+				(Size["effect"].x / 2), (Size["effect"].x / 2),
+				3.0f, 0.0f,
+				Image["charge"],
+				true, false
+			);
+			DrawString(0, 30, "チャージ中3", 0xffffff);
+		}
+	}
+	// そもそもチャージしてなきゃ
+	else {
+		// チャージしない
+		DrawString(0, 30, "未チャージ", 0xffffff);
+		time["animation"] = 0;
+		time["second"] = 0;
+		time["comma"] = 0;
+	}
+}
+
+void Player::MikioTime()
+{
+	// 時間定義
+	time["second"] = time["comma"] / time["flame"];
+	time["minute"] = time["second"] / time["flame"];
+	time["hour"] = time["hour"] / time["flame"];
+}
+
+void Player::MikioReset()
+{
+	time.clear();
+	flag.clear();
+	Image.clear();
+	Size.clear();
+}
+
+int Player::flagSelector(std::string flagName)
+{
+	// right
+	if (flagName == "right") {
+		flag["right"] = true;
+		flag["left"] = false;
+	}
+	// left
+	if (flagName == "left") {
+		flag["right"] = false;
+		flag["left"] = true;
+	}
+	return true;
 }
 
 // 体力の上昇

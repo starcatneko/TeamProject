@@ -191,7 +191,23 @@ private:
 
 	// パワーがMAXになった後に減衰が始まるまでのウェイト
 	int power_max_wait;
+	// 波動拳
+	Pos bPos;
+	int speed;
+	int angle;
+	std::map<std::string, Pos> Size;
+	std::map<std::string, bool> flag;
+	std::map<std::string, int> time;
+	std::map<std::string, int> Image;
 
+	void MikioInit();
+	void MikioBlaster();
+	void MiddleShot();
+	void StlengthShot();
+	void MikioDraw();
+	void MikioTime();
+	void MikioReset();
+	int flagSelector(std::string flagName);
 	// 
 	std::map<PlType, std::map<std::string, Anim>>anim;
 
