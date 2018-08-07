@@ -22,7 +22,7 @@
 #define LOAD_SIZE_Y 116
 
 // コンストラクタ
-GamePlay::GamePlay() : blend(false), flam(0), stop(0)
+GamePlay::GamePlay() : blend(false), stop(0) , sousaNo(0)
 {
 	Reset();
 	Create();
@@ -33,6 +33,9 @@ GamePlay::GamePlay() : blend(false), flam(0), stop(0)
 	draw = &GamePlay::LoadDraw;
 	ppp = &GamePlay::PlayerDraw;
 	func = &GamePlay::NotStart;
+	sousa.push_back(LoadMane::Get()->Load("sousa1.png"));
+	sousa.push_back(LoadMane::Get()->Load("sousa2.png"));
+	sousa.push_back(LoadMane::Get()->Load("sousa3.png"));
 	boss_flg = false;
 }
 
@@ -63,15 +66,12 @@ void GamePlay::LoadDraw(void)
 	ui->Draw();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
-	DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
-	pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
+	//DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
+	//pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
+	DrawGraph(0, 0, sousa[sousaNo], true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	Sound::Get()->SoundInit2();
 	Sound::Get()->Play(MU_BGM1);
-
-	image["sousa1"] = LoadMane::Get()->Load("sousa1.png");
-	//image["sousa2"] = LoadMane::Get()->Load("sousa2.png");
-	//image["sousa3"] = LoadMane::Get()->Load("sousa3.png");
 
 	if (alpha["image"] <= 0)
 	{
@@ -81,16 +81,7 @@ void GamePlay::LoadDraw(void)
 
 void GamePlay::PlayerDraw(void)
 {
-	unsigned int i = 0;
-	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
-	{
-		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 > pl->GetCenter().y + pl->GetSize().y / 2)
-		{
-			++i;
-		}
-	}
-
-	if (i > 0)
+	if (pl->GetLocalPos().y < WINDOW_Y / 2)
 	{
 		ppp = &GamePlay::EnemysDraw;
 	}
@@ -101,16 +92,7 @@ void GamePlay::PlayerDraw(void)
 
 void GamePlay::EnemysDraw(void)
 {
-	unsigned int i = 0;
-	for (auto itr = enemy.begin(); itr != enemy.end(); ++itr)
-	{
-		if ((*itr)->GetCenter().y + (*itr)->Getsize().y / 2 < pl->GetCenter().y + pl->GetSize().y / 2)
-		{
-			++i;
-		}
-	}
-
-	if (i > 0)
+	if (pl->GetLocalPos().y > WINDOW_Y / 2)
 	{
 		ppp = &GamePlay::PlayerDraw;
 	}
@@ -328,8 +310,43 @@ void GamePlay::Pinch(void)
 // 各クラスの処理前
 void GamePlay::NotStart(void)
 {
-	++flam;
+	/*++flam;
 	if (SECOND(flam) >= 1)
+	{
+		alpha["image"] -= 25;
+		if (alpha["image"] <= 0)
+		{
+			func = &GamePlay::Start;
+		}
+	}*/
+
+	DIR dir;
+	static bool st = false;
+	if (Touch::Get()->Check(FLICK, dir) == true)
+	{
+		if ((sousaNo >= sousa.size() - 1) && dir == DIR_RIGHT)
+		{
+			st = true;
+		}
+
+		if (dir == DIR_RIGHT)
+		{
+			sousaNo = (sousaNo + 1 >= 3) ? sousaNo : ++sousaNo;
+		}
+		else if (dir == DIR_LEFT)
+		{
+			sousaNo = (sousaNo > 0) ? --sousaNo : sousaNo;
+		}
+	}
+	else if (Touch::Get()->Check(TAP, dir) == true)
+	{
+		if (sousaNo >= sousa.size() - 1)
+		{
+			st = true;
+		}
+	}
+
+	if (st == true)
 	{
 		alpha["image"] -= 25;
 		if (alpha["image"] <= 0)

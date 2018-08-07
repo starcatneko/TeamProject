@@ -54,6 +54,5 @@ private:
 	int temp2screen;		//描画していたスクリーンを一時的に退避させる
 
 	int filterscreen;		//subscreenと合成する
-
 };
 

@@ -129,8 +129,6 @@ private:
 	int screen_puni;
 	int tempscreen;
 
-	DIR d;
-
 	int timer;
 
 	// 三角関数

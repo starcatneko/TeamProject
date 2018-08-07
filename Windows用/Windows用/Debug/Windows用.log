@@ -1,1 +1,19 @@
-﻿  Windows用.vcxproj -> C:\Users\1601270\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe
+﻿  Apple.cpp
+  BackGround.cpp
+  Boss.cpp
+  Camera.cpp
+  Clear.cpp
+  Debug.cpp
+  Dust.cpp
+  Fannings.cpp
+  Game.cpp
+c:\users\1601271\documents\github\teamproject\android\android1\android1.nativeactivity\game.cpp(32): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  GamePlay.cpp
+  GreenApple.cpp
+  Over.cpp
+  Player.cpp
+  Title.cpp
+  Touch.cpp
+  Tree.cpp
+  コードを生成中...
+  Windows用.vcxproj -> C:\Users\1601271\Documents\GitHub\TeamProject\Windows用\Debug\Windows用.exe

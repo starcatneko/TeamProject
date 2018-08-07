@@ -90,7 +90,6 @@ private:
 	map<string, int> Image;
 	// キャラクター画像
 	map<string, map<string, int>>charImage;
-	int image[4][12];
 	// キャラクターのアニメーション
 	int animCnt;
 	// キャラクター座標

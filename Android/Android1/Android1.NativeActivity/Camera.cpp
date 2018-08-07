@@ -89,7 +89,6 @@ void Camera::Move(const Pos& pos)
 // 画面揺らし
 void Camera::Shake(const Pos& pos)
 {
-	static int tmp;
 	if (shake_frame == 0)
 	{
 		shake_frame = frame;

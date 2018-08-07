@@ -103,9 +103,6 @@ private:
 	// ピンチ時フラグ
 	bool blend;
 
-	// フレーム
-	int flam;
-
 	// ヒットストップ
 	int stop;
 
@@ -120,5 +117,9 @@ private:
 
 	//ボスがスポーンするかどうかのフラグ
 	bool boss_flg;
+
+	// 操作画像
+	std::vector<int>sousa;
+	unsigned int sousaNo;
 };
 
