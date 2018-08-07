@@ -1083,12 +1083,12 @@ void Player::MiddleShot()
 	if (flag["shot"] == false) {
 		// 新航方向決定
 		time["blaster"] = 150;
-		DrawString( 0, 60, "未発射", 0x000000);
+		//DrawString( 0, 60, "未発射", 0x000000);
 	}
 	// 発射した際
 	else {
 		bPos = pos;
-		DrawString( 0, 60, "発射中", 0x000000);
+		//DrawString( 0, 60, "発射中", 0x000000);
 		time["blaster"]--;
 		if (reverse == false) {
 			for (int in = 0; in < 90; in++) {
@@ -1140,7 +1140,7 @@ void Player::MikioDraw(void)
 	}
 	// そもそも発射してない時
 	else {
-		DrawString(0, 0, "未発射", 0x000000);
+		//DrawString(0, 0, "未発射", 0x000000);
 	}
 
 	// チャージ中
@@ -1159,7 +1159,7 @@ void Player::MikioDraw(void)
 				Image["charge"],
 				true, false
 			);
-			DrawString(0, 30, "チャージ中", 0xffffff);
+			//DrawString(0, 30, "チャージ中", 0xffffff);
 		}
 		// 5秒以上10秒以下なら
 		else if ((time["second"] >= 3) && (time["second"] <= 6)) {
@@ -1173,7 +1173,7 @@ void Player::MikioDraw(void)
 				Image["charge"],
 				true, false
 			);
-			DrawString(0, 30, "チャージ中2", 0xffffff);
+			//DrawString(0, 30, "チャージ中2", 0xffffff);
 		}
 		else if (time["second"] >= 6) {
 			// チャージ3
@@ -1186,13 +1186,13 @@ void Player::MikioDraw(void)
 				Image["charge"],
 				true, false
 			);
-			DrawString(0, 30, "チャージ中3", 0xffffff);
+			//DrawString(0, 30, "チャージ中3", 0xffffff);
 		}
 	}
 	// そもそもチャージしてなきゃ
 	else {
 		// チャージしない
-		DrawString(0, 30, "未チャージ", 0xffffff);
+		//DrawString(0, 30, "未チャージ", 0xffffff);
 		time["animation"] = 0;
 		time["second"] = 0;
 		time["comma"] = 0;
