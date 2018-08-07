@@ -188,6 +188,7 @@
     <Content Include="assets\punch.ogg" />
     <Content Include="assets\spawn.wav" />
     <Content Include="assets\step.ogg" />
+    <Content Include="assets\ThankyouBG.png" />
     <Content Include="assets\titleback.png" />
     <Content Include="assets\tree.png" />
     <Content Include="assets\voice1.ogg" />
