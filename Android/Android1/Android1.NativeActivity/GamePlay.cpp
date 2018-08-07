@@ -36,6 +36,7 @@ GamePlay::GamePlay() : blend(false), stop(0) , sousaNo(0)
 	sousa.push_back(LoadMane::Get()->Load("sousa1.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa2.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa3.png"));
+	sousa.push_back(LoadMane::Get()->Load("sousa4.png"));
 	boss_flg = false;
 }
 
@@ -331,7 +332,7 @@ void GamePlay::NotStart(void)
 
 		if (dir == DIR_RIGHT)
 		{
-			sousaNo = (sousaNo + 1 >= 3) ? sousaNo : ++sousaNo;
+			sousaNo = (sousaNo + 1 >= 4) ? sousaNo : ++sousaNo;
 		}
 		else if (dir == DIR_LEFT)
 		{
