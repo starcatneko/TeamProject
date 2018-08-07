@@ -443,11 +443,11 @@ void Fannings::UpData(void)
 		GameMane::Get()->SetHit(true);
 		target.x = (pl.lock()->GetReverse() == false) ? WINDOW_X - size.x - 1 : 0 + 1;
 
-		if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
+		if (pl.lock()->GetPower() < 50)
 		{
 			hp -= 1;
 		}
-		else if (60 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 70)
+		else if (50 <= pl.lock()->GetPower() && pl.lock()->GetPower() < 70)
 		{
 			hp -= 2;
 		}
