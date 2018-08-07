@@ -46,7 +46,7 @@ void Sound::Load(std::string fileName, const SOUND& type)
 // 読み込み
 void Sound::SoundInit(void)
 {
-	Load("light.ogg", SE_LIGHT);
+	Load("bgm1.wav", SE_LIGHT);
 
 	Load("hit1.ogg", SE_HIT1);
 	Load("hit2.ogg", SE_HIT2);
