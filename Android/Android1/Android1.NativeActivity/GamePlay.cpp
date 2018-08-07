@@ -352,6 +352,7 @@ void GamePlay::NotStart(void)
 		alpha["image"] -= 25;
 		if (alpha["image"] <= 0)
 		{
+			st = false;
 			func = &GamePlay::Start;
 		}
 	}
