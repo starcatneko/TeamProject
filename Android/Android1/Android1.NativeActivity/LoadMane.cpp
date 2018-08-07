@@ -87,7 +87,10 @@ int LoadMane::LoadSound(std::string fileName)
 		sound[fileName] = DxLib::LoadSoundMem(path.c_str());
 
 	}
-
+	if (sound[fileName] < 0)
+	{
+		return -1;
+	}
 	return sound[fileName];
 }
 

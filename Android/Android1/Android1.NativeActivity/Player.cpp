@@ -50,7 +50,6 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	size = this->st.lock()->GetChipPlSize();
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 	target = lpos;
-	type = PlType::normal;
 	dir = DIR_UP;
 	old_dir = dir;
 	reverse = false;
@@ -66,6 +65,8 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	power_max_wait = 0;
 	change = -1;
 	skill = 0;
+	state = ST_NUETRAL;
+	type = PlType::normal;
 	dropflag = false;
 	
 	AnimInit();

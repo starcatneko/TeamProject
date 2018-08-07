@@ -53,8 +53,6 @@ void Sound::SoundInit(void)
 	Load("voice1.ogg", SE_VOICE1);
 	Load("voice2.ogg", SE_VOICE2);
 	Load("encount1.wav", SE_ENCOUNT);
-	Load("ko.ogg", SE_KO);
-
 }
 
 
@@ -64,7 +62,7 @@ void Sound::SoundInit2(void)
 	Load("heal.ogg", SE_HEAL);
 	Load("punch.ogg", SE_PUNCH);
 	Load("dead.wav", SE_DEAD);
-	Load("yeah.wav", SE_CRY);
+	Load("yeah.ogg", SE_CRY);
 
 	Load("spawn.wav", SE_SPAWN);
 
