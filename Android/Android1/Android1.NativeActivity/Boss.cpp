@@ -87,7 +87,7 @@ void Boss::RectInit(void)
 		}
 		else if (in >= 15)
 		{
-			SetRect("attack1", in, { (-size.x / 2), 50 }, { (size.x) - 100, (size.y / 2) }, RectType::Attack);
+			SetRect("attack1", in, { (-size.x / 6), 50 }, { (size.x*2) - 100, (size.y / 2) }, RectType::Attack);
 		}
 	}
 	tmp = 0;
@@ -562,7 +562,7 @@ void Boss::UpData(void)
 				oldhp = hp;
 			}
 
-			if (50 < pl.lock()->GetPower() && pl.lock()->GetPower() < 60)
+			if (pl.lock()->GetPower() < 60)
 			{
 				hp -= 1;
 			}

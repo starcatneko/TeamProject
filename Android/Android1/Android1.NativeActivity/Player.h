@@ -189,6 +189,8 @@ private:
 	// 裏技
 	int skill;
 
+	// パワーがMAXになった後に減衰が始まるまでのウェイト
+	int power_max_wait;
 	// 波動拳
 	Pos bPos;
 	int speed;
@@ -206,7 +208,6 @@ private:
 	void MikioTime();
 	void MikioReset();
 	int flagSelector(std::string flagName);
-
 	// 
 	std::map<PlType, std::map<std::string, Anim>>anim;
 

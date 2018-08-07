@@ -423,7 +423,7 @@ void Dust::UpData(void)
 		SetState(ST_DAMAGE, "damage");
 		GameMane::Get()->SetHit(true);
 
-		if (30 < pl.lock()->GetPower() && pl.lock()->GetPower() < 50)
+		if (pl.lock()->GetPower() < 50)
 		{
 			hp -= 1;
 		}

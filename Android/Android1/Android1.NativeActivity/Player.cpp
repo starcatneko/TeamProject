@@ -51,6 +51,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	center = { lpos.x + size.x / 2, lpos.y + size.y / 2 };
 	target = lpos;
 	type = PlType::normal;
+	state = ST_NUETRAL;
 	dir = DIR_UP;
 	old_dir = dir;
 	reverse = false;
@@ -63,6 +64,7 @@ Player::Player(Pos pos, std::weak_ptr<Camera> cam, std::weak_ptr<Stage> st)
 	tmp = DIR_NON;
 	w_flam = 0;
 	offset = 0;
+	power_max_wait = 0;
 	change = -1;
 	skill = 0;
 	dropflag = false;
@@ -426,7 +428,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack1", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::normal, "attack1", in, { (size.x / 2) - 20, -100 }, { (size.x / 4), (size.y ) }, RectType::Attack);
 		}
 		else
 		{
@@ -440,7 +442,7 @@ void Player::RectInit(void)
 		else if (in >= 5 && in <= 11)
 		{
 			SetRect(PlType::pinch, "attack1", in, { (-size.x / 4) + 10, ((-size.y + 60) / 2) + 30 }, { (size.x / 2) + 20, (size.y - 60 / 2) - 30 }, RectType::Damage);
-			SetRect(PlType::pinch, "attack1", in, { (size.x / 3) + 10, (-size.y / 3) + 10 }, { (size.x / 6), (size.y / 2) + 30 }, RectType::Attack);
+			SetRect(PlType::pinch, "attack1", in, { (size.x / 3) + 10, -size.y + 10 }, { (size.x / 6), (size.y / 2) + 30 }, RectType::Attack);
 		}
 		else
 		{
@@ -455,7 +457,7 @@ void Player::RectInit(void)
 		if (in > 5)
 		{
 			SetRect(PlType::normal, "attack2", in, { (-size.x / 6), ((-size.y + 60) / 2) }, { (size.x / 2) + 20, size.y - 60 / 2 }, RectType::Damage);
-			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -40 }, { (size.x / 4), (size.y / 2) }, RectType::Attack);
+			SetRect(PlType::normal, "attack2", in, { (size.x / 2) - 20, -100 }, { (size.x / 4), (size.y) }, RectType::Attack);
 		}
 		else
 		{
@@ -980,7 +982,19 @@ void Player::UpData(void)
 
 		if (w_flam % (60 * 3) == 0)
 		{
-			DownPower(1);
+			if (GetPower() == 100)
+			{
+				power_max_wait++;
+				if (power_max_wait >5)
+				{
+					power_max_wait = 0;
+					DownPower(1);
+				}
+			}
+			else
+			{
+				DownPower(1);
+			}
 		}
 	}
 
