@@ -37,7 +37,6 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601291\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Android1.Packaging.androidprojAssemblyReference.cache
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\libs\armeabi-v7a\libAndroid1.so
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\AndroidManifest.xml
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\apple.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\AppleThanks.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\Battack_1.png
@@ -113,10 +112,6 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\punch.ogg
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\resultBG.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\setsumei.png
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sousa1.png
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sousa2.png
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sousa3.png
-C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\sousa4.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\spawn.wav
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\step.ogg
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\ThankyouBG.png
@@ -131,5 +126,6 @@ C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packagin
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\comment.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\font.png
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\assets\yeah.wav
+C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\AndroidManifest.xml
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\project.properties
 C:\Users\1601271\Documents\GitHub\TeamProject\Android\Android1\Android1.Packaging\ARM\Debug\Package\build.xml

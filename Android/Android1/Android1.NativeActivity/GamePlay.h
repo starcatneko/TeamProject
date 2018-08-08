@@ -121,5 +121,6 @@ private:
 	// 操作画像
 	std::vector<int>sousa;
 	unsigned int sousaNo;
+	int yazirusi;
 };
 

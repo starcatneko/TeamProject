@@ -37,6 +37,7 @@ GamePlay::GamePlay() : blend(false), stop(0) , sousaNo(0)
 	sousa.push_back(LoadMane::Get()->Load("sousa2.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa3.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa4.png"));
+	yazirusi = LoadMane::Get()->Load("flick_arrow.png");
 	Sound::Get()->SoundInit2();
 
 	boss_flg = false;
@@ -67,13 +68,21 @@ void GamePlay::LoadDraw(void)
 	pl->Draw();
 	cam->Draw();
 	ui->Draw();
+	static int offset = 0;
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
 	DrawGraph(0, 0, sousa[sousaNo], true);
+	DrawGraph(WINDOW_X / 2 + 60 + offset++, WINDOW_Y - 280, yazirusi, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	if (offset >= 100)
+	{
+		offset = 0;
+	}
 
 	if (alpha["image"] <= 0)
 	{
+		offset = 0;
 		draw = &GamePlay::NormalDraw;
 	}
 }

@@ -170,6 +170,7 @@
     <Content Include="assets\fa_effect1.png" />
     <Content Include="assets\fa_effect2.png" />
     <Content Include="assets\flick.png" />
+    <Content Include="assets\flick_arrow.png" />
     <Content Include="assets\gage.png" />
     <Content Include="assets\gage_mask3.png" />
     <Content Include="assets\gage_red.png" />
