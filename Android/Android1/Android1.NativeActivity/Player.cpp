@@ -1064,7 +1064,8 @@ void Player::MikioBlaster(void)
 {
 	if (CheckHitKey(KEY_INPUT_R)) flag["shot"] = false, flag["shot2"] = false;
 
-	if (flag["charge"] == false) {
+	if (flag["charge"] == false) 
+	{
 		for (int i = 0; i < anim[type]["wait"].max; ++i)
 		{
 			if (anim[type]["wait"].rect[i].size() >= 2)
@@ -1072,12 +1073,15 @@ void Player::MikioBlaster(void)
 				anim[type]["wait"].rect[i].pop_back();
 			}
 		}
-		if (Touch::Get()->Check( PRESS,tmp) == true) {
+		if (Touch::Get()->Check( PRESS,tmp) == true && type == PlType::normal) 
+		{
 			flag["charge"] = true;
 		}
 	}
-	else {
-		if (Touch::Get()->Check( PRESS, tmp) == false) {
+	else 
+	{
+		if (Touch::Get()->Check( PRESS, tmp) == false) 
+		{
 			flag["charge"] = false;
 			if (time["second"] > 6) {
 				if (flag["shot"] == false) {

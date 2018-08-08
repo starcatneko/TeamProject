@@ -38,7 +38,6 @@ GamePlay::GamePlay() : blend(false), stop(0) , sousaNo(0)
 	sousa.push_back(LoadMane::Get()->Load("sousa3.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa4.png"));
 	Sound::Get()->SoundInit2();
-	Sound::Get()->Play(MU_BGM1);
 
 	boss_flg = false;
 }
@@ -70,8 +69,6 @@ void GamePlay::LoadDraw(void)
 	ui->Draw();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha["image"]);
-	//DrawBox(0, 0, WINDOW_X, WINDOW_Y, GetColor(255, 255, 255), true);
-	//pl->RasterScroll(image["load"], box["load"].pos, { 0,0 }, box["load"].size);
 	DrawGraph(0, 0, sousa[sousaNo], true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -354,6 +351,7 @@ void GamePlay::NotStart(void)
 		if (alpha["image"] <= 0)
 		{
 			st = false;
+			Sound::Get()->Play(MU_BGM1);
 			func = &GamePlay::Start;
 		}
 	}
