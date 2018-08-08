@@ -36,13 +36,10 @@ GamePlay::GamePlay() : blend(false), stop(0) , sousaNo(0)
 	sousa.push_back(LoadMane::Get()->Load("sousa1.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa2.png"));
 	sousa.push_back(LoadMane::Get()->Load("sousa3.png"));
-<<<<<<< HEAD
+	sousa.push_back(LoadMane::Get()->Load("sousa4.png"));
 	Sound::Get()->SoundInit2();
 	Sound::Get()->Play(MU_BGM1);
 
-=======
-	sousa.push_back(LoadMane::Get()->Load("sousa4.png"));
->>>>>>> Sueyoshiii
 	boss_flg = false;
 }
 
