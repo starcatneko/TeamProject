@@ -203,7 +203,6 @@ private:
 	void MikioInit();
 	void MikioBlaster();
 	void MiddleShot();
-	void StlengthShot();
 	void MikioDraw();
 	void MikioTime();
 	void MikioReset();
