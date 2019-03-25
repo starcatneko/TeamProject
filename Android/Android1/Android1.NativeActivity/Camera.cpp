@@ -24,10 +24,6 @@ Camera::~Camera()
 }
 void Camera::Draw(void)
 {
-#ifndef _DEBUG
-	//DrawFormatString(250, 250, GetColor(255, 0, 0), "カメラ座標：%d,%d", pos);
-	//DrawFormatString(250, 275, GetColor(255, 0, 0), "カメラ目標：%d,%d", target);
-#endif
 }
 
 // 動いていないときの処理
@@ -99,7 +95,6 @@ void Camera::Shake(const Pos& pos)
 	{
 		this->pos.y -= (frame % 4 == 0 ? off.y : -off.y);
 	}
-	//this->pos.y -= (frame % 2 == 0 ? off.y : -off.y);
 
 
 	//フレームが規定時間を超えたとき

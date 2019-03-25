@@ -554,41 +554,6 @@ void Player::Nuetral(void)
 		SetState(ST_ATTACK, "attack1");
 		func = &Player::Attack1;
 	}
-
-	/*if (Touch::Get()->Check(PRESS, tmp) == true)
-	{
-		++skill;
-		effe["effect3"].flag = true;
-		if (skill >= 60 * 1)
-		{
-			effe["effect3"].flag = false;
-			effe["effect4"].flag = true;
-			if (anim[type][mode].rect[index].size() < 2)
-			{
-				if (reverse == false)
-				{
-					anim[type][mode].rect[index].push_back({ { -(WINDOW_X - (WINDOW_X - center.x)), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
-				}
-				else
-				{
-					anim[type][mode].rect[index].push_back({ { -(WINDOW_X - center.x), -(WINDOW_Y - (WINDOW_Y - center.y)) },{ WINDOW_X,WINDOW_Y },RectType::Attack });
-				}
-			}
-		}
-	}
-	else
-	{
-		effe["effect3"].flag = false;
-		effe["effect4"].flag = false;
-		for (int i = 0; i < anim[type]["wait"].max; ++i)
-		{
-			if (anim[type]["wait"].rect[i].size() >= 2)
-			{
-				anim[type]["wait"].rect[i].pop_back();
-			}
-		}
-		skill = 0;
-	}*/
 }
 
 // 移動時の処理

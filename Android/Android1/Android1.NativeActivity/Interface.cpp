@@ -63,7 +63,6 @@ void Interface::DrawStartBoss()
 	if (spawn_cnt >SPAWN_START)
 	{
 		GetDrawScreenGraph(0, 0, WINDOW_X, WINDOW_Y, tempscreen);
-		//DrawGraph(0, 0, temp2screen,true);*/
 		SetDrawBlendMode(DX_BLENDMODE_ADD, (240 - spawn_cnt) * 2);
 		DrawRotaGraph(WINDOW_X/2, WINDOW_Y/2,1+ (240 - spawn_cnt)*0.05, RAD(((240 - spawn_cnt)/4)), tempscreen, true, 0, 0);
 
@@ -83,8 +82,6 @@ void Interface::DrawStartBoss()
 		DrawRotaGraph(WINDOW_X / 2, 600, tempsize, 0, startbossimg, true, 0, 0);
 
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, ((spawn_cnt * 12) % 255) - 24);
-
-		//DrawRotaGraph(WINDOW_X / 2, 600, (2.0f - (0.1 *spawn_cnt - 2)>1 ? 2.0f - (0.1 *spawn_cnt) : 1), 0, image["spawn_text"], true, 0, 0);
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
